@@ -1,0 +1,8 @@
+# Build and Release Folders
+target
+.settings
+.project
+.classpath
+*.iml
+.idea
+atlassian-ide-plugin.xml

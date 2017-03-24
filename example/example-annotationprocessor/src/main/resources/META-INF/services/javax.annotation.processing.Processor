@@ -1,0 +1,2 @@
+de.holisticon.annotationprocessor.example.annotationprocessor.MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor
+de.holisticon.annotationprocessor.example.annotationprocessor.TypeThatIsAssignableToInterfaceAnnotationProcessor

@@ -1,0 +1,96 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>example-annotationprocessor</artifactId>
+    <packaging>bundle</packaging>
+
+    <parent>
+        <groupId>de.holisticon.holiannotationprocessor</groupId>
+        <artifactId>example-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <name>example-annotationprocessor</name>
+    <description>Please refer to https://github.com/tracee/contextlogger.</description>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>de.holisticon.holiannotationprocessor</groupId>
+            <artifactId>holi-annotationprocessor</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>de.holisticon.holiannotationprocessor</groupId>
+            <artifactId>example-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.google.testing.compile</groupId>
+            <artifactId>compile-testing</artifactId>
+            <version>0.10</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+
+
+                        <configuration>
+
+                            <!-- need to relocate used 3rd party dependencies and their transitive dependencies -->
+                            <relocations>
+                                <!-- usually you would relocate all referenced 3RD party libaries into your jar, because the annotation processor should always be added as provided dependency  when it is used-->
+                                <!--
+                                <relocation>
+                                    <pattern>de.holisticon.annotationprocessor</pattern>
+                                    <shadedPattern>de.holisticon.holiprofiler._3rdparty.com.google.gson</shadedPattern>
+                                </relocation>
+                                -->
+                            </relocations>
+
+                        </configuration>
+
+                    </execution>
+                </executions>
+
+
+            </plugin>
+
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <proc>none</proc>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+
+</project>
