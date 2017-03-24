@@ -1,6 +1,6 @@
 package de.holisticon.annotationprocessor;
 
-import de.holisticon.annotationprocessor.TestAnnotation;
+import de.holisticon.annotationprocessor.testhelper.TestAnnotation;
 
 /**
  * Test class for annotation processor tools.

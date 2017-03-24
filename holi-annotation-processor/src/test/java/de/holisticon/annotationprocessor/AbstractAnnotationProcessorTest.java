@@ -1,17 +1,13 @@
 package de.holisticon.annotationprocessor;
 
-import com.google.testing.compile.Compilation;
-import com.google.testing.compile.Compiler;
-import com.google.testing.compile.JavaFileObjects;
+import de.holisticon.annotationprocessor.testhelper.AbstractAnnotationProcessorTestBaseClass;
+import de.holisticon.annotationprocessor.testhelper.TestAnnotation;
 import de.holisticon.annotationprocessor.tools.ElementUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -19,68 +15,16 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.tools.Diagnostic;
-import javax.tools.JavaFileObject;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 @RunWith(Parameterized.class)
-public class AbstractAnnotationProcessorTest {
-    public final static String TEST_EXECUTION_MESSAGE = "TEST WAS EXECUTED";
-
-
-    @SupportedAnnotationTypes({"de.holisticon.annotationprocessor.TestAnnotation"})
-    public abstract static class AbstractTestAnnotationProcessorClass extends AbstractAnnotationProcessor {
-
-
-        private final static Set<String> SUPPORTED_ANNOTATION_TYPES = new HashSet<String>();
-
-        static {
-            SUPPORTED_ANNOTATION_TYPES.add(TestAnnotation.class.getCanonicalName());
-        }
-
-        @Override
-        public Set<String> getSupportedAnnotationTypes() {
-            return SUPPORTED_ANNOTATION_TYPES;
-        }
-
-        protected abstract void testCase(TypeElement element);
-
-        @Override
-        public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
-            Set<? extends Element> set = roundEnv.getElementsAnnotatedWith(TestAnnotation.class);
-
-            if (set.size() == 1) {
-
-                // set that test has been executed
-                this.getMessager().getMessager().printMessage(Diagnostic.Kind.NOTE, TEST_EXECUTION_MESSAGE);
-                testCase((TypeElement) set.iterator().next());
-            }
-
-            return false;
-        }
-
-        protected void triggerError(String message) {
-
-            this.getMessager().getMessager().printMessage(Diagnostic.Kind.ERROR, message);
-
-        }
-    }
-
-
-    private String message;
-    private AbstractTestAnnotationProcessorClass testcase;
+public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessorTestBaseClass {
 
     public AbstractAnnotationProcessorTest(String message, AbstractTestAnnotationProcessorClass testcase) {
-        this.message = message;
-        this.testcase = testcase;
+        super(message, testcase);
     }
-
 
     @Parameterized.Parameters(name = "{index}: {0}")
     public static List<Object[]> data() {
@@ -502,28 +446,6 @@ public class AbstractAnnotationProcessorTest {
 
         );
 
-
-    }
-
-
-    @Test
-    public void test() {
-
-        JavaFileObject testClassSource = JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
-        Compilation compilation = Compiler.javac()
-                .withProcessors(testcase)
-                .compile(testClassSource);
-
-
-        boolean wasExecuted = false;
-        for (Diagnostic note : compilation.notes()) {
-            if (TEST_EXECUTION_MESSAGE.equals(note.getMessage(Locale.getDefault()))) {
-                wasExecuted = true;
-                break;
-            }
-        }
-
-        MatcherAssert.assertThat("TESTCASE WAS NOT EXECUTED", wasExecuted);
 
     }
 
