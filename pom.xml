@@ -14,7 +14,6 @@
     <modules>
 
         <!-- modules -->
-        <module>testhelper</module>
         <module>holi-annotation-processor</module>
         <module>example</module>
 
@@ -412,13 +411,6 @@
                 <artifactId>example-annotationprocessor</artifactId>
                 <version>${project.version}</version>
                 <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>de.holisticon.holiannotationprocessor</groupId>
-                <artifactId>testhelper</artifactId>
-                <version>${project.version}</version>
-                <scope>test</scope>
             </dependency>
 
         </dependencies>

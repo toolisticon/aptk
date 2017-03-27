@@ -10,7 +10,7 @@ import javax.lang.model.element.Modifier;
 /**
  * Fluent and immutable validator for validation of {@link Modifier} of {@link Element}.
  */
-public class FluentModifierElementValidator<T extends Element> {
+public class FluentModifierElementValidator<T extends Element> extends AbstractFluentValidator<FluentModifierElementValidator>{
 
     private final FrameworkToolWrapper frameworkToolWrapper;
     private final MessagerUtils messagerUtils;
@@ -19,6 +19,8 @@ public class FluentModifierElementValidator<T extends Element> {
     private final T elementToValidate;
 
     public FluentModifierElementValidator(FrameworkToolWrapper frameworkToolWrapper, T elementToValidate) {
+
+        super(null);
 
         // config fluent validator
         this.frameworkToolWrapper = frameworkToolWrapper;
@@ -29,6 +31,9 @@ public class FluentModifierElementValidator<T extends Element> {
     }
 
     private FluentModifierElementValidator(FluentModifierElementValidator<T> previousFluentModifierElementValidator, boolean currentResult) {
+
+        super(previousFluentModifierElementValidator);
+
         // use config of previous fluent validator
         this.frameworkToolWrapper = previousFluentModifierElementValidator.frameworkToolWrapper;
         this.messagerUtils = previousFluentModifierElementValidator.messagerUtils;
@@ -42,8 +47,8 @@ public class FluentModifierElementValidator<T extends Element> {
 
         if (modifiers != null) {
             if (ElementUtils.getElementUtils().hasModifiers(elementToValidate, modifiers)) {
-                messagerUtils.error(elementToValidate, "Element must have the following modifiers %s", getModifierString(modifiers));
-                nextResult = false;
+                messagerUtils.printMessage(elementToValidate, getMessageLevel(), "Element must have the following modifiers %s", getModifierString(modifiers));
+                nextResult = isErrorLevel() ? false : nextResult;
             }
         }
 
@@ -55,8 +60,8 @@ public class FluentModifierElementValidator<T extends Element> {
 
         if (modifiers != null) {
             if (ElementUtils.getElementUtils().hasNotModifiers(elementToValidate, modifiers)) {
-                messagerUtils.error(elementToValidate, "Element must have the following modifiers %s", getModifierString(modifiers));
-                nextResult = false;
+                messagerUtils.printMessage(elementToValidate,getMessageLevel(), "Element must have the following modifiers %s", getModifierString(modifiers));
+                nextResult = isErrorLevel() ? false : nextResult;
             }
         }
 

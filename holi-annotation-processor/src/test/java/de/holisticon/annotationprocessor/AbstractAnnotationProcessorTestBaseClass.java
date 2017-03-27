@@ -1,9 +1,8 @@
-package de.holisticon.annotationprocessor.testhelper;
+package de.holisticon.annotationprocessor;
 
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
-import de.holisticon.annotationprocessor.AbstractAnnotationProcessor;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 

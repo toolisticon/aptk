@@ -11,7 +11,7 @@ import javax.lang.model.element.ExecutableElement;
 /**
  * Fluent validator for {@link ExecutableElement} instances.
  */
-public class FluentExecutableElementValidator {
+public class FluentExecutableElementValidator extends AbstractFluentValidator<FluentExecutableElementValidator> {
 
     private final FrameworkToolWrapper frameworkToolWrapper;
     private final MessagerUtils messagerUtils;
@@ -21,6 +21,8 @@ public class FluentExecutableElementValidator {
     private final boolean currentValidationResult;
 
     public FluentExecutableElementValidator(FrameworkToolWrapper frameworkToolWrapper, ExecutableElement methodElement) {
+
+        super(null);
 
         // config validator
         this.frameworkToolWrapper = frameworkToolWrapper;
@@ -33,6 +35,8 @@ public class FluentExecutableElementValidator {
     }
 
     public FluentExecutableElementValidator(FluentExecutableElementValidator previousFluentExecutableElementValidator, boolean currentValidationResult) {
+
+        super(previousFluentExecutableElementValidator);
 
         // get config of previous validator instance
         this.frameworkToolWrapper = previousFluentExecutableElementValidator.frameworkToolWrapper;
@@ -82,9 +86,9 @@ public class FluentExecutableElementValidator {
 
         if (!ElementUtils.getElementUtils().isOfKind(methodElement, kind)) {
 
-            // validation failed - output error message
-            messagerUtils.error(methodElement, "Element must be of kind %s", kind);
-            nextResult = false;
+            // validation failed - output message
+            messagerUtils.printMessage(methodElement, getMessageLevel(), "Element must be of kind %s", kind);
+            nextResult = isErrorLevel() ? false : nextResult;
 
         }
 
@@ -98,9 +102,9 @@ public class FluentExecutableElementValidator {
 
         if (ElementUtils.getElementUtils().isMethod(methodElement) && !typeUtils.isVoidType(methodElement.getReturnType())) {
 
-            // validation failed - output error message
-            messagerUtils.error(methodElement, "Method must have void return type");
-            nextResult = false;
+            // validation failed - output message
+            messagerUtils.printMessage(methodElement, getMessageLevel(), "Method must have void return type");
+            nextResult = isErrorLevel() ? false : nextResult;
 
 
         }
@@ -115,9 +119,9 @@ public class FluentExecutableElementValidator {
 
         if (ElementUtils.getElementUtils().isMethod(methodElement) && typeUtils.isVoidType(methodElement.getReturnType())) {
 
-            // validation failed - output error message
-            messagerUtils.error(methodElement, "Method must have non void return type");
-            nextResult = false;
+            // validation failed - output message
+            messagerUtils.printMessage(methodElement, getMessageLevel(), "Method must have non void return type");
+            nextResult = isErrorLevel() ? false : nextResult;
 
         }
 
@@ -132,9 +136,9 @@ public class FluentExecutableElementValidator {
 
             if (type == null || !typeUtils.getTypes().isAssignable(methodElement.getReturnType(), typeUtils.getTypeMirrorForClass(type))) {
 
-                // validation failed - output error message
-                messagerUtils.error(methodElement, "Methods return type must be assignable to type %s", type.getSimpleName());
-                nextResult = false;
+                // validation failed - output message
+                messagerUtils.printMessage(methodElement, getMessageLevel(), "Methods return type must be assignable to type %s", type.getSimpleName());
+                nextResult = isErrorLevel() ? false : nextResult;
 
             }
 
@@ -149,8 +153,8 @@ public class FluentExecutableElementValidator {
         boolean nextResult = this.currentValidationResult;
 
         if (name == null || !name.equals(methodElement.getSimpleName().toString())) {
-            messagerUtils.error(methodElement, "Element must have name %s, but has name", name, methodElement.getSimpleName());
-            nextResult = false;
+            messagerUtils.printMessage(methodElement, getMessageLevel(), "Element must have name %s, but has name", name, methodElement.getSimpleName());
+            nextResult = isErrorLevel() ? false : nextResult;
         }
 
         return new FluentExecutableElementValidator(this, nextResult);
@@ -160,8 +164,8 @@ public class FluentExecutableElementValidator {
         boolean nextResult = this.currentValidationResult;
 
         if (ElementUtils.getElementUtils().isMethod(methodElement) && methodElement.getParameters().isEmpty()) {
-            messagerUtils.error(methodElement, "Method must have parameters, but has none");
-            nextResult = false;
+            messagerUtils.printMessage(methodElement, getMessageLevel(), "Method must have parameters, but has none");
+            nextResult = isErrorLevel() ? false : nextResult;
         }
 
         return new FluentExecutableElementValidator(this, nextResult);
@@ -173,13 +177,13 @@ public class FluentExecutableElementValidator {
 
         if (ElementUtils.getElementUtils().isMethod(methodElement)) {
             if (methodElement.getParameters().size() != parameterTypes.length) {
-                messagerUtils.error(methodElement, "Method number of parameters is %d but expected %d", methodElement.getParameters().size(), parameterTypes.length);
-                nextResult = false;
+                messagerUtils.printMessage(methodElement, getMessageLevel(), "Method number of parameters is %d but expected %d", methodElement.getParameters().size(), parameterTypes.length);
+                nextResult = isErrorLevel() ? false : nextResult;
             } else {
                 for (int i = 0; i < methodElement.getParameters().size(); i++) {
                     if (!methodElement.getParameters().get(i).asType().equals(typeUtils.getTypeMirrorForClass(parameterTypes[i]))) {
-                        messagerUtils.error(methodElement, "Method must have parameters, but has none");
-                        nextResult = false;
+                        messagerUtils.printMessage(methodElement, getMessageLevel(), "Method must have parameters, but has none");
+                        nextResult = isErrorLevel() ? false : nextResult;
                     }
                 }
             }

@@ -1,7 +1,5 @@
 package de.holisticon.annotationprocessor;
 
-import de.holisticon.annotationprocessor.testhelper.AbstractAnnotationProcessorTestBaseClass;
-import de.holisticon.annotationprocessor.testhelper.TestAnnotation;
 import de.holisticon.annotationprocessor.tools.ElementUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;

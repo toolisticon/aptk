@@ -10,7 +10,7 @@ import javax.lang.model.type.TypeMirror;
 /**
  * Fluent and immutable validator for validation of {@link TypeElement}.
  */
-public class FluentTypeElementValidator {
+public class FluentTypeElementValidator extends AbstractFluentValidator<FluentTypeElementValidator> {
 
     private final FrameworkToolWrapper frameworkToolWrapper;
     private final TypeElement typeElement;
@@ -20,6 +20,8 @@ public class FluentTypeElementValidator {
     private final boolean currentResult;
 
     public FluentTypeElementValidator(FrameworkToolWrapper frameworkToolWrapper, TypeElement typeElement) {
+
+        super(null);
 
         // setup element validator
         this.frameworkToolWrapper = frameworkToolWrapper;
@@ -31,6 +33,8 @@ public class FluentTypeElementValidator {
     }
 
     private FluentTypeElementValidator(FluentTypeElementValidator previousFluentTypeElementValidator, boolean currentResult) {
+
+        super(previousFluentTypeElementValidator);
 
         // take configuration of previous ElementValidator
         this.frameworkToolWrapper = previousFluentTypeElementValidator.frameworkToolWrapper;
@@ -58,8 +62,8 @@ public class FluentTypeElementValidator {
         boolean check = this.currentResult;
 
         if (typeMirror == null || !typeUtils.isAssignableToTypeMirror(typeElement, typeMirror)) {
-            messagerUtils.error(typeElement, "type must be assignable to %s", typeMirror != null ? typeMirror.toString() : null);
-            check = false;
+            messagerUtils.printMessage(typeElement, getMessageLevel(), "type must be assignable to %s", typeMirror != null ? typeMirror.toString() : null);
+            check = isErrorLevel() ? false : check;
         }
 
         return new FluentTypeElementValidator(this, check);

@@ -24,11 +24,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>de.holisticon.holiannotationprocessor</groupId>
-            <artifactId>testhelper</artifactId>
-        </dependency>
-
 
     </dependencies>
 

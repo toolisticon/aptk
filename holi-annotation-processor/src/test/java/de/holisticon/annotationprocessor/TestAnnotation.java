@@ -1,4 +1,4 @@
-package de.holisticon.annotationprocessor.testhelper;
+package de.holisticon.annotationprocessor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
