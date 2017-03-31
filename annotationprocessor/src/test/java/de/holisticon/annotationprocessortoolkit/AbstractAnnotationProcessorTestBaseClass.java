@@ -1,9 +1,6 @@
 package de.holisticon.annotationprocessortoolkit;
 
-import com.google.testing.compile.Compilation;
-import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
-import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -11,8 +8,11 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import java.util.Locale;
 import java.util.Set;
+
+import static com.google.common.truth.Truth.assertAbout;
+import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
+
 
 /**
  * Abstract base class for testing annotation processor internal stuff where tools offered by {@link ProcessEnvironment} are needed.
@@ -58,19 +58,27 @@ public abstract class AbstractAnnotationProcessorTestBaseClass {
     private String message;
     private AbstractTestAnnotationProcessorClass testcase;
 
-    public AbstractAnnotationProcessorTestBaseClass(String message, AbstractTestAnnotationProcessorClass testcase) {
+    private boolean compilationShouldSucceed;
+
+    public AbstractAnnotationProcessorTestBaseClass(String message, AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
+
         this.message = message;
         this.testcase = testcase;
+        this.compilationShouldSucceed = compilationShouldSucceed;
+
     }
 
-    @Test
+
+    // This old version of the test runs with compile tester version 0.10.0 which is build with java 8.
+    // So tests can't be executed with java version <8.
+    //@Test
+    /*
     public void test() {
 
         JavaFileObject testClassSource = JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
         Compilation compilation = Compiler.javac()
                 .withProcessors(testcase)
                 .compile(testClassSource);
-
 
         boolean wasExecuted = false;
         for (Diagnostic note : compilation.notes()) {
@@ -81,6 +89,25 @@ public abstract class AbstractAnnotationProcessorTestBaseClass {
         }
 
         MatcherAssert.assertThat("TESTCASE WAS NOT EXECUTED", wasExecuted);
+
+    }
+    */
+
+    @Test
+    public void test() {
+
+        JavaFileObject testClassSource = JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
+
+        if (compilationShouldSucceed) {
+            assertAbout(javaSource())
+                    .that(testClassSource)
+                    .processedWith(testcase).compilesWithoutError();
+        } else {
+            assertAbout(javaSource())
+                    .that(testClassSource)
+                    .processedWith(testcase).failsToCompile();
+        }
+
 
     }
 

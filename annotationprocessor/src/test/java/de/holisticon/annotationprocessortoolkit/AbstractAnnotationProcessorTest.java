@@ -20,8 +20,8 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessorTestBaseClass {
 
-    public AbstractAnnotationProcessorTest(String message, AbstractTestAnnotationProcessorClass testcase) {
-        super(message, testcase);
+    public AbstractAnnotationProcessorTest(String message, AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
+        super(message, testcase, compilationShouldSucceed);
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
@@ -42,7 +42,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat(typeElement.getSimpleName().toString(), Matchers.is(AbstractTestAnnotationProcessorClass.class.getSimpleName()));
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -59,7 +60,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -73,7 +75,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !getTypeUtils().isAssignableToType(element, InputStream.class));
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -87,7 +90,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !getTypeUtils().isAssignableToTypeElement(element, getTypeUtils().getTypeElementForClass(InputStream.class)));
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -101,7 +105,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !getTypeUtils().isAssignableToTypeMirror(element, getTypeUtils().getTypeMirrorForClass(InputStream.class)));
 
                                     }
-                                }
+                                },
+                                true
 
                         },
                         {
@@ -115,7 +120,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -128,7 +134,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat(getTypeUtils().getTypes(), Matchers.notNullValue());
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -142,7 +149,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat("Should have detected that element is not annotated with Override annotation", !ElementUtils.getElementUtils().isAnnotatedWith(element, Override.class));
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -164,7 +172,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat(result, Matchers.<Element>empty());
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -186,7 +195,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat(results, Matchers.<Element>empty());
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -200,7 +210,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat("Class should not have abstract modifier", !ElementUtils.getElementUtils().hasModifiers(element, Modifier.PUBLIC, Modifier.ABSTRACT));
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -213,7 +224,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat("Class should not be detected to have public modifier", ElementUtils.getElementUtils().hasPublicModifier(element));
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -233,7 +245,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -261,7 +274,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
 
                                     }
-                                }
+                                },
+                                false
 
 
                         },
@@ -292,7 +306,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                false
 
 
                         },
@@ -320,7 +335,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                false
 
 
                         },
@@ -340,7 +356,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -369,7 +386,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                false
 
 
                         },
@@ -396,7 +414,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                false
 
 
                         },
@@ -431,7 +450,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                false
 
 
                         },
@@ -451,7 +471,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                false
 
 
                         },
@@ -465,7 +486,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat(getFluentTypeValidator(element).isAssignableTo(String.class).getValidationResult(), Matchers.is(false));
 
                                     }
-                                }
+                                },
+                                false
 
 
                         },
@@ -491,7 +513,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -505,7 +528,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -518,7 +542,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
 
                                     }
-                                }
+                                },
+                                true
 
 
                         },
@@ -530,11 +555,10 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
                                         TypeElement typeElement = getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
 
-                                        getFluentTypeValidator(element).setCustomMessage("MURKS : ${0}", "YEPP").hasModifiers(Modifier.ABSTRACT);
-
 
                                     }
-                                }
+                                },
+                                true
 
 
                         }
