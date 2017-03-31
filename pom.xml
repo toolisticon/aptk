@@ -53,7 +53,7 @@
     <inceptionYear>2017</inceptionYear>
 
     <prerequisites>
-        <maven>3.3.0</maven>
+        <maven>3.0.0</maven>
     </prerequisites>
 
 
@@ -109,7 +109,7 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>[3.3.0,)</version>
+                                    <version>[3.0.0,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>1.6</version>

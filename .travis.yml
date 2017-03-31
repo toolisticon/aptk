@@ -2,7 +2,7 @@ language: java
 sudo: false
 jdk:
 - openjdk6
-install: mvn install -e -DskipTests=true -q
+install: mvn install -DskipTests=true -q
 script: mvn verify -B -q
 after_success: ! '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_REPO_SLUG == "holisticon/annotation-processor-toolkit"
   && $TRAVIS_PULL_REQUEST == "false" ]] && { curl https://raw.githubusercontent.com/holisticon/travis-configuration/master/settings.xml --location
