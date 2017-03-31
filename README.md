@@ -48,9 +48,26 @@ Now take a look at the implementation done with the holi-annotation-processor-to
 
     }
 
-That's it. In case of a failing validation, a message for failed kind of validation will be printed to the compiler.
+That's it. In case of a failing validation, a default error message for the failed kind of validation will be printed to the compiler.
 As you can see, it's far more readable and better to understand.
 
+But now you can say what about print a custom message as a warning. That's also possible:
+
+
+    // example with holi-annotation-processor-toolkit triggered from your
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+
+        // ...
+
+        this.getFluentTypeValidator(element)
+            .setCustomMessage(Diagnostic.Kind.WARNING, "The class annotated with annotation ${0} must be public.", TestAnnotation.class.getCanonicalName()).hasModifiers(Modifier.PUBLIC)
+            .setCustomMessage(Diagnostic.Kind.WARNING, "The class annotated with annotation ${0} must not be abstract.", TestAnnotation.class.getCanonicalName()).hasNotModifiers(Modifier.ABSTRACT)
+            .setCustomMessage(Diagnostic.Kind.ERROR, "The class annotated with annotation ${0} must be assignable to SomeInterface", TestAnnotation.class.getCanonicalName()).isAssignableTo(SomeInterface.class)
+            .validate();
+
+        // ...
+
+    }
 
 # How does it work?
 
