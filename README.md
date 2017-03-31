@@ -111,7 +111,7 @@ The likelihood of a pull request being used rises with the following properties:
 
 This project is sponsored and supported by [holisticon AG](http://www.holisticon.de/)
 
-![Holisticon AG](holisticon-logo.jpg)
+![Holisticon AG](holisticon-logo.png)
 
 # License
 
