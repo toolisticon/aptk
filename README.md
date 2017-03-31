@@ -45,9 +45,9 @@ Now take a look at the implementation done with the holi-annotation-processor-to
 
         this.getFluentTypeValidator(typeElement)
             .hasModifiers(Modifier.PUBLIC)
-            .hasNotModifiers(Modifier.ABSTRACT).
+            .hasNotModifiers(Modifier.ABSTRACT)
             .isAssignableTo(SomeInterface.class)
-            .validate()
+            .getValidationResult()
 
         // ...
 
@@ -68,7 +68,7 @@ But now you can say what about print a custom message as a warning. That's also 
             .setCustomMessage(Diagnostic.Kind.WARNING, "The class annotated with annotation ${0} must be public.", TestAnnotation.class.getCanonicalName()).hasModifiers(Modifier.PUBLIC)
             .setCustomMessage(Diagnostic.Kind.WARNING, "The class annotated with annotation ${0} must not be abstract.", TestAnnotation.class.getCanonicalName()).hasNotModifiers(Modifier.ABSTRACT)
             .setCustomMessage(Diagnostic.Kind.ERROR, "The class annotated with annotation ${0} must be assignable to SomeInterface", TestAnnotation.class.getCanonicalName()).isAssignableTo(SomeInterface.class)
-            .validate();
+            .getValidationResult();
 
         // ...
 
