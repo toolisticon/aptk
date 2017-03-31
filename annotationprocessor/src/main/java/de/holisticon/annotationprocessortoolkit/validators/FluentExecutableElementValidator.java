@@ -113,7 +113,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
         boolean nextResult = this.currentValidationResult;
 
-        if (ElementUtils.getElementUtils().isMethod(element) && hasNonVoidReturnType().validate()) {
+        if (ElementUtils.getElementUtils().isMethod(element) && hasNonVoidReturnType().getValidationResult()) {
 
             if (type == null || !typeUtils.getTypes().isAssignable(element.getReturnType(), typeUtils.getTypeMirrorForClass(type))) {
 

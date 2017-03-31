@@ -23,8 +23,11 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
     protected final boolean currentValidationResult;
 
     private Diagnostic.Kind messageLevel = Diagnostic.Kind.ERROR;
+
+    //custom message
     private String customMessage;
     private Object[] customMessageParameter;
+    private Diagnostic.Kind customMessageLevel;
 
     public AbstractFluentValidator(FrameworkToolWrapper frameworkToolWrapper, E element) {
 
@@ -131,7 +134,7 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
      * @return the currently used message level
      */
     protected Diagnostic.Kind getMessageLevel() {
-        return messageLevel;
+        return customMessageLevel != null ? customMessageLevel : messageLevel;
     }
 
     /**
@@ -141,7 +144,7 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
      * @return
      */
     protected boolean isErrorLevel() {
-        return Diagnostic.Kind.ERROR.equals(messageLevel);
+        return Diagnostic.Kind.ERROR.equals(getMessageLevel());
     }
 
     /**
@@ -159,6 +162,18 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
         return (T) this;
     }
 
+    /**
+     * Sets a custom message with parameters with passe message level.
+     * It's possible to use placeholders for message parameters in the custom message string.
+     * Placeholders have the following format '${&lt;index&gt;}' like '${1}' for second parameter.
+     * The index is starting with 0.
+     * Keep in mind that the passed message level only affects the next validation.
+     * If you want to change the message level for all following validation, choose dedicated message level setter methods instead.
+     *
+     * @param messageLevel           the message level to use with for the next validation
+     * @param customMessage          the custom message string
+     * @param customMessageParameter the custom message parameters
+     */
     public T setCustomMessage(Diagnostic.Kind messageLevel, String customMessage, Object... customMessageParameter) {
         this.messageLevel = messageLevel;
         this.customMessage = customMessage;
@@ -188,7 +203,7 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
 
     }
 
-    public boolean validate() {
+    public boolean getValidationResult() {
         return this.currentValidationResult;
     }
 

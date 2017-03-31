@@ -248,14 +248,14 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
 
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasVoidReturnType().validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasVoidReturnType().getValidationResult(), Matchers.is(true));
 
                                         // check non null value
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasNonVoidReturnType().validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasNonVoidReturnType().getValidationResult(), Matchers.is(false));
 
 
                                         // check specific return type
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasReturnType(String.class).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasReturnType(String.class).getValidationResult(), Matchers.is(false));
 
 
                                         getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
@@ -276,19 +276,19 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
 
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasVoidReturnType().validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasVoidReturnType().getValidationResult(), Matchers.is(false));
 
                                         // check non null value
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasNonVoidReturnType().validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasNonVoidReturnType().getValidationResult(), Matchers.is(true));
 
                                         // check specific return type
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasReturnType(String.class).validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasReturnType(String.class).getValidationResult(), Matchers.is(true));
 
                                         // check for assignable supertype of return type
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasReturnType(Object.class).validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasReturnType(Object.class).getValidationResult(), Matchers.is(true));
 
                                         // check specific return type
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasReturnType(Boolean.class).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasReturnType(Boolean.class).getValidationResult(), Matchers.is(false));
 
 
                                     }
@@ -308,7 +308,7 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
 
                                         // check for method
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().getValidationResult(), Matchers.is(true));
 
 
                                         elements = ElementUtils.getElementUtils().getEnclosedElementsOfKind(element, ElementKind.CONSTRUCTOR);
@@ -316,7 +316,7 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         ExecutableElement constructorElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
 
                                         // check for method
-                                        MatcherAssert.assertThat(getFluentMethodValidator(constructorElement).isMethod().validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(constructorElement).isMethod().getValidationResult(), Matchers.is(false));
 
 
                                     }
@@ -336,7 +336,7 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
 
                                         // check for method
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasName("methodWithReturnTypeAndParameters").validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasName("methodWithReturnTypeAndParameters").getValidationResult(), Matchers.is(true));
 
 
                                     }
@@ -356,16 +356,16 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
 
                                         // check for existence of parameters
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasParameters().validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasParameters().getValidationResult(), Matchers.is(true));
 
                                         // check for existence of parameters
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasParameters(Boolean.class, String.class).validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasParameters(Boolean.class, String.class).getValidationResult(), Matchers.is(true));
 
                                         // check non matching parameter length
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasParameters(Boolean.class).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasParameters(Boolean.class).getValidationResult(), Matchers.is(false));
 
                                         // check non matching parameter types
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasParameters(String.class, Boolean.class).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasParameters(String.class, Boolean.class).getValidationResult(), Matchers.is(false));
 
 
                                     }
@@ -385,14 +385,14 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
 
                                         // check for existence of parameters
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
 
                                         // check for nonexistence
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasModifiers(Modifier.PROTECTED).validate(), Matchers.is(false));
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasNotModifiers(Modifier.PUBLIC).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasModifiers(Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).validate(), Matchers.is(false));
-                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).getValidationResult(), Matchers.is(false));
 
 
                                     }
@@ -412,22 +412,22 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
 
                                         // check for existence of parameters
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
 
                                         // check for nonexistence
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.PROTECTED).validate(), Matchers.is(false));
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PUBLIC).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).validate(), Matchers.is(false));
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).getValidationResult(), Matchers.is(false));
 
                                         // Do the same on TypeElement
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).validate(), Matchers.is(true));
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.ABSTRACT).validate(), Matchers.is(false));
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasNotModifiers(Modifier.PUBLIC).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).getValidationResult(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).validate(), Matchers.is(false));
-                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
 
                                     }
@@ -442,12 +442,12 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                     protected void testCase(TypeElement element) {
 
 
-                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).validate(), Matchers.is(true));
-                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasModifiers(Modifier.ABSTRACT).validate(), Matchers.is(false));
-                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasNotModifiers(Modifier.PUBLIC).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).getValidationResult(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasModifiers(Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).validate(), Matchers.is(false));
-                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
 
                                     }
@@ -461,8 +461,8 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        MatcherAssert.assertThat(getFluentTypeValidator(element).isAssignableTo(Object.class).validate(), Matchers.is(true));
-                                        MatcherAssert.assertThat(getFluentTypeValidator(element).isAssignableTo(String.class).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).isAssignableTo(Object.class).getValidationResult(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).isAssignableTo(String.class).getValidationResult(), Matchers.is(false));
 
                                     }
                                 }
@@ -475,19 +475,19 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasNoArgConstructor().validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasNoArgConstructor().getValidationResult(), Matchers.is(true));
 
                                         List<? extends Element> elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "EmbeddedClass")).filterByKinds(ElementKind.CLASS).getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         TypeElement _2ndTestElement = ElementUtils.getElementUtils().castToTypeElement(elements.get(0));
 
-                                        MatcherAssert.assertThat(getFluentTypeValidator(_2ndTestElement).hasNoArgConstructor().validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(_2ndTestElement).hasNoArgConstructor().getValidationResult(), Matchers.is(true));
 
                                         elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "EmbeddedClassWithNoNoargConstructor")).filterByKinds(ElementKind.CLASS).getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         TypeElement _3rdTestElement = ElementUtils.getElementUtils().castToTypeElement(elements.get(0));
 
-                                        MatcherAssert.assertThat(getFluentTypeValidator(_3rdTestElement).hasNoArgConstructor().validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(_3rdTestElement).hasNoArgConstructor().getValidationResult(), Matchers.is(false));
 
 
                                     }
@@ -502,6 +502,7 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                     protected void testCase(TypeElement element) {
 
                                         getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
+
 
                                     }
                                 }

@@ -31,7 +31,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor ex
 
 
             // validator already will print output so additional actions are not necessary
-            getFluentMethodValidator(ElementUtils.getElementUtils().castMethod(element)).hasVoidReturnType().hasParameters(String.class).validate();
+            getFluentMethodValidator(ElementUtils.getElementUtils().castMethod(element)).hasVoidReturnType().hasParameters(String.class).getValidationResult();
 
 
         }
