@@ -14,7 +14,7 @@
     <modules>
 
         <!-- modules -->
-        <module>holi-annotation-processor</module>
+        <module>annotationprocessor</module>
         <module>example</module>
 
     </modules>
