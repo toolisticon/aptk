@@ -1,7 +1,5 @@
 package de.holisticon.annotationprocessor;
 
-import de.holisticon.annotationprocessor.testhelper.TestAnnotation;
-
 /**
  * Test class for annotation processor tools.
  */
@@ -29,6 +27,14 @@ public class AnnotationProcessorTestClass {
     }
 
     public class EmbeddedClass {
+
+    }
+
+    public class EmbeddedClassWithNoNoargConstructor {
+
+        public EmbeddedClassWithNoNoargConstructor(String abs) {
+
+        }
 
     }
 

@@ -7,12 +7,10 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -23,16 +21,9 @@ public abstract class AbstractAnnotationProcessorTestBaseClass {
 
     public final static String TEST_EXECUTION_MESSAGE = "TEST WAS EXECUTED";
 
-
-    @SupportedAnnotationTypes({"de.holisticon.annotationprocessor.TestAnnotation"})
     public abstract static class AbstractTestAnnotationProcessorClass extends AbstractAnnotationProcessor {
 
-
-        private final static Set<String> SUPPORTED_ANNOTATION_TYPES = new HashSet<String>();
-
-        static {
-            SUPPORTED_ANNOTATION_TYPES.add(TestAnnotation.class.getCanonicalName());
-        }
+        private final static Set<String> SUPPORTED_ANNOTATION_TYPES = AbstractAnnotationProcessor.createSupportedAnnotationSet(TestAnnotation.class);
 
         @Override
         public Set<String> getSupportedAnnotationTypes() {

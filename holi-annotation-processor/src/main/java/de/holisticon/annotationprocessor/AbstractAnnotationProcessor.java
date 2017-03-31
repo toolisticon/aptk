@@ -19,7 +19,10 @@ import javax.lang.model.util.Elements;
 import javax.tools.FileObject;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Abstract base class with support for executing several tasks
@@ -46,7 +49,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      * @return FluentMethodValidator instance
      */
     protected FluentExecutableElementValidator getFluentMethodValidator(ExecutableElement methodElement) {
-        return new FluentExecutableElementValidator(frameworkToolWrapper,methodElement);
+        return new FluentExecutableElementValidator(frameworkToolWrapper, methodElement);
     }
 
 
@@ -124,5 +127,29 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     protected TypeUtils getTypeUtils() {
         return typeUtils;
     }
+
+
+    /**
+     * Helper function to statically provide supported annotations.
+     *
+     * @param annotationTypes the annotation types to be added to the set
+     * @return the set of supported annotations
+     */
+    protected static Set<String> createSupportedAnnotationSet(Class<? extends Annotation>... annotationTypes) {
+        Set<String> result = new HashSet<String>();
+
+        if (annotationTypes != null) {
+            for (Class<? extends Annotation> annotationType : annotationTypes) {
+
+                if (annotationType != null) {
+                    result.add(annotationType.getCanonicalName());
+                }
+
+            }
+        }
+
+        return result;
+    }
+
 
 }

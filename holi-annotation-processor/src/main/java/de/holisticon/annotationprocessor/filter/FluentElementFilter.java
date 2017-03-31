@@ -59,4 +59,24 @@ public class FluentElementFilter<T extends Element> {
         return result;
     }
 
+    public boolean isEmpty() {
+        return result.isEmpty();
+    }
+
+    public boolean hasSingleResult() {
+        return result.size() == 1;
+    }
+
+    public boolean hasMultipleRecords() {
+        return result.size() > 1;
+    }
+
+    public boolean hasSize(int size) {
+        return result.size() == size;
+    }
+
+    public int getResultSize() {
+        return result.size();
+    }
+
 }

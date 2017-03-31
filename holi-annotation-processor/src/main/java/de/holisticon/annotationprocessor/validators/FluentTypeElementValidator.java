@@ -1,72 +1,106 @@
 package de.holisticon.annotationprocessor.validators;
 
+import de.holisticon.annotationprocessor.filter.FluentElementFilter;
 import de.holisticon.annotationprocessor.internal.FrameworkToolWrapper;
-import de.holisticon.annotationprocessor.tools.MessagerUtils;
-import de.holisticon.annotationprocessor.tools.TypeUtils;
+import de.holisticon.annotationprocessor.tools.ElementUtils;
 
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import java.util.List;
 
 /**
  * Fluent and immutable validator for validation of {@link TypeElement}.
  */
-public class FluentTypeElementValidator extends AbstractFluentValidator<FluentTypeElementValidator> {
+public class FluentTypeElementValidator extends AbstractFluentElementValidator<FluentTypeElementValidator, TypeElement> {
 
-    private final FrameworkToolWrapper frameworkToolWrapper;
-    private final TypeElement typeElement;
-    private final MessagerUtils messagerUtils;
-    private final TypeUtils typeUtils;
-
-    private final boolean currentResult;
 
     public FluentTypeElementValidator(FrameworkToolWrapper frameworkToolWrapper, TypeElement typeElement) {
 
-        super(null);
+        super(frameworkToolWrapper, typeElement);
 
-        // setup element validator
-        this.frameworkToolWrapper = frameworkToolWrapper;
-        this.messagerUtils = MessagerUtils.getMessagerUtils(frameworkToolWrapper);
-        this.typeUtils = TypeUtils.getTypeUtils(frameworkToolWrapper);
-        this.typeElement = typeElement;
-
-        this.currentResult = true;
     }
 
     private FluentTypeElementValidator(FluentTypeElementValidator previousFluentTypeElementValidator, boolean currentResult) {
 
-        super(previousFluentTypeElementValidator);
+        super(previousFluentTypeElementValidator, currentResult);
 
-        // take configuration of previous ElementValidator
-        this.frameworkToolWrapper = previousFluentTypeElementValidator.frameworkToolWrapper;
-        this.messagerUtils = previousFluentTypeElementValidator.messagerUtils;
-        this.typeUtils = previousFluentTypeElementValidator.typeUtils;
-        this.typeElement = previousFluentTypeElementValidator.typeElement;
-
-        this.currentResult = currentResult;
     }
 
-    public boolean validate() {
-        return this.currentResult;
-    }
-
-
+    /**
+     * Checks whether type element under validation is assignable to passed {@link Class}.
+     *
+     * @param type the type to check for
+     * @return an immutable FluentExecutableElementValidator instance
+     */
     public FluentTypeElementValidator isAssignableTo(Class type) {
         return type != null ? isAssignableTo(typeUtils.getTypeElementForClass(type)) : new FluentTypeElementValidator(this, false);
     }
 
+    /**
+     * Checks whether type element under validation is assignable to passed {@link TypeElement}.
+     *
+     * @param typeElementToCheck
+     * @return an immutable FluentExecutableElementValidator instance
+     */
     public FluentTypeElementValidator isAssignableTo(TypeElement typeElementToCheck) {
         return typeElementToCheck != null ? isAssignableTo(typeElementToCheck.asType()) : new FluentTypeElementValidator(this, false);
     }
 
+    /**
+     * Checks whether type element under validation is assignable to passed {@link TypeMirror}.
+     *
+     * @param typeMirror
+     * @return an immutable FluentExecutableElementValidator instance
+     */
     public FluentTypeElementValidator isAssignableTo(TypeMirror typeMirror) {
-        boolean check = this.currentResult;
+        boolean check = this.currentValidationResult;
 
-        if (typeMirror == null || !typeUtils.isAssignableToTypeMirror(typeElement, typeMirror)) {
-            messagerUtils.printMessage(typeElement, getMessageLevel(), "type must be assignable to %s", typeMirror != null ? typeMirror.toString() : null);
+        if (typeMirror == null || !typeUtils.isAssignableToTypeMirror(element, typeMirror)) {
+            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("type must be assignable to %s", typeMirror != null ? typeMirror.toString() : null));
             check = isErrorLevel() ? false : check;
         }
 
-        return new FluentTypeElementValidator(this, check);
+        return createNextFluentValidator(check);
+    }
+
+    /**
+     * Checks whether the type element under validation has a no arg constructor or the default noarg constructor.
+     *
+     * @return an immutable FluentExecutableElementValidator instance
+     */
+    public FluentTypeElementValidator hasNoArgConstructor() {
+        boolean check = this.currentValidationResult;
+
+
+        List<ExecutableElement> constructors = (List<ExecutableElement>) ElementUtils.getElementUtils().castElementList(new FluentElementFilter(element.getEnclosedElements()).filterByKinds(ElementKind.CONSTRUCTOR).getResult(), ExecutableElement.class);
+        if (constructors.size() > 0) {
+
+            boolean found = false;
+
+            for (ExecutableElement executableElement : constructors) {
+
+                if (executableElement.getParameters().size() == 0) {
+                    found = true;
+                    break;
+                }
+
+            }
+
+            if (!found) {
+                check = false;
+            }
+
+        }
+
+
+        return createNextFluentValidator(check);
+    }
+
+
+    protected FluentTypeElementValidator createNextFluentValidator(boolean nextResult) {
+        return new FluentTypeElementValidator(this, nextResult);
     }
 
 }

@@ -374,6 +374,88 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
                         },
                         {
+                                "FluentExecutableElementValidator: has / hasn't modifier",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        // do preparations
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
+                                        ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
+
+                                        // check for existence of parameters
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).validate(), Matchers.is(true));
+
+                                        // check for nonexistence
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasModifiers(Modifier.PROTECTED).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasNotModifiers(Modifier.PUBLIC).validate(), Matchers.is(false));
+
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentMethodValidator(testElement).isMethod().hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).validate(), Matchers.is(false));
+
+
+                                    }
+                                }
+
+
+                        },
+                        {
+                                "FluentModifierElementValidator: has / hasn't modifier",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        // do preparations
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
+                                        ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
+
+                                        // check for existence of parameters
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).validate(), Matchers.is(true));
+
+                                        // check for nonexistence
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.PROTECTED).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PUBLIC).validate(), Matchers.is(false));
+
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).validate(), Matchers.is(false));
+
+                                        // Do the same on TypeElement
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.ABSTRACT).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasNotModifiers(Modifier.PUBLIC).validate(), Matchers.is(false));
+
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).validate(), Matchers.is(false));
+
+
+                                    }
+                                }
+
+
+                        },
+                        {
+                                "FluentTypeElementValidator: has / hasn't modifier",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).validate(), Matchers.is(true));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasModifiers(Modifier.ABSTRACT).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasNotModifiers(Modifier.PUBLIC).validate(), Matchers.is(false));
+
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).validate(), Matchers.is(false));
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).validate(), Matchers.is(false));
+
+
+                                    }
+                                }
+
+
+                        },
+                        {
                                 "FluentTypeElementValidator : check if type is assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
@@ -388,12 +470,25 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
                         },
                         {
-                                "",
+                                "FluentTypeElementValidator : check for noarg constructor",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
+                                        MatcherAssert.assertThat(getFluentTypeValidator(element).hasNoArgConstructor().validate(), Matchers.is(true));
+
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "EmbeddedClass")).filterByKinds(ElementKind.CLASS).getResult();
+                                        MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
+                                        TypeElement _2ndTestElement = ElementUtils.getElementUtils().castToTypeElement(elements.get(0));
+
+                                        MatcherAssert.assertThat(getFluentTypeValidator(_2ndTestElement).hasNoArgConstructor().validate(), Matchers.is(true));
+
+                                        elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "EmbeddedClassWithNoNoargConstructor")).filterByKinds(ElementKind.CLASS).getResult();
+                                        MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
+                                        TypeElement _3rdTestElement = ElementUtils.getElementUtils().castToTypeElement(elements.get(0));
+
+                                        MatcherAssert.assertThat(getFluentTypeValidator(_3rdTestElement).hasNoArgConstructor().validate(), Matchers.is(false));
+
 
                                     }
                                 }
@@ -432,7 +527,10 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
+
+                                        getFluentTypeValidator(element).setCustomMessage("MURKS : ${0}", "YEPP").hasModifiers(Modifier.ABSTRACT);
+
 
                                     }
                                 }

@@ -9,7 +9,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -18,16 +17,12 @@ import java.util.Set;
 @SupportedAnnotationTypes({"de.holisticon.annotationprocessor.example.annotations.TypeThatIsAssignableToInterfaceAnnotation"})
 public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends AbstractAnnotationProcessor {
 
-    private final static Set<String> SUPPORTED_ANNOTATION_TYPES = new HashSet<String>();
-
-    static {
-        SUPPORTED_ANNOTATION_TYPES.add(TypeThatIsAssignableToInterfaceAnnotation.class.getCanonicalName());
-    }
-
-    @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return SUPPORTED_ANNOTATION_TYPES;
-    }
+    // Overriding the getSupportedAnnotationTypes instead of using the SupportedAnnotationTypes annotation might be an option this is especially useful if you have inheritance
+    // private final static Set<String> SUPPORTED_ANNOTATION_TYPES = createSupportedAnnotationSet(TypeThatIsAssignableToInterfaceAnnotation.class);
+    // @Override
+    // public Set<String> getSupportedAnnotationTypes() {
+    //    return SUPPORTED_ANNOTATION_TYPES;
+    // }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

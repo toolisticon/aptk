@@ -1,9 +1,58 @@
-# Holi-Annotation-Processor
+# Holi-Annotation-Processor-Toolkit
 
-> Using the annotation processor mechanism can be a very good possibility to create source code based on Annotated classes and methods or just to ensure the corrrect usage of the annotations. Sadly it's quite complicated to do so, because you have to cope with both java runtime and compile model. This tool is an approach to ease the development of annotation processors by wrapping those java internals inside helper classes.
+> Using the annotation processor mechanism can be a very good possibility to create source code based on annotated classes and methods or just to ensure the correct usage of the annotations in your source code. Sadly it's quite complicated to do so, because you have to cope with both java runtime and compile time model. This toolkit is an approach to ease the development of annotation processors by wrapping those java internals inside mostly fluent and immutable helper classes.
+
+# Example
+
+We will show you the difference between developing compile time validations with java tools and our project to detect incorrect usage of an annotation.
+We have an annotation processor that processes the TestAnnotation which is applicable on Classes which must be public, not abstract and must implement the SomeInterface interface.
+
+At first here's what the code looks like when you are using the java api:
+
+    // example with java api
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+
+        // ...
+
+        if(!typeElement.getModifiers().contains(Modifier.PUBLIC)) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,"Type must be public",typeElement);
+        }
+
+        if(typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,"Type must not be abstract",typeElement);
+        }
+
+        if(!processingEnv.getTypeUtils().isAssignable(typeElement,
+                processingEnv.getElementUtils().getTypeElement(SomeInterface.class.getCanonicalName()))) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,"Type must be assignable to SomeInterface",typeElement);
+        }
+
+        // ...
+
+    }
+
+Now take a look at the implementation done with the holi-annotation-processor-toolkit
+
+    // example with holi-annotation-processor-toolkit triggered from your
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+
+        // ...
+
+        this.getFluentTypeValidator(typeElement)
+            .hasModifiers(Modifier.PUBLIC)
+            .hasNotModifiers(Modifier.ABSTRACT).
+            .isAssignableTo(SomeInterface.class)
+            .validate()
+
+        // ...
+
+    }
+
+That's it. In case of a failing validation, a message for failed kind of validation will be printed to the compiler.
+As you can see, it's far more readable and better to understand.
 
 
-# How it works
+# How does it work?
 
 This project offers an abstract base class which extends the AbstractProcessor class offered by the java framework.
 This class provides support for validating different kinds of Elements in a fluent way and offers you helper functions to do some filtering.
@@ -20,15 +69,14 @@ Then your annotation processor needs to extends the de.holisticon.annotationproc
 
 You can find a small example project for an annotation processor here:
 
-# Contributing to holi-annotation-processor
+# Contributing to holi-annotation-processor-toolkit
 
-We welcome any kind of suggestions and pull requests. Please notice that TracEE is an integration framework and we will not support
-application specific features. We will rather try to enhance our api and empower you to tailor TracEE to your needs.
+We welcome any kind of suggestions and pull requests.
 
-## Building and developing holi-annotation-processor
+## Building and developing holi-annotation-processor-toolkit
 
-The holi-anotation-processor is built using Maven (at least version 3.3.0).
-A simple import of the pom in your IDE should get you up and running. To build he holi-annotation-processor on the commandline, just run `mvn clean install`
+The holi-annotation-processor-toolkit is built using Maven (at least version 3.3.0).
+A simple import of the pom in your IDE should get you up and running. To build the holi-annotation-processor-toolkit on the commandline, just run `mvn` or `mvn clean install`
 
 ## Requirements
 
