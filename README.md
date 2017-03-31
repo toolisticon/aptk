@@ -79,7 +79,7 @@ But now you can say what about print a custom message as a warning. That's also 
 This project offers an abstract base class which extends the AbstractProcessor class offered by the java framework.
 This class provides support for validating different kinds of Elements in a fluent way and offers you helper functions to do some filtering.
 
-So all you need to do is to add the following maven dependency to your project:
+So all you need to do is to add the following maven dependency to your annotation processor project:
 
      <dependency>
          <groupId>de.holisticon.holiannotationprocessor</groupId>
