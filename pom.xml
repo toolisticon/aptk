@@ -120,6 +120,7 @@
                                         <exclude>*</exclude>
                                     </excludes>
                                     <includes>
+                                        <include>de.holisticon.annotationprocessortoolkit:*</include>
                                         <include>*:*:*:*:test:*</include>
                                         <include>*:*:*:*:provided:*</include>
                                     </includes>
