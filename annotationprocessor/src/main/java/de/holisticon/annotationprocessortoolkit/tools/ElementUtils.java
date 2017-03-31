@@ -268,15 +268,18 @@ public final class ElementUtils {
         return hasModifiers(e, Modifier.ABSTRACT);
     }
 
-    /**
+    /*
      * Check if passed Element has default Modifier.
      *
      * @param e the element to check
      * @return true if the passed element has the default modifier, otherwise false
      */
+    // Disabled until we move to Java 8
+    /*
     public boolean hasDefaultModifier(Element e) {
         return hasModifiers(e, Modifier.DEFAULT);
     }
+    */
 
     /**
      * Check if passed Element has static Modifier.
