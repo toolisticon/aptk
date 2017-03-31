@@ -12,7 +12,7 @@
     </parent>
 
     <name>example-usecase</name>
-    <description>Please refer to https://github.com/tracee/contextlogger.</description>
+    <description>Please refer to https://github.com/holisticon/annotation-processotool-kit</description>
 
 
     <dependencies>
