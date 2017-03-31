@@ -1,5 +1,10 @@
 # Holi-Annotation-Processor-Toolkit
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent)
+[![Build Status](https://api.travis-ci.org/holisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/holisticon/annotation-processor-toolkit)
+[![Coverage Status](https://coveralls.io/repos/holisticon/annotation-processor-toolkit/badge.svg?branch=master&service=github)](https://coveralls.io/holisticon/holisticon/annotation-processor-toolkit?branch=master)
+
+
 > Using the annotation processor mechanism can be a very good possibility to create source code based on annotated classes and methods or just to ensure the correct usage of the annotations in your source code. Sadly it's quite complicated to do so, because you have to cope with both java runtime and compile time model. This toolkit is an approach to ease the development of annotation processors by wrapping those java internals inside mostly fluent and immutable helper classes.
 
 # Example
