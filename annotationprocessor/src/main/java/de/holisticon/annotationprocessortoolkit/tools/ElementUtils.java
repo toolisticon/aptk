@@ -361,7 +361,7 @@ public final class ElementUtils {
     public boolean hasModifiers(Element e, Modifier... modifiers) {
 
         if (e == null || modifiers == null) {
-            return true;
+            return false;
         }
 
         for (Modifier modifier : modifiers) {

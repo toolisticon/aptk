@@ -978,6 +978,34 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
                                     }
                                 },
                                 true
+                        },
+                        {
+                                "geResultSize : null valued element list",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        // detects empty results correctly
+                                        MatcherAssert.assertThat(createFluentElementFilter(null).getResultSize(), Matchers.is(0));
+
+
+                                    }
+                                },
+                                true
+                        },
+                        {
+                                "geResultSize : null valued element list",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        // detects empty results correctly
+                                        MatcherAssert.assertThat(createFluentElementFilter(element.getEnclosedElements()).getResultSize(), Matchers.is(element.getEnclosedElements().size()));
+
+
+                                    }
+                                },
+                                true
                         }
 
                 }

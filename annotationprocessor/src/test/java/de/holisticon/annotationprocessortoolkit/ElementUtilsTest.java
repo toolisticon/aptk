@@ -111,7 +111,144 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        MatcherAssert.assertThat("Class should not be detected to have public modifier", ElementUtils.getElementUtils().hasPublicModifier(element));
+                                        MatcherAssert.assertThat("Class should  be detected to have public modifier", ElementUtils.getElementUtils().hasPublicModifier(element));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have public modifier", !ElementUtils.getElementUtils().hasPublicModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "privateField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have public modifier", !ElementUtils.getElementUtils().hasPublicModifier(null));
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "hasProtectedModifier test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat("Class should  be detected to have protected modifier", ElementUtils.getElementUtils().hasProtectedModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "protectedField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have protected modifier", !ElementUtils.getElementUtils().hasProtectedModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "privateField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have protected modifier", !ElementUtils.getElementUtils().hasProtectedModifier(null));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "hasPrivateModifier test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat("Class should be detected to have private modifier", ElementUtils.getElementUtils().hasPrivateModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "privateField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have private modifier", !ElementUtils.getElementUtils().hasPrivateModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "protectedField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have private modifier", !ElementUtils.getElementUtils().hasPrivateModifier(null));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "hasAbstractModifier test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        Element abstractType = ElementUtils.getElementUtils().filterElementListByModifier(ElementUtils.getElementUtils().filterElementListByKind(element.getEnclosedElements(), ElementKind.CLASS), Modifier.ABSTRACT).get(0);
+
+                                        MatcherAssert.assertThat("Class should be detected to have abstract modifier", ElementUtils.getElementUtils().hasAbstractModifier(ElementUtils.getElementUtils().filterElementListByName(abstractType.getEnclosedElements(), "abstractMethod").get(0)))
+                                        ;
+
+                                        MatcherAssert.assertThat("Class should not be detected to have abstract modifier", !ElementUtils.getElementUtils().hasAbstractModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "privateField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have abstract modifier", !ElementUtils.getElementUtils().hasAbstractModifier(null));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "hasStaticModifier test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat("Class should  be detected to have static modifier", ElementUtils.getElementUtils().hasStaticModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "publicStaticField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have static modifier", !ElementUtils.getElementUtils().hasStaticModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "privateField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have static modifier", !ElementUtils.getElementUtils().hasStaticModifier(null));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "hasFinalModifier test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat("Class should be detected to have final modifier", ElementUtils.getElementUtils().hasFinalModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "publicFinalField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have final modifier", !ElementUtils.getElementUtils().hasFinalModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "privateField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have final modifier", !ElementUtils.getElementUtils().hasFinalModifier(null));
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "hasTransientModifier test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat("Class should  be detected to have transient modifier", ElementUtils.getElementUtils().hasTransientModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "publicTransientField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have transient modifier", !ElementUtils.getElementUtils().hasTransientModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "privateField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have transient modifier", !ElementUtils.getElementUtils().hasTransientModifier(null));
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "hasSynchronizedModifier test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat("Class should be detected to have synchronized modifier", ElementUtils.getElementUtils().hasSynchronizedModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "synchronizedMethod").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have synchronized modifier", !ElementUtils.getElementUtils().hasSynchronizedModifier(ElementUtils.getElementUtils().filterElementListByName(element.getEnclosedElements(), "privateField").get(0)));
+
+                                        MatcherAssert.assertThat("Class should not be detected to have synchronized modifier", !ElementUtils.getElementUtils().hasSynchronizedModifier(null));
+
 
                                     }
                                 },
