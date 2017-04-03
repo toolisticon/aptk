@@ -2,8 +2,7 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent)
 [![Build Status](https://api.travis-ci.org/holisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/holisticon/annotation-processor-toolkit)
-[![Coverage Status](https://coveralls.io/repos/holisticon/annotation-processor-toolkit/badge.svg?branch=master&service=github)](https://coveralls.io/holisticon/holisticon/annotation-processor-toolkit?branch=master)
-
+[![Coverage Status](https://coveralls.io/repos/github/holisticon/annotation-processor-toolkit/badge.svg?branch=master)](https://coveralls.io/github/holisticon/annotation-processor-toolkit?branch=master)
 
 > Using the annotation processor mechanism can be a very good possibility to create source code based on annotated classes and methods or just to ensure the correct usage of the annotations in your source code. Sadly it's quite complicated to do so, because you have to cope with both java runtime and compile time model. This toolkit is an approach to ease the development of annotation processors by wrapping those java internals inside mostly fluent and immutable helper classes.
 
@@ -97,7 +96,7 @@ We welcome any kind of suggestions and pull requests.
 
 ## Building and developing holi-annotation-processor-toolkit
 
-The holi-annotation-processor-toolkit is built using Maven (at least version 3.3.0).
+The holi-annotation-processor-toolkit is built using Maven (at least version 3.0.0).
 A simple import of the pom in your IDE should get you up and running. To build the holi-annotation-processor-toolkit on the commandline, just run `mvn` or `mvn clean install`
 
 ## Requirements
