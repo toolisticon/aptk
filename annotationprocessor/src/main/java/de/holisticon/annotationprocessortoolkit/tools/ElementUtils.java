@@ -538,7 +538,7 @@ public final class ElementUtils {
     public <T extends Element> List<T> filterElementListByAnnotation(List<T> elementList, Class<? extends Annotation>... annotations) {
         List<T> result = new ArrayList<T>();
 
-        if (elementList != null && annotations != null) {
+        if (elementList != null && annotations != null && annotations.length > 0) {
 
             outer:
             for (T element : elementList) {
@@ -564,22 +564,29 @@ public final class ElementUtils {
      * @param elementList the Element list to filter
      * @param annotations the annotations to filter by
      * @param <T>
-     * @return the filtered list with elements that are annotatetd with none of the no matching names
+     * @return the filtered list with elements that are annotated with none of the no matching annotations
      */
     public <T extends Element> List<T> inverseFilterElementListByAnnotation(List<T> elementList, Class<? extends Annotation>... annotations) {
         List<T> result = new ArrayList<T>();
 
-        if (elementList != null && annotations != null) {
+        if (elementList != null) {
 
-            outer:
             for (T element : elementList) {
 
-                for (Class<? extends Annotation> annotation : annotations) {
-                    if (element.getAnnotation(annotation) != null) {
-                        continue outer;
+                boolean matchedAll = annotations != null && annotations.length > 0;
+
+                if (annotations != null) {
+                    for (Class<? extends Annotation> annotation : annotations) {
+                        if (annotation != null && element.getAnnotation(annotation) == null) {
+                            matchedAll = false;
+                            break;
+                        }
                     }
                 }
-                result.add(element);
+
+                if (!matchedAll) {
+                    result.add(element);
+                }
 
             }
 
@@ -631,15 +638,17 @@ public final class ElementUtils {
     public <T extends Element> List<T> inverseFilterElementListByName(List<T> elementList, String... names) {
         List<T> result = new ArrayList<T>();
 
-        if (elementList != null && names != null) {
+        if (elementList != null) {
 
             outer:
             for (T element : elementList) {
 
-                for (String name : names) {
-                    if (name != null && name.equals(element.getSimpleName().toString())) {
-                        // continue with next element
-                        continue outer;
+                if (names != null) {
+                    for (String name : names) {
+                        if (name != null && name.equals(element.getSimpleName().toString())) {
+                            // continue with next element
+                            continue outer;
+                        }
                     }
                 }
                 result.add(element);
@@ -730,15 +739,17 @@ public final class ElementUtils {
     public <T extends Element> List<T> inverseFilterElementListByKind(List<T> elementList, ElementKind... kinds) {
         List<T> result = new ArrayList<T>();
 
-        if (elementList != null && kinds != null) {
+        if (elementList != null) {
 
             outer:
             for (T element : elementList) {
 
-                for (ElementKind kind : kinds) {
-                    if (kind != null && kind.equals(element.getKind())) {
-                        // continue with next element
-                        continue outer;
+                if (kinds != null) {
+                    for (ElementKind kind : kinds) {
+                        if (kind != null && kind.equals(element.getKind())) {
+                            // continue with next element
+                            continue outer;
+                        }
                     }
                 }
                 result.add(element);

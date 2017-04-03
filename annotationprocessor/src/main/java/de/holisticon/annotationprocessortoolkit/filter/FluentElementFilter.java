@@ -60,23 +60,23 @@ public class FluentElementFilter<T extends Element> {
     }
 
     public boolean isEmpty() {
-        return result.isEmpty();
+        return result == null || result.isEmpty();
     }
 
-    public boolean hasSingleResult() {
-        return result.size() == 1;
+    public boolean hasSingleElement() {
+        return result != null && result.size() == 1;
     }
 
-    public boolean hasMultipleRecords() {
-        return result.size() > 1;
+    public boolean hasMultipleElements() {
+        return result != null && result.size() > 1;
     }
 
     public boolean hasSize(int size) {
-        return result.size() == size;
+        return result != null && result.size() == size;
     }
 
     public int getResultSize() {
-        return result.size();
+        return result == null ? 0 : result.size();
     }
 
 }
