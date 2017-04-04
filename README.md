@@ -1,4 +1,4 @@
-# Holi-Annotation-Processor-Toolkit
+# Annotation-Processor-Toolkit
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent)
 [![Build Status](https://api.travis-ci.org/holisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/holisticon/annotation-processor-toolkit)
