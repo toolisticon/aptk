@@ -8,8 +8,8 @@
     <packaging>pom</packaging>
 
     <name>annotationprocessor-toolkit-parent</name>
-    <description>Please refer to https://github.com/holisticon/annotation-processotool-kit</description>
-    <url>https://github.com/holisticon/annotation-processotool-kit</url>
+    <description>Please refer to https://github.com/holisticon/annotation-processor-toolkit</description>
+    <url>https://github.com/holisticon/annotation-processor-toolkit</url>
 
     <modules>
 
@@ -58,14 +58,14 @@
 
 
     <issueManagement>
-        <url>https://github.com/holisticon/annotation-processotool-kit/issues</url>
+        <url>https://github.com/holisticon/annotation-processor-toolkit/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:git@github.com/holisticon/annotation-processotool-kit.git</connection>
-        <developerConnection>scm:git:git@github.com/holisticon/annotation-processotool-kit.git</developerConnection>
-        <url>git@github.com/holisticon/annotation-processotool-kit.git</url>
+        <connection>scm:git:git@github.com/holisticon/annotation-processor-toolkit.git</connection>
+        <developerConnection>scm:git:git@github.com/holisticon/annotation-processor-toolkit.git</developerConnection>
+        <url>git@github.com/holisticon/annotation-processor-toolkit.git</url>
         <tag>HEAD</tag>
     </scm>
 
