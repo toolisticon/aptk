@@ -29,7 +29,7 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
     private Object[] customMessageParameter;
     private Diagnostic.Kind customMessageLevel;
 
-    public AbstractFluentValidator(FrameworkToolWrapper frameworkToolWrapper, E element) {
+    protected AbstractFluentValidator(FrameworkToolWrapper frameworkToolWrapper, E element) {
 
         // set default message level to ERROR
         this.messageLevel = Diagnostic.Kind.ERROR;
@@ -45,7 +45,7 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
     }
 
 
-    AbstractFluentValidator(AbstractFluentValidator<T, E> previousFluentValidator, boolean nextResult) {
+    protected AbstractFluentValidator(AbstractFluentValidator<T, E> previousFluentValidator, boolean nextResult) {
         this.messageLevel = previousFluentValidator != null && previousFluentValidator.messageLevel != null ? previousFluentValidator.messageLevel : Diagnostic.Kind.ERROR;
 
         // config validator
@@ -175,7 +175,7 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
      * @param customMessageParameter the custom message parameters
      */
     public T setCustomMessage(Diagnostic.Kind messageLevel, String customMessage, Object... customMessageParameter) {
-        this.messageLevel = messageLevel;
+        this.customMessageLevel = messageLevel;
         this.customMessage = customMessage;
         this.customMessageParameter = customMessageParameter;
 
@@ -186,19 +186,10 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
 
         if (customMessage == null) {
             // use default message
-            return String.format(defaultMessage, defaultMessageParameters);
+            return MessagerUtils.createMessage(defaultMessage, defaultMessageParameters);
         } else {
             // use custom message
-            String result = this.customMessage;
-
-            if (this.customMessageParameter != null) {
-
-                for (int i = 0; i < this.customMessageParameter.length; i++) {
-                    result = result.replaceAll("\\$\\{" + i + "\\}", this.customMessageParameter[i] != null ? this.customMessageParameter[i].toString() : "null");
-                }
-            }
-
-            return result;
+            return MessagerUtils.createMessage(customMessage, customMessageParameter);
         }
 
     }

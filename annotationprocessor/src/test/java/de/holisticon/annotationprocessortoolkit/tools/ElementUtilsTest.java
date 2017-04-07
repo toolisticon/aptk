@@ -1,5 +1,8 @@
-package de.holisticon.annotationprocessortoolkit;
+package de.holisticon.annotationprocessortoolkit.tools;
 
+import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessorTestBaseClass;
+import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation1;
+import de.holisticon.annotationprocessortoolkit.TestAnnotation;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -8,8 +11,10 @@ import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import java.util.Arrays;
 import java.util.List;
 
@@ -256,6 +261,142 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
 
 
                         },
+                        {
+                                "getEnclosedFields test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<VariableElement> fields = ElementUtils.getElementUtils().getEnclosedFields(element);
+
+                                        MatcherAssert.assertThat(fields, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(fields, Matchers.not(Matchers.<VariableElement>empty()));
+
+                                        for (VariableElement field : fields) {
+                                            MatcherAssert.assertThat(field.getKind(), Matchers.is(ElementKind.FIELD));
+                                        }
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "getEnclosedMethods test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<ExecutableElement> methods = ElementUtils.getElementUtils().getEnclosedMethods(element);
+
+                                        MatcherAssert.assertThat(methods, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(methods, Matchers.not(Matchers.<ExecutableElement>empty()));
+
+                                        for (ExecutableElement method : methods) {
+                                            MatcherAssert.assertThat(method.getKind(), Matchers.is(ElementKind.METHOD));
+                                        }
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "getEnclosedConstructors test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<ExecutableElement> constructors = ElementUtils.getElementUtils().getEnclosedConstructors(element);
+
+                                        MatcherAssert.assertThat(constructors, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(constructors, Matchers.not(Matchers.<ExecutableElement>empty()));
+
+                                        for (ExecutableElement constructor : constructors) {
+                                            MatcherAssert.assertThat(constructor.getKind(), Matchers.is(ElementKind.CONSTRUCTOR));
+                                        }
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "getEnclosedTypes test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<TypeElement> types = ElementUtils.getElementUtils().getEnclosedTypes(element);
+
+                                        MatcherAssert.assertThat(types, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(types, Matchers.not(Matchers.<TypeElement>empty()));
+
+                                        for (TypeElement type : types) {
+                                            MatcherAssert.assertThat(type.getKind(), Matchers.is(ElementKind.CLASS));
+                                        }
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "getEnclosedElementsWithAnnotation test",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<Element> elements = (List<Element>) ElementUtils.getElementUtils().getEnclosedElementsWithAnnotation(element, FilterTestAnnotation1.class);
+
+                                        MatcherAssert.assertThat(elements, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(elements, Matchers.not(Matchers.<Element>empty()));
+
+                                        for (Element element1 : elements) {
+                                            MatcherAssert.assertThat(element1.getAnnotation(FilterTestAnnotation1.class), Matchers.notNullValue());
+                                        }
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "getEnclosedElementsWithAnnotation test with null valued element or annotation",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<Element> elements = (List<Element>) ElementUtils.getElementUtils().getEnclosedElementsWithAnnotation(null, FilterTestAnnotation1.class);
+
+                                        MatcherAssert.assertThat(elements, Matchers.<Element>empty());
+
+                                        elements = (List<Element>) ElementUtils.getElementUtils().getEnclosedElementsWithAnnotation(element, null);
+
+                                        MatcherAssert.assertThat(elements, Matchers.<Element>empty());
+
+                                        elements = (List<Element>) ElementUtils.getElementUtils().getEnclosedElementsWithAnnotation(element);
+
+                                        MatcherAssert.assertThat(elements, Matchers.<Element>empty());
+
+                                    }
+                                },
+                                true
+
+
+                        },
+
+
                 }
 
         );

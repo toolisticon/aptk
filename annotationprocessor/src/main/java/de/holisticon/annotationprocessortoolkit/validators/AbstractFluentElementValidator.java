@@ -38,7 +38,7 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
 
         if (modifiers != null) {
             if (!ElementUtils.getElementUtils().hasModifiers(element, modifiers)) {
-                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have the following modifiers %s", getModifierString(modifiers)));
+                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers)));
                 nextResult = isErrorLevel() ? false : nextResult;
             }
         }
@@ -57,7 +57,7 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
 
         if (modifiers != null) {
             if (!ElementUtils.getElementUtils().hasNotModifiers(element, modifiers)) {
-                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have the following modifiers %s", getModifierString(modifiers)));
+                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers)));
                 nextResult = isErrorLevel() ? false : nextResult;
             }
         }

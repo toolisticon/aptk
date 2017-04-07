@@ -415,6 +415,28 @@ public final class ElementUtils {
     }
 
 
+    /**
+     * Get all enclosed constructors.
+     *
+     * @param e the element to search within
+     * @return all methods of the passed element
+     */
+    public List<ExecutableElement> getEnclosedConstructors(TypeElement e) {
+        List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.CONSTRUCTOR);
+        return castElementList(enclosedElementsOfKind, ExecutableElement.class);
+    }
+
+    /**
+     * Get all enclosed classes.
+     *
+     * @param e the element to search within
+     * @return all methods of the passed element
+     */
+    public List<TypeElement> getEnclosedTypes(TypeElement e) {
+        List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.CLASS);
+        return castElementList(enclosedElementsOfKind, TypeElement.class);
+    }
+
     public <T extends Element> List<T> castElementList(List<? extends Element> elementList, Class<T> typeToCastTo) {
         List<T> result = new ArrayList<T>(elementList.size());
         for (Element enclosedElement : elementList) {
@@ -432,6 +454,9 @@ public final class ElementUtils {
      * @return the elements with matching name
      */
     public List<? extends Element> getEnclosedElementsByName(Element element, String... name) {
+        if (element == null) {
+            return new ArrayList<Element>();
+        }
 
         return filterElementListByName(element.getEnclosedElements(), name);
 
@@ -475,6 +500,10 @@ public final class ElementUtils {
      */
     public List<? extends Element> getEnclosedElementsOfKind(Element element, ElementKind... kind) {
 
+        if (element == null) {
+            return new ArrayList<Element>();
+        }
+
         return filterElementListByKind(element.getEnclosedElements(), kind);
 
     }
@@ -488,6 +517,10 @@ public final class ElementUtils {
      * @return the enclosed element that are annotated with ALL passed annotations.
      */
     public List<? extends Element> getEnclosedElementsWithAnnotation(Element element, Class<? extends Annotation>... annotations) {
+
+        if (element == null) {
+            return new ArrayList<Element>();
+        }
 
         return filterElementListByAnnotation(element.getEnclosedElements(), annotations);
 

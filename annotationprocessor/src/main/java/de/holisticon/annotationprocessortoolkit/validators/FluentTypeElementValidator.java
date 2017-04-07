@@ -58,7 +58,7 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
         boolean check = this.currentValidationResult;
 
         if (typeMirror == null || !typeUtils.isAssignableToTypeMirror(element, typeMirror)) {
-            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("type must be assignable to %s", typeMirror != null ? typeMirror.toString() : null));
+            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("type must be assignable to ${0}", typeMirror));
             check = isErrorLevel() ? false : check;
         }
 

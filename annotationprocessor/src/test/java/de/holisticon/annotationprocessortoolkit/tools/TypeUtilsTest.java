@@ -1,5 +1,6 @@
-package de.holisticon.annotationprocessortoolkit;
+package de.holisticon.annotationprocessortoolkit.tools;
 
+import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessorTestBaseClass;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
 import de.holisticon.annotationprocessortoolkit.tools.TypeUtils;
 import org.hamcrest.MatcherAssert;

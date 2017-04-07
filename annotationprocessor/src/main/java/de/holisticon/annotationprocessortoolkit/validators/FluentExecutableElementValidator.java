@@ -118,7 +118,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
             if (type == null || !typeUtils.getTypes().isAssignable(element.getReturnType(), typeUtils.getTypeMirrorForClass(type))) {
 
                 // validation failed - output message
-                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Methods return type must be assignable to type %s", type.getSimpleName()));
+                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Methods return type must be assignable to type ${0}", type.getSimpleName()));
                 nextResult = isErrorLevel() ? false : nextResult;
 
             }
@@ -140,7 +140,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
         boolean nextResult = this.currentValidationResult;
 
         if (name == null || !name.equals(element.getSimpleName().toString())) {
-            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have name %s, but has name", name, element.getSimpleName()));
+            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have name ${0}, but has name ${1}", name, element.getSimpleName()));
             nextResult = isErrorLevel() ? false : nextResult;
         }
 
@@ -175,7 +175,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
         if (ElementUtils.getElementUtils().isMethod(element)) {
             if (element.getParameters().size() != parameterTypes.length) {
-                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method number of parameters is %d but expected %d", element.getParameters().size(), parameterTypes.length));
+                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method number of parameters is ${0} but expected ${1}", element.getParameters().size(), parameterTypes.length));
                 nextResult = isErrorLevel() ? false : nextResult;
             } else {
                 for (int i = 0; i < element.getParameters().size(); i++) {
