@@ -1,4 +1,4 @@
-# Holi-Annotation-Processor-Toolkit
+# Annotation-Processor-Toolkit
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent)
 [![Build Status](https://api.travis-ci.org/holisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/holisticon/annotation-processor-toolkit)
@@ -35,9 +35,9 @@ At first here's what the code looks like when you are using the java api:
 
     }
 
-Now take a look at the implementation done with the holi-annotation-processor-toolkit
+Now take a look at the implementation done with the annotation-processor-toolkit
 
-    // example with holi-annotation-processor-toolkit triggered from your
+    // example with annotation-processor-toolkit triggered from your
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
         // ...
@@ -58,7 +58,7 @@ As you can see, it's far more readable and better to understand.
 But now you can say what about print a custom message as a warning. That's also possible:
 
 
-    // example with holi-annotation-processor-toolkit triggered from your
+    // example with annotation-processor-toolkit triggered from your
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
         // ...
@@ -81,8 +81,8 @@ This class provides support for validating different kinds of Elements in a flue
 So all you need to do is to add the following maven dependency to your annotation processor project:
 
      <dependency>
-         <groupId>de.holisticon.holiannotationprocessor</groupId>
-         <artifactId>holi-annotationprocessor</artifactId>
+         <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+         <artifactId>annotation-processor</artifactId>
          <version>0.1.0-SNAPSHOT</version>
      </dependency>
 
@@ -90,14 +90,14 @@ Then your annotation processor needs to extends the de.holisticon.annotationproc
 
 You can find a small example project for an annotation processor here:
 
-# Contributing to holi-annotation-processor-toolkit
+# Contributing to annotation-processor-toolkit
 
 We welcome any kind of suggestions and pull requests.
 
-## Building and developing holi-annotation-processor-toolkit
+## Building and developing annotation-processor-toolkit
 
-The holi-annotation-processor-toolkit is built using Maven (at least version 3.0.0).
-A simple import of the pom in your IDE should get you up and running. To build the holi-annotation-processor-toolkit on the commandline, just run `mvn` or `mvn clean install`
+The annotation-processor-toolkit is built using Maven (at least version 3.0.0).
+A simple import of the pom in your IDE should get you up and running. To build the annotation-processor-toolkit on the commandline, just run `mvn` or `mvn clean install`
 
 ## Requirements
 
