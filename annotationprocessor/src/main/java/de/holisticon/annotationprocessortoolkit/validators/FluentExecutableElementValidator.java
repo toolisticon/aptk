@@ -5,6 +5,8 @@ import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
+import java.util.List;
 
 /**
  * Fluent validator for {@link ExecutableElement} instances.
@@ -175,12 +177,13 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
         if (ElementUtils.getElementUtils().isMethod(element)) {
             if (element.getParameters().size() != parameterTypes.length) {
-                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method number of parameters is ${0} but expected ${1}", element.getParameters().size(), parameterTypes.length));
+                //messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method number of parameters is ${0} but expected ${1}", element.getParameters().size(), parameterTypes.length));
+                triggerMismmatchingParameterError(parameterTypes);
                 nextResult = isErrorLevel() ? false : nextResult;
             } else {
                 for (int i = 0; i < element.getParameters().size(); i++) {
                     if (!element.getParameters().get(i).asType().equals(typeUtils.getTypeMirrorForClass(parameterTypes[i]))) {
-                        messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method must have parameters, but has none"));
+                        triggerMismmatchingParameterError(parameterTypes);
                         nextResult = isErrorLevel() ? false : nextResult;
                     }
                 }
@@ -189,6 +192,64 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
         return createNextFluentValidator(nextResult);
 
+    }
+
+    private void triggerMismmatchingParameterError(Class... parameterTypes) {
+        messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method must have parameters of types ${1}, but has parameters of types ${0}", createStringRepresentationOfPassedTypes(element.getParameters()), createStringRepresentationOfPassedTypes(parameterTypes)));
+    }
+
+    private String createStringRepresentationOfPassedTypes(Class[] types) {
+
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+
+        if (types != null) {
+
+            boolean isFirst = true;
+            for (Class type : types) {
+
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(", ");
+                }
+
+                sb.append(type.getCanonicalName());
+
+            }
+        }
+
+        sb.append("]");
+
+        return sb.toString();
+    }
+
+    private String createStringRepresentationOfPassedTypes(List<? extends VariableElement> parameters) {
+
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+
+        if (parameters != null) {
+
+            boolean isFirst = true;
+            for (VariableElement element : parameters) {
+
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(", ");
+                }
+
+                sb.append(element.asType().toString());
+
+            }
+        }
+
+        sb.append("]");
+
+        return sb.toString();
     }
 
 
