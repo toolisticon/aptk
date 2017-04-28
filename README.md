@@ -78,13 +78,58 @@ But now you can say what about print a custom message as a warning. That's also 
 This project offers an abstract base class which extends the AbstractProcessor class offered by the java framework.
 This class provides support for validating different kinds of Elements in a fluent way and offers you helper functions to do some filtering.
 
-So all you need to do is to add the following maven dependency to your annotation processor project:
+Since the annotation processor later mostly will be bound in provided scope you should use the maven shade plugin to embed the annotation-processor-toolkit classes into your annotation processor artifact.
+So you need to do add the following to your annotation processors pom.xml:
 
-     <dependency>
-         <groupId>de.holisticon.annotationprocessortoolkit</groupId>
-         <artifactId>annotation-processor</artifactId>
-         <version>0.1.0-SNAPSHOT</version>
-     </dependency>
+     <dependencies>
+
+         <dependency>
+             <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+             <artifactId>annotationprocessor</artifactId>
+             <version>0.1.0</version>
+         </dependency>
+
+        <!-- recommended for testing your annotation processor -->
+        <dependency>
+            <groupId>com.google.testing.compile</groupId>
+            <artifactId>compile-testing</artifactId>
+            <!-- use version 0.8 if you need java 6 compatibility - later versions are based on java 8 -->
+            <version>0.10</version>
+            <scope>test</scope>
+        </dependency>
+
+     </dependencies>
+
+     <build>
+         <plugins>
+
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-shade-plugin</artifactId>
+                 <version>2.4.3</version>
+                 <executions>
+                     <execution>
+                         <phase>package</phase>
+                         <goals>
+                             <goal>shade</goal>
+                         </goals>
+                         <configuration>
+                             <!-- need to relocate used 3rd party dependencies and their transitive dependencies -->
+                             <relocations>
+                                 <relocation>
+                                     <pattern>de.holisticon.annotationprocessortoolkit</pattern>
+                                     <shadedPattern>
+                                         your.projects.base.package._3rdparty.de.holisticon.annotationprocessortoolkit
+                                     </shadedPattern>
+                                 </relocation>
+                             </relocations>
+                         </configuration>
+                     </execution>
+                 </executions>
+             </plugin>
+
+         </plugins>
+     </build>
 
 Then your annotation processor needs to extends the de.holisticon.annotationprocessor.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
 
