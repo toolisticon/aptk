@@ -78,7 +78,7 @@ But now you can say what about print a custom message as a warning. That's also 
 This project offers an abstract base class which extends the AbstractProcessor class offered by the java framework.
 This class provides support for validating different kinds of Elements in a fluent way and offers you helper functions to do some filtering.
 
-Since the annotation processor later mostly will be bound in provided scope you should use the maven shade plugin to embed the annotation-processor-toolkit classes into your annotation processor artifact.
+Since your annotation processor later mostly will be bound as a provided dependency you should use the maven shade plugin to embed the annotation-processor-toolkit classes into your annotation processor artifact.
 So you need to do add the following to your annotation processors pom.xml:
 
      <dependencies>
@@ -133,7 +133,7 @@ So you need to do add the following to your annotation processors pom.xml:
 
 Then your annotation processor needs to extends the de.holisticon.annotationprocessor.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
 
-You can find a small example project for an annotation processor here:
+You can find a small example project for an annotation processor in our [example](example/).
 
 # Contributing to annotation-processor-toolkit
 

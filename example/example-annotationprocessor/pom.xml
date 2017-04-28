@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>example-annotationprocessor</artifactId>
@@ -55,15 +56,19 @@
 
                         <configuration>
 
-                            <!-- need to relocate used 3rd party dependencies and their transitive dependencies -->
+                            <!--
+                                usually you should repacke all referenced 3RD party libraries into your annotation processor jar.
+                                    - because the annotation processor should always be linked as provided dependency when it is used.
+                                    - to prevent a version conflict of your annotation processors dependencies and the applications dependencies.
+                            -->
+
                             <relocations>
-                                <!-- usually you would relocate all referenced 3RD party libaries into your jar, because the annotation processor should always be added as provided dependency  when it is used-->
-                                <!--
                                 <relocation>
-                                    <pattern>de.holisticon.annotationprocessor</pattern>
-                                    <shadedPattern>de.holisticon.holiprofiler._3rdparty.com.google.gson</shadedPattern>
+                                    <pattern>de.holisticon.annotationprocessortoolkit</pattern>
+                                    <shadedPattern>de.holisticon.example.annotationprocessortoolkit.annotationprocessor._3rdparty.de.holisticon.annotationprocessortoolkit
+                                    </shadedPattern>
                                 </relocation>
-                                -->
+
                             </relocations>
 
                         </configuration>

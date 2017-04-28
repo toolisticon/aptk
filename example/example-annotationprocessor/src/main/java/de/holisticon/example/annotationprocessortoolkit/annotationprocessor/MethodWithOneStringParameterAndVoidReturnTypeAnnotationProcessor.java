@@ -1,8 +1,8 @@
-package de.holisticon.annotationprocessortoolkit.example.annotationprocessor;
+package de.holisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
-import de.holisticon.annotationprocessortoolkit.example.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
+import de.holisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * Test annotation processor which demonstrates the usage of the annotation processor toolkit.
  */
-@SupportedAnnotationTypes({"de.holisticon.annotationprocessortoolkit.example.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation"})
+@SupportedAnnotationTypes({"de.holisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation"})
 public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor extends AbstractAnnotationProcessor {
 
 

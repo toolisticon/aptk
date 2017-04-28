@@ -1,4 +1,4 @@
-package de.holisticon.annotationprocessortoolkit.example.annotations;
+package de.holisticon.example.annotationprocessortoolkit.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

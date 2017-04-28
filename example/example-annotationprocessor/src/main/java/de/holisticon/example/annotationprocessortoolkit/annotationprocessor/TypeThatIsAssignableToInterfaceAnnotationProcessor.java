@@ -1,9 +1,9 @@
-package de.holisticon.annotationprocessortoolkit.example.annotationprocessor;
+package de.holisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
-import de.holisticon.annotationprocessortoolkit.example.annotations.SomeInterface;
-import de.holisticon.annotationprocessortoolkit.example.annotations.TypeThatIsAssignableToInterfaceAnnotation;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
+import de.holisticon.example.annotationprocessortoolkit.annotations.SomeInterface;
+import de.holisticon.example.annotationprocessortoolkit.annotations.TypeThatIsAssignableToInterfaceAnnotation;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Test annotation processor which demonstrates the usage of the annotation processor toolkit.
  */
-@SupportedAnnotationTypes({"de.holisticon.annotationprocessortoolkit.example.annotations.TypeThatIsAssignableToInterfaceAnnotation"})
+@SupportedAnnotationTypes({"de.holisticon.example.annotationprocessortoolkit.annotations.TypeThatIsAssignableToInterfaceAnnotation"})
 public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends AbstractAnnotationProcessor {
 
     // Overriding the getSupportedAnnotationTypes instead of using the SupportedAnnotationTypes annotation might be an option this is especially useful if you have inheritance
