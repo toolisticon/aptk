@@ -30,7 +30,7 @@ public class UtilitiesTest {
 
         String[] testArray = {"a", "b", "c"};
 
-        MatcherAssert.assertThat(Utilities.convertArrayToSet(testArray), Matchers.contains("a", "b", "c"));
+        MatcherAssert.assertThat(Utilities.convertArrayToSet(testArray), Matchers.containsInAnyOrder("a", "b", "c"));
 
 
     }
@@ -41,7 +41,7 @@ public class UtilitiesTest {
         String[] testArray = {"a", "b", "c", "b", "a"};
 
         Set<String> result = Utilities.convertArrayToSet(testArray);
-        MatcherAssert.assertThat(result, Matchers.contains("a", "b", "c"));
+        MatcherAssert.assertThat(result, Matchers.containsInAnyOrder("a", "b", "c"));
         MatcherAssert.assertThat(result, Matchers.hasSize(3));
 
     }
