@@ -72,13 +72,57 @@ public class TypeUtils {
     }
 
     /**
+     * Check if passed typeElement matches the passed type.
+     *
+     * @param typeElement the type element to check
+     * @param type        the class which the typeElement must match
+     * @return
+     */
+
+    public boolean isTypeEqual(TypeElement typeElement, Class type) {
+        return isTypeEqual(typeElement, frameworkToolWrapper.getElements().getTypeElement(type.getCanonicalName()).asType());
+    }
+
+
+    public boolean isTypeEqual(TypeElement typeElement, TypeMirror typeMirror) {
+        return typeElement == null || typeMirror == null ? false : frameworkToolWrapper.getTypes().isSameType(typeElement.asType(), typeMirror);
+    }
+
+    public boolean isTypeEqual(TypeElement typeElement1, TypeElement typeElement2) {
+        return isTypeEqual(typeElement1, typeElement2.asType());
+    }
+
+
+    /**
      * Checks whether passed {@link TypeMirror} is a void type or not.
      *
      * @param typeMirror the {@link TypeMirror} to check
      * @return
      */
     public boolean isVoidType(TypeMirror typeMirror) {
-        return typeMirror != null && TypeKind.VOID.equals(typeMirror.getKind());
+        return isOfTypeKind(typeMirror, TypeKind.VOID);
+    }
+
+    /**
+     * Checks whether passed {@link TypeMirror} is a void type or not.
+     *
+     * @param typeMirror the {@link TypeMirror} to check
+     * @return
+     */
+    public boolean isArrayType(TypeMirror typeMirror) {
+        return isOfTypeKind(typeMirror, TypeKind.ARRAY);
+    }
+
+
+    /**
+     * Checks whether passed {@link TypeMirror} is of passed {@link TypeKind}
+     *
+     * @param typeMirror
+     * @param kind
+     * @return
+     */
+    public boolean isOfTypeKind(TypeMirror typeMirror, TypeKind kind) {
+        return typeMirror != null && kind.equals(typeMirror.getKind());
     }
 
     /**

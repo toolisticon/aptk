@@ -1,6 +1,5 @@
 package de.holisticon.annotationprocessortoolkit;
 
-import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
@@ -8,12 +7,8 @@ import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,7 +24,6 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
         return Arrays.asList(
 
                 new Object[][]{
-
 
 
                         {
@@ -55,6 +49,7 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                         },
 
 
+                        /*-
                         {
                                 "",
                                 new AbstractTestAnnotationProcessorClass() {
@@ -70,35 +65,7 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
 
                         },
-                        {
-                                "",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
-
-                                        getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
-
-                                    }
-                                },
-                                true
-
-
-                        },
-                        {
-                                "",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
-
-                                        TypeElement typeElement = getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
-
-
-                                    }
-                                },
-                                true
-
-
-                        }
+                        */
 
                 }
 

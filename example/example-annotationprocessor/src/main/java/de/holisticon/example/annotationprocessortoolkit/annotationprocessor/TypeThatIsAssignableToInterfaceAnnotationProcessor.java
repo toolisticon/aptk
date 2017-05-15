@@ -31,7 +31,7 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends Abstract
 
 
             // validator already will print output so additional actions are not necessary
-            getFluentTypeValidator(ElementUtils.getElementUtils().castToTypeElement(element)).isAssignableTo(SomeInterface.class).getValidationResult();
+            getFluentTypeValidator(ElementUtils.CastElement.castToTypeElement(element)).isAssignableTo(SomeInterface.class).getValidationResult();
 
         }
 

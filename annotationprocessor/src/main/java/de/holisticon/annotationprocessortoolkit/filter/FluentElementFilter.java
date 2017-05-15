@@ -24,35 +24,35 @@ public class FluentElementFilter<T extends Element> {
     }
 
     public FluentElementFilter<T> filterByNames(String... names) {
-        return new FluentElementFilter<T>(ElementUtils.getElementUtils().filterElementListByName(result, names));
+        return new FluentElementFilter<T>(ElementUtils.FilterElements.filterElementListByName(result, names));
     }
 
     public FluentElementFilter<T> filterByNameWithRegularExpressions(String... regularExpressions) {
-        return new FluentElementFilter<T>(ElementUtils.getElementUtils().filterElementsByNameWithRegularExpression(result, regularExpressions));
+        return new FluentElementFilter<T>(ElementUtils.FilterElements.filterElementsByNameWithRegularExpression(result, regularExpressions));
     }
 
     public FluentElementFilter<T> filterByKinds(ElementKind... kinds) {
-        return new FluentElementFilter<T>(ElementUtils.getElementUtils().filterElementListByKind(result, kinds));
+        return new FluentElementFilter<T>(ElementUtils.FilterElements.filterElementListByKind(result, kinds));
     }
 
     public FluentElementFilter<T> filterByModifiers(Modifier... modifiers) {
-        return new FluentElementFilter<T>(ElementUtils.getElementUtils().filterElementListByModifier(result, modifiers));
+        return new FluentElementFilter<T>(ElementUtils.FilterElements.filterElementListByModifier(result, modifiers));
     }
 
     public FluentElementFilter<T> filterByAnnotation(Class<? extends Annotation>... annotations) {
-        return new FluentElementFilter<T>(ElementUtils.getElementUtils().filterElementListByAnnotation(result, annotations));
+        return new FluentElementFilter<T>(ElementUtils.FilterElements.filterElementListByAnnotation(result, annotations));
     }
 
     public FluentElementFilter<T> inverseFilterByNames(String... names) {
-        return new FluentElementFilter<T>(ElementUtils.getElementUtils().inverseFilterElementListByName(result, names));
+        return new FluentElementFilter<T>(ElementUtils.FilterElements.inverseFilterElementListByName(result, names));
     }
 
     public FluentElementFilter<T> inverseFilterByKinds(ElementKind... kinds) {
-        return new FluentElementFilter<T>(ElementUtils.getElementUtils().inverseFilterElementListByKind(result, kinds));
+        return new FluentElementFilter<T>(ElementUtils.FilterElements.inverseFilterElementListByKind(result, kinds));
     }
 
     public FluentElementFilter<T> inverseFilterByAnnotation(Class<? extends Annotation>... annotations) {
-        return new FluentElementFilter<T>(ElementUtils.getElementUtils().inverseFilterElementListByAnnotation(result, annotations));
+        return new FluentElementFilter<T>(ElementUtils.FilterElements.inverseFilterElementListByAnnotation(result, annotations));
     }
 
     public List<T> getResult() {

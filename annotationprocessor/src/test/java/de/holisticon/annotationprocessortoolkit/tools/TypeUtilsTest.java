@@ -1,8 +1,8 @@
 package de.holisticon.annotationprocessortoolkit.tools;
 
 import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessorTestBaseClass;
-import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
-import de.holisticon.annotationprocessortoolkit.tools.TypeUtils;
+import de.holisticon.annotationprocessortoolkit.tools.ElementUtils.AccessEnclosedElements;
+import de.holisticon.annotationprocessortoolkit.tools.ElementUtils.CastElement;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
@@ -116,7 +116,7 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        MatcherAssert.assertThat(getTypeUtils().isVoidType(ElementUtils.getElementUtils().castMethod(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "synchronizedMethod").get(0)).getReturnType()), Matchers.is(true));
+                                        MatcherAssert.assertThat(getTypeUtils().isVoidType(CastElement.castMethod(AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod").get(0)).getReturnType()), Matchers.is(true));
                                         MatcherAssert.assertThat(getTypeUtils().isVoidType(element.asType()), Matchers.is(false));
 
 

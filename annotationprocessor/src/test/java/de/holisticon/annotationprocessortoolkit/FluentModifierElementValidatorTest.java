@@ -38,9 +38,9 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
                                     protected void testCase(TypeElement element) {
 
                                         // do preparations
-                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
-                                        ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
+                                        ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                         // check for existence of parameters
                                         MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
@@ -59,9 +59,9 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
                                     protected void testCase(TypeElement element) {
 
                                         // do preparations
-                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
-                                        ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
+                                        ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                         // check for nonexistence
                                         MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
@@ -84,9 +84,9 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
                                     protected void testCase(TypeElement element) {
 
                                         // do preparations
-                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
-                                        ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
+                                        ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                         // Do the same on TypeElement
                                         MatcherAssert.assertThat(getFluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).getValidationResult(), Matchers.is(true));
@@ -110,9 +110,9 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
                                     protected void testCase(TypeElement element) {
 
                                         // do preparations
-                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.getElementUtils().getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
-                                        ExecutableElement testElement = ElementUtils.getElementUtils().castMethod(elements.get(0));
+                                        ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                         // check for existence of parameters
                                         MatcherAssert.assertThat(getFluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
