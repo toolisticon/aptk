@@ -1,6 +1,7 @@
 package de.holisticon.annotationprocessortoolkit;
 
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filter;
 import de.holisticon.annotationprocessortoolkit.validators.FluentModifierElementValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -38,7 +39,9 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
                                     protected void testCase(TypeElement element) {
 
                                         // do preparations
-                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
+                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                .getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
@@ -59,7 +62,9 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
                                     protected void testCase(TypeElement element) {
 
                                         // do preparations
-                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
+                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                .getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
@@ -84,7 +89,8 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
                                     protected void testCase(TypeElement element) {
 
                                         // do preparations
-                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
+                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD).getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
@@ -110,7 +116,9 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
                                     protected void testCase(TypeElement element) {
 
                                         // do preparations
-                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod")).filterByKinds(ElementKind.METHOD).getResult();
+                                        List<? extends Element> elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
+                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                .getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 

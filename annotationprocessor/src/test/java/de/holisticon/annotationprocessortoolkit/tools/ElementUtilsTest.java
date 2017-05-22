@@ -5,7 +5,8 @@ import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation1;
 import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation2;
 import de.holisticon.annotationprocessortoolkit.TestAnnotation;
 import de.holisticon.annotationprocessortoolkit.filter.FluentElementFilter;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validators;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filter;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
@@ -57,7 +58,7 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        FluentElementFilter elementFilter = new FluentElementFilter(element.getEnclosedElements()).filterByNames("synchronizedMethod");
+                                        FluentElementFilter<? extends Element> elementFilter = FluentElementFilter.createFluentFilter(element.getEnclosedElements()).applyFilter(Filter.NAME_FILTER).filterByOneOf("synchronizedMethod");
 
                                         // Check Preconditions
                                         MatcherAssert.assertThat("Precondition : Should have found exactly one Executable element", elementFilter.hasSingleElement(), Matchers.is(true));
@@ -88,7 +89,7 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        FluentElementFilter elementFilter = new FluentElementFilter(element.getEnclosedElements()).filterByNames("synchronizedMethod");
+                                        FluentElementFilter elementFilter = FluentElementFilter.createFluentFilter(element.getEnclosedElements()).applyFilter(Filter.NAME_FILTER).filterByOneOf("synchronizedMethod");
 
                                         // Check Preconditions
                                         MatcherAssert.assertThat("Precondition : Should have found exactly one Executable element", elementFilter.hasSingleElement(), Matchers.is(true));
@@ -169,8 +170,8 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        MatcherAssert.assertThat("Class should have public modifier", Validators.MODIFIER_VALIDATOR.hasAllOf(element, Modifier.PUBLIC));
-                                        MatcherAssert.assertThat("Class should not have abstract modifier", !Validators.MODIFIER_VALIDATOR.hasAllOf(element, Modifier.PUBLIC, Modifier.ABSTRACT));
+                                        MatcherAssert.assertThat("Class should have public modifier", Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(element, Modifier.PUBLIC));
+                                        MatcherAssert.assertThat("Class should not have abstract modifier", !Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(element, Modifier.PUBLIC, Modifier.ABSTRACT));
 
                                     }
                                 },

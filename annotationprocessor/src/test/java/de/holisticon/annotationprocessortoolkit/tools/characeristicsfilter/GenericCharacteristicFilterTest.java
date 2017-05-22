@@ -1,11 +1,8 @@
 package de.holisticon.annotationprocessortoolkit.tools.characeristicsfilter;
 
 import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessorTestBaseClass;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.GenericCharacteristicsFilter;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.GenericElementCharacteristicValidator;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ModifierElementCharacteristicMatcher;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filter;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.ValidatorKind;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validators;
 import de.holisticon.annotationprocessortoolkit.validators.FluentExecutableElementValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -41,12 +38,12 @@ public class GenericCharacteristicFilterTest extends AbstractAnnotationProcessor
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        List<Element> filteredList = new GenericCharacteristicsFilter<Element>().filterByCharacteristics(ValidatorKind.ALL_OF, (List<Element>) element.getEnclosedElements(), Validators.MODIFIER_VALIDATOR, Modifier.PUBLIC, Modifier.SYNCHRONIZED);
+                                        List<Element> filteredList = Filter.MODIFIER_FILTER.getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED);
                                         MatcherAssert.assertThat("Must have exactly one element'", filteredList, Matchers.hasSize(1));
                                         MatcherAssert.assertThat("Must find one element with name 'synchronizedMethod'", filteredList.get(0).getSimpleName().toString(), Matchers.is("synchronizedMethod"));
 
                                         // shouldn't find anything
-                                        filteredList = new GenericCharacteristicsFilter<Element>().filterByCharacteristics(ValidatorKind.ALL_OF, (List<Element>) element.getEnclosedElements(), new GenericElementCharacteristicValidator<Modifier>(new ModifierElementCharacteristicMatcher()), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
+                                        filteredList = Filter.MODIFIER_FILTER.getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
                                         MatcherAssert.assertThat("Must have noelement'", filteredList, Matchers.<Element>empty());
 
 

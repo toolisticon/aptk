@@ -1,5 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.internal;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,8 +17,8 @@ public class Utilities {
     }
 
     /**
-     * Utilit function that converts an array into a set.
-     * Doubled elements will be removed.
+     * Utility function that converts an array into a set.
+     * Doubled elements as well as null values will be removed.
      *
      * @param array the array to convert
      * @param <T>   the generic type of the array
@@ -32,11 +33,24 @@ public class Utilities {
         Set<T> set = new HashSet<T>(array.length);
 
         for (T element : array) {
-            set.add(element);
+
+            // don't add null values to set
+            if (element != null) {
+                set.add(element);
+            }
+
         }
 
         return set;
 
     }
+
+
+    public static <T> Set<T> convertVarargsToSet(T... varargs) {
+
+        return varargs != null ? new HashSet<T>(Arrays.asList(varargs)) : new HashSet<T>();
+
+    }
+
 
 }

@@ -14,7 +14,7 @@ public class NameElementCharacteristicMatcher implements GenericElementCharacter
 
     @Override
     public String getStringRepresentationOfPassedCharacteristic(String toGetStringRepresentationFor) {
-        return toGetStringRepresentationFor != null ? toGetStringRepresentationFor.toString() : null;
+        return toGetStringRepresentationFor != null ? toGetStringRepresentationFor : null;
     }
 
 }

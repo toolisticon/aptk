@@ -1,8 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
 
-import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation2;
-import de.holisticon.annotationprocessortoolkit.TestAnnotation;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.GenericElementCharacteristicValidator;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matcher;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ModifierElementCharacteristicMatcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -27,11 +25,12 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
 
-
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -44,11 +43,14 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -62,11 +64,14 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -80,7 +85,12 @@ public class ModifierElementCharacteristicValidatorTest {
     public void test_allOf_nullValuedElement() {
 
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
+
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasAllOf(null, Modifier.FINAL, Modifier.PUBLIC));
@@ -93,11 +103,15 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -116,11 +130,14 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -133,11 +150,14 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -152,11 +172,14 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -170,7 +193,11 @@ public class ModifierElementCharacteristicValidatorTest {
     public void test_hasAtLeastOneOf_nullValuedElement() {
 
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
+
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasAtLeastOneOf(null, Modifier.FINAL, Modifier.PUBLIC));
@@ -182,15 +209,20 @@ public class ModifierElementCharacteristicValidatorTest {
     public void test_hasAtLeastOneOf_missingAnnotationParameters() {
 
         Element element = Mockito.mock(Element.class);
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
-        MatcherAssert.assertThat("Should always return false for non existing characteristics", !unit.hasAtLeastOneOf(element));
+        MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasAtLeastOneOf(element));
+        MatcherAssert.assertThat("Should always return true for single null valued characteristics", unit.hasAtLeastOneOf(element, null));
+        MatcherAssert.assertThat("Should always return true for multiple nulll valued characteristics", unit.hasAtLeastOneOf(element, null, null));
 
 
     }
@@ -205,11 +237,14 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -223,11 +258,14 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -241,11 +279,14 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -259,7 +300,10 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -273,15 +317,20 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
-        MatcherAssert.assertThat("Should always return false for non existing characteristics", !unit.hasOneOf(element));
+        MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasOneOf(element));
+        MatcherAssert.assertThat("Should always return true for single null valued characteristics", unit.hasOneOf(element, null));
+        MatcherAssert.assertThat("Should always return true for multiple nulll valued characteristics", unit.hasOneOf(element, null, null));
 
 
     }
@@ -297,11 +346,14 @@ public class ModifierElementCharacteristicValidatorTest {
         Element element = Mockito.mock(Element.class);
 
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -314,11 +366,15 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
@@ -333,12 +389,14 @@ public class ModifierElementCharacteristicValidatorTest {
         Element element = Mockito.mock(Element.class);
 
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
         MatcherAssert.assertThat("Should have not found any match and return true", unit.hasNoneOf(element, Modifier.FINAL, Modifier.PUBLIC));
@@ -350,7 +408,11 @@ public class ModifierElementCharacteristicValidatorTest {
     public void test_hasNoneOf_nullValuedElement() {
 
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
+
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasNoneOf(null, Modifier.FINAL, Modifier.PUBLIC));
@@ -363,11 +425,14 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher matcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
 
 
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
-        Mockito.when(matcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
+        Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
+
+        Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
+        Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
 
 
         GenericElementCharacteristicValidator<Modifier> unit = new GenericElementCharacteristicValidator<Modifier>(matcher);

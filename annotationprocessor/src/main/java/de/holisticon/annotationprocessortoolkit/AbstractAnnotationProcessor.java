@@ -38,7 +38,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      * @return The filtered list
      */
     protected <E extends Element> FluentElementFilter<E> createFluentElementFilter(List<E> elementListToFilter) {
-        return new FluentElementFilter<E>(elementListToFilter);
+        return FluentElementFilter.createFluentFilter(elementListToFilter);
     }
 
 

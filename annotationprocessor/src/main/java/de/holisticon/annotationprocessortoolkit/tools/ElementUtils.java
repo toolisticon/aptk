@@ -1,7 +1,7 @@
 package de.holisticon.annotationprocessortoolkit.tools;
 
 import de.holisticon.annotationprocessortoolkit.internal.Utilities;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validators;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validator;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -12,6 +12,7 @@ import javax.lang.model.element.VariableElement;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -114,6 +115,41 @@ public final class ElementUtils {
     }
 
     public static class CastElement {
+
+        private final static Set<ElementKind> typeElementKindLUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM);
+        private final static Set<ElementKind> variableElementKindLUT = Utilities.convertVarargsToSet(ElementKind.PARAMETER, ElementKind.FIELD);
+        private final static Set<ElementKind> executableElementKindLUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD);
+
+        /**
+         * Checks if passed element can be casted to TypeElement.
+         *
+         * @param e the element to check
+         * @return true if passed element can be cast to TypeElement, otherwise false
+         */
+        public static boolean isTypeElement(Element e) {
+            return e != null && typeElementKindLUT.contains(e.getKind());
+        }
+
+        /**
+         * Checks if passed element can be casted to VariableElement.
+         *
+         * @param e the element to check
+         * @return true if passed element can be cast to VariableElement, otherwise false
+         */
+        public static boolean isVariableElement(Element e) {
+            return e != null && variableElementKindLUT.contains(e.getKind());
+        }
+
+        /**
+         * Checks if passed element can be casted to ExecutableElement.
+         *
+         * @param e the element to check
+         * @return true if passed element can be cast to ExecutableElement, otherwise false
+         */
+        public static boolean isExecutableElement(Element e) {
+            return e != null && executableElementKindLUT.contains(e.getKind());
+        }
+
         /**
          * Casts an element.
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
@@ -257,7 +293,7 @@ public final class ElementUtils {
          * @return true if the passed element has the public modifier, otherwise false
          */
         public static boolean hasPublicModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.PUBLIC);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.PUBLIC);
         }
 
         /**
@@ -267,7 +303,7 @@ public final class ElementUtils {
          * @return true if the passed element has the protected modifier, otherwise false
          */
         public static boolean hasProtectedModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.PROTECTED);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.PROTECTED);
         }
 
         /**
@@ -277,7 +313,7 @@ public final class ElementUtils {
          * @return true if the passed element has the private modifier, otherwise false
          */
         public static boolean hasPrivateModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.PRIVATE);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.PRIVATE);
         }
 
         /**
@@ -287,7 +323,7 @@ public final class ElementUtils {
          * @return true if the passed element has the abstract modifier, otherwise false
          */
         public static boolean hasAbstractModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.ABSTRACT);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.ABSTRACT);
         }
 
     /*
@@ -310,7 +346,7 @@ public final class ElementUtils {
          * @return true if the passed element has the static modifier, otherwise false
          */
         public static boolean hasStaticModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.STATIC);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.STATIC);
         }
 
         /**
@@ -320,7 +356,7 @@ public final class ElementUtils {
          * @return true if the passed element has the final modifier, otherwise false
          */
         public static boolean hasFinalModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.FINAL);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.FINAL);
         }
 
         /**
@@ -330,7 +366,7 @@ public final class ElementUtils {
          * @return true if the passed element has the transient modifier, otherwise false
          */
         public static boolean hasTransientModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.TRANSIENT);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.TRANSIENT);
         }
 
         /**
@@ -340,7 +376,7 @@ public final class ElementUtils {
          * @return true if the passed element has the volatile modifier, otherwise false
          */
         public static boolean hasVolatileModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.VOLATILE);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.VOLATILE);
         }
 
         /**
@@ -350,7 +386,7 @@ public final class ElementUtils {
          * @return true if the passed element has the synchronized modifier, otherwise false
          */
         public static boolean hasSynchronizedModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.SYNCHRONIZED);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.SYNCHRONIZED);
         }
 
         /**
@@ -360,7 +396,7 @@ public final class ElementUtils {
          * @return true if the passed element has the native modifier, otherwise false
          */
         public static boolean hasNativeModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.NATIVE);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.NATIVE);
         }
 
         /**
@@ -370,7 +406,7 @@ public final class ElementUtils {
          * @return true if the passed element has the strictfp modifier, otherwise false
          */
         public static boolean hasStrictfpModifier(Element e) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, Modifier.STRICTFP);
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.STRICTFP);
         }
 
 
