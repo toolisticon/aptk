@@ -6,19 +6,21 @@ import de.holisticon.annotationprocessortoolkit.tools.TypeUtils;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
+
 
 /**
  * Matcher to check Parameters of ExecutableElement.
  */
-public class ParameterExecutableElementCharacteristicMatcher extends GenericElementCharacteristicMatcherWithToolsSupport<Class[]> {
+public class ParameterFQNExecutableElementCharacteristicMatcher extends GenericElementCharacteristicMatcherWithToolsSupport<String[]> {
 
-    public ParameterExecutableElementCharacteristicMatcher(FrameworkToolWrapper tools) {
+    public ParameterFQNExecutableElementCharacteristicMatcher(FrameworkToolWrapper tools) {
         super(tools);
     }
 
 
     @Override
-    public boolean checkForMatchingCharacteristic(Element element, Class[] toCheckFor) {
+    public boolean checkForMatchingCharacteristic(Element element, String[] toCheckFor) {
 
         if (element == null || toCheckFor == null) {
             return false;
@@ -39,7 +41,13 @@ public class ParameterExecutableElementCharacteristicMatcher extends GenericElem
 
 
         for (int i = 0; i < executableElement.getParameters().size(); i++) {
-            if (!executableElement.getParameters().get(i).asType().equals(TypeUtils.getTypeUtils(tools).getTypeMirrorForClass(toCheckFor[i]))) {
+
+            TypeMirror parameterTypeMirror = TypeUtils.getTypeUtils(tools).getTypeMirrorForFullQualifiedClassName(toCheckFor[i]);
+            if (parameterTypeMirror == null) {
+                return false;
+            }
+
+            if (!executableElement.getParameters().get(i).asType().equals(parameterTypeMirror)) {
                 return false;
             }
         }
@@ -49,7 +57,7 @@ public class ParameterExecutableElementCharacteristicMatcher extends GenericElem
     }
 
     @Override
-    public String getStringRepresentationOfPassedCharacteristic(Class[] toGetStringRepresentationFor) {
+    public String getStringRepresentationOfPassedCharacteristic(String[] toGetStringRepresentationFor) {
         return toGetStringRepresentationFor != null ? "" : null;
     }
 

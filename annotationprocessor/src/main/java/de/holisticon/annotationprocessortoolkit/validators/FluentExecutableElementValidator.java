@@ -178,12 +178,12 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
         if (ElementUtils.CheckKindOfElement.isMethod(element)) {
             if (element.getParameters().size() != parameterTypes.length) {
                 //messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method number of parameters is ${0} but expected ${1}", element.getParameters().size(), parameterTypes.length));
-                triggerMismmatchingParameterError(parameterTypes);
+                triggerMismatchingParameterError(parameterTypes);
                 nextResult = isErrorLevel() ? false : nextResult;
             } else {
                 for (int i = 0; i < element.getParameters().size(); i++) {
                     if (!element.getParameters().get(i).asType().equals(typeUtils.getTypeMirrorForClass(parameterTypes[i]))) {
-                        triggerMismmatchingParameterError(parameterTypes);
+                        triggerMismatchingParameterError(parameterTypes);
                         nextResult = isErrorLevel() ? false : nextResult;
                     }
                 }
@@ -194,7 +194,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
     }
 
-    private void triggerMismmatchingParameterError(Class... parameterTypes) {
+    private void triggerMismatchingParameterError(Class... parameterTypes) {
         messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method must have parameters of types ${1}, but has parameters of types ${0}", createStringRepresentationOfPassedTypes(element.getParameters()), createStringRepresentationOfPassedTypes(parameterTypes)));
     }
 

@@ -1,5 +1,7 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
+import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import java.lang.annotation.Annotation;
@@ -16,7 +18,17 @@ public class Matcher<T> {
     public final static Matcher<String> NAME_MATCHER = new Matcher<String>(new NameElementCharacteristicMatcher());
     public final static Matcher<String> REGEX_NAME_MATCHER = new Matcher<String>(new RegexNameElementCharacteristicMatcher());
 
+    public static Matcher<Class[]> PARAMETER_MATCHER(FrameworkToolWrapper tools) {
+        return new Matcher<Class[]>(new ParameterExecutableElementCharacteristicMatcher(tools));
+    }
+
+    public static Matcher<String[]> PARAMETER_FQN_MATCHER(FrameworkToolWrapper tools) {
+        return new Matcher<String[]>(new ParameterFQNExecutableElementCharacteristicMatcher(tools));
+    }
+
+
     private final GenericElementCharacteristicMatcher<T> matcher;
+
 
     /**
      * Hidden constructor.
@@ -31,7 +43,6 @@ public class Matcher<T> {
     private Matcher() {
         this.matcher = null;
     }
-
 
     public GenericElementCharacteristicMatcher<T> getMatcher() {
         return this.matcher;

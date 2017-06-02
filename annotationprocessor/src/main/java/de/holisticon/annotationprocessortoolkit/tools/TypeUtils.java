@@ -19,6 +19,35 @@ public class TypeUtils {
     }
 
     /**
+     * Gets a type element for a full qualified class name
+     *
+     * @param fullQualifiedClassName
+     * @return the type element for the passed full qualified class name or null if type element can't be found
+     */
+    public TypeElement getTypeElementForFullQualifiedClassName(String fullQualifiedClassName) {
+
+        if (fullQualifiedClassName == null) {
+            return null;
+        }
+
+        return frameworkToolWrapper.getElements().getTypeElement(fullQualifiedClassName);
+
+    }
+
+    /**
+     * Gets a TypeMirror for a full qualified class name
+     *
+     * @param fullQualifiedClassName
+     * @return the type mirror for the passed full qualified class name or null if corresponding type element can't be found
+     */
+    public TypeMirror getTypeMirrorForFullQualifiedClassName(String fullQualifiedClassName) {
+
+        TypeElement typeElement = getTypeElementForFullQualifiedClassName(fullQualifiedClassName);
+        return typeElement != null ? typeElement.asType() : null;
+
+    }
+
+    /**
      * Gets {@link TypeElement} for class.
      *
      * @param type the class to get the {@link TypeElement} for

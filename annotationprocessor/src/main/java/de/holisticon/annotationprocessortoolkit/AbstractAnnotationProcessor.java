@@ -76,7 +76,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
 
     protected Elements elementUtils;
     protected Filer filer;
-    private FrameworkToolWrapper frameworkToolWrapper;
+    protected FrameworkToolWrapper frameworkToolWrapper;
     private MessagerUtils messager;
     private TypeUtils typeUtils;
 

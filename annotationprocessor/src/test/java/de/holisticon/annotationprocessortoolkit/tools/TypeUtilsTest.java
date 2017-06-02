@@ -139,7 +139,108 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                 true
 
 
-                        }
+                        },
+                        {
+                                "TypeUtils.getTypeElementForFullQualifiedClassName() : test to get Element by class name",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat(getTypeUtils().getTypeElementForFullQualifiedClassName("de.holisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getTypeElementForFullQualifiedClassName() : test behavior with non existing class name parameter",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat(getTypeUtils().getTypeElementForFullQualifiedClassName("de.holisticon.annotationprocessor.AnnotationProcessorTestClassXXXX"), Matchers.nullValue());
+
+
+                                    }
+                                },
+                                true
+                        },
+                        {
+                                "TypeUtils.getTypeElementForFullQualifiedClassName() : test behavior with null valued class name parameter",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat(getTypeUtils().getTypeElementForFullQualifiedClassName(null), Matchers.nullValue());
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getTypeElementForFullQualifiedClassName() : test to get TypeMirror by class name",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat(getTypeUtils().getTypeMirrorForFullQualifiedClassName("de.holisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element.asType()));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getTypeMirrorForFullQualifiedClassName() : test to get TypeMirror by class name",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat(getTypeUtils().getTypeMirrorForFullQualifiedClassName("de.holisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element.asType()));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getTypeMirrorForFullQualifiedClassName() : test behavior with non existing class name parameter",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat(getTypeUtils().getTypeMirrorForFullQualifiedClassName("de.holisticon.annotationprocessor.AnnotationProcessorTestClassXXXX"), Matchers.nullValue());
+
+
+                                    }
+                                },
+                                true
+                        },
+                        {
+                                "TypeUtils.getTypeMirrorForFullQualifiedClassName() : test behavior with null valued class name parameter",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        MatcherAssert.assertThat(getTypeUtils().getTypeMirrorForFullQualifiedClassName(null), Matchers.nullValue());
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
 
                 }
 

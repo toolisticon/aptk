@@ -4,6 +4,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -43,6 +44,15 @@ public class UtilitiesTest {
         Set<String> result = Utilities.convertArrayToSet(testArray);
         MatcherAssert.assertThat(result, Matchers.containsInAnyOrder("a", "b", "c"));
         MatcherAssert.assertThat(result, Matchers.hasSize(3));
+
+    }
+
+
+    @Test
+    public void test_convertVarargsToArray_happyPath() {
+
+        String[] testArray = {"a", "b", "c"};
+        MatcherAssert.assertThat(Arrays.asList(Utilities.convertVarargsToArray("a", "b", "c")), Matchers.containsInAnyOrder("a", "b", "c"));
 
     }
 

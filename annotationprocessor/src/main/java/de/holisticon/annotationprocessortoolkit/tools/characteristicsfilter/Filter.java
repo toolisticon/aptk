@@ -1,5 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter;
 
+import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validator;
 
 import javax.lang.model.element.ElementKind;
@@ -17,6 +18,13 @@ public class Filter<T> {
     public final static Filter<String> NAME_FILTER = new Filter<String>(new GenericCharacteristicsFilter<String>(Validator.NAME_VALIDATOR));
     public final static Filter<String> REGEX_NAME_FILTER = new Filter<String>(new GenericCharacteristicsFilter<String>(Validator.REGEX_NAME_VALIDATOR));
 
+    public static Filter<Class[]> PARAMETER_FILTER(FrameworkToolWrapper tools) {
+        return new Filter<Class[]>(new GenericCharacteristicsFilter<Class[]>(Validator.PARAMETER_VALIDATOR(tools)));
+    }
+
+    public static Filter<String[]> PARAMETER_FQN_FILTER(FrameworkToolWrapper tools) {
+        return new Filter<String[]>(new GenericCharacteristicsFilter<String[]>(Validator.PARAMETER_FQN_VALIDATOR(tools)));
+    }
 
     private final GenericCharacteristicsFilter<T> filter;
 

@@ -1,5 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
 
+import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matcher;
 
 import javax.lang.model.element.ElementKind;
@@ -16,6 +17,14 @@ public class Validator<T> {
     public final static Validator<String> REGEX_NAME_VALIDATOR = new Validator<String>(new GenericElementCharacteristicValidator<String>(Matcher.REGEX_NAME_MATCHER));
     public final static Validator<Class<? extends Annotation>> ANNOTATION_VALIDATOR = new Validator<Class<? extends Annotation>>(new GenericElementCharacteristicValidator<Class<? extends Annotation>>(Matcher.ANNOTATION_MATCHER));
     public final static Validator<ElementKind> ELEMENT_KIND_VALIDATOR = new Validator<ElementKind>(new GenericElementCharacteristicValidator<ElementKind>(Matcher.ELEMENT_KIND_MATCHER));
+
+    public static Validator<Class[]> PARAMETER_VALIDATOR(FrameworkToolWrapper tools) {
+        return new Validator<Class[]>(new GenericElementCharacteristicValidator<Class[]>(Matcher.PARAMETER_MATCHER(tools)));
+    }
+
+    public static Validator<String[]> PARAMETER_FQN_VALIDATOR(FrameworkToolWrapper tools) {
+        return new Validator<String[]>(new GenericElementCharacteristicValidator<String[]>(Matcher.PARAMETER_FQN_MATCHER(tools)));
+    }
 
 
     private final GenericElementCharacteristicValidator<T> validator;

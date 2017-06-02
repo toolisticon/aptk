@@ -1,0 +1,342 @@
+package de.holisticon.annotationprocessortoolkit.tools;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+
+/**
+ * Unit test for {@link de.holisticon.annotationprocessortoolkit.tools.ElementUtils.CastElement}.
+ */
+public class ElementUtils_CastElementTest {
+
+    @Test
+    public void isTypeElement_testIfAllTypeElementKindsWillBeDetected() {
+
+        Element element = Mockito.mock(Element.class);
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
+        MatcherAssert.assertThat("Should be detected as TypeElement", ElementUtils.CastElement.isTypeElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.INTERFACE);
+        MatcherAssert.assertThat("Should be detected as TypeElement", ElementUtils.CastElement.isTypeElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.ENUM);
+        MatcherAssert.assertThat("Should be detected as TypeElement", ElementUtils.CastElement.isTypeElement(element));
+
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.FIELD);
+        MatcherAssert.assertThat("Should not be detected as TypeElement", !ElementUtils.CastElement.isTypeElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CONSTRUCTOR);
+        MatcherAssert.assertThat("Should not be detected as TypeElement", !ElementUtils.CastElement.isTypeElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.ENUM_CONSTANT);
+        MatcherAssert.assertThat("Should not be detected as TypeElement", !ElementUtils.CastElement.isTypeElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.METHOD);
+        MatcherAssert.assertThat("Should not be detected as TypeElement", !ElementUtils.CastElement.isTypeElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PACKAGE);
+        MatcherAssert.assertThat("Should not be detected as TypeElement", !ElementUtils.CastElement.isTypeElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.STATIC_INIT);
+        MatcherAssert.assertThat("Should not be detected as TypeElement", !ElementUtils.CastElement.isTypeElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.LOCAL_VARIABLE);
+        MatcherAssert.assertThat("Should not be detected as TypeElement", !ElementUtils.CastElement.isTypeElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PARAMETER);
+        MatcherAssert.assertThat("Should not be detected as TypeElement", !ElementUtils.CastElement.isTypeElement(element));
+
+    }
+
+
+    @Test
+    public void isVariableElement_testIfAllTypeElementKindsWillBeDetected() {
+
+        Element element = Mockito.mock(Element.class);
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PARAMETER);
+        MatcherAssert.assertThat("Should be detected as VariableElement", ElementUtils.CastElement.isVariableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.FIELD);
+        MatcherAssert.assertThat("Should be detected as VariableElement", ElementUtils.CastElement.isVariableElement(element));
+
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.ENUM);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
+
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.INTERFACE);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CONSTRUCTOR);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.ENUM_CONSTANT);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.METHOD);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PACKAGE);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.STATIC_INIT);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.LOCAL_VARIABLE);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
+
+    }
+
+    @Test
+    public void isExecutbleElement_testIfAllTypeElementKindsWillBeDetected() {
+
+        Element element = Mockito.mock(Element.class);
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CONSTRUCTOR);
+        MatcherAssert.assertThat("Should be detected as VariableElement", ElementUtils.CastElement.isExecutableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.METHOD);
+        MatcherAssert.assertThat("Should be detected as VariableElement", ElementUtils.CastElement.isExecutableElement(element));
+
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.ENUM);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isExecutableElement(element));
+
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.INTERFACE);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isExecutableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PARAMETER);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isExecutableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.ENUM_CONSTANT);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isExecutableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.FIELD);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isExecutableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PACKAGE);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isExecutableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.STATIC_INIT);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isExecutableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.LOCAL_VARIABLE);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isExecutableElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
+        MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isExecutableElement(element));
+
+    }
+
+
+    // ---------------------------------------
+    // castClass -----------------------------
+    // ---------------------------------------
+
+    @Test
+    public void castClassTest() {
+        Element unit = Mockito.mock(TypeElement.class);
+
+        MatcherAssert.assertThat(ElementUtils.CastElement.castClass(unit), Matchers.notNullValue());
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castClassTest_MustThrowErrorForExecutableElement() {
+        Element unit = Mockito.mock(ExecutableElement.class);
+
+        ElementUtils.CastElement.castClass(unit);
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castClassTest_MustThrowErrorForVariableElement() {
+        Element unit = Mockito.mock(VariableElement.class);
+
+        ElementUtils.CastElement.castClass(unit);
+
+    }
+
+    // ---------------------------------------
+    // castInterface -------------------------
+    // ---------------------------------------
+
+    @Test
+    public void castInterfaceTest() {
+        Element unit = Mockito.mock(TypeElement.class);
+
+        MatcherAssert.assertThat(ElementUtils.CastElement.castInterface(unit), Matchers.notNullValue());
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castInterfaceTest_MustThrowErrorForExecutableElement() {
+        Element unit = Mockito.mock(ExecutableElement.class);
+
+        ElementUtils.CastElement.castInterface(unit);
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castInterfaceTest_MustThrowErrorForVariableElement() {
+        Element unit = Mockito.mock(VariableElement.class);
+
+        ElementUtils.CastElement.castInterface(unit);
+
+    }
+
+    // ---------------------------------------
+    // castEnum  -----------------------------
+    // ---------------------------------------
+
+    @Test
+    public void castEnumTest() {
+        Element unit = Mockito.mock(TypeElement.class);
+
+        MatcherAssert.assertThat(ElementUtils.CastElement.castEnum(unit), Matchers.notNullValue());
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castEnumTest_MustThrowErrorForExecutableElement() {
+        Element unit = Mockito.mock(ExecutableElement.class);
+
+        ElementUtils.CastElement.castEnum(unit);
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castEnumTest_MustThrowErrorForVariableElement() {
+        Element unit = Mockito.mock(VariableElement.class);
+
+        ElementUtils.CastElement.castEnum(unit);
+
+    }
+
+    // ---------------------------------------
+    // castParameter  ------------------------
+    // ---------------------------------------
+
+    @Test
+    public void casParameterTest() {
+        Element unit = Mockito.mock(VariableElement.class);
+
+        MatcherAssert.assertThat(ElementUtils.CastElement.castParameter(unit), Matchers.notNullValue());
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castParameterTest_MustThrowErrorForExecutableElement() {
+        Element unit = Mockito.mock(ExecutableElement.class);
+
+        ElementUtils.CastElement.castParameter(unit);
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castParameterTest_MustThrowErrorForTypeElement() {
+        Element unit = Mockito.mock(TypeElement.class);
+
+        ElementUtils.CastElement.castParameter(unit);
+
+    }
+
+    // ---------------------------------------
+    // castField  ----------------------------
+    // ---------------------------------------
+
+    @Test
+    public void castFieldTest() {
+        Element unit = Mockito.mock(VariableElement.class);
+
+        MatcherAssert.assertThat(ElementUtils.CastElement.castField(unit), Matchers.notNullValue());
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castFieldTest_MustThrowErrorForExecutableElement() {
+        Element unit = Mockito.mock(ExecutableElement.class);
+
+        ElementUtils.CastElement.castField(unit);
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castFieldTest_MustThrowErrorForTypeElement() {
+        Element unit = Mockito.mock(TypeElement.class);
+
+        ElementUtils.CastElement.castField(unit);
+
+    }
+
+    // ---------------------------------------
+    // castConstructor  ----------------------
+    // ---------------------------------------
+
+    @Test
+    public void castConstructorTest() {
+        Element unit = Mockito.mock(ExecutableElement.class);
+
+        MatcherAssert.assertThat(ElementUtils.CastElement.castConstructor(unit), Matchers.notNullValue());
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castConstructorTest_MustThrowErrorForVariableElement() {
+        Element unit = Mockito.mock(VariableElement.class);
+
+        ElementUtils.CastElement.castConstructor(unit);
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castConstructorTest_MustThrowErrorForTypeElement() {
+        Element unit = Mockito.mock(TypeElement.class);
+
+        ElementUtils.CastElement.castConstructor(unit);
+
+    }
+
+    // ---------------------------------------
+    // castMethod  ---------------------------
+    // ---------------------------------------
+
+    @Test
+    public void castMethodTest() {
+        Element unit = Mockito.mock(ExecutableElement.class);
+
+        MatcherAssert.assertThat(ElementUtils.CastElement.castMethod(unit), Matchers.notNullValue());
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castMethodTest_MustThrowErrorForVariableElement() {
+        Element unit = Mockito.mock(VariableElement.class);
+
+        ElementUtils.CastElement.castMethod(unit);
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castMethodTest_MustThrowErrorForTypeElement() {
+        Element unit = Mockito.mock(TypeElement.class);
+
+        ElementUtils.CastElement.castMethod(unit);
+
+    }
+
+}

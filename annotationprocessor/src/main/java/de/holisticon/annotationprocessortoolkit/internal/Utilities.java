@@ -52,5 +52,10 @@ public class Utilities {
 
     }
 
+    public static <T> T[] convertVarargsToArray(T... varargs) {
+
+        return varargs;
+
+    }
 
 }
