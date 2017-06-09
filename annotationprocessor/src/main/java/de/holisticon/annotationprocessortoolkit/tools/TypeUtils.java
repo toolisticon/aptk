@@ -3,6 +3,7 @@ package de.holisticon.annotationprocessortoolkit.tools;
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
@@ -51,10 +52,13 @@ public class TypeUtils {
      * Gets {@link TypeElement} for class.
      *
      * @param type the class to get the {@link TypeElement} for
-     * @return The {@link TypeElement} that is related with the passed class
+     * @return The {@link TypeElement} that is related with the passed class or null if a TypeElement can't be found for passed class (f.e. if passed type represents an array)
      */
     public TypeElement getTypeElementForClass(Class type) {
-        return type == null ? null : frameworkToolWrapper.getElements().getTypeElement(type.getCanonicalName());
+
+        TypeMirror typeMirror = getTypeMirrorForClass(type);
+        return typeMirror == null ? null : (TypeElement) frameworkToolWrapper.getTypes().asElement(typeMirror);
+
     }
 
     /**
@@ -64,7 +68,16 @@ public class TypeUtils {
      * @return The {@link TypeMirror} that is related with the passed class
      */
     public TypeMirror getTypeMirrorForClass(Class type) {
-        return type != null ? getTypeElementForClass(type).asType() : null;
+
+        if (type == null) {
+            return null;
+        }
+
+        if (type.isArray()) {
+            return frameworkToolWrapper.getTypes().getArrayType(getTypeMirrorForClass(type.getComponentType()));
+        }
+
+        return frameworkToolWrapper.getElements().getTypeElement(type.getCanonicalName()).asType();
     }
 
     /**
@@ -142,6 +155,48 @@ public class TypeUtils {
         return isOfTypeKind(typeMirror, TypeKind.ARRAY);
     }
 
+    /**
+     * Gets the component type of an array TypeMirror.
+     *
+     * @param typeMirror
+     * @return returns the component TypeMirror of the passed array TypeMirror, returns null if passed TypeMirror isn't an array or null
+     */
+    public TypeMirror getTypeMirrorArraysComponentType(TypeMirror typeMirror) {
+        return typeMirror != null && isArrayType(typeMirror) ? ((ArrayType) typeMirror).getComponentType() : null;
+    }
+
+    /**
+     * Checks whether passed {@link TypeMirror} is a void type or not.
+     *
+     * @param typeMirror the {@link TypeMirror} to check
+     * @param type       the component type to check for
+     * @return true id passed type mirror is of kind array with component type, otherwise false
+     */
+    public boolean isTypeMirrorAnArrayOfType(TypeMirror typeMirror, Class type) {
+        return type != null & isTypeMirrorAnArrayOfType(typeMirror, getTypeMirrorForClass(type));
+    }
+
+    /**
+     * Checks whether passed {@link TypeMirror} is a void type or not.
+     *
+     * @param typeMirror             the {@link TypeMirror} to check
+     * @param fullQualifiedClassName the component type to check for
+     * @return true id passed type mirror is of kind array with component type, otherwise false
+     */
+    public boolean isTypeMirrorAnArrayOfType(TypeMirror typeMirror, String fullQualifiedClassName) {
+        return fullQualifiedClassName != null & isTypeMirrorAnArrayOfType(typeMirror, getTypeMirrorForFullQualifiedClassName(fullQualifiedClassName));
+    }
+
+    /**
+     * Checks whether passed {@link TypeMirror} is a void type or not.
+     *
+     * @param typeMirror    the {@link TypeMirror} to check
+     * @param componentType the arrays component type to check for
+     * @return true id passed type mirror is of kind array with component type, iotherwise false
+     */
+    public boolean isTypeMirrorAnArrayOfType(TypeMirror typeMirror, TypeMirror componentType) {
+        return typeMirror != null && componentType != null && isArrayType(typeMirror) && frameworkToolWrapper.getTypes().isSameType(getTypeMirrorArraysComponentType(typeMirror), componentType);
+    }
 
     /**
      * Checks whether passed {@link TypeMirror} is of passed {@link TypeKind}

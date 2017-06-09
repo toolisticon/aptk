@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.io.InputStream;
@@ -49,6 +50,22 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
 
                         },
                         {
+                                "TypeUtils : Get TypeElement for array class",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        TypeElement typeElement = getTypeUtils().getTypeElementForClass(String[].class);
+
+                                        MatcherAssert.assertThat("An array TypeMirror can't be converted into a TypeElement so result has to be null", typeElement, Matchers.nullValue());
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
                                 "TypeUtils : Get TypeMirror for class",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
@@ -59,6 +76,124 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                         MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                         MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.DECLARED));
 
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils : Get TypeMirror for array class",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        TypeMirror typeMirror = getTypeUtils().getTypeMirrorForClass(String[].class);
+
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
+                                        MatcherAssert.assertThat(((ArrayType) typeMirror).getComponentType(), Matchers.is(getTypeUtils().getTypeMirrorForClass(String.class)));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.isTypeMirrorAnArrayOfType : ",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        TypeMirror typeMirror = getTypeUtils().getTypeMirrorForClass(String[].class);
+
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
+                                        MatcherAssert.assertThat(((ArrayType) typeMirror).getComponentType(), Matchers.is(getTypeUtils().getTypeMirrorForClass(String.class)));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getTypeMirrorArraysComponentType : Get component type of TypeMirror array ",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        TypeMirror typeMirror = getTypeUtils().getTypeMirrorForClass(String[].class);
+
+                                        MatcherAssert.assertThat("PRECONDITION : typeMirror should not be null", typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat("PRECONDITION : typeMirror should be array", typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
+
+                                        MatcherAssert.assertThat(getTypeUtils().getTypeMirrorArraysComponentType(typeMirror), Matchers.is(getTypeUtils().getTypeMirrorForClass(String.class)));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.isTypeMirrorAnArrayOfType : Should check if the TypeMirror has a specific component type correctly",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        TypeMirror typeMirror = getTypeUtils().getTypeMirrorForClass(String[].class);
+
+                                        MatcherAssert.assertThat("PRECONDITION : typeMirror should not be null", typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat("PRECONDITION : typeMirror should be array", typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
+
+                                        MatcherAssert.assertThat("Should detect matching component type correctly", getTypeUtils().isTypeMirrorAnArrayOfType(typeMirror, String.class));
+                                        MatcherAssert.assertThat("Should detect non matching component type correctly", !getTypeUtils().isTypeMirrorAnArrayOfType(typeMirror, Boolean.class));
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.isTypeMirrorAnArrayOfType : Should check if the TypeMirror has a specific component type correctly",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        TypeMirror typeMirror = getTypeUtils().getTypeMirrorForClass(String[].class);
+
+                                        MatcherAssert.assertThat("PRECONDITION : typeMirror should not be null", typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat("PRECONDITION : typeMirror should be array", typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
+
+                                        MatcherAssert.assertThat("Should detect matching component type correctly", getTypeUtils().isTypeMirrorAnArrayOfType(typeMirror, String.class.getCanonicalName()));
+                                        MatcherAssert.assertThat("Should detect non matching component type correctly", !getTypeUtils().isTypeMirrorAnArrayOfType(typeMirror, Boolean.class.getCanonicalName()));
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.isTypeMirrorAnArrayOfType : Should check if the TypeMirror has a specific component type correctly",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        TypeMirror typeMirror = getTypeUtils().getTypeMirrorForClass(String[].class);
+
+                                        MatcherAssert.assertThat("PRECONDITION : typeMirror should not be null", typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat("PRECONDITION : typeMirror should be array", typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
+
+                                        MatcherAssert.assertThat("Should detect matching component type correctly", getTypeUtils().isTypeMirrorAnArrayOfType(typeMirror, getTypeUtils().getTypeMirrorForClass(String.class)));
+                                        MatcherAssert.assertThat("Should detect non matching component type correctly", !getTypeUtils().isTypeMirrorAnArrayOfType(typeMirror, getTypeUtils().getTypeMirrorForClass(Boolean.class)));
 
                                     }
                                 },
@@ -241,6 +376,24 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
 
 
                         },
+                        {
+                                "TypeUtils.getTypeMirrorArraysComponentType() : test if component type of TypeMirror of kind ARRAY is returned correctly",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+
+                                        TypeMirror input = getTypeUtils().getTypeMirrorForClass(String[].class);
+
+                                        MatcherAssert.assertThat(getTypeUtils().getTypeMirrorArraysComponentType(input), Matchers.is(getTypeUtils().getTypeMirrorForClass(String.class)));
+
+                                    }
+                                },
+                                true
+
+
+                        },
+
 
                 }
 
