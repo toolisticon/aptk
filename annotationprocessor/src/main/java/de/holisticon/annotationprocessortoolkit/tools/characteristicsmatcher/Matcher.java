@@ -26,6 +26,10 @@ public class Matcher<T> {
         return new Matcher<String[]>(new ParameterFQNExecutableElementCharacteristicMatcher(tools));
     }
 
+    public static Matcher<Class> TYPE_MATCHER(FrameworkToolWrapper tools) {
+        return new Matcher<Class>(new TypeElementCharacteristicMatcher(tools));
+    }
+
 
     private final GenericElementCharacteristicMatcher<T> matcher;
 

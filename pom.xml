@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.holisticon.annotationprocessortoolkit</groupId>
@@ -15,6 +16,9 @@
         <!-- modules -->
         <module>annotationprocessor</module>
         <module>example</module>
+
+        <!-- test scope module -->
+        <module>testhelper</module>
 
     </modules>
 
@@ -77,6 +81,8 @@
         <junit.version>4.12</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
         <mockito.version>1.10.19</mockito.version>
+        <lombok.version>1.16.6</lombok.version>
+        <google-compile-testing.version>0.9</google-compile-testing.version>
 
     </properties>
 
@@ -256,7 +262,7 @@
                     <extensions>true</extensions>
                     <configuration>
                         <instructions>
-                            <Export-Package>de.holisticon.annotationprocessor</Export-Package>
+                            <Export-Package>de.holisticon.annotationprocessortoolkit</Export-Package>
                         </instructions>
                     </configuration>
                     <version>2.5.3</version>
@@ -368,7 +374,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.6</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -411,7 +417,7 @@
             <dependency>
                 <groupId>com.google.testing.compile</groupId>
                 <artifactId>compile-testing</artifactId>
-                <version>0.8</version>
+                <version>${google-compile-testing.version}</version>
                 <scope>test</scope>
             </dependency>
 

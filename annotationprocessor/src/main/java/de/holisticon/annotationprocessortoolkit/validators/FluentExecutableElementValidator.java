@@ -72,7 +72,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
         boolean nextResult = this.currentValidationResult;
 
-        if (ElementUtils.CheckKindOfElement.isMethod(element) && !typeUtils.isVoidType(element.getReturnType())) {
+        if (ElementUtils.CheckKindOfElement.isMethod(element) && !typeUtils.checkTypeKind().isVoid(element.getReturnType())) {
 
             // validation failed - output message
             messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method must have void return type"));
@@ -94,7 +94,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
         boolean nextResult = this.currentValidationResult;
 
-        if (ElementUtils.CheckKindOfElement.isMethod(element) && typeUtils.isVoidType(element.getReturnType())) {
+        if (ElementUtils.CheckKindOfElement.isMethod(element) && typeUtils.checkTypeKind().isVoid(element.getReturnType())) {
 
             // validation failed - output message
             messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method must have non void return type"));
@@ -117,7 +117,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
         if (ElementUtils.CheckKindOfElement.isMethod(element) && hasNonVoidReturnType().getValidationResult()) {
 
-            if (type == null || !typeUtils.getTypes().isAssignable(element.getReturnType(), typeUtils.getTypeMirrorForClass(type))) {
+            if (type == null || !typeUtils.getTypes().isAssignable(element.getReturnType(), typeUtils.getTypeMirror(type))) {
 
                 // validation failed - output message
                 messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Methods return type must be assignable to type ${0}", type.getSimpleName()));
@@ -182,7 +182,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
                 nextResult = isErrorLevel() ? false : nextResult;
             } else {
                 for (int i = 0; i < element.getParameters().size(); i++) {
-                    if (!element.getParameters().get(i).asType().equals(typeUtils.getTypeMirrorForClass(parameterTypes[i]))) {
+                    if (!element.getParameters().get(i).asType().equals(typeUtils.getTypeMirror(parameterTypes[i]))) {
                         triggerMismatchingParameterError(parameterTypes);
                         nextResult = isErrorLevel() ? false : nextResult;
                     }

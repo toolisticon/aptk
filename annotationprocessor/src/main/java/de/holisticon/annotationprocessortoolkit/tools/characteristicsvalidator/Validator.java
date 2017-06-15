@@ -26,6 +26,10 @@ public class Validator<T> {
         return new Validator<String[]>(new GenericElementCharacteristicValidator<String[]>(Matcher.PARAMETER_FQN_MATCHER(tools)));
     }
 
+    public static Validator<Class> TYPE_VALIDATOR(FrameworkToolWrapper tools) {
+        return new Validator<Class>(new GenericElementCharacteristicValidator<Class>(Matcher.TYPE_MATCHER(tools)));
+    }
+
 
     private final GenericElementCharacteristicValidator<T> validator;
 
@@ -85,6 +89,35 @@ public class Validator<T> {
      */
     public static ExclusiveElementValidator<ElementKind> getElementKindValidator() {
         return ELEMENT_KIND_VALIDATOR.getValidator();
+    }
+
+
+    /**
+     * Convenience method for getting and using a parameter type matching validator.
+     *
+     * @return the validator instance
+     */
+    public static ExclusiveElementValidator<Class[]> getParameterValidator(FrameworkToolWrapper frameworkToolWrapper) {
+        return PARAMETER_VALIDATOR(frameworkToolWrapper).getValidator();
+    }
+
+    /**
+     * Convenience method for getting and using a parameter type matching validator.
+     *
+     * @return the validator instance
+     */
+    public static ExclusiveElementValidator<String[]> getParameterFqnValidator(FrameworkToolWrapper frameworkToolWrapper) {
+        return PARAMETER_FQN_VALIDATOR(frameworkToolWrapper).getValidator();
+    }
+
+
+    /**
+     * Convenience method for getting and using a type matching validator.
+     *
+     * @return the validator instance
+     */
+    public static ExclusiveElementValidator<Class> getTypeValidator(FrameworkToolWrapper frameworkToolWrapper) {
+        return TYPE_VALIDATOR(frameworkToolWrapper).getValidator();
     }
 
 }

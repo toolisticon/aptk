@@ -1,5 +1,6 @@
 package de.holisticon.annotationprocessortoolkit;
 
+import com.google.testing.compile.CompileTester;
 import com.google.testing.compile.JavaFileObjects;
 import org.junit.Test;
 
@@ -99,13 +100,22 @@ public abstract class AbstractAnnotationProcessorTestBaseClass {
         JavaFileObject testClassSource = JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
 
         if (compilationShouldSucceed) {
-            assertAbout(javaSource())
+            CompileTester.SuccessfulCompilationClause compileTester = assertAbout(javaSource())
                     .that(testClassSource)
-                    .processedWith(testcase).compilesWithoutError();
+                    .processedWith(testcase)
+                    .compilesWithoutError();
+
+
+            // check if test was executed
+            compileTester.withNoteContaining(TEST_EXECUTION_MESSAGE);
+
         } else {
-            assertAbout(javaSource())
+            CompileTester.UnsuccessfulCompilationClause compileTester = assertAbout(javaSource())
                     .that(testClassSource)
                     .processedWith(testcase).failsToCompile();
+
+            // check if test was executed
+            compileTester.withNoteContaining(TEST_EXECUTION_MESSAGE);
         }
 
 

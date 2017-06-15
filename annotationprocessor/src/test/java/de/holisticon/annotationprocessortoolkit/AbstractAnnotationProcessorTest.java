@@ -63,7 +63,7 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        getTypeUtils().getTypeElementForClass(AbstractTestAnnotationProcessorClass.class);
+                                        getTypeUtils().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                     }
