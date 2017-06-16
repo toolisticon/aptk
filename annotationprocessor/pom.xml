@@ -11,7 +11,7 @@
     </parent>
 
     <name>annotationprocessor</name>
-    <description>Please refer to https://github.com/holisticon/annotation-processotool-kit</description>
+    <description>Please refer to https://github.com/holisticon/annotation-processor-toolkit</description>
 
 
     <dependencies>
