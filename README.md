@@ -86,7 +86,7 @@ So you need to do add the following to your annotation processors pom.xml:
          <dependency>
              <groupId>de.holisticon.annotationprocessortoolkit</groupId>
              <artifactId>annotationprocessor</artifactId>
-             <version>0.1.0</version>
+             <version>0.3.0</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
