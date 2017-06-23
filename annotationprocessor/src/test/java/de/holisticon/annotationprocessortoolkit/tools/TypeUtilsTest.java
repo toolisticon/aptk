@@ -67,6 +67,22 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
 
                         },
                         {
+                                "TypeUtils : Get TypeElement for primitive class",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        TypeElement typeElement = getTypeUtils().getTypeElement(int.class);
+
+                                        MatcherAssert.assertThat("A primitive TypeMirror can't be converted into a TypeElement so result has to be null", typeElement, Matchers.nullValue());
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
                                 "TypeUtils : Get TypeMirror for class",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
@@ -97,6 +113,173 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                         MatcherAssert.assertThat(((ArrayType) typeMirror).getComponentType(), Matchers.is(getTypeUtils().getTypeMirror(String.class)));
 
 
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils : Get TypeMirror for atomic type",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        TypeMirror typeMirror = getTypeUtils().getTypeMirror(int.class);
+
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.INT));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for int",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        // int
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(int.class);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.INT));
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for long",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+                                        // long
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(long.class);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.LONG));
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for short",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+                                        // short
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(short.class);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.SHORT));
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for boolean",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+                                        // boolean
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(boolean.class);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.BOOLEAN));
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for byte",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+                                        // byte
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(byte.class);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.BYTE));
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for float",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+                                        // float
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(float.class);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.FLOAT));
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for double",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+                                        // double
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(double.class);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.DOUBLE));
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for char",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+                                        // char
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(char.class);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
+                                        MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.CHAR));
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for null value should return null",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+                                        // null value
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(null);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.nullValue());
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.getPrimitiveTypeMirror : Get TypeMirror for non primitive type should return String",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+                                        // non primitive type value
+                                        TypeMirror typeMirror = getTypeUtils().getPrimitiveTypeMirror(String.class);
+                                        MatcherAssert.assertThat(typeMirror, Matchers.nullValue());
                                     }
                                 },
                                 true

@@ -132,7 +132,37 @@ public class TypeUtils {
             return frameworkToolWrapper.getTypes().getArrayType(getTypeMirror(type.getComponentType()));
         }
 
+        if (type.isPrimitive()) {
+            return getPrimitiveTypeMirror(type);
+        }
         return frameworkToolWrapper.getElements().getTypeElement(type.getCanonicalName()).asType();
+    }
+
+    public TypeMirror getPrimitiveTypeMirror(Class primitiveType) {
+
+        if (primitiveType == null || !primitiveType.isPrimitive()) {
+            return null;
+        }
+
+        if (boolean.class.equals(primitiveType)) {
+            return getTypes().getPrimitiveType(TypeKind.BOOLEAN);
+        } else if (byte.class.equals(primitiveType)) {
+            return getTypes().getPrimitiveType(TypeKind.BYTE);
+        } else if (char.class.equals(primitiveType)) {
+            return getTypes().getPrimitiveType(TypeKind.CHAR);
+        } else if (double.class.equals(primitiveType)) {
+            return getTypes().getPrimitiveType(TypeKind.DOUBLE);
+        } else if (float.class.equals(primitiveType)) {
+            return getTypes().getPrimitiveType(TypeKind.FLOAT);
+        } else if (int.class.equals(primitiveType)) {
+            return getTypes().getPrimitiveType(TypeKind.INT);
+        } else if (long.class.equals(primitiveType)) {
+            return getTypes().getPrimitiveType(TypeKind.LONG);
+        } else if (short.class.equals(primitiveType)) {
+            return getTypes().getPrimitiveType(TypeKind.SHORT);
+        }
+
+        return null;
     }
 
     /**
