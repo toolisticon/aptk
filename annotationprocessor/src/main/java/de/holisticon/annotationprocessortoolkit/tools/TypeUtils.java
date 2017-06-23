@@ -44,6 +44,16 @@ public class TypeUtils {
             return isOfTypeKind(typeMirror, TypeKind.ARRAY);
         }
 
+        /**
+         * Checks whether passed TypeMirror represents primitive type.
+         *
+         * @param typeMirror the {@link TypeMirror} to check
+         * @return true if passed typeMirror has primitive TypeKind, otherwise false
+         */
+        public boolean isPrimitive(TypeMirror typeMirror) {
+            return typeMirror != null && typeMirror.getKind().isPrimitive();
+        }
+
 
         /**
          * Checks whether passed {@link TypeMirror} is of passed {@link TypeKind}
@@ -55,6 +65,7 @@ public class TypeUtils {
         public boolean isOfTypeKind(TypeMirror typeMirror, TypeKind kind) {
             return typeMirror != null && kind != null && kind.equals(typeMirror.getKind());
         }
+
 
     }
 

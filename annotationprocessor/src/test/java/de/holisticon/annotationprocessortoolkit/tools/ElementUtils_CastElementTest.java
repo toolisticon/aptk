@@ -101,7 +101,7 @@ public class ElementUtils_CastElementTest {
     }
 
     @Test
-    public void isExecutbleElement_testIfAllTypeElementKindsWillBeDetected() {
+    public void isExecutableElement_testIfAllTypeElementKindsWillBeDetected() {
 
         Element element = Mockito.mock(Element.class);
 
