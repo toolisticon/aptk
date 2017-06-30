@@ -122,7 +122,8 @@ public class ValidatorTest {
     @Test
     public void testParameterValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(Validator.PARAMETER_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(ParameterExecutableElementCharacteristicMatcher.class));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class[]>) Validator.getParameterValidator(null)).getMatcher(), Matchers.instanceOf(ParameterExecutableElementCharacteristicMatcher.class));
+
     }
 
     // ------------------------------------
@@ -139,7 +140,8 @@ public class ValidatorTest {
     @Test
     public void testParameterFQNValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(Validator.PARAMETER_FQN_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(ParameterFQNExecutableElementCharacteristicMatcher.class));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String[]>) Validator.getParameterFqnValidator(null)).getMatcher(), Matchers.instanceOf(ParameterFQNExecutableElementCharacteristicMatcher.class));
+
     }
 
     // ------------------------------------
@@ -157,7 +159,8 @@ public class ValidatorTest {
     @Test
     public void testTypeValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(Validator.TYPE_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(TypeElementCharacteristicMatcher.class));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class>) Validator.getTypeValidator(null)).getMatcher(), Matchers.instanceOf(TypeElementCharacteristicMatcher.class));
+
     }
 
 
