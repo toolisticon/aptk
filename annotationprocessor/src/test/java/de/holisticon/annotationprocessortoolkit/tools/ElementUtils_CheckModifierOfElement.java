@@ -152,7 +152,7 @@ public class ElementUtils_CheckModifierOfElement {
 
 
     @Test
-    public void testHasNtiveModifier() {
+    public void testHasNativeModifier() {
 
         Element e = Mockito.mock(Element.class);
         Mockito.when(e.getModifiers()).thenReturn(Utilities.convertVarargsToSet(Modifier.NATIVE));
