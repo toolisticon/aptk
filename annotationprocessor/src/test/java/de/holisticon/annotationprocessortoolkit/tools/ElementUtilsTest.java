@@ -19,7 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Unit test for {@link de.holisticon.annotationprocessortoolkit.tools.TypeUtils}.
+ * Integration test for {@link de.holisticon.annotationprocessortoolkit.tools.ElementUtils}.
+ * <p/>
+ * Test is executed at compile time of a test class.
  */
 @RunWith(Parameterized.class)
 public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
@@ -253,7 +255,7 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        List<VariableElement> fields = ElementUtils.AccessEnclosedElements.getEnclosedFields(element);
+                                        List<? extends VariableElement> fields = ElementUtils.AccessEnclosedElements.getEnclosedFields(element);
 
                                         MatcherAssert.assertThat(fields, Matchers.notNullValue());
                                         MatcherAssert.assertThat(fields, Matchers.not(Matchers.<VariableElement>empty()));
@@ -275,7 +277,7 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        List<ExecutableElement> methods = ElementUtils.AccessEnclosedElements.getEnclosedMethods(element);
+                                        List<? extends ExecutableElement> methods = ElementUtils.AccessEnclosedElements.getEnclosedMethods(element);
 
                                         MatcherAssert.assertThat(methods, Matchers.notNullValue());
                                         MatcherAssert.assertThat(methods, Matchers.not(Matchers.<ExecutableElement>empty()));
@@ -297,7 +299,7 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        List<ExecutableElement> constructors = ElementUtils.AccessEnclosedElements.getEnclosedConstructors(element);
+                                        List<? extends ExecutableElement> constructors = ElementUtils.AccessEnclosedElements.getEnclosedConstructors(element);
 
                                         MatcherAssert.assertThat(constructors, Matchers.notNullValue());
                                         MatcherAssert.assertThat(constructors, Matchers.not(Matchers.<ExecutableElement>empty()));
@@ -319,7 +321,7 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        List<TypeElement> types = ElementUtils.AccessEnclosedElements.getEnclosedTypes(element);
+                                        List<? extends TypeElement> types = ElementUtils.AccessEnclosedElements.getEnclosedTypes(element);
 
                                         MatcherAssert.assertThat(types, Matchers.notNullValue());
                                         MatcherAssert.assertThat(types, Matchers.not(Matchers.<TypeElement>empty()));
@@ -336,12 +338,12 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
 
                         },
                         {
-                                "getEnclosedElementsWithAnnotation test",
+                                "getEnclosedElementsWithAllAnnotationsOf test",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        List<Element> elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAnnotation(element, FilterTestAnnotation1.class);
+                                        List<Element> elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element, FilterTestAnnotation1.class);
 
                                         MatcherAssert.assertThat(elements, Matchers.notNullValue());
                                         MatcherAssert.assertThat(elements, Matchers.not(Matchers.<Element>empty()));
@@ -358,20 +360,20 @@ public class ElementUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
 
                         },
                         {
-                                "getEnclosedElementsWithAnnotation test with null valued element or annotation",
+                                "getEnclosedElementsWithAllAnnotationsOf test with null valued element or annotation",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        List<Element> elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAnnotation(null, FilterTestAnnotation1.class);
+                                        List<Element> elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(null, FilterTestAnnotation1.class);
 
                                         MatcherAssert.assertThat(elements, Matchers.<Element>empty());
 
-                                        elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAnnotation(element, null);
+                                        elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element, null);
 
                                         MatcherAssert.assertThat(elements, Matchers.hasSize(element.getEnclosedElements().size()));
 
-                                        elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAnnotation(element);
+                                        elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element);
 
                                         MatcherAssert.assertThat(elements, Matchers.hasSize(element.getEnclosedElements().size()));
 

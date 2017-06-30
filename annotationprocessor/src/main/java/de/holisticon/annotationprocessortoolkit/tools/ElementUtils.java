@@ -29,7 +29,18 @@ public final class ElementUtils {
 
     }
 
-    public static class CheckKindOfElement {
+    /**
+     * Convenience utility class for checking the {@link ElementKind} of an Element.
+     */
+    public final static class CheckKindOfElement {
+
+        /**
+         * Hidden constructor.
+         */
+        private CheckKindOfElement() {
+            // does nothing except preventing instantiation
+        }
+
 
         /**
          * Checks if passed Element instance is of kind enum.
@@ -115,11 +126,23 @@ public final class ElementUtils {
 
     }
 
-    public static class CastElement {
+    /**
+     * Convenience utility class for checking if the kind of an {@link Element}.
+     */
+    public final static class CastElement {
 
+        // look up tables for the different kind of types
         private final static Set<ElementKind> typeElementKindLUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM);
         private final static Set<ElementKind> variableElementKindLUT = Utilities.convertVarargsToSet(ElementKind.PARAMETER, ElementKind.FIELD);
         private final static Set<ElementKind> executableElementKindLUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD);
+
+        /**
+         * Hidden constructor.
+         */
+        private CastElement() {
+            // does nothing except preventing instantiation
+        }
+
 
         /**
          * Checks if passed element can be casted to TypeElement.
@@ -286,7 +309,19 @@ public final class ElementUtils {
         }
     }
 
-    public static class CheckModifierOfElement {
+    /**
+     * Convenience utility class for checking modifiers of an Element.
+     */
+    public final static class CheckModifierOfElement {
+
+        /**
+         * Hidden constructor.
+         */
+        private CheckModifierOfElement() {
+            // does nothing except preventing instantiation
+        }
+
+
         /**
          * Check if passed Element has public Modifier.
          *
@@ -294,7 +329,7 @@ public final class ElementUtils {
          * @return true if the passed element has the public modifier, otherwise false
          */
         public static boolean hasPublicModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.PUBLIC);
+            return hasModifier(e, Modifier.PUBLIC);
         }
 
         /**
@@ -304,7 +339,7 @@ public final class ElementUtils {
          * @return true if the passed element has the protected modifier, otherwise false
          */
         public static boolean hasProtectedModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.PROTECTED);
+            return hasModifier(e, Modifier.PROTECTED);
         }
 
         /**
@@ -314,7 +349,7 @@ public final class ElementUtils {
          * @return true if the passed element has the private modifier, otherwise false
          */
         public static boolean hasPrivateModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.PRIVATE);
+            return hasModifier(e, Modifier.PRIVATE);
         }
 
         /**
@@ -324,7 +359,7 @@ public final class ElementUtils {
          * @return true if the passed element has the abstract modifier, otherwise false
          */
         public static boolean hasAbstractModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.ABSTRACT);
+            return hasModifier(e, Modifier.ABSTRACT);
         }
 
     /*
@@ -336,7 +371,7 @@ public final class ElementUtils {
         // Disabled until we move to Java 8
     /*
     public boolean hasDefaultModifier(Element e) {
-        return hasModifiers(e, Modifier.DEFAULT);
+        return hasModifier(e, Modifier.DEFAULT);
     }
     */
 
@@ -347,7 +382,7 @@ public final class ElementUtils {
          * @return true if the passed element has the static modifier, otherwise false
          */
         public static boolean hasStaticModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.STATIC);
+            return hasModifier(e, Modifier.STATIC);
         }
 
         /**
@@ -357,7 +392,7 @@ public final class ElementUtils {
          * @return true if the passed element has the final modifier, otherwise false
          */
         public static boolean hasFinalModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.FINAL);
+            return hasModifier(e, Modifier.FINAL);
         }
 
         /**
@@ -367,7 +402,7 @@ public final class ElementUtils {
          * @return true if the passed element has the transient modifier, otherwise false
          */
         public static boolean hasTransientModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.TRANSIENT);
+            return hasModifier(e, Modifier.TRANSIENT);
         }
 
         /**
@@ -377,7 +412,7 @@ public final class ElementUtils {
          * @return true if the passed element has the volatile modifier, otherwise false
          */
         public static boolean hasVolatileModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.VOLATILE);
+            return hasModifier(e, Modifier.VOLATILE);
         }
 
         /**
@@ -387,7 +422,7 @@ public final class ElementUtils {
          * @return true if the passed element has the synchronized modifier, otherwise false
          */
         public static boolean hasSynchronizedModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.SYNCHRONIZED);
+            return hasModifier(e, Modifier.SYNCHRONIZED);
         }
 
         /**
@@ -397,7 +432,7 @@ public final class ElementUtils {
          * @return true if the passed element has the native modifier, otherwise false
          */
         public static boolean hasNativeModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.NATIVE);
+            return hasModifier(e, Modifier.NATIVE);
         }
 
         /**
@@ -407,16 +442,39 @@ public final class ElementUtils {
          * @return true if the passed element has the strictfp modifier, otherwise false
          */
         public static boolean hasStrictfpModifier(Element e) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, Modifier.STRICTFP);
+            return hasModifier(e, Modifier.STRICTFP);
         }
 
+        /**
+         * Internal function that does handle the check for passed {@link Modifier}.
+         *
+         * @param e        the element to check
+         * @param modifier the modifier to check for
+         * @return true if passed element has modifier, otherwise false
+         */
+        private static boolean hasModifier(Element e, Modifier modifier) {
+            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, modifier);
+        }
 
     }
 
-    public static class AccessEnclosedElements {
-        public static List<VariableElement> getEnclosedFields(TypeElement e) {
+    /**
+     * Utility cass to access enclosed elements of a {@link Element}.
+     */
+    public final static class AccessEnclosedElements {
+
+        /**
+         * Hidden constructor.
+         */
+        private AccessEnclosedElements() {
+            // does nothing except preventing instantiation
+        }
+
+        public static List<? extends VariableElement> getEnclosedFields(TypeElement e) {
+
             List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.FIELD);
             return CastElement.castElementList(enclosedElementsOfKind, VariableElement.class);
+
         }
 
         /**
@@ -425,9 +483,11 @@ public final class ElementUtils {
          * @param e the element to search within
          * @return all methods of the passed element
          */
-        public static List<ExecutableElement> getEnclosedMethods(TypeElement e) {
+        public static List<? extends ExecutableElement> getEnclosedMethods(TypeElement e) {
+
             List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.METHOD);
             return CastElement.castElementList(enclosedElementsOfKind, ExecutableElement.class);
+
         }
 
 
@@ -437,9 +497,11 @@ public final class ElementUtils {
          * @param e the element to search within
          * @return all methods of the passed element
          */
-        public static List<ExecutableElement> getEnclosedConstructors(TypeElement e) {
+        public static List<? extends ExecutableElement> getEnclosedConstructors(TypeElement e) {
+
             List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.CONSTRUCTOR);
             return CastElement.castElementList(enclosedElementsOfKind, ExecutableElement.class);
+
         }
 
         /**
@@ -448,11 +510,12 @@ public final class ElementUtils {
          * @param e the element to search within
          * @return all methods of the passed element
          */
-        public static List<TypeElement> getEnclosedTypes(TypeElement e) {
+        public static List<? extends TypeElement> getEnclosedTypes(TypeElement e) {
+
             List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.CLASS);
             return CastElement.castElementList(enclosedElementsOfKind, TypeElement.class);
-        }
 
+        }
 
         /**
          * Returns all enclosed elements with matching name for passed regular expression.
@@ -462,6 +525,7 @@ public final class ElementUtils {
          * @return the elements with matching name
          */
         public static List<? extends Element> getEnclosedElementsByName(Element element, String... name) {
+
             if (element == null) {
                 return new ArrayList<Element>();
             }
@@ -471,31 +535,40 @@ public final class ElementUtils {
         }
 
         /**
-         * Returns all enclosed elements with matching name for passed regular expression.
+         * Returns all enclosed elements with matching name for AT LEAST ONE of the passed regular expressions.
          *
-         * @param element   the element to search within
-         * @param nameRegex the regular expression for name
+         * @param element     the element to search within
+         * @param nameRegexes the regular expressions used for name matching
          * @return the elements with matching name
          * @throws PatternSyntaxException if passed pattern is invalid
          */
-        public static List<Element> getEnclosedElementsByNameRegex(Element element, String nameRegex) {
+        public static List<? extends Element> getEnclosedElementsByNameRegex(Element element, String... nameRegexes) {
+
             List<Element> result = new ArrayList<Element>();
 
-            if (element != null && nameRegex != null) {
-
-                Pattern pattern = Pattern.compile(nameRegex);
+            if (element != null && nameRegexes != null) {
 
                 for (Element enclosedElement : element.getEnclosedElements()) {
 
-                    if (pattern.matcher(enclosedElement.getSimpleName().toString()).matches()) {
-                        result.add(enclosedElement);
+                    for (String nameRegex : nameRegexes) {
+
+                        Pattern pattern = Pattern.compile(nameRegex);
+
+
+                        if (pattern.matcher(enclosedElement.getSimpleName().toString()).matches()) {
+                            result.add(enclosedElement);
+                            break;
+                        }
+
                     }
 
                 }
 
+
             }
 
             return result;
+
         }
 
 
@@ -518,19 +591,36 @@ public final class ElementUtils {
 
 
         /**
-         * Gets all enclosed elements that are annotated with ALL passed annotations
+         * Gets all enclosed elements that are annotated with ALL passed annotations.
          *
          * @param element     the element to search within
          * @param annotations the annotations to filter by
          * @return the enclosed element that are annotated with ALL passed annotations.
          */
-        public static List<? extends Element> getEnclosedElementsWithAnnotation(Element element, Class<? extends Annotation>... annotations) {
+        public static List<? extends Element> getEnclosedElementsWithAllAnnotationsOf(Element element, Class<? extends Annotation>... annotations) {
 
             if (element == null) {
                 return new ArrayList<Element>();
             }
 
             return Filter.ANNOTATION_FILTER.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
+
+        }
+
+        /**
+         * Gets all enclosed elements that are annotated with AT LEAST ONE of the passed annotations.
+         *
+         * @param element     the element to search within
+         * @param annotations the annotations to filter by
+         * @return the enclosed element that are annotated with AT LEAST ONE of the passed annotations.
+         */
+        public static List<? extends Element> getEnclosedElementsWithAtLeastOneAnnotationOf(Element element, Class<? extends Annotation>... annotations) {
+
+            if (element == null) {
+                return new ArrayList<Element>();
+            }
+
+            return Filter.ANNOTATION_FILTER.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
 
         }
     }

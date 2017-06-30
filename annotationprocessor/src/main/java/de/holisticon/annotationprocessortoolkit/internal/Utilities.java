@@ -1,7 +1,9 @@
 package de.holisticon.annotationprocessortoolkit.internal;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,6 +51,12 @@ public class Utilities {
     public static <T> Set<T> convertVarargsToSet(T... varargs) {
 
         return varargs != null ? new HashSet<T>(Arrays.asList(varargs)) : new HashSet<T>();
+
+    }
+
+    public static <T> List<T> convertVarargsToList(T... varargs) {
+
+        return varargs != null ? Arrays.asList(varargs) : new ArrayList<T>();
 
     }
 

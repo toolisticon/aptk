@@ -11,6 +11,10 @@ import javax.lang.model.element.ElementKind;
 public class ElementUtils_CheckKindOfElementTest {
 
 
+    // ---------------------------------------------
+    // -- isEnum tests
+    // ---------------------------------------------
+
     @Test
     public void isEnum_shouldMatch() {
 
@@ -22,7 +26,7 @@ public class ElementUtils_CheckKindOfElementTest {
     }
 
     @Test
-    public void isEnum_shouldntMatch() {
+    public void isEnum_shouldNotMatch() {
 
         Element element = Mockito.mock(Element.class);
         Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
@@ -38,6 +42,9 @@ public class ElementUtils_CheckKindOfElementTest {
 
     }
 
+    // ---------------------------------------------
+    // -- isClass tests
+    // ---------------------------------------------
 
     @Test
     public void isClass_shouldMatch() {
@@ -66,6 +73,10 @@ public class ElementUtils_CheckKindOfElementTest {
 
     }
 
+    // ---------------------------------------------
+    // -- isInterface tests
+    // ---------------------------------------------
+
     @Test
     public void isInterface_shouldMatch() {
 
@@ -93,6 +104,9 @@ public class ElementUtils_CheckKindOfElementTest {
 
     }
 
+    // ---------------------------------------------
+    // -- isMethod tests
+    // ---------------------------------------------
 
     @Test
     public void isMethod_shouldMatch() {
@@ -121,6 +135,10 @@ public class ElementUtils_CheckKindOfElementTest {
 
     }
 
+    // ---------------------------------------------
+    // -- isParameter tests
+    // ---------------------------------------------
+
     @Test
     public void isParameter_shouldMatch() {
 
@@ -147,6 +165,10 @@ public class ElementUtils_CheckKindOfElementTest {
         MatcherAssert.assertThat("Should return false with null valued parameter", !ElementUtils.CheckKindOfElement.isParameter(null));
 
     }
+
+    // ---------------------------------------------
+    // -- isConstructor tests
+    // ---------------------------------------------
 
     @Test
     public void isConstructor_shouldMatch() {
@@ -175,6 +197,10 @@ public class ElementUtils_CheckKindOfElementTest {
 
     }
 
+    // ---------------------------------------------
+    // -- isField tests
+    // ---------------------------------------------
+
     @Test
     public void isField_shouldMatch() {
 
@@ -201,4 +227,7 @@ public class ElementUtils_CheckKindOfElementTest {
         MatcherAssert.assertThat("Should return false with null valued parameter", !ElementUtils.CheckKindOfElement.isField(null));
 
     }
+
+
+
 }
