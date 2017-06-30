@@ -165,5 +165,8 @@ public class GenericElementCharacteristicValidator<T> implements InclusiveElemen
         return true;
     }
 
+    public GenericElementCharacteristicMatcher<T> getMatcher() {
+        return matcher;
+    }
 
 }

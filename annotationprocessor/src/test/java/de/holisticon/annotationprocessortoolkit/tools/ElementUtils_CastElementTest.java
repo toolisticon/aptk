@@ -54,6 +54,9 @@ public class ElementUtils_CastElementTest {
         Mockito.when(element.getKind()).thenReturn(ElementKind.PARAMETER);
         MatcherAssert.assertThat("Should not be detected as TypeElement", !ElementUtils.CastElement.isTypeElement(element));
 
+        // test null safety
+        MatcherAssert.assertThat("Should return false for null valued parameter", !ElementUtils.CastElement.isTypeElement(null));
+
     }
 
 
@@ -95,6 +98,9 @@ public class ElementUtils_CastElementTest {
         Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
         MatcherAssert.assertThat("Should not be detected as VariableElement", !ElementUtils.CastElement.isVariableElement(element));
 
+        // test null safety
+        MatcherAssert.assertThat("Should return false for null valued parameter", !ElementUtils.CastElement.isVariableElement(null));
+
     }
 
     @Test
@@ -135,6 +141,9 @@ public class ElementUtils_CastElementTest {
         Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
         MatcherAssert.assertThat("Should not be detected as ExecutableElement", !ElementUtils.CastElement.isExecutableElement(element));
 
+        // test null safety
+        MatcherAssert.assertThat("Should return false for null valued parameter", !ElementUtils.CastElement.isExecutableElement(null));
+
     }
 
 
@@ -166,6 +175,11 @@ public class ElementUtils_CastElementTest {
 
     }
 
+    @Test
+    public void castClassTest_shouldHandleNullValuedParameterCorrectly() {
+        MatcherAssert.assertThat(ElementUtils.CastElement.castClass(null), Matchers.nullValue());
+    }
+
     // ---------------------------------------
     // castInterface -------------------------
     // ---------------------------------------
@@ -192,6 +206,11 @@ public class ElementUtils_CastElementTest {
         Element unit = Mockito.mock(VariableElement.class);
         ElementUtils.CastElement.castInterface(unit);
 
+    }
+
+    @Test
+    public void castInterfaceTest_shouldHandleNullValuedParameterCorrectly() {
+        MatcherAssert.assertThat(ElementUtils.CastElement.castInterface(null), Matchers.nullValue());
     }
 
     // ---------------------------------------
@@ -222,6 +241,11 @@ public class ElementUtils_CastElementTest {
 
     }
 
+    @Test
+    public void castEnumTest_shouldHandleNullValuedParameterCorrectly() {
+        MatcherAssert.assertThat(ElementUtils.CastElement.castEnum(null), Matchers.nullValue());
+    }
+
     // ---------------------------------------
     // castParameter  ------------------------
     // ---------------------------------------
@@ -248,6 +272,11 @@ public class ElementUtils_CastElementTest {
         Element unit = Mockito.mock(TypeElement.class);
         ElementUtils.CastElement.castParameter(unit);
 
+    }
+
+    @Test
+    public void castParameterTest_shouldHandleNullValuedParameterCorrectly() {
+        MatcherAssert.assertThat(ElementUtils.CastElement.castParameter(null), Matchers.nullValue());
     }
 
     // ---------------------------------------
@@ -278,6 +307,11 @@ public class ElementUtils_CastElementTest {
 
     }
 
+    @Test
+    public void castFieldTest_shouldHandleNullValuedParameterCorrectly() {
+        MatcherAssert.assertThat(ElementUtils.CastElement.castField(null), Matchers.nullValue());
+    }
+
     // ---------------------------------------
     // castConstructor  ----------------------
     // ---------------------------------------
@@ -306,6 +340,11 @@ public class ElementUtils_CastElementTest {
 
     }
 
+    @Test
+    public void castConstructorTest_shouldHandleNullValuedParameterCorrectly() {
+        MatcherAssert.assertThat(ElementUtils.CastElement.castConstructor(null), Matchers.nullValue());
+    }
+
     // ---------------------------------------
     // castMethod  ---------------------------
     // ---------------------------------------
@@ -332,6 +371,11 @@ public class ElementUtils_CastElementTest {
         Element unit = Mockito.mock(TypeElement.class);
         ElementUtils.CastElement.castMethod(unit);
 
+    }
+
+    @Test
+    public void castMethodTest_shouldHandleNullValuedParameterCorrectly() {
+        MatcherAssert.assertThat(ElementUtils.CastElement.castMethod(null), Matchers.nullValue());
     }
 
 }
