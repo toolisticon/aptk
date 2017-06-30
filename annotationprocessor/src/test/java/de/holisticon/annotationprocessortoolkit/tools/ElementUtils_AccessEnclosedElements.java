@@ -80,6 +80,11 @@ public class ElementUtils_AccessEnclosedElements {
 
     }
 
+    @Test
+    public void testGetEnclosedFields_nullSafety() {
+        MatcherAssert.assertThat(ElementUtils.AccessEnclosedElements.getEnclosedFields(null), Matchers.hasSize(0));
+    }
+
 
     @Test
     public void testGetEnclosedMethods() {
@@ -109,6 +114,11 @@ public class ElementUtils_AccessEnclosedElements {
         MatcherAssert.assertThat(elementOfKind, Matchers.hasSize(2));
         MatcherAssert.assertThat(elementOfKind, Matchers.containsInAnyOrder(toBeFound1, toBeFound2));
 
+    }
+
+    @Test
+    public void testGetEnclosedMethods_nullSafety() {
+        MatcherAssert.assertThat(ElementUtils.AccessEnclosedElements.getEnclosedMethods(null), Matchers.hasSize(0));
     }
 
 
@@ -142,6 +152,11 @@ public class ElementUtils_AccessEnclosedElements {
 
     }
 
+    @Test
+    public void testGetEnclosedConstructors_nullSafety() {
+        MatcherAssert.assertThat(ElementUtils.AccessEnclosedElements.getEnclosedConstructors(null), Matchers.hasSize(0));
+    }
+
 
     @Test
     public void testGetEnclosedTypes() {
@@ -173,6 +188,14 @@ public class ElementUtils_AccessEnclosedElements {
 
     }
 
+    @Test
+    public void testGetEnclosedTypes_nullSafety() {
+        MatcherAssert.assertThat(ElementUtils.AccessEnclosedElements.getEnclosedTypes(null), Matchers.hasSize(0));
+    }
+
+    // -----------------------------------------
+    // -- test getEnclosedElementsByName
+    // -----------------------------------------
 
     @Test
     public void testGetEnclosedElementsByName() {
@@ -204,6 +227,42 @@ public class ElementUtils_AccessEnclosedElements {
 
     }
 
+    @Test
+    public void testGetEnclosedElementsByName_nullSafety() {
+        MatcherAssert.assertThat(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(null, "A", "B"), Matchers.hasSize(0));
+    }
+
+    @Test
+    public void testGetEnclosedElementsByName_noFilterCriteria() {
+        TypeElement typeElement = Mockito.mock(TypeElement.class);
+
+
+        Element toBeFound1 = mockElementWithName(TypeElement.class, ElementKind.CLASS, "A");
+        Element toBeFound2 = mockElementWithName(TypeElement.class, ElementKind.CLASS, "B");
+
+        List elements = Utilities.convertVarargsToList(
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X"),
+                toBeFound1,
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X"),
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X"),
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X"),
+                toBeFound2,
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X")
+
+        );
+
+        Mockito.when(typeElement.getEnclosedElements()).thenReturn(elements);
+
+
+        List<? extends Element> elementWIthNames = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(typeElement);
+
+        MatcherAssert.assertThat(elementWIthNames, Matchers.hasSize(elements.size()));
+    }
+
+
+    // -----------------------------------------
+    // -- test getEnclosedElementsByNameRegex
+    // -----------------------------------------
 
     @Test
     public void testGetEnclosedElementsByNameRegex() {
@@ -235,6 +294,42 @@ public class ElementUtils_AccessEnclosedElements {
 
     }
 
+    @Test
+    public void testGetEnclosedElementsByNameRegex_nullSafety() {
+        MatcherAssert.assertThat(ElementUtils.AccessEnclosedElements.getEnclosedElementsByNameRegex(null, "AB.*", "B.*B", ".*B.*"), Matchers.hasSize(0));
+    }
+
+    @Test
+    public void testGetEnclosedElementsByNameRegex_noFilterCriteria() {
+        TypeElement typeElement = Mockito.mock(TypeElement.class);
+
+
+        Element toBeFound1 = mockElementWithName(TypeElement.class, ElementKind.CLASS, "ABC");
+        Element toBeFound2 = mockElementWithName(TypeElement.class, ElementKind.CLASS, "BDB");
+
+        List elements = Utilities.convertVarargsToList(
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X"),
+                toBeFound1,
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X"),
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X"),
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X"),
+                toBeFound2,
+                mockElementWithName(TypeElement.class, ElementKind.CLASS, "X")
+
+        );
+
+        Mockito.when(typeElement.getEnclosedElements()).thenReturn(elements);
+
+
+        List<? extends Element> elementWIthNames = ElementUtils.AccessEnclosedElements.getEnclosedElementsByNameRegex(typeElement);
+
+        MatcherAssert.assertThat(elementWIthNames, Matchers.hasSize(0));
+    }
+
+
+    // -----------------------------------------
+    // -- test getEnclosedElementsWithAllAnnotationsOf
+    // -----------------------------------------
 
     public @interface TestAnnotation1ToBeFound {
 
@@ -298,6 +393,54 @@ public class ElementUtils_AccessEnclosedElements {
     }
 
     @Test
+    public void testGetEnclosedElementsWithAllAnnotationsOf_nullSafety() {
+
+        Class<? extends Annotation> annotationClass1ToBeFound = TestAnnotation1ToBeFound.class;
+        Class<? extends Annotation> annotationClass2ToBeFound = TestAnnotation2ToBeFound.class;
+
+        MatcherAssert.assertThat(ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(null, annotationClass1ToBeFound, annotationClass2ToBeFound), Matchers.hasSize(0));
+
+    }
+
+    @Test
+    public void testGetEnclosedElementsWithAllAnnotationsOf_noFilterCriteria() {
+        TypeElement typeElement = Mockito.mock(TypeElement.class);
+
+        Class<? extends Annotation> annotationClass1ToBeFound = TestAnnotation1ToBeFound.class;
+        Class<? extends Annotation> annotationClass2ToBeFound = TestAnnotation2ToBeFound.class;
+        Class<? extends Annotation> annotationClass1 = TestAnnotation1.class;
+        Class<? extends Annotation> annotationClass2 = TestAnnotation2.class;
+        Class<? extends Annotation> annotationClass3 = TestAnnotation3.class;
+
+        Element toBeFound1 = mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass1ToBeFound, annotationClass2ToBeFound);
+        Element toBeFound2 = mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass1ToBeFound, annotationClass2ToBeFound);
+
+
+        List elements = Utilities.convertVarargsToList(
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass1),
+                toBeFound1,
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass2),
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass3),
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass1ToBeFound),
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass2ToBeFound),
+                toBeFound2,
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS)
+
+        );
+
+        Mockito.when(typeElement.getEnclosedElements()).thenReturn(elements);
+
+
+        List<? extends Element> elementWIthNames = ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(typeElement);
+
+        MatcherAssert.assertThat(elementWIthNames, Matchers.hasSize(elements.size()));
+    }
+
+    // -----------------------------------------
+    // -- test getEnclosedElementsWithAtLeastOneAnnotationOf
+    // -----------------------------------------
+
+    @Test
     public void testGetEnclosedElementsWithAtLeastOneAnnotationsOf() {
 
         TypeElement typeElement = Mockito.mock(TypeElement.class);
@@ -330,6 +473,46 @@ public class ElementUtils_AccessEnclosedElements {
         MatcherAssert.assertThat(elementWIthNames, Matchers.hasSize(2));
         MatcherAssert.assertThat(elementWIthNames, Matchers.containsInAnyOrder(toBeFound1, toBeFound2));
 
+    }
+
+    @Test
+    public void testGetEnclosedElementsWithAtLeastOneAnnotationOf_nullSafety() {
+
+        Class<? extends Annotation> annotationClass1ToBeFound = TestAnnotation1ToBeFound.class;
+        MatcherAssert.assertThat(ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAtLeastOneAnnotationOf(null, annotationClass1ToBeFound), Matchers.hasSize(0));
+
+    }
+
+    @Test
+    public void testGetEnclosedElementsWithAtLeastOneAnnotationOf_noFilterCriteria() {
+        TypeElement typeElement = Mockito.mock(TypeElement.class);
+
+        Class<? extends Annotation> annotationClass1ToBeFound = TestAnnotation1ToBeFound.class;
+        Class<? extends Annotation> annotationClass1 = TestAnnotation1.class;
+        Class<? extends Annotation> annotationClass2 = TestAnnotation2.class;
+        Class<? extends Annotation> annotationClass3 = TestAnnotation3.class;
+
+        Element toBeFound1 = mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass1ToBeFound, annotationClass2);
+        Element toBeFound2 = mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass1ToBeFound);
+
+
+        List elements = Utilities.convertVarargsToList(
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass1),
+                toBeFound1,
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass2),
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass3),
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS, annotationClass2),
+                toBeFound2,
+                mockElementWithAnnotations(TypeElement.class, ElementKind.CLASS)
+
+        );
+
+        Mockito.when(typeElement.getEnclosedElements()).thenReturn(elements);
+
+
+        List<? extends Element> elementWIthNames = ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAtLeastOneAnnotationOf(typeElement);
+
+        MatcherAssert.assertThat(elementWIthNames, Matchers.hasSize(elements.size()));
     }
 
 }
