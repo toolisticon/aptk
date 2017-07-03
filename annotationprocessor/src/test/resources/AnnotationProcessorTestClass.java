@@ -1,8 +1,10 @@
 package de.holisticon.annotationprocessor;
 
-import de.holisticon.annotationprocessortoolkit.TestAnnotation;
 import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation1;
 import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation2;
+import de.holisticon.annotationprocessortoolkit.TestAnnotation;
+
+import java.util.Comparator;
 
 /**
  * Test class for annotation processor tools.
@@ -29,6 +31,14 @@ public class AnnotationProcessorTestClass {
     public static class EmbeddedStaticClass {
 
     }
+
+    public Comparator<Long> comparatorWithAnonymousClass = new Comparator<Long>() {
+        @Override
+        public int compare(Long o1, Long o2) {
+            return 0;
+        }
+    };
+
 
     public class EmbeddedClass {
 

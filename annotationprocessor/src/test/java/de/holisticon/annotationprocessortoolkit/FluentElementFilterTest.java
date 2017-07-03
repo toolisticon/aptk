@@ -41,7 +41,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
                                                 .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.FIELD)
                                                 .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.hasSize(7));
+                                        MatcherAssert.assertThat(results, Matchers.hasSize(8));
 
                                         for (Element resultElement : results) {
                                             MatcherAssert.assertThat(resultElement.getKind(), Matchers.is(ElementKind.FIELD));
@@ -144,7 +144,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
                                                 .applyFilter(Filter.ELEMENT_KIND_FILTER).invert().filterByOneOf(ElementKind.FIELD)
                                                 .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size() - 7));
+                                        MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size() - 8));
 
                                         for (Element resultElement : results) {
                                             MatcherAssert.assertThat(resultElement.getKind(), Matchers.not(ElementKind.FIELD));

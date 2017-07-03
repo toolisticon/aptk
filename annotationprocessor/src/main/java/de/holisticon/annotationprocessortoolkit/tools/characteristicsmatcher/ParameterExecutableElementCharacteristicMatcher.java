@@ -39,7 +39,7 @@ public class ParameterExecutableElementCharacteristicMatcher extends GenericElem
 
 
         for (int i = 0; i < executableElement.getParameters().size(); i++) {
-            if (!executableElement.getParameters().get(i).asType().equals(TypeUtils.getTypeUtils(tools).getTypeMirror(toCheckFor[i]))) {
+            if (!executableElement.getParameters().get(i).asType().equals(TypeUtils.getTypeUtils(tools).TYPE_RETRIEVAL.getTypeMirror(toCheckFor[i]))) {
                 return false;
             }
         }

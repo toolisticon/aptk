@@ -25,7 +25,7 @@ public class TypeElementCharacteristicMatcher extends GenericElementCharacterist
         // cast to executable element for further checks
         TypeUtils typeUtils = TypeUtils.getTypeUtils(tools);
 
-        return typeUtils.isErasedTypeEqual(element.asType(), typeUtils.getTypeMirror(toCheckFor));
+        return typeUtils.TYPE_COMPARISON.isErasedTypeEqual(element.asType(), typeUtils.TYPE_RETRIEVAL.getTypeMirror(toCheckFor));
 
     }
 

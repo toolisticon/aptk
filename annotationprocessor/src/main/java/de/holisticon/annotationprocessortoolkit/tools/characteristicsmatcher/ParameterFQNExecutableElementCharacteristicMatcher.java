@@ -42,7 +42,7 @@ public class ParameterFQNExecutableElementCharacteristicMatcher extends GenericE
 
         for (int i = 0; i < executableElement.getParameters().size(); i++) {
 
-            TypeMirror parameterTypeMirror = TypeUtils.getTypeUtils(tools).getTypeMirror(toCheckFor[i]);
+            TypeMirror parameterTypeMirror = TypeUtils.getTypeUtils(tools).TYPE_RETRIEVAL.getTypeMirror(toCheckFor[i]);
             if (parameterTypeMirror == null) {
                 return false;
             }

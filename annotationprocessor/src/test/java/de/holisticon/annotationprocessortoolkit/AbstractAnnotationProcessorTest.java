@@ -36,7 +36,7 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                         List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
                                                 .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.FIELD)
                                                 .getResult();
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(7));
+                                        MatcherAssert.assertThat(result, Matchers.hasSize(8));
 
 
                                         result = createFluentElementFilter(
