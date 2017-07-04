@@ -24,10 +24,10 @@ import java.util.TreeMap;
  * Unit test for {@link de.holisticon.annotationprocessortoolkit.tools.TypeUtils.Generics}.
  */
 @RunWith(Parameterized.class)
-public class TypeUtilsTest_Generics extends AbstractAnnotationProcessorTestBaseClass {
+public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseClass {
 
 
-    public TypeUtilsTest_Generics(String message, AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
+    public TypeUtils_GenericsTest(String message, AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
         super(TypeUtils.class.getSimpleName() + ": " + message, testcase, compilationShouldSucceed);
     }
 
@@ -858,7 +858,7 @@ public class TypeUtilsTest_Generics extends AbstractAnnotationProcessorTestBaseC
                         },
 
 
-                        
+
 
                 }
 

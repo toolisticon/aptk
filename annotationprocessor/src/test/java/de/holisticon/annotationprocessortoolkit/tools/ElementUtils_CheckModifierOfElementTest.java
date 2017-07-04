@@ -11,7 +11,7 @@ import javax.lang.model.element.Modifier;
 /**
  * Unit test for {@link de.holisticon.annotationprocessortoolkit.tools.ElementUtils.CheckModifierOfElement}.
  */
-public class ElementUtils_CheckModifierOfElement {
+public class ElementUtils_CheckModifierOfElementTest {
 
     @Test
     public void testHasPublicModifier() {

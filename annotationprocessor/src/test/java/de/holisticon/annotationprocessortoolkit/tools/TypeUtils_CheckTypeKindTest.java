@@ -10,7 +10,7 @@ import javax.lang.model.type.TypeMirror;
 /**
  * Unit test for {@link TypeUtils.CheckTypeKind}.
  */
-public class TypeUtilsTest_CheckTypeKind {
+public class TypeUtils_CheckTypeKindTest {
 
     private TypeMirror getTypeMirrorMockOfKind(TypeKind typeKind) {
         TypeMirror typeMirror = Mockito.mock(TypeMirror.class);

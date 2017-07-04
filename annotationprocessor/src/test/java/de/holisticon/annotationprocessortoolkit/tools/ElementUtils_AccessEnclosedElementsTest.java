@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Unit test for {@link de.holisticon.annotationprocessortoolkit.tools.ElementUtils.AccessEnclosedElements}.
  */
-public class ElementUtils_AccessEnclosedElements {
+public class ElementUtils_AccessEnclosedElementsTest {
 
 
     private <T extends Element> T mockElement(Class<T> type, ElementKind elementKind) {
