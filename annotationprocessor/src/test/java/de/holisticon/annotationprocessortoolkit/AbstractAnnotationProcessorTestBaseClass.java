@@ -69,6 +69,10 @@ public abstract class AbstractAnnotationProcessorTestBaseClass {
 
     }
 
+    protected String getFilenameToCompile() {
+        return "AnnotationProcessorTestClass.java";
+    }
+
 
     // This old version of the test runs with compile tester version 0.10.0 which is build with java 8.
     // So tests can't be executed with java version <8.
@@ -97,7 +101,7 @@ public abstract class AbstractAnnotationProcessorTestBaseClass {
     @Test
     public void test() {
 
-        JavaFileObject testClassSource = JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
+        JavaFileObject testClassSource = JavaFileObjects.forResource(getFilenameToCompile());
 
         if (compilationShouldSucceed) {
             CompileTester.SuccessfulCompilationClause compileTester = assertAbout(javaSource())

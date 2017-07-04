@@ -245,12 +245,44 @@ public class TypeUtils {
             return isAssignableTo(typeElement1, typeElement2.asType());
         }
 
+
+        /**
+         * Checks whether passed first {@link TypeMirror} is assignable to passed second {@link TypeMirror}.
+         *
+         * @param typeMirror1 the type mirror to check
+         * @param typeMirror2 the type mirror which typeMirror1 must be assignable to
+         * @return true if typeMirror1 is assignable to typeMirror2 otherwise false.
+         */
         public boolean isAssignableTo(TypeMirror typeMirror1, TypeMirror typeMirror2) {
             return typeMirror1 != null && typeMirror2 != null && frameworkToolWrapper.getTypes().isAssignable(typeMirror1, typeMirror2);
         }
 
         /**
+         * Checks whether passed typeElement is assignable to passed genericType.
+         *
+         * @param typeElement the type element to check
+         * @param genericType the genric type to check
+         * @return true if typeElement is assignable to genericType otherwise false.
+         */
+        public boolean isAssignableTo(TypeElement typeElement, GenericType genericType) {
+            return typeElement != null && genericType != null && isAssignableTo(typeElement.asType(), genericType);
+        }
+
+        /**
+         * Checks whether passed typeElement is assignable to passed genericType.
+         *
+         * @param typeMirror  the type element to check
+         * @param genericType the genric type to check
+         * @return true if typeElement is assignable to genericType otherwise false.
+         */
+        public boolean isAssignableTo(TypeMirror typeMirror, GenericType genericType) {
+            return typeMirror != null && genericType != null && GENERICS.genericIsAssignableTo(typeMirror, genericType);
+        }
+
+
+        /**
          * Check if passed TypeElement matches the passed type.
+         * Generic type parameters won't be taken into account during the comparison.
          *
          * @param typeElement the type element to check
          * @param type        the class which the typeElement must match
@@ -263,12 +295,13 @@ public class TypeUtils {
                 return false;
             }
 
-            TypeElement _2ndTypeElement = frameworkToolWrapper.getElements().getTypeElement(type.getCanonicalName());
-            return _2ndTypeElement != null && isTypeEqual(typeElement, _2ndTypeElement.asType());
+            TypeElement _2ndTypeElement = TYPE_RETRIEVAL.getTypeElement(type);
+            return _2ndTypeElement != null && isErasedTypeEqual(typeElement.asType(), _2ndTypeElement.asType());
         }
 
         /**
          * Check if passed TypeElement matches the passed TypeElement.
+         * Generic type attributes will be taken into account during the comparison.
          *
          * @param typeElement the type element to check
          * @param typeMirror  the TypeMirror which the typeElement must match
@@ -280,6 +313,7 @@ public class TypeUtils {
 
         /**
          * Check if passed TypeElement matches the passed TypeElement.
+         * Generic type attributes will be taken into account during the comparison.
          *
          * @param typeElement1 the type element to check
          * @param typeElement2 the TypeElement which the typeElement must match
@@ -292,13 +326,14 @@ public class TypeUtils {
 
         /**
          * Check if passed TypeMirror matches passed type.
+         * Generic type parameters won't be taken into account during the comparison.
          *
          * @param typeMirror the TypeMirror to check
          * @param type       the type in form of a Class to check for
          * @return true if passed type represents same type as passed type, otherwise false
          */
         public boolean isTypeEqual(TypeMirror typeMirror, Class type) {
-            return typeMirror != null && type != null && isTypeEqual(typeMirror, TYPE_RETRIEVAL.getTypeMirror(type));
+            return typeMirror != null && type != null && isErasedTypeEqual(typeMirror, TYPE_RETRIEVAL.getTypeMirror(type));
         }
 
         /**
@@ -314,7 +349,19 @@ public class TypeUtils {
         }
 
         /**
-         * Checks whether both erased TypeMirror parameters represent the same type.
+         * Checks whether passed TypeMirror and GenericType parameters represent the same type.
+         * Generic type attributes will be taken into account during the comparison.
+         *
+         * @param typeMirror  the type mirror to chck
+         * @param genericType the generic type to check against
+         * @return true if both typeMirror and genericType represent the same type
+         */
+        public boolean isTypeEqual(TypeMirror typeMirror, GenericType genericType) {
+            return GENERICS.genericTypeEquals(typeMirror, genericType);
+        }
+
+        /**
+         * Checks whether both erased TypeMirror parameters represent the same type. (== raw types are equal)
          *
          * @param typeMirror1
          * @param typeMirror2
@@ -386,20 +433,6 @@ public class TypeUtils {
 
     public class Generics {
 
-        private GenericType castToDeclaredType(GenericTypeType instance) {
-            if (instance != null && instance instanceof GenericType) {
-                return (GenericType) instance;
-            }
-            return null;
-        }
-
-        private GenericType castToWildcard(GenericTypeType instance) {
-            if (instance != null && instance instanceof GenericType) {
-                return (GenericType) instance;
-            }
-            return null;
-        }
-
         public <T extends GenericTypeType> GenericType createGenericType(TypeMirror rawType, T... typeParameters) {
             return new GenericType(rawType, typeParameters);
         }
@@ -453,21 +486,21 @@ public class TypeUtils {
                 return false;
             }
 
+            // Compare typeParameters
+            if (!(typeMirror instanceof DeclaredType)) {
+                return false;
+            }
+
+            DeclaredType tmDeclaredType = (DeclaredType) typeMirror;
+
+            // check if number of type parameters is matching
+            if (tmDeclaredType.getTypeArguments().size() != genericType.typeParameters.length) {
+                return false;
+            }
+
 
             // Check type parameters
             if (genericType.typeParameters.length > 0) {
-
-                // Compare typeParameters
-                if (!(typeMirror instanceof DeclaredType)) {
-                    return false;
-                }
-
-                DeclaredType tmDeclaredType = (DeclaredType) typeMirror;
-
-                // check if number of type parameters is matching
-                if (tmDeclaredType.getTypeArguments().size() != genericType.typeParameters.length) {
-                    return false;
-                }
 
                 // Now check type parameters recursively
                 for (int i = 0; i < genericType.getTypeParameters().length; i++) {
@@ -547,7 +580,7 @@ public class TypeUtils {
 
         private boolean compareGenericTypeDeclaredTypeRecursively(DeclaredType declaredType, GenericTypeType genericTypeType) {
 
-            if (genericTypeType.getType() != GenericTypeKind.DECLARED_TYPE) {
+            if (genericTypeType.getType() != GenericTypeKind.GENERIC_TYPE) {
                 return false;
             } else {
 
@@ -555,6 +588,204 @@ public class TypeUtils {
 
                 if (declaredType != null && genericType != null && !compareGenericTypesRecursively(declaredType, genericType)) {
                     return false;
+                }
+
+
+            }
+
+            return true;
+        }
+
+
+        /**
+         * Checks whether passed typeElement is assignable to passed genericType.
+         *
+         * @param typeElement the type element to check
+         * @param genericType the genric type to check
+         * @return true if typeElement is assignable to genericType otherwise false.
+         */
+        public boolean genericIsAssignableTo(TypeElement typeElement, GenericType genericType) {
+            return typeElement != null && genericType != null && genericIsAssignableTo(typeElement.asType(), genericType);
+        }
+
+        /**
+         * Checks whether passed typeElement is assignable to passed genericType.
+         *
+         * @param typeMirror  the type element to check
+         * @param genericType the genric type to check
+         * @return true if typeElement is assignable to genericType otherwise false.
+         */
+        public boolean genericIsAssignableTo(TypeMirror typeMirror, GenericType genericType) {
+
+            if (typeMirror == null || genericType == null) {
+                return false;
+            }
+
+            TypeMirror typeMirrorToCompareWith = genericType.getRawType();
+            if (typeMirrorToCompareWith == null) {
+                return false;
+            }
+
+            // Compare raw types - this will not work for super wildcard type since it has Object as raw type
+            if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(typeMirror), getTypes().erasure(typeMirrorToCompareWith))) {
+                return false;
+            }
+
+            return isAssignableToGenericTypeRecursively(typeMirror, genericType);
+        }
+
+
+        private boolean isAssignableToGenericTypeRecursively(TypeMirror typeMirror, GenericType genericType) {
+
+
+            // Check type parameters
+            if (genericType.typeParameters.length > 0) {
+
+                // Compare typeParameters
+                if (!(typeMirror instanceof DeclaredType)) {
+                    return false;
+                }
+
+                DeclaredType tmDeclaredType = (DeclaredType) typeMirror;
+
+                // check if number of type parameters is matching
+                if (tmDeclaredType.getTypeArguments().size() != genericType.typeParameters.length) {
+                    return false;
+                }
+
+                // Now check type parameters recursively
+                for (int i = 0; i < genericType.getTypeParameters().length; i++) {
+
+                    TypeMirror currentTypeParameter = tmDeclaredType.getTypeArguments().get(i);
+                    GenericTypeType currentGenericTypeType = genericType.getTypeParameters()[i];
+
+                    if (currentTypeParameter instanceof WildcardType) {
+
+                        // check wildcard type
+                        if (!isAssignableToGenericTypeHandleWildcardTypeRecursively((WildcardType) currentTypeParameter, currentGenericTypeType)) {
+                            return false;
+                        }
+
+
+                    } else if (currentTypeParameter instanceof DeclaredType) {
+
+
+                        if (!isAssignableToGenericTypeHandleDeclaredTypeRecursively((DeclaredType) currentTypeParameter, currentGenericTypeType)) {
+                            return false;
+                        }
+
+                    }
+
+
+                }
+
+            }
+
+            return true;
+
+        }
+
+
+        protected boolean isAssignableToGenericTypeHandleWildcardTypeRecursively(WildcardType wildcardType, GenericTypeType genericTypeType) {
+
+
+            if (wildcardType.getExtendsBound() == null && wildcardType.getSuperBound() == null) {
+
+                // handle pure wildcards - pure wildcard is only assignable to pure wildcard
+                if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).isPureWildcard()) {
+                    return true;
+                }
+
+                return false;
+
+
+            } else if (wildcardType.getExtendsBound() != null) {
+
+                // handle extends wildcards - only EXT => EXT is may be applicable
+                if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).isPureWildcard()) {
+                    return true;
+                } else if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).hasExtendsBound()) {
+
+                    GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeType;
+
+                    if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(wildcardType.getExtendsBound()), getTypes().erasure(wildcard.getExtendsBound().getRawType()))) {
+                        return false;
+                    }
+
+                    return isAssignableToGenericTypeRecursively(wildcardType.getExtendsBound(), wildcard.getExtendsBound());
+
+                } else {
+                    return false;
+                }
+
+
+            } else if (wildcardType.getSuperBound() != null) {
+
+                // handle super wildcards - only SUPER => SUPER is may be applicable
+                if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).isPureWildcard()) {
+                    return true;
+                } else if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).hasSuperBound()) {
+
+                    GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeType;
+
+                    if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(wildcard.getSuperBound().getRawType()), getTypes().erasure(wildcardType.getSuperBound()))) {
+                        return false;
+                    }
+
+                    return isAssignableToGenericTypeRecursively(wildcardType.getSuperBound(), wildcard.getSuperBound());
+
+                } else {
+                    return false;
+                }
+
+
+            }
+
+
+            return true;
+        }
+
+        private boolean isAssignableToGenericTypeHandleDeclaredTypeRecursively(DeclaredType declaredType, GenericTypeType genericTypeType) {
+
+            if (genericTypeType.getType() == GenericTypeKind.GENERIC_TYPE) {
+
+                // RAW - RAW must have exactly the same type
+                GenericType genericType = (GenericType) genericTypeType;
+                if (!TYPE_COMPARISON.isErasedTypeEqual(getTypes().erasure(declaredType), getTypes().erasure(genericType.getRawType()))) {
+                    return false;
+                }
+
+                // Now compare it's type parameters
+                return isAssignableToGenericTypeRecursively(declaredType, genericType);
+
+            } else if (genericTypeType.getType() == GenericTypeKind.WILDCARD) {
+
+                GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeType;
+
+                if (wildcard.isPureWildcard()) {
+
+                    return true;
+
+                } else if (wildcard.hasSuperBound()) {
+
+                    // GenericTypes super bound type mirror must be assignable to TypeMirrors super bound
+                    if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(wildcard.getSuperBound().getRawType()), getTypes().erasure(declaredType))) {
+                        return false;
+                    }
+
+                    // Now compare it's type parameters
+                    return isAssignableToGenericTypeRecursively(declaredType, wildcard.getSuperBound());
+
+                } else if (wildcard.hasExtendsBound()) {
+
+                    // type mirrors extends bound type mirror must be assignable to GenericTypes extends bound
+                    if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(declaredType), getTypes().erasure(wildcard.getExtendsBound().getRawType()))) {
+                        return false;
+                    }
+
+                    // Now compare it's type parameters
+                    return isAssignableToGenericTypeRecursively(declaredType, wildcard.getExtendsBound());
+
                 }
 
 

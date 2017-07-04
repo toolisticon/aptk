@@ -91,7 +91,7 @@ public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericTy
                         break;
 
 
-                    case DECLARED_TYPE:
+                    case GENERIC_TYPE:
                         createStringRepresentationRecursively(stringBuilder, (GenericType) currentGenericTypeType);
                         break;
 

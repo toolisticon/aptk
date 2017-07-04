@@ -33,6 +33,6 @@ public class GenericType implements GenericTypeType {
 
     @Override
     public GenericTypeKind getType() {
-        return GenericTypeKind.DECLARED_TYPE;
+        return GenericTypeKind.GENERIC_TYPE;
     }
 }
