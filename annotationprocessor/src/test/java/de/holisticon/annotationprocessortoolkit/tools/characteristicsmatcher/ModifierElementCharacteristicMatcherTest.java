@@ -10,12 +10,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Unit test for {@link ModifierElementCharacteristicMatcher}.
+ * Unit test for {@link ModifierMatcher}.
  */
 public class ModifierElementCharacteristicMatcherTest {
 
 
-    private ModifierElementCharacteristicMatcher unit = new ModifierElementCharacteristicMatcher();
+    private ModifierMatcher unit = new ModifierMatcher();
 
 
     @Test

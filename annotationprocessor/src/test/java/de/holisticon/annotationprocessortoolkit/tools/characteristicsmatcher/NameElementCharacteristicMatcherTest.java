@@ -8,14 +8,14 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
 
 /**
- * Unit test for {@link NameElementCharacteristicMatcher}.
+ * Unit test for {@link NameMatcher}.
  */
 public class NameElementCharacteristicMatcherTest {
 
     private final static String NAME = "NAME";
 
 
-    private NameElementCharacteristicMatcher unit = new NameElementCharacteristicMatcher();
+    private NameMatcher unit = new NameMatcher();
 
 
     @Test

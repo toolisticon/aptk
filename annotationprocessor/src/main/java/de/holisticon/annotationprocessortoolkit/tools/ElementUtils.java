@@ -1,8 +1,8 @@
 package de.holisticon.annotationprocessortoolkit.tools;
 
 import de.holisticon.annotationprocessortoolkit.internal.Utilities;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filter;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validator;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validators;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -453,7 +453,7 @@ public final class ElementUtils {
          * @return true if passed element has modifier, otherwise false
          */
         private static boolean hasModifier(Element e, Modifier modifier) {
-            return Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, modifier);
+            return Validators.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, modifier);
         }
 
     }
@@ -530,7 +530,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filter.NAME_FILTER.getFilter().filterByOneOf(element.getEnclosedElements(), name);
+            return Filters.NAME_FILTER.getFilter().filterByOneOf(element.getEnclosedElements(), name);
 
         }
 
@@ -585,7 +585,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filter.ELEMENT_KIND_FILTER.getFilter().filterByOneOf(element.getEnclosedElements(), kind);
+            return Filters.ELEMENT_KIND_FILTER.getFilter().filterByOneOf(element.getEnclosedElements(), kind);
 
         }
 
@@ -603,7 +603,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filter.ANNOTATION_FILTER.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
+            return Filters.ANNOTATION_FILTER.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
 
         }
 
@@ -620,7 +620,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filter.ANNOTATION_FILTER.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
+            return Filters.ANNOTATION_FILTER.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
 
         }
     }

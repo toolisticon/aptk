@@ -2,6 +2,7 @@ package de.holisticon.annotationprocessortoolkit.filter;
 
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filter;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.GenericCharacteristicsFilter;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.ValidatorKind;
 
@@ -101,7 +102,7 @@ public class FluentElementFilter<T extends Element> {
 
 
     public FluentElementFilter<TypeElement> filterAndCastToTypeElement() {
-        return genericFilterAndCastToTypeElement(new ApplyFilter<ElementKind>(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CLASS).getResult(), TypeElement.class);
+        return genericFilterAndCastToTypeElement(new ApplyFilter<ElementKind>(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CLASS).getResult(), TypeElement.class);
 
     }
 

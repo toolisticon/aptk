@@ -1,7 +1,7 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
 
 import de.holisticon.annotationprocessortoolkit.internal.Utilities;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.GenericElementCharacteristicMatcher;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.GenericMatcher;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matcher;
 
 import javax.lang.model.element.Element;
@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class GenericElementCharacteristicValidator<T> implements InclusiveElementValidator<T> {
 
-    private GenericElementCharacteristicMatcher<T> matcher;
+    private GenericMatcher<T> matcher;
 
     public GenericElementCharacteristicValidator(Matcher<T> matcher) {
         this.matcher = matcher != null ? matcher.getMatcher() : null;
@@ -165,7 +165,7 @@ public class GenericElementCharacteristicValidator<T> implements InclusiveElemen
         return true;
     }
 
-    public GenericElementCharacteristicMatcher<T> getMatcher() {
+    public GenericMatcher<T> getMatcher() {
         return matcher;
     }
 

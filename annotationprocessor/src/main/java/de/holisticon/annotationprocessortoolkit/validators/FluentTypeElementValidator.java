@@ -3,7 +3,7 @@ package de.holisticon.annotationprocessortoolkit.validators;
 import de.holisticon.annotationprocessortoolkit.filter.FluentElementFilter;
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils.CastElement;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filter;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -78,7 +78,7 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
         List<ExecutableElement> constructors =
                 CastElement.castElementList(
                         FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CONSTRUCTOR)
+                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CONSTRUCTOR)
                                 .getResult()
                         , ExecutableElement.class);
 

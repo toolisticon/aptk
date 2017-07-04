@@ -14,7 +14,7 @@ import java.util.List;
 
 
 /**
- * Unit test for {@link ParameterExecutableElementCharacteristicMatcher}.
+ * Unit test for {@link ParameterExecutableMatcher}.
  */
 @RunWith(Parameterized.class)
 public class TypeElementCharacteristicMatcherTest extends AbstractAnnotationProcessorTestBaseClass {
@@ -41,7 +41,7 @@ public class TypeElementCharacteristicMatcherTest extends AbstractAnnotationProc
                                         MatcherAssert.assertThat("Precondition: dound method has to be of type ExecutableElement", result.get(0) instanceof VariableElement);
 
 
-                                        MatcherAssert.assertThat("Should have found matching type", Matcher.TYPE_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(result.get(0), String.class));
+                                        MatcherAssert.assertThat("Should have found matching type", Matchers.TYPE_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(result.get(0), String.class));
 
                                     }
                                 },
@@ -60,7 +60,7 @@ public class TypeElementCharacteristicMatcherTest extends AbstractAnnotationProc
                                         MatcherAssert.assertThat("Precondition: dound method has to be of type ExecutableElement", result.get(0) instanceof VariableElement);
 
 
-                                        MatcherAssert.assertThat("Should not have found matching type", !Matcher.TYPE_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(result.get(0), Boolean.class));
+                                        MatcherAssert.assertThat("Should not have found matching type", !Matchers.TYPE_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(result.get(0), Boolean.class));
 
                                     }
                                 },

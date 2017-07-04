@@ -2,7 +2,7 @@ package de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
 
 import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation2;
 import de.holisticon.annotationprocessortoolkit.TestAnnotation;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.AnnotationElementCharacteristicMatcher;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.AnnotationMatcher;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import javax.lang.model.element.Element;
 import java.lang.annotation.Annotation;
 
 /**
- * Unit and integration test of {@link GenericElementCharacteristicValidator} with {@link AnnotationElementCharacteristicMatcher}.
+ * Unit and integration test of {@link GenericElementCharacteristicValidator} with {@link AnnotationMatcher}.
  */
 public class AnnotationElementCharacteristicValidatorTest {
 
@@ -27,7 +27,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -46,7 +46,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -66,7 +66,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -84,7 +84,7 @@ public class AnnotationElementCharacteristicValidatorTest {
     public void test_allOf_nullValuedElement() {
 
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -99,7 +99,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -124,7 +124,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -143,7 +143,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -163,7 +163,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -182,7 +182,7 @@ public class AnnotationElementCharacteristicValidatorTest {
     public void test_hasAtLeastOneOf_nullValuedElement() {
 
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -197,7 +197,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -224,7 +224,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -243,7 +243,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -263,7 +263,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -282,7 +282,7 @@ public class AnnotationElementCharacteristicValidatorTest {
     public void test_hasOneOf_nullValuedElement() {
 
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -297,7 +297,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -324,7 +324,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -343,7 +343,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -363,7 +363,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -382,7 +382,7 @@ public class AnnotationElementCharacteristicValidatorTest {
     public void test_hasNoneOf_nullValuedElement() {
 
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 
@@ -397,7 +397,7 @@ public class AnnotationElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        AnnotationElementCharacteristicMatcher annotationMatcher = Mockito.mock(AnnotationElementCharacteristicMatcher.class);
+        AnnotationMatcher annotationMatcher = Mockito.mock(AnnotationMatcher.class);
         Matcher<Class<? extends Annotation>> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(annotationMatcher);
 

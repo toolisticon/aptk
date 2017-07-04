@@ -1,7 +1,7 @@
 package de.holisticon.annotationprocessortoolkit;
 
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filter;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 import de.holisticon.annotationprocessortoolkit.validators.FluentTypeElementValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -77,7 +77,7 @@ public class FluentTypeElementValidatorTest extends AbstractAnnotationProcessorT
 
                                         List<? extends Element> elements = createFluentElementFilter(
                                                 ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "EmbeddedClass"))
-                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CLASS)
+                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CLASS)
                                                 .getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         TypeElement _2ndTestElement = ElementUtils.CastElement.castToTypeElement(elements.get(0));
@@ -85,7 +85,7 @@ public class FluentTypeElementValidatorTest extends AbstractAnnotationProcessorT
                                         MatcherAssert.assertThat(getFluentTypeValidator(_2ndTestElement).hasNoArgConstructor().getValidationResult(), Matchers.is(true));
 
                                         elements = createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "EmbeddedClassWithNoNoargConstructor"))
-                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CLASS).getResult();
+                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CLASS).getResult();
                                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                         TypeElement _3rdTestElement = ElementUtils.CastElement.castToTypeElement(elements.get(0));
 

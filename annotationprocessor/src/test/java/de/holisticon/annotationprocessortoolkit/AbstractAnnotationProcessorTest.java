@@ -1,6 +1,6 @@
 package de.holisticon.annotationprocessortoolkit;
 
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filter;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
@@ -34,15 +34,15 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.FIELD)
+                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.FIELD)
                                                 .getResult();
                                         MatcherAssert.assertThat(result, Matchers.hasSize(8));
 
 
                                         result = createFluentElementFilter(
                                                 element.getEnclosedElements())
-                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.FIELD)
-                                                .applyFilter(Filter.MODIFIER_FILTER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
+                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.FIELD)
+                                                .applyFilter(Filters.MODIFIER_FILTER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
                                                 .getResult();
                                         MatcherAssert.assertThat(result, Matchers.hasSize(1));
                                         MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));

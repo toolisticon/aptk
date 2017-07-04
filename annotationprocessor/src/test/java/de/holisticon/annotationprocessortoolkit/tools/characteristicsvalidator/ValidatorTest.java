@@ -1,9 +1,8 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
 
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matcher;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ParameterExecutableElementCharacteristicMatcher;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ParameterFQNExecutableElementCharacteristicMatcher;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.TypeElementCharacteristicMatcher;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ParameterExecutableMatcher;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ParameterFQNExecutableMatcher;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.TypeMatcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -25,14 +24,14 @@ public class ValidatorTest {
     @Test
     public void testModifierValidator() {
 
-        MatcherAssert.assertThat(Validator.MODIFIER_VALIDATOR.getValidator().getMatcher(), Matchers.is(Matcher.MODIFIER_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.MODIFIER_VALIDATOR.getValidator().getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.MODIFIER_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testModifierValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Modifier>) Validator.getModifierValidator()).getMatcher(), Matchers.is(Matcher.MODIFIER_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator()).getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.MODIFIER_MATCHER.getMatcher()));
 
     }
 
@@ -43,14 +42,14 @@ public class ValidatorTest {
     @Test
     public void testAnnotationValidator() {
 
-        MatcherAssert.assertThat(Validator.ANNOTATION_VALIDATOR.getValidator().getMatcher(), Matchers.is(Matcher.ANNOTATION_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.ANNOTATION_VALIDATOR.getValidator().getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.ANNOTATION_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testAnnotationValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class<? extends Annotation>>) Validator.getAnnotationValidator()).getMatcher(), Matchers.is(Matcher.ANNOTATION_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class<? extends Annotation>>) Validators.getAnnotationValidator()).getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.ANNOTATION_MATCHER.getMatcher()));
 
     }
 
@@ -61,14 +60,14 @@ public class ValidatorTest {
     @Test
     public void testNameValidator() {
 
-        MatcherAssert.assertThat(Validator.NAME_VALIDATOR.getValidator().getMatcher(), Matchers.is(Matcher.NAME_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.NAME_VALIDATOR.getValidator().getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.NAME_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testNameValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String>) Validator.getNameValidator()).getMatcher(), Matchers.is(Matcher.NAME_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String>) Validators.getNameValidator()).getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.NAME_MATCHER.getMatcher()));
 
     }
 
@@ -79,14 +78,14 @@ public class ValidatorTest {
     @Test
     public void testRegexNameValidator() {
 
-        MatcherAssert.assertThat(Validator.REGEX_NAME_VALIDATOR.getValidator().getMatcher(), Matchers.is(Matcher.REGEX_NAME_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.REGEX_NAME_VALIDATOR.getValidator().getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.REGEX_NAME_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testRegexNameValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String>) Validator.getRegexNameValidator()).getMatcher(), Matchers.is(Matcher.REGEX_NAME_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String>) Validators.getRegexNameValidator()).getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.REGEX_NAME_MATCHER.getMatcher()));
 
     }
 
@@ -97,14 +96,14 @@ public class ValidatorTest {
     @Test
     public void testElementKindValidator() {
 
-        MatcherAssert.assertThat(Validator.ELEMENT_KIND_VALIDATOR.getValidator().getMatcher(), Matchers.is(Matcher.ELEMENT_KIND_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.ELEMENT_KIND_VALIDATOR.getValidator().getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.ELEMENT_KIND_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testElementKindValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<ElementKind>) Validator.getElementKindValidator()).getMatcher(), Matchers.is(Matcher.ELEMENT_KIND_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<ElementKind>) Validators.getElementKindValidator()).getMatcher(), Matchers.is(de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.ELEMENT_KIND_MATCHER.getMatcher()));
 
     }
 
@@ -115,14 +114,14 @@ public class ValidatorTest {
     @Test
     public void testParameterValidator() {
 
-        MatcherAssert.assertThat(Validator.PARAMETER_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(ParameterExecutableElementCharacteristicMatcher.class));
+        MatcherAssert.assertThat(Validators.PARAMETER_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(ParameterExecutableMatcher.class));
 
     }
 
     @Test
     public void testParameterValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class[]>) Validator.getParameterValidator(null)).getMatcher(), Matchers.instanceOf(ParameterExecutableElementCharacteristicMatcher.class));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class[]>) Validators.getParameterValidator(null)).getMatcher(), Matchers.instanceOf(ParameterExecutableMatcher.class));
 
     }
 
@@ -133,14 +132,14 @@ public class ValidatorTest {
     @Test
     public void testParameterFQNValidator() {
 
-        MatcherAssert.assertThat(Validator.PARAMETER_FQN_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(ParameterFQNExecutableElementCharacteristicMatcher.class));
+        MatcherAssert.assertThat(Validators.PARAMETER_FQN_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(ParameterFQNExecutableMatcher.class));
 
     }
 
     @Test
     public void testParameterFQNValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String[]>) Validator.getParameterFqnValidator(null)).getMatcher(), Matchers.instanceOf(ParameterFQNExecutableElementCharacteristicMatcher.class));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String[]>) Validators.getParameterFqnValidator(null)).getMatcher(), Matchers.instanceOf(ParameterFQNExecutableMatcher.class));
 
     }
 
@@ -151,7 +150,7 @@ public class ValidatorTest {
     @Test
     public void testTypeValidator() {
 
-        MatcherAssert.assertThat(Validator.TYPE_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(TypeElementCharacteristicMatcher.class));
+        MatcherAssert.assertThat(Validators.TYPE_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(TypeMatcher.class));
 
     }
 
@@ -159,7 +158,7 @@ public class ValidatorTest {
     @Test
     public void testTypeValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class>) Validator.getTypeValidator(null)).getMatcher(), Matchers.instanceOf(TypeElementCharacteristicMatcher.class));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class>) Validators.getTypeValidator(null)).getMatcher(), Matchers.instanceOf(TypeMatcher.class));
 
     }
 

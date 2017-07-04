@@ -2,7 +2,7 @@ package de.holisticon.annotationprocessortoolkit.validators;
 
 
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validator;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validators;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
@@ -38,7 +38,7 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
         boolean nextResult = currentValidationResult;
 
         if (modifiers != null) {
-            if (!Validator.MODIFIER_VALIDATOR.getValidator().hasAllOf(element, modifiers)) {
+            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasAllOf(element, modifiers)) {
                 messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers)));
                 nextResult = isErrorLevel() ? false : nextResult;
             }
@@ -57,7 +57,7 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
         boolean nextResult = currentValidationResult;
 
         if (modifiers != null) {
-            if (!Validator.MODIFIER_VALIDATOR.getValidator().hasNoneOf(element, modifiers)) {
+            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasNoneOf(element, modifiers)) {
                 messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers)));
                 nextResult = isErrorLevel() ? false : nextResult;
             }

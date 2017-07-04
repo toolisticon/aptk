@@ -16,7 +16,7 @@ public class RegexNameElementCharacteristicMatcherTest {
     private final static String NAME = "NAME";
 
 
-    private RegexNameElementCharacteristicMatcher unit = new RegexNameElementCharacteristicMatcher();
+    private RegexNameMatcher unit = new RegexNameMatcher();
 
 
     @Test

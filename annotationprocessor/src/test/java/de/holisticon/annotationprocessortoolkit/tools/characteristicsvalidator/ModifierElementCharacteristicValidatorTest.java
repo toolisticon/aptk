@@ -1,7 +1,7 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
 
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matcher;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ModifierElementCharacteristicMatcher;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ModifierMatcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -10,7 +10,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 
 /**
- * Unit and integration test of {@link GenericElementCharacteristicValidator} with {@link ModifierElementCharacteristicMatcher}.
+ * Unit and integration test of {@link GenericElementCharacteristicValidator} with {@link ModifierMatcher}.
  */
 public class ModifierElementCharacteristicValidatorTest {
 
@@ -25,7 +25,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
 
@@ -43,7 +43,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
@@ -64,7 +64,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
@@ -85,7 +85,7 @@ public class ModifierElementCharacteristicValidatorTest {
     public void test_allOf_nullValuedElement() {
 
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
@@ -103,7 +103,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
@@ -130,7 +130,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
@@ -150,7 +150,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
@@ -172,7 +172,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
@@ -193,7 +193,7 @@ public class ModifierElementCharacteristicValidatorTest {
     public void test_hasAtLeastOneOf_nullValuedElement() {
 
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
         Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
@@ -209,7 +209,7 @@ public class ModifierElementCharacteristicValidatorTest {
     public void test_hasAtLeastOneOf_missingAnnotationParameters() {
 
         Element element = Mockito.mock(Element.class);
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
@@ -237,7 +237,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
@@ -258,7 +258,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
@@ -279,7 +279,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
@@ -300,7 +300,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
         Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
@@ -317,7 +317,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
@@ -346,7 +346,7 @@ public class ModifierElementCharacteristicValidatorTest {
         Element element = Mockito.mock(Element.class);
 
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
@@ -366,7 +366,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
@@ -389,7 +389,7 @@ public class ModifierElementCharacteristicValidatorTest {
         Element element = Mockito.mock(Element.class);
 
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
@@ -408,7 +408,7 @@ public class ModifierElementCharacteristicValidatorTest {
     public void test_hasNoneOf_nullValuedElement() {
 
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
         Matcher<Modifier> matcher = Mockito.mock(Matcher.class);
         Mockito.when(matcher.getMatcher()).thenReturn(modifierMatcher);
@@ -425,7 +425,7 @@ public class ModifierElementCharacteristicValidatorTest {
 
         Element element = Mockito.mock(Element.class);
 
-        ModifierElementCharacteristicMatcher modifierMatcher = Mockito.mock(ModifierElementCharacteristicMatcher.class);
+        ModifierMatcher modifierMatcher = Mockito.mock(ModifierMatcher.class);
 
 
         Mockito.when(modifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
