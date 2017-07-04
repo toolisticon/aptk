@@ -5,23 +5,23 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
-import java.util.HashSet;
-import java.util.Set;
+import javax.lang.model.element.Name;
 
 /**
- * Unit test for {@link ModifierMatcher}.
+ * Unit test for {@link NameMatcher}.
  */
-public class ModifierElementCharacteristicMatcherTest {
+public class NameMatcherTest {
+
+    private final static String NAME = "NAME";
 
 
-    private ModifierMatcher unit = new ModifierMatcher();
+    private NameMatcher unit = new NameMatcher();
 
 
     @Test
     public void test_getStringRepresentationOfPassedCharacteristic_happyPath() {
 
-        MatcherAssert.assertThat("Should return enum name", unit.getStringRepresentationOfPassedCharacteristic(Modifier.FINAL).equals(Modifier.FINAL.name()));
+        MatcherAssert.assertThat("Should return enum name", unit.getStringRepresentationOfPassedCharacteristic(NAME).equals(NAME));
 
     }
 
@@ -38,12 +38,11 @@ public class ModifierElementCharacteristicMatcherTest {
 
         Element element = Mockito.mock(Element.class);
 
-        Set<Modifier> modifierSet = new HashSet<Modifier>();
-        modifierSet.add(Modifier.FINAL);
+        Name nameOfElement = Mockito.mock(Name.class);
+        Mockito.when(nameOfElement.toString()).thenReturn(NAME);
 
-        Mockito.when(element.getModifiers()).thenReturn(modifierSet);
-
-        MatcherAssert.assertThat("Should find match correctly", unit.checkForMatchingCharacteristic(element, Modifier.FINAL));
+        Mockito.when(element.getSimpleName()).thenReturn(nameOfElement);
+        MatcherAssert.assertThat("Should find match correctly", unit.checkForMatchingCharacteristic(element, NAME));
 
     }
 
@@ -53,18 +52,18 @@ public class ModifierElementCharacteristicMatcherTest {
         Element element = Mockito.mock(Element.class);
 
 
-        Set<Modifier> modifierSet = new HashSet<Modifier>();
-        modifierSet.add(Modifier.FINAL);
+        Name nameOfElement = Mockito.mock(Name.class);
+        Mockito.when(nameOfElement.toString()).thenReturn("XXX");
 
-        Mockito.when(element.getModifiers()).thenReturn(modifierSet);
-        MatcherAssert.assertThat("Should find mismatch correctly", !unit.checkForMatchingCharacteristic(element, Modifier.PUBLIC));
+        Mockito.when(element.getSimpleName()).thenReturn(nameOfElement);
+        MatcherAssert.assertThat("Should find mismatch correctly", !unit.checkForMatchingCharacteristic(element, NAME));
 
     }
 
     @Test
     public void test_checkForMatchingCharacteristic_nullValuedElement() {
 
-        MatcherAssert.assertThat("Should return false in case of null valued element", !unit.checkForMatchingCharacteristic(null, Modifier.ABSTRACT));
+        MatcherAssert.assertThat("Should return false in case of null valued element", !unit.checkForMatchingCharacteristic(null, NAME));
 
     }
 

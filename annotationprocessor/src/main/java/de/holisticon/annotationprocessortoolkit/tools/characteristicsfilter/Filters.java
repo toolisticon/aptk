@@ -2,6 +2,7 @@ package de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter;
 
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validators;
+import de.holisticon.annotationprocessortoolkit.tools.generics.GenericType;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -27,8 +28,12 @@ public class Filters {
         return new Filter<String[]>(new GenericCharacteristicsFilter<String[]>(Validators.PARAMETER_FQN_VALIDATOR(tools)));
     }
 
-    public static Filter<Class> TYPE_FILTER(FrameworkToolWrapper tools) {
-        return new Filter<Class>(new GenericCharacteristicsFilter<Class>(Validators.TYPE_VALIDATOR(tools)));
+    public static Filter<Class> RAW_TYPE_FILTER(FrameworkToolWrapper tools) {
+        return new Filter<Class>(new GenericCharacteristicsFilter<Class>(Validators.RAW_TYPE_VALIDATOR(tools)));
+    }
+
+    public static Filter<GenericType> GENERIC_TYPE_FILTER(FrameworkToolWrapper tools) {
+        return new Filter<GenericType>(new GenericCharacteristicsFilter<GenericType>(Validators.GENERIC_TYPE_VALIDATOR(tools)));
     }
 
 

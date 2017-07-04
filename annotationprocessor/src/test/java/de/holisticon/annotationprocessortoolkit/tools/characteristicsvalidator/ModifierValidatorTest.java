@@ -12,7 +12,7 @@ import javax.lang.model.element.Modifier;
 /**
  * Unit and integration test of {@link GenericElementCharacteristicValidator} with {@link ModifierMatcher}.
  */
-public class ModifierElementCharacteristicValidatorTest {
+public class ModifierValidatorTest {
 
 
     // --------------------------------------------------------

@@ -2,7 +2,7 @@ package de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
 
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ParameterExecutableMatcher;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.ParameterFQNExecutableMatcher;
-import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.TypeMatcher;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.RawTypeMatcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -144,13 +144,13 @@ public class ValidatorTest {
     }
 
     // ------------------------------------
-    // -- TYPE_VALIDATOR Validator tests
+    // -- RAW_TYPE_VALIDATOR Validator tests
     // ------------------------------------
 
     @Test
     public void testTypeValidator() {
 
-        MatcherAssert.assertThat(Validators.TYPE_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(TypeMatcher.class));
+        MatcherAssert.assertThat(Validators.RAW_TYPE_VALIDATOR(null).getValidator().getMatcher(), Matchers.instanceOf(RawTypeMatcher.class));
 
     }
 
@@ -158,7 +158,7 @@ public class ValidatorTest {
     @Test
     public void testTypeValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class>) Validators.getTypeValidator(null)).getMatcher(), Matchers.instanceOf(TypeMatcher.class));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class>) Validators.getRawTypeValidator(null)).getMatcher(), Matchers.instanceOf(RawTypeMatcher.class));
 
     }
 

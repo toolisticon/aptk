@@ -1,6 +1,7 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+import de.holisticon.annotationprocessortoolkit.tools.generics.GenericType;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -26,8 +27,12 @@ public class Matchers {
         return new Matcher<String[]>(new ParameterFQNExecutableMatcher(tools));
     }
 
-    public static Matcher<Class> TYPE_MATCHER(FrameworkToolWrapper tools) {
-        return new Matcher<Class>(new TypeMatcher(tools));
+    public static Matcher<Class> RAW_TYPE_MATCHER(FrameworkToolWrapper tools) {
+        return new Matcher<Class>(new RawTypeMatcher(tools));
+    }
+
+    public static Matcher<GenericType> GENERIC_TYPE_MATCHER(FrameworkToolWrapper tools) {
+        return new Matcher<GenericType>(new GenericTypeMatcher(tools));
     }
 
 

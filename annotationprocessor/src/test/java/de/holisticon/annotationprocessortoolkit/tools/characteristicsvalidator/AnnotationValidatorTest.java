@@ -14,7 +14,7 @@ import java.lang.annotation.Annotation;
 /**
  * Unit and integration test of {@link GenericElementCharacteristicValidator} with {@link AnnotationMatcher}.
  */
-public class AnnotationElementCharacteristicValidatorTest {
+public class AnnotationValidatorTest {
 
 
     // --------------------------------------------------------

@@ -13,13 +13,14 @@ import javax.lang.model.element.TypeElement;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * Unit test for {@link ParameterExecutableMatcher}.
  */
 @RunWith(Parameterized.class)
-public class ParameterExecutableElementCharacteristicMatcherTest extends AbstractAnnotationProcessorTestBaseClass {
+public class ParameterFQNMatcherTest extends AbstractAnnotationProcessorTestBaseClass {
 
-    public ParameterExecutableElementCharacteristicMatcherTest(String message, AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
+    public ParameterFQNMatcherTest(String message, AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
         super(ElementUtils.class.getSimpleName() + ": " + message, testcase, compilationShouldSucceed);
     }
 
@@ -31,7 +32,7 @@ public class ParameterExecutableElementCharacteristicMatcherTest extends Abstrac
 
 
                         {
-                                "ParameterExecutableMatcher match",
+                                "ParameterFQNExecutableMatcher match",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -47,7 +48,7 @@ public class ParameterExecutableElementCharacteristicMatcherTest extends Abstrac
                                         MatcherAssert.assertThat("Precondition: second parameter must be of type String but is " + executableElement.getParameters().get(1).asType().toString(), executableElement.getParameters().get(1).asType().toString().equals(String.class.getCanonicalName()));
 
 
-                                        MatcherAssert.assertThat("Should have found matching parameters", Matchers.PARAMETER_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class)));
+                                        MatcherAssert.assertThat("Should have found matching parameters", Matchers.PARAMETER_FQN_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class.getCanonicalName(), String.class.getCanonicalName())));
 
                                     }
                                 },
@@ -56,7 +57,7 @@ public class ParameterExecutableElementCharacteristicMatcherTest extends Abstrac
 
                         },
                         {
-                                "ParameterExecutableMatcher no match",
+                                "ParameterFQNExecutableMatcher no match",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -69,9 +70,9 @@ public class ParameterExecutableElementCharacteristicMatcherTest extends Abstrac
                                         MatcherAssert.assertThat("Precondition: method must have 2 parameters", executableElement.getParameters().size() == 2);
 
 
-                                        MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.PARAMETER_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(String.class, Boolean.class)));
-                                        MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.PARAMETER_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class)));
-                                        MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.PARAMETER_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class, String.class)));
+                                        MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.PARAMETER_FQN_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(String.class.getCanonicalName(), Boolean.class.getCanonicalName())));
+                                        MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.PARAMETER_FQN_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class.getCanonicalName())));
+                                        MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.PARAMETER_FQN_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class.getCanonicalName(), String.class.getCanonicalName(), String.class.getCanonicalName())));
 
                                     }
                                 },

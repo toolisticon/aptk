@@ -2,6 +2,7 @@ package de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
 
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers;
+import de.holisticon.annotationprocessortoolkit.tools.generics.GenericType;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -26,8 +27,12 @@ public class Validators {
         return new Validator<String[]>(new GenericElementCharacteristicValidator<String[]>(Matchers.PARAMETER_FQN_MATCHER(tools)));
     }
 
-    public static Validator<Class> TYPE_VALIDATOR(FrameworkToolWrapper tools) {
-        return new Validator<Class>(new GenericElementCharacteristicValidator<Class>(Matchers.TYPE_MATCHER(tools)));
+    public static Validator<Class> RAW_TYPE_VALIDATOR(FrameworkToolWrapper tools) {
+        return new Validator<Class>(new GenericElementCharacteristicValidator<Class>(Matchers.RAW_TYPE_MATCHER(tools)));
+    }
+
+    public static Validator<GenericType> GENERIC_TYPE_VALIDATOR(FrameworkToolWrapper tools) {
+        return new Validator<GenericType>(new GenericElementCharacteristicValidator<GenericType>(Matchers.GENERIC_TYPE_MATCHER(tools)));
     }
 
 
@@ -97,11 +102,20 @@ public class Validators {
 
 
     /**
-     * Convenience method for getting and using a type matching validator.
+     * Convenience method for getting and using a raw type matching validator.
      *
      * @return the validator instance
      */
-    public static ExclusiveElementValidator<Class> getTypeValidator(FrameworkToolWrapper frameworkToolWrapper) {
-        return TYPE_VALIDATOR(frameworkToolWrapper).getValidator();
+    public static ExclusiveElementValidator<Class> getRawTypeValidator(FrameworkToolWrapper frameworkToolWrapper) {
+        return RAW_TYPE_VALIDATOR(frameworkToolWrapper).getValidator();
+    }
+
+    /**
+     * Convenience method for getting and using a raw type matching validator.
+     *
+     * @return the validator instance
+     */
+    public static ExclusiveElementValidator<GenericType> getGenericTypeValidator(FrameworkToolWrapper frameworkToolWrapper) {
+        return GENERIC_TYPE_VALIDATOR(frameworkToolWrapper).getValidator();
     }
 }
