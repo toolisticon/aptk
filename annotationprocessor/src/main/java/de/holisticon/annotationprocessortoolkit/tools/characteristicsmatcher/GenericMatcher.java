@@ -5,7 +5,7 @@ import javax.lang.model.element.Element;
 /**
  * Interface for checking one Element
  */
-public interface GenericElementCharacteristicMatcher<T> {
+public interface GenericMatcher<T> {
 
     boolean checkForMatchingCharacteristic(Element element, T toCheckFor);
 

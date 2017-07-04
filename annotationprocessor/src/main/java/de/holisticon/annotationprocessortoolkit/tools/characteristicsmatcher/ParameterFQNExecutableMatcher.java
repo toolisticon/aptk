@@ -12,9 +12,9 @@ import javax.lang.model.type.TypeMirror;
 /**
  * Matcher to check Parameters of ExecutableElement.
  */
-public class ParameterFQNExecutableElementCharacteristicMatcher extends GenericElementCharacteristicMatcherWithToolsSupport<String[]> {
+public class ParameterFQNExecutableMatcher extends GenericMatcherWithToolsSupport<String[]> {
 
-    public ParameterFQNExecutableElementCharacteristicMatcher(FrameworkToolWrapper tools) {
+    public ParameterFQNExecutableMatcher(FrameworkToolWrapper tools) {
         super(tools);
     }
 

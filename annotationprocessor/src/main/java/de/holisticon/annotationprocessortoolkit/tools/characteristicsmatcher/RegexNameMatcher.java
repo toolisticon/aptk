@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Class for checking for find matching elements by name and regular expression.
  */
-public class RegexNameElementCharacteristicMatcher implements GenericElementCharacteristicMatcher<String> {
+public class RegexNameMatcher implements GenericMatcher<String> {
 
     @Override
     public boolean checkForMatchingCharacteristic(Element element, String toCheckFor) {

@@ -11,7 +11,7 @@ import javax.lang.model.element.Modifier;
 /**
  * Unit test of {@link GenericElementCharacteristicValidator}.
  */
-public class GenericElementCharacteristicMatcherTest {
+public class GenericMatcherTest {
 
 
     @Test

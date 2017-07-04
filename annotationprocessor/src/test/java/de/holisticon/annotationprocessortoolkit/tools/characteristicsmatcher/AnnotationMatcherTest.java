@@ -8,11 +8,11 @@ import org.mockito.Mockito;
 import javax.lang.model.element.Element;
 
 /**
- * Unit test for {@link AnnotationElementCharacteristicMatcher}.
+ * Unit test for {@link AnnotationMatcher}.
  */
-public class AnnotationElementCharacteristicMatcherTest {
+public class AnnotationMatcherTest {
 
-    private AnnotationElementCharacteristicMatcher unit = new AnnotationElementCharacteristicMatcher();
+    private AnnotationMatcher unit = new AnnotationMatcher();
 
 
     @Test

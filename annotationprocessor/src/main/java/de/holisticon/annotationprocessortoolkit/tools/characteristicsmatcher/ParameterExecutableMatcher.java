@@ -10,9 +10,9 @@ import javax.lang.model.element.ExecutableElement;
 /**
  * Matcher to check Parameters of ExecutableElement.
  */
-public class ParameterExecutableElementCharacteristicMatcher extends GenericElementCharacteristicMatcherWithToolsSupport<Class[]> {
+public class ParameterExecutableMatcher extends GenericMatcherWithToolsSupport<Class[]> {
 
-    public ParameterExecutableElementCharacteristicMatcher(FrameworkToolWrapper tools) {
+    public ParameterExecutableMatcher(FrameworkToolWrapper tools) {
         super(tools);
     }
 

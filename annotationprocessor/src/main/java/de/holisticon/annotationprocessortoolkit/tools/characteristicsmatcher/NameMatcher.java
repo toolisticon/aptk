@@ -5,7 +5,7 @@ import javax.lang.model.element.Element;
 /**
  * Class for checking for find matching elements by name.
  */
-public class NameElementCharacteristicMatcher implements GenericElementCharacteristicMatcher<String> {
+public class NameMatcher implements GenericMatcher<String> {
 
     @Override
     public boolean checkForMatchingCharacteristic(Element element, String toCheckFor) {

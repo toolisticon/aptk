@@ -6,7 +6,7 @@ import javax.lang.model.element.Modifier;
 /**
  * Class for matching {@link Modifier}.
  */
-public class ModifierElementCharacteristicMatcher implements GenericElementCharacteristicMatcher<Modifier> {
+public class ModifierMatcher implements GenericMatcher<Modifier> {
 
     @Override
     public boolean checkForMatchingCharacteristic(Element element, Modifier toCheckFor) {

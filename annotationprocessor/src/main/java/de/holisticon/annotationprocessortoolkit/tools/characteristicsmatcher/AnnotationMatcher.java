@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation;
 /**
  * Class for checking existence of one annotation on an element.
  */
-public class AnnotationElementCharacteristicMatcher implements GenericElementCharacteristicMatcher<Class<? extends Annotation>> {
+public class AnnotationMatcher implements GenericElementCharacteristicMatcher<Class<? extends Annotation>> {
 
     public String getStringRepresentationOfPassedCharacteristic(Class<? extends Annotation> toGetStringRepresentationFor) {
         return toGetStringRepresentationFor != null ? toGetStringRepresentationFor.getCanonicalName() : null;

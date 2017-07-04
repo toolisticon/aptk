@@ -6,7 +6,7 @@ import javax.lang.model.element.ElementKind;
 /**
  * Class for matching {@link javax.lang.model.element.ElementKind}.
  */
-public class ElementKindElementcharacteristicMatcher implements GenericElementCharacteristicMatcher<ElementKind> {
+public class ElementKindMatcher implements GenericElementCharacteristicMatcher<ElementKind> {
 
     @Override
     public boolean checkForMatchingCharacteristic(Element element, ElementKind toCheckFor) {

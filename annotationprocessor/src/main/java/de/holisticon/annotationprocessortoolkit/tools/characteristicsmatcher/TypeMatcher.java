@@ -8,9 +8,9 @@ import javax.lang.model.element.Element;
 /**
  * Created by tobiasstamann on 09.06.17.
  */
-public class TypeElementCharacteristicMatcher extends GenericElementCharacteristicMatcherWithToolsSupport<Class> {
+public class TypeMatcher extends GenericMatcherWithToolsSupport<Class> {
 
-    public TypeElementCharacteristicMatcher(FrameworkToolWrapper tools) {
+    public TypeMatcher(FrameworkToolWrapper tools) {
         super(tools);
     }
 
