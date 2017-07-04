@@ -1,11 +1,17 @@
 package de.holisticon.annotationprocessortoolkit.tools;
 
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+import de.holisticon.annotationprocessortoolkit.tools.generics.GenericType;
+import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeKind;
+import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeType;
+import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Types;
 
 /**
@@ -19,6 +25,7 @@ public class TypeUtils {
     public final TypeComparison TYPE_COMPARISON = new TypeComparison();
     public final Arrays ARRAYS = new Arrays();
     public final CheckTypeKind CHECK_TYPE_KIND = CheckTypeKind.INSTANCE;
+    public final Generics GENERICS = new Generics();
 
 
     private TypeUtils(FrameworkToolWrapper frameworkToolWrapper) {
@@ -247,11 +254,17 @@ public class TypeUtils {
          *
          * @param typeElement the type element to check
          * @param type        the class which the typeElement must match
-         * @return
+         * @return true if all parameters are not null, the TypeElement for passed class exists and types are equal, otherwise false
          */
 
         public boolean isTypeEqual(TypeElement typeElement, Class type) {
-            return isTypeEqual(typeElement, frameworkToolWrapper.getElements().getTypeElement(type.getCanonicalName()).asType());
+
+            if (typeElement == null || type == null) {
+                return false;
+            }
+
+            TypeElement _2ndTypeElement = frameworkToolWrapper.getElements().getTypeElement(type.getCanonicalName());
+            return _2ndTypeElement != null && isTypeEqual(typeElement, _2ndTypeElement.asType());
         }
 
         /**
@@ -259,10 +272,10 @@ public class TypeUtils {
          *
          * @param typeElement the type element to check
          * @param typeMirror  the TypeMirror which the typeElement must match
-         * @return
+         * @return true if all parameters are not null and TypeMirrors are equal, otherwise false
          */
         public boolean isTypeEqual(TypeElement typeElement, TypeMirror typeMirror) {
-            return typeElement == null || typeMirror == null ? false : frameworkToolWrapper.getTypes().isSameType(typeElement.asType(), typeMirror);
+            return typeElement != null && typeMirror != null && frameworkToolWrapper.getTypes().isSameType(typeElement.asType(), typeMirror);
         }
 
         /**
@@ -270,10 +283,10 @@ public class TypeUtils {
          *
          * @param typeElement1 the type element to check
          * @param typeElement2 the TypeElement which the typeElement must match
-         * @return
+         * @return true if all parameters are not null and their TypeMirrors are equal, otherwise false
          */
         public boolean isTypeEqual(TypeElement typeElement1, TypeElement typeElement2) {
-            return isTypeEqual(typeElement1, typeElement2.asType());
+            return typeElement1 != null && typeElement2 != null && isTypeEqual(typeElement1, typeElement2.asType());
         }
 
 
@@ -285,7 +298,7 @@ public class TypeUtils {
          * @return true if passed type represents same type as passed type, otherwise false
          */
         public boolean isTypeEqual(TypeMirror typeMirror, Class type) {
-            return typeMirror == null || typeMirror == null ? false : isTypeEqual(typeMirror, TYPE_RETRIEVAL.getTypeMirror(type));
+            return typeMirror != null && type != null && isTypeEqual(typeMirror, TYPE_RETRIEVAL.getTypeMirror(type));
         }
 
         /**
@@ -311,7 +324,9 @@ public class TypeUtils {
             return typeMirror1 != null && typeMirror2 != null && getTypes().isSameType(getTypes().erasure(typeMirror1), getTypes().erasure(typeMirror2));
         }
 
+
     }
+
 
     public class Arrays {
 
@@ -364,6 +379,190 @@ public class TypeUtils {
         public boolean isArrayOfType(TypeMirror typeMirror, TypeMirror componentType) {
             return typeMirror != null && componentType != null && CHECK_TYPE_KIND.isArray(typeMirror) && frameworkToolWrapper.getTypes().isSameType(getArraysComponentType(typeMirror), componentType);
         }
+
+
+    }
+
+
+    public class Generics {
+
+        private GenericType castToDeclaredType(GenericTypeType instance) {
+            if (instance != null && instance instanceof GenericType) {
+                return (GenericType) instance;
+            }
+            return null;
+        }
+
+        private GenericType castToWildcard(GenericTypeType instance) {
+            if (instance != null && instance instanceof GenericType) {
+                return (GenericType) instance;
+            }
+            return null;
+        }
+
+        public <T extends GenericTypeType> GenericType createGenericType(TypeMirror rawType, T... typeParameters) {
+            return new GenericType(rawType, typeParameters);
+        }
+
+        public <T extends GenericTypeType> GenericType createGenericType(Class rawType, T... typeParameters) {
+            return createGenericType(TYPE_RETRIEVAL.getTypeMirror(rawType), typeParameters);
+        }
+
+        public <T extends GenericTypeType> GenericType createGenericType(String rawType, T... typeParameters) {
+            return createGenericType(TYPE_RETRIEVAL.getTypeMirror(rawType), typeParameters);
+        }
+
+        public GenericTypeWildcard createWildcard(GenericType superBound, GenericType extendsBound) {
+            return new GenericTypeWildcard(superBound, extendsBound);
+        }
+
+        public GenericTypeWildcard createWildcardWithExtendsBound(GenericType extendsBound) {
+            return createWildcard(null, extendsBound);
+        }
+
+        public GenericTypeWildcard createWildcardWithSuperBound(GenericType superBound) {
+            return createWildcard(superBound, null);
+        }
+
+        public GenericTypeWildcard createWildcardPure() {
+            return createWildcard(null, null);
+        }
+
+
+        public <T extends GenericTypeType> boolean genericTypeEquals(TypeMirror typeMirror, GenericType genericType) {
+
+            if (typeMirror == null || genericType == null) {
+                return false;
+            }
+
+            return compareGenericTypesRecursively(typeMirror, genericType);
+
+
+        }
+
+        private boolean compareGenericTypesRecursively(TypeMirror typeMirror, GenericType genericType) {
+
+
+            TypeMirror typeMirrorToCompareWith = genericType.getRawType();
+            if (typeMirrorToCompareWith == null) {
+                return false;
+            }
+
+            // Compare raw types - this will not work for super wildcard type since it has Object as raw type
+            if (!TYPE_COMPARISON.isErasedTypeEqual(typeMirror, typeMirrorToCompareWith)) {
+                return false;
+            }
+
+
+            // Check type parameters
+            if (genericType.typeParameters.length > 0) {
+
+                // Compare typeParameters
+                if (!(typeMirror instanceof DeclaredType)) {
+                    return false;
+                }
+
+                DeclaredType tmDeclaredType = (DeclaredType) typeMirror;
+
+                // check if number of type parameters is matching
+                if (tmDeclaredType.getTypeArguments().size() != genericType.typeParameters.length) {
+                    return false;
+                }
+
+                // Now check type parameters recursively
+                for (int i = 0; i < genericType.getTypeParameters().length; i++) {
+
+                    TypeMirror currentTypeParameter = tmDeclaredType.getTypeArguments().get(i);
+                    GenericTypeType currentGenericTypeType = genericType.getTypeParameters()[i];
+
+                    if (currentTypeParameter instanceof WildcardType) {
+
+                        // check wildcard type
+                        if (!compareGenericTypeWildcardRecursively((WildcardType) currentTypeParameter, currentGenericTypeType)) {
+                            return false;
+                        }
+
+
+                    } else if (currentTypeParameter instanceof DeclaredType) {
+
+
+                        if (!compareGenericTypeDeclaredTypeRecursively((DeclaredType) currentTypeParameter, currentGenericTypeType)) {
+                            return false;
+                        }
+
+                    }
+
+
+                }
+
+            }
+
+            return true;
+
+        }
+
+
+        protected boolean compareGenericTypeWildcardRecursively(WildcardType wildcardType, GenericTypeType genericTypeType) {
+
+            if (genericTypeType.getType() != GenericTypeKind.WILDCARD) {
+                return false;
+            } else {
+
+                GenericTypeWildcard wc = (GenericTypeWildcard) genericTypeType;
+
+                if (wc.isPureWildcard()) {
+
+                    if (wildcardType.getExtendsBound() != null && wildcardType.getSuperBound() != null) {
+                        return false;
+                    }
+
+                } else {
+
+                    if (wildcardType.getExtendsBound() != null) {
+                        if (!wc.hasExtendsBound() || !compareGenericTypesRecursively(wildcardType.getExtendsBound(), wc.getExtendsBound())) {
+                            return false;
+                        }
+                    } else {
+                        if (wc.hasExtendsBound()) {
+                            return false;
+                        }
+                    }
+
+
+                    if (wildcardType.getSuperBound() != null) {
+                        if (!wc.hasSuperBound() || !compareGenericTypesRecursively(wildcardType.getSuperBound(), wc.getSuperBound())) {
+                            return false;
+                        }
+                    } else {
+                        if (wc.hasSuperBound()) {
+                            return false;
+                        }
+                    }
+                }
+
+            }
+
+            return true;
+        }
+
+        private boolean compareGenericTypeDeclaredTypeRecursively(DeclaredType declaredType, GenericTypeType genericTypeType) {
+
+            if (genericTypeType.getType() != GenericTypeKind.DECLARED_TYPE) {
+                return false;
+            } else {
+
+                GenericType genericType = (GenericType) genericTypeType;
+
+                if (declaredType != null && genericType != null && !compareGenericTypesRecursively(declaredType, genericType)) {
+                    return false;
+                }
+
+
+            }
+
+            return true;
+        }
+
 
     }
 

@@ -5,6 +5,8 @@ import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation2;
 import de.holisticon.annotationprocessortoolkit.TestAnnotation;
 
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Test class for annotation processor tools.
@@ -82,6 +84,11 @@ public class AnnotationProcessorTestClass {
 
     public String methodWithReturnTypeAndParameters(Boolean first, String second) {
         return "";
+    }
+
+
+    public int testGenericsOnParameter(Map<String, Comparator<Long>> o1, Map<? extends StringBuilder, Comparator<? super List<?>>> o2) {
+        return 0;
     }
 
 }

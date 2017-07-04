@@ -2,20 +2,27 @@ package de.holisticon.annotationprocessortoolkit.tools;
 
 
 import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessorTestBaseClass;
+import de.holisticon.annotationprocessortoolkit.filter.FluentElementFilter;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils.AccessEnclosedElements;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils.CastElement;
+import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filter;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Unit test for {@link de.holisticon.annotationprocessortoolkit.tools.TypeUtils}.
@@ -639,8 +646,6 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                 true
 
                         },
-
-
                         {
                                 "TypeUtils.CHECK_TYPE_KIND.isVoid : test check for void type ",
                                 new AbstractTestAnnotationProcessorClass() {
@@ -650,6 +655,156 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                         MatcherAssert.assertThat(getTypeUtils().CHECK_TYPE_KIND.isVoid(CastElement.castMethod(AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod").get(0)).getReturnType()), Matchers.is(true));
                                         MatcherAssert.assertThat(getTypeUtils().CHECK_TYPE_KIND.isVoid(element.asType()), Matchers.is(false));
 
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.GENERICS.genericTypeEquals : Should be able to compare generic type",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filter.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
+
+                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+
+                                        MatcherAssert.assertThat("Should be equal and therefore true",
+                                                getTypeUtils().GENERICS.genericTypeEquals(
+                                                        method.getParameters().get(0).asType(),
+                                                        getTypeUtils().GENERICS.createGenericType(Map.class,
+                                                                getTypeUtils().GENERICS.createGenericType(String.class),
+                                                                getTypeUtils().GENERICS.createGenericType(
+                                                                        Comparator.class,
+                                                                        getTypeUtils().GENERICS.createGenericType(Long.class)
+                                                                )
+                                                        )
+                                                )
+                                        );
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.GENERICS.genericTypeEquals : Should not be able to compare generic type",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filter.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
+
+                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+
+                                        MatcherAssert.assertThat("Should be equal and therefore true",
+                                                !getTypeUtils().GENERICS.genericTypeEquals(
+                                                        method.getParameters().get(0).asType(),
+                                                        getTypeUtils().GENERICS.createGenericType(Map.class,
+                                                                getTypeUtils().GENERICS.createGenericType(String.class),
+                                                                getTypeUtils().GENERICS.createGenericType(
+                                                                        Comparator.class,
+                                                                        getTypeUtils().GENERICS.createGenericType(Double.class)
+                                                                )
+                                                        )
+                                                )
+                                        );
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.GENERICS.genericTypeEquals : Should be able to compare generic type with wildcards",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filter.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
+
+                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+
+                                        //  Map<? extends StringBuilder, Comparator<? super List<?>>>
+
+                                        MatcherAssert.assertThat("Should be equal and therefore true",
+                                                getTypeUtils().GENERICS.genericTypeEquals(
+                                                        method.getParameters().get(1).asType(),
+                                                        getTypeUtils().GENERICS.createGenericType(Map.class,
+                                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
+                                                                        getTypeUtils().GENERICS.createGenericType(StringBuilder.class)
+                                                                ),
+                                                                getTypeUtils().GENERICS.createGenericType(
+                                                                        Comparator.class,
+                                                                        getTypeUtils().GENERICS.createWildcardWithSuperBound(
+                                                                                getTypeUtils().GENERICS.createGenericType(
+                                                                                        List.class,
+                                                                                        getTypeUtils().GENERICS.createWildcardPure()
+                                                                                )
+                                                                        )
+
+                                                                )
+                                                        )
+                                                )
+                                        );
+
+                                    }
+                                },
+                                true
+
+
+                        },
+
+                        {
+                                "TypeUtils.GENERICS.genericTypeEquals : Should not be able to compare generic type with wildcards",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                .applyFilter(Filter.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filter.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
+
+                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+
+                                        //  Map<? extends StringBuilder, Comparator<? super List<?>>>
+
+                                        MatcherAssert.assertThat("Should be equal and therefore true",
+                                                !getTypeUtils().GENERICS.genericTypeEquals(
+                                                        method.getParameters().get(1).asType(),
+                                                        getTypeUtils().GENERICS.createGenericType(Map.class,
+                                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
+                                                                        getTypeUtils().GENERICS.createGenericType(StringBuilder.class)
+                                                                ),
+                                                                getTypeUtils().GENERICS.createGenericType(
+                                                                        Comparator.class,
+                                                                        getTypeUtils().GENERICS.createWildcardWithSuperBound(
+                                                                                getTypeUtils().GENERICS.createGenericType(
+                                                                                        List.class,
+                                                                                        getTypeUtils().GENERICS.createWildcardWithExtendsBound(getTypeUtils().GENERICS.createGenericType(String.class))
+                                                                                )
+                                                                        )
+
+                                                                )
+                                                        )
+                                                )
+                                        );
 
                                     }
                                 },
