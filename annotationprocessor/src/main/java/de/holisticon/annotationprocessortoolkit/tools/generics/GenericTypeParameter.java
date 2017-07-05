@@ -6,10 +6,12 @@ package de.holisticon.annotationprocessortoolkit.tools.generics;
  * This interface is helping to determine the two different kinds.
  */
 public interface GenericTypeParameter {
+
     /**
      * Gets the kind of the type parameter.
      *
      * @return the type of the type parameter
      */
     GenericTypeKind getType();
+
 }

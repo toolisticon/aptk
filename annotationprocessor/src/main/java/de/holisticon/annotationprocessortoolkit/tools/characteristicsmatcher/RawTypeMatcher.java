@@ -14,7 +14,9 @@ public class RawTypeMatcher extends GenericMatcherWithToolsSupport<Class> {
         super(tools);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkForMatchingCharacteristic(Element element, Class toCheckFor) {
 
@@ -29,6 +31,9 @@ public class RawTypeMatcher extends GenericMatcherWithToolsSupport<Class> {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getStringRepresentationOfPassedCharacteristic(Class toGetStringRepresentationFor) {
         return toGetStringRepresentationFor != null ? "" : null;

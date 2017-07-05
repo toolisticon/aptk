@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
  */
 public class RegexNameMatcher implements GenericMatcher<String> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkForMatchingCharacteristic(Element element, String toCheckFor) {
         if (element != null && toCheckFor != null) {
@@ -19,6 +22,9 @@ public class RegexNameMatcher implements GenericMatcher<String> {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getStringRepresentationOfPassedCharacteristic(String toGetStringRepresentationFor) {
         return toGetStringRepresentationFor != null ? toGetStringRepresentationFor : null;

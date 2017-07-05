@@ -18,7 +18,9 @@ public class ParameterFQNExecutableMatcher extends GenericMatcherWithToolsSuppor
         super(tools);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkForMatchingCharacteristic(Element element, String[] toCheckFor) {
 
@@ -56,6 +58,9 @@ public class ParameterFQNExecutableMatcher extends GenericMatcherWithToolsSuppor
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getStringRepresentationOfPassedCharacteristic(String[] toGetStringRepresentationFor) {
         return toGetStringRepresentationFor != null ? "" : null;

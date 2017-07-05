@@ -12,8 +12,16 @@ import java.util.Set;
  */
 public class GenericElementCharacteristicValidator<T> implements InclusiveElementValidator<T> {
 
-    private GenericMatcher<T> matcher;
+    /**
+     * The {@link Matcher} to be used with this validator.
+     */
+    private final GenericMatcher<T> matcher;
 
+    /**
+     * Constructor that allows passing in of the {@link Matcher} to be used by the validator.
+     *
+     * @param matcher the matcher to be used
+     */
     public GenericElementCharacteristicValidator(Matcher<T> matcher) {
         this.matcher = matcher != null ? matcher.getMatcher() : null;
     }
@@ -47,7 +55,9 @@ public class GenericElementCharacteristicValidator<T> implements InclusiveElemen
 
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasAllOf(Element element, T... characteristicsToCheck) {
 
         if (element == null) {
@@ -77,6 +87,9 @@ public class GenericElementCharacteristicValidator<T> implements InclusiveElemen
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasAtLeastOneOf(Element element, T... characteristicsToCheck) {
         if (element == null) {
             return false;
@@ -106,7 +119,9 @@ public class GenericElementCharacteristicValidator<T> implements InclusiveElemen
         return false;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasOneOf(Element element, T... characteristicsToCheck) {
         if (element == null) {
             return false;
@@ -137,6 +152,9 @@ public class GenericElementCharacteristicValidator<T> implements InclusiveElemen
         return count == 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasNoneOf(Element element, T... characteristicsToCheck) {
         if (element == null) {
             return false;
@@ -165,6 +183,11 @@ public class GenericElementCharacteristicValidator<T> implements InclusiveElemen
         return true;
     }
 
+    /**
+     * Gets the {@link Matcher} used by this validator.
+     *
+     * @return the matcher instance used by thois validator
+     */
     public GenericMatcher<T> getMatcher() {
         return matcher;
     }

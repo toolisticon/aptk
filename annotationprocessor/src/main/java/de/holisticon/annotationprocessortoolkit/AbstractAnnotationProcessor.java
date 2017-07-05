@@ -120,24 +120,49 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * Gets the {@link MessagerUtils}.
+     *
+     * @return the MessagerUtils
+     */
     public MessagerUtils getMessager() {
         return messager;
     }
 
+    /**
+     * Gets the {@link TypeUtils}.
+     *
+     * @return the TypeUtils
+     */
     public TypeUtils getTypeUtils() {
         return typeUtils;
     }
 
+    /**
+     * Gets the {@link FrameworkToolWrapper} that wraps all util provided by  {@link ProcessingEnvironment}.
+     *
+     * @return the TypeUtils
+     */
+    public FrameworkToolWrapper getFrameworkToolWrapper() {
+        return frameworkToolWrapper;
+    }
+
+    /**
+     * Gets the {@link Elements} provided by {@link ProcessingEnvironment}.
+     *
+     * @return the Elements utils
+     */
     public Elements getElementUtils() {
         return elementUtils;
     }
 
+    /**
+     * Gets the {@link Filer} provided by {@link ProcessingEnvironment}.
+     *
+     * @return theFiler urils
+     */
     public Filer getFiler() {
         return filer;
-    }
-
-    public FrameworkToolWrapper getFrameworkToolWrapper() {
-        return frameworkToolWrapper;
     }
 
 

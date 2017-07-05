@@ -2,7 +2,7 @@ package de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.tools.generics.GenericType;
-import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeType;
+import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeParameter;
 import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
 
 import javax.lang.model.element.Element;
@@ -16,7 +16,9 @@ public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericTy
         super(tools);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkForMatchingCharacteristic(Element element, GenericType toCheckFor) {
 
@@ -24,6 +26,9 @@ public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericTy
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getStringRepresentationOfPassedCharacteristic(GenericType toGetStringRepresentationFor) {
 
@@ -61,13 +66,13 @@ public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericTy
                     stringBuilder.append(", ");
                 }
 
-                GenericTypeType currentGenericTypeType = toGetStringRepresentationFor.getTypeParameters()[i];
+                GenericTypeParameter currentGenericTypeParameter = toGetStringRepresentationFor.getTypeParameters()[i];
 
-                switch (currentGenericTypeType.getType()) {
+                switch (currentGenericTypeParameter.getType()) {
 
                     case WILDCARD:
 
-                        GenericTypeWildcard wildcard = (GenericTypeWildcard) currentGenericTypeType;
+                        GenericTypeWildcard wildcard = (GenericTypeWildcard) currentGenericTypeParameter;
 
                         if (wildcard.isPureWildcard()) {
 
@@ -92,7 +97,7 @@ public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericTy
 
 
                     case GENERIC_TYPE:
-                        createStringRepresentationRecursively(stringBuilder, (GenericType) currentGenericTypeType);
+                        createStringRepresentationRecursively(stringBuilder, (GenericType) currentGenericTypeParameter);
                         break;
 
                     default:

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Utility class that offers some basic utility methods.
+ * Utility class that offers some basic, commonly used utility methods.
  */
 public final class Utilities {
 
@@ -48,18 +48,39 @@ public final class Utilities {
     }
 
 
+    /**
+     * Creates a Set that is containing the varags arguments.
+     *
+     * @param varargs the elements to be added to the set
+     * @param <T>
+     * @return a Set that contains all varargs arguments or an empty Set if no varargs arguments have been used
+     */
     public static <T> Set<T> convertVarargsToSet(T... varargs) {
 
         return varargs != null ? new HashSet<T>(Arrays.asList(varargs)) : new HashSet<T>();
 
     }
 
+    /**
+     * Creates a List that is containing the varags arguments.
+     *
+     * @param varargs the elements to be added to the list
+     * @param <T>
+     * @return a List that contains all varargs arguments or an empty List if no varargs arguments have been used
+     */
     public static <T> List<T> convertVarargsToList(T... varargs) {
 
         return varargs != null ? Arrays.asList(varargs) : new ArrayList<T>();
 
     }
 
+    /**
+     * Creates an array that is containing the varags arguments.
+     *
+     * @param varargs the elements to be added to the array
+     * @param <T>
+     * @return a array that contains all varargs arguments or an array of length 0 if no varargs arguments have been used
+     */
     public static <T> T[] convertVarargsToArray(T... varargs) {
 
         return varargs;

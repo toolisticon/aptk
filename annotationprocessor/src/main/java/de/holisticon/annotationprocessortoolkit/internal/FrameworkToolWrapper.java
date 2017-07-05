@@ -17,6 +17,11 @@ public class FrameworkToolWrapper {
     private final Messager messager;
     private final Types types;
 
+    /**
+     * Constructor to pass in the {@link ProcessingEnvironment}.
+     *
+     * @param processingEnv the processing environment to uses
+     */
     public FrameworkToolWrapper(ProcessingEnvironment processingEnv) {
         // create local references
         messager = processingEnv.getMessager();
@@ -26,18 +31,35 @@ public class FrameworkToolWrapper {
 
     }
 
+    /**
+     * Gets the {@link Elements} utility class instance offered by the {@link ProcessingEnvironment}.
+     * @return the {@link Elements} utility class instance
+     */
     public Elements getElements() {
         return elements;
     }
 
+
+    /**
+     * Gets the {@link Filer} utility class instance offered by the {@link ProcessingEnvironment}.
+     * @return the {@link Filer} utility class instance
+     */
     public Filer getFiler() {
         return filer;
     }
 
+    /**
+     * Gets the {@link Messager} utility class instance offered by the {@link ProcessingEnvironment}.
+     * @return the {@link Messager} utility class instance
+     */
     public Messager getMessager() {
         return messager;
     }
 
+    /**
+     * Gets the {@link Types} utility class instance offered by the {@link ProcessingEnvironment}.
+     * @return the {@link Types} utility class instance
+     */
     public Types getTypes() {
         return types;
     }

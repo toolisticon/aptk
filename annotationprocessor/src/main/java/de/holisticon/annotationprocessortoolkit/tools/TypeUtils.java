@@ -3,7 +3,7 @@ package de.holisticon.annotationprocessortoolkit.tools;
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.tools.generics.GenericType;
 import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeKind;
-import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeType;
+import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeParameter;
 import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
 
 import javax.lang.model.element.TypeElement;
@@ -442,15 +442,15 @@ public final class TypeUtils {
 
     public class Generics {
 
-        public <T extends GenericTypeType> GenericType createGenericType(TypeMirror rawType, T... typeParameters) {
+        public <T extends GenericTypeParameter> GenericType createGenericType(TypeMirror rawType, T... typeParameters) {
             return new GenericType(rawType, typeParameters);
         }
 
-        public <T extends GenericTypeType> GenericType createGenericType(Class rawType, T... typeParameters) {
+        public <T extends GenericTypeParameter> GenericType createGenericType(Class rawType, T... typeParameters) {
             return createGenericType(TYPE_RETRIEVAL.getTypeMirror(rawType), typeParameters);
         }
 
-        public <T extends GenericTypeType> GenericType createGenericType(String rawType, T... typeParameters) {
+        public <T extends GenericTypeParameter> GenericType createGenericType(String rawType, T... typeParameters) {
             return createGenericType(TYPE_RETRIEVAL.getTypeMirror(rawType), typeParameters);
         }
 
@@ -471,7 +471,7 @@ public final class TypeUtils {
         }
 
 
-        public <T extends GenericTypeType> boolean genericTypeEquals(TypeMirror typeMirror, GenericType genericType) {
+        public <T extends GenericTypeParameter> boolean genericTypeEquals(TypeMirror typeMirror, GenericType genericType) {
 
             if (typeMirror == null || genericType == null) {
                 return false;
@@ -515,12 +515,12 @@ public final class TypeUtils {
                 for (int i = 0; i < genericType.getTypeParameters().length; i++) {
 
                     TypeMirror currentTypeParameter = tmDeclaredType.getTypeArguments().get(i);
-                    GenericTypeType currentGenericTypeType = genericType.getTypeParameters()[i];
+                    GenericTypeParameter currentGenericTypeParameter = genericType.getTypeParameters()[i];
 
                     if (currentTypeParameter instanceof WildcardType) {
 
                         // check wildcard type
-                        if (!compareGenericTypeWildcardRecursively((WildcardType) currentTypeParameter, currentGenericTypeType)) {
+                        if (!compareGenericTypeWildcardRecursively((WildcardType) currentTypeParameter, currentGenericTypeParameter)) {
                             return false;
                         }
 
@@ -528,7 +528,7 @@ public final class TypeUtils {
                     } else if (currentTypeParameter instanceof DeclaredType) {
 
 
-                        if (!compareGenericTypeDeclaredTypeRecursively((DeclaredType) currentTypeParameter, currentGenericTypeType)) {
+                        if (!compareGenericTypeDeclaredTypeRecursively((DeclaredType) currentTypeParameter, currentGenericTypeParameter)) {
                             return false;
                         }
 
@@ -544,13 +544,13 @@ public final class TypeUtils {
         }
 
 
-        protected boolean compareGenericTypeWildcardRecursively(WildcardType wildcardType, GenericTypeType genericTypeType) {
+        protected boolean compareGenericTypeWildcardRecursively(WildcardType wildcardType, GenericTypeParameter genericTypeParameter) {
 
-            if (genericTypeType.getType() != GenericTypeKind.WILDCARD) {
+            if (genericTypeParameter.getType() != GenericTypeKind.WILDCARD) {
                 return false;
             } else {
 
-                GenericTypeWildcard wc = (GenericTypeWildcard) genericTypeType;
+                GenericTypeWildcard wc = (GenericTypeWildcard) genericTypeParameter;
 
                 if (wc.isPureWildcard()) {
 
@@ -587,13 +587,13 @@ public final class TypeUtils {
             return true;
         }
 
-        private boolean compareGenericTypeDeclaredTypeRecursively(DeclaredType declaredType, GenericTypeType genericTypeType) {
+        private boolean compareGenericTypeDeclaredTypeRecursively(DeclaredType declaredType, GenericTypeParameter genericTypeParameter) {
 
-            if (genericTypeType.getType() != GenericTypeKind.GENERIC_TYPE) {
+            if (genericTypeParameter.getType() != GenericTypeKind.GENERIC_TYPE) {
                 return false;
             } else {
 
-                GenericType genericType = (GenericType) genericTypeType;
+                GenericType genericType = (GenericType) genericTypeParameter;
 
                 if (declaredType != null && genericType != null && !compareGenericTypesRecursively(declaredType, genericType)) {
                     return false;
@@ -666,12 +666,12 @@ public final class TypeUtils {
                 for (int i = 0; i < genericType.getTypeParameters().length; i++) {
 
                     TypeMirror currentTypeParameter = tmDeclaredType.getTypeArguments().get(i);
-                    GenericTypeType currentGenericTypeType = genericType.getTypeParameters()[i];
+                    GenericTypeParameter currentGenericTypeParameter = genericType.getTypeParameters()[i];
 
                     if (currentTypeParameter instanceof WildcardType) {
 
                         // check wildcard type
-                        if (!isAssignableToGenericTypeHandleWildcardTypeRecursively((WildcardType) currentTypeParameter, currentGenericTypeType)) {
+                        if (!isAssignableToGenericTypeHandleWildcardTypeRecursively((WildcardType) currentTypeParameter, currentGenericTypeParameter)) {
                             return false;
                         }
 
@@ -679,7 +679,7 @@ public final class TypeUtils {
                     } else if (currentTypeParameter instanceof DeclaredType) {
 
 
-                        if (!isAssignableToGenericTypeHandleDeclaredTypeRecursively((DeclaredType) currentTypeParameter, currentGenericTypeType)) {
+                        if (!isAssignableToGenericTypeHandleDeclaredTypeRecursively((DeclaredType) currentTypeParameter, currentGenericTypeParameter)) {
                             return false;
                         }
 
@@ -695,13 +695,13 @@ public final class TypeUtils {
         }
 
 
-        protected boolean isAssignableToGenericTypeHandleWildcardTypeRecursively(WildcardType wildcardType, GenericTypeType genericTypeType) {
+        protected boolean isAssignableToGenericTypeHandleWildcardTypeRecursively(WildcardType wildcardType, GenericTypeParameter genericTypeParameter) {
 
 
             if (wildcardType.getExtendsBound() == null && wildcardType.getSuperBound() == null) {
 
                 // handle pure wildcards - pure wildcard is only assignable to pure wildcard
-                if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).isPureWildcard()) {
+                if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).isPureWildcard()) {
                     return true;
                 }
 
@@ -711,11 +711,11 @@ public final class TypeUtils {
             } else if (wildcardType.getExtendsBound() != null) {
 
                 // handle extends wildcards - only EXT => EXT is may be applicable
-                if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).isPureWildcard()) {
+                if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).isPureWildcard()) {
                     return true;
-                } else if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).hasExtendsBound()) {
+                } else if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).hasExtendsBound()) {
 
-                    GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeType;
+                    GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeParameter;
 
                     if (!TYPE_COMPARISON.isAssignableTo(
                             getTypes().erasure(wildcardType.getExtendsBound()),
@@ -733,11 +733,11 @@ public final class TypeUtils {
             } else if (wildcardType.getSuperBound() != null) {
 
                 // handle super wildcards - only SUPER => SUPER is may be applicable
-                if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).isPureWildcard()) {
+                if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).isPureWildcard()) {
                     return true;
-                } else if (genericTypeType.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeType).hasSuperBound()) {
+                } else if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).hasSuperBound()) {
 
-                    GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeType;
+                    GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeParameter;
 
                     if (!TYPE_COMPARISON.isAssignableTo(
                             getTypes().erasure(wildcard.getSuperBound().getRawType()),
@@ -758,12 +758,12 @@ public final class TypeUtils {
             return true;
         }
 
-        private boolean isAssignableToGenericTypeHandleDeclaredTypeRecursively(DeclaredType declaredType, GenericTypeType genericTypeType) {
+        private boolean isAssignableToGenericTypeHandleDeclaredTypeRecursively(DeclaredType declaredType, GenericTypeParameter genericTypeParameter) {
 
-            if (genericTypeType.getType() == GenericTypeKind.GENERIC_TYPE) {
+            if (genericTypeParameter.getType() == GenericTypeKind.GENERIC_TYPE) {
 
                 // RAW - RAW must have exactly the same type
-                GenericType genericType = (GenericType) genericTypeType;
+                GenericType genericType = (GenericType) genericTypeParameter;
                 if (!TYPE_COMPARISON.isErasedTypeEqual(getTypes().erasure(declaredType), getTypes().erasure(genericType.getRawType()))) {
                     return false;
                 }
@@ -771,9 +771,9 @@ public final class TypeUtils {
                 // Now compare it's type parameters
                 return isAssignableToGenericTypeRecursively(declaredType, genericType);
 
-            } else if (genericTypeType.getType() == GenericTypeKind.WILDCARD) {
+            } else if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD) {
 
-                GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeType;
+                GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeParameter;
 
                 if (wildcard.isPureWildcard()) {
 

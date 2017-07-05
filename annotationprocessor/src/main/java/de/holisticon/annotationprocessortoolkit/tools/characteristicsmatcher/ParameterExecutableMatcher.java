@@ -16,7 +16,9 @@ public class ParameterExecutableMatcher extends GenericMatcherWithToolsSupport<C
         super(tools);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkForMatchingCharacteristic(Element element, Class[] toCheckFor) {
 
@@ -50,6 +52,9 @@ public class ParameterExecutableMatcher extends GenericMatcherWithToolsSupport<C
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getStringRepresentationOfPassedCharacteristic(Class[] toGetStringRepresentationFor) {
         return toGetStringRepresentationFor != null ? "" : null;

@@ -44,26 +44,13 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
         this.currentValidationResult = true;
     }
 
-    protected E getElement() {
-        return element;
-    }
 
-    protected TypeUtils getTypeUtils() {
-        return typeUtils;
-    }
-
-    protected FrameworkToolWrapper getFrameworkToolWrapper() {
-        return frameworkToolWrapper;
-    }
-
-    protected MessagerUtils getMessagerUtils() {
-        return messagerUtils;
-    }
-
-    public boolean isCurrentValidationResult() {
-        return currentValidationResult;
-    }
-
+    /**
+     * Constructor used to create instance based on previous validation and a new result.
+     *
+     * @param previousFluentValidator the previous fluent validator instance
+     * @param nextResult              the validation result to be used with validator
+     */
     protected AbstractFluentValidator(AbstractFluentValidator<T, E> previousFluentValidator, boolean nextResult) {
         this.messageLevel = previousFluentValidator != null
                 && previousFluentValidator.messageLevel != null ? previousFluentValidator.messageLevel : Diagnostic.Kind.ERROR;
@@ -78,6 +65,53 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
         this.currentValidationResult = nextResult;
 
     }
+
+
+    /**
+     * Gets the element which is validated.
+     *
+     * @return the element under validation
+     */
+    protected E getElement() {
+        return element;
+    }
+
+    /**
+     * Gets the TypeUtils utils.
+     *
+     * @return the TypeUtils
+     */
+    protected TypeUtils getTypeUtils() {
+        return typeUtils;
+    }
+
+    /**
+     * Gets the FrameworkToolWrapper.
+     *
+     * @return the FrameworkToolWrapper
+     */
+    protected FrameworkToolWrapper getFrameworkToolWrapper() {
+        return frameworkToolWrapper;
+    }
+
+    /**
+     * Gets the MessagerUtils utils.
+     *
+     * @return the MessagerUtils
+     */
+    protected MessagerUtils getMessagerUtils() {
+        return messagerUtils;
+    }
+
+    /**
+     * Gets the current validation result.
+     *
+     * @return true if element under validation is valid, otherwise false
+     */
+    public boolean isCurrentValidationResult() {
+        return currentValidationResult;
+    }
+
 
     /**
      * Sets the log level for all following validations to Diagnostic.Kind.NOTE.
@@ -214,9 +248,15 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
 
     }
 
+    /**
+     * Gets the validation result.
+     *
+     * @return true if the element was proved valid during all validations, otherwise false
+     */
     public boolean getValidationResult() {
         return this.currentValidationResult;
     }
+
 
     protected abstract T createNextFluentValidator(boolean nextResult);
 

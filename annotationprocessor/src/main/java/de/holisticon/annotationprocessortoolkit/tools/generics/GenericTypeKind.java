@@ -1,8 +1,15 @@
 package de.holisticon.annotationprocessortoolkit.tools.generics;
 
 /**
- * Created by tobiasstamann on 03.07.17.
+ * Enum to determine if a {@link GenericTypeParameter} is a {@link GenericTypeWildcard} or {@link GenericType}.
  */
 public enum GenericTypeKind {
-    WILDCARD, GENERIC_TYPE
+    /**
+     * Defines a wildcard type parameter.
+     */
+    WILDCARD,
+    /**
+     * Defines a generic type type parameter.
+     */
+    GENERIC_TYPE
 }

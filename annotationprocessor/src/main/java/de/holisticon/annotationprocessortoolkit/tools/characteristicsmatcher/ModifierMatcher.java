@@ -8,11 +8,17 @@ import javax.lang.model.element.Modifier;
  */
 public class ModifierMatcher implements GenericMatcher<Modifier> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkForMatchingCharacteristic(Element element, Modifier toCheckFor) {
         return (element != null && toCheckFor != null) && element.getModifiers().contains(toCheckFor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getStringRepresentationOfPassedCharacteristic(Modifier toGetStringRepresentationFor) {
         return toGetStringRepresentationFor != null ? toGetStringRepresentationFor.name() : null;

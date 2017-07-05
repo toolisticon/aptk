@@ -13,8 +13,16 @@ import java.util.List;
  */
 public class GenericCharacteristicsFilter<C> {
 
+    /**
+     * The validator to be used by this Filter.
+     */
     private final GenericElementCharacteristicValidator<C> elementValidator;
 
+    /**
+     * Constructor for passing in the {@link Validator} to use.
+     *
+     * @param elementValidator the wrapped validator to use
+     */
     public GenericCharacteristicsFilter(Validator<C> elementValidator) {
         this.elementValidator = elementValidator != null ? elementValidator.getValidator() : null;
     }
@@ -22,7 +30,7 @@ public class GenericCharacteristicsFilter<C> {
 
     /**
      * Filters passed list by passed characteristics.
-     * Ellements must suffice all of the passed characteristics.
+     * Elements must suffice all of the passed characteristics.
      *
      * @param listToFilter    the list to filter
      * @param characteristics the characteristics to filter by
@@ -34,7 +42,7 @@ public class GenericCharacteristicsFilter<C> {
 
     /**
      * Filters passed list by passed characteristics.
-     * Ellements must suffice at least one of the passed characteristics.
+     * Elements must suffice at least one of the passed characteristics.
      *
      * @param listToFilter    the list to filter
      * @param characteristics the characteristics to filter by
@@ -46,7 +54,7 @@ public class GenericCharacteristicsFilter<C> {
 
     /**
      * Filters passed list by passed characteristics.
-     * Ellements must suffice exactly one of the passed characteristics.
+     * Elements must suffice exactly one of the passed characteristics.
      *
      * @param listToFilter    the list to filter
      * @param characteristics the characteristics to filter by
