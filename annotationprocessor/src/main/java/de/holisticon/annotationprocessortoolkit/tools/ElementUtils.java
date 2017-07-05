@@ -459,6 +459,101 @@ public final class ElementUtils {
     }
 
     /**
+     * Utility cass to access enclosing elements of a {@link Element}.
+     */
+    public final static class AccessEnclosingElements {
+
+        /**
+         * Hidden constructor.
+         */
+        private AccessEnclosingElements() {
+            // does nothing except preventing instantiation
+        }
+
+        /**
+         * Gets a list of all enclosing parent elements of the passed element.
+         *
+         * @param element        the element to be processed
+         * @param addRootElement defines if the passed element should be in the result list
+         * @return a list of all enclosing elements of the passed element
+         */
+        public static List<Element> getFlattenedEnclosingElementsTree(Element element, boolean addRootElement) {
+            return getFlattenedEnclosingElementsTree(element, addRootElement, Integer.MAX_VALUE);
+        }
+
+        /**
+         * Gets a list of all enclosing parent elements up to a specific depth of the passed element.
+         *
+         * @param element        the element to be processed
+         * @param addRootElement defines if the passed element should be in the result list
+         * @param maxDepth       the maximal
+         * @return a list of all enclosing elements of the passed element
+         */
+        public static List<Element> getFlattenedEnclosingElementsTree(Element element, boolean addRootElement, int maxDepth) {
+
+            List<Element> result = new ArrayList<Element>();
+
+            if (element == null) {
+                return result;
+            }
+
+            if (addRootElement) {
+                result.add(element);
+            }
+
+            int currentDepth = 0;
+            Element currentParentElement = element.getEnclosingElement();
+
+            while (currentParentElement != null && currentDepth < maxDepth) {
+
+                result.add(currentParentElement);
+
+                // prepare next iteration
+                currentDepth++;
+                currentParentElement = currentParentElement.getEnclosingElement();
+
+            }
+
+            return result;
+        }
+
+        /**
+         * Gets the fist enclosing element parent of a specific {@link ElementKind}.
+         * Allows f.e. getting of enclosing class for passed method parameter element.
+         *
+         * @param element     the element to be used as base
+         * @param elementKind the element kind of the enclosing element to search for
+         * @return the Element of the specific Element Kind if it could be found, otherwise null
+         */
+        public static Element getFirstEnclosingElementOfKind(Element element, ElementKind elementKind) {
+
+            if (element == null || elementKind == null) {
+                return null;
+            }
+
+            Element currentParentElement = element.getEnclosingElement();
+
+            while (currentParentElement != null) {
+
+
+                if (currentParentElement.getKind() == elementKind) {
+                    return currentParentElement;
+                }
+
+                // prepare next iteration
+                currentParentElement = currentParentElement.getEnclosingElement();
+
+            }
+
+            return null;
+
+        }
+
+
+    }
+
+
+    /**
      * Utility cass to access enclosed elements of a {@link Element}.
      */
     public final static class AccessEnclosedElements {
@@ -646,6 +741,9 @@ public final class ElementUtils {
         public static List<Element> flattenEnclosedElementTree(Element element, boolean addRootElement, int maxDepth) {
             List<Element> result = new ArrayList<Element>();
 
+            if (element == null) {
+                return result;
+            }
 
             if (addRootElement) {
                 result.add(element);

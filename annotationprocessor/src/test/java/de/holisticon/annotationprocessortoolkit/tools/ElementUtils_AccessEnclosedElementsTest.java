@@ -677,4 +677,30 @@ public class ElementUtils_AccessEnclosedElementsTest {
 
     }
 
+    public void testFlattenEnclosedElementTree_WithMaxDepth_nullSafety() {
+
+
+
+        // execute
+        List<? extends Element> result = ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree(null, true, 1);
+
+        // verify
+        MatcherAssert.assertThat(result, Matchers.<Element>empty());
+
+
+    }
+
+    public void testFlattenEnclosedElementTree_WithoutMaxDepth_nullSafety() {
+
+
+
+        // execute
+        List<? extends Element> result = ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree(null, true);
+
+        // verify
+        MatcherAssert.assertThat(result, Matchers.<Element>empty());
+
+
+    }
+
 }
