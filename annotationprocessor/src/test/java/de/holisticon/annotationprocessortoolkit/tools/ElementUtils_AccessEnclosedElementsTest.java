@@ -515,4 +515,166 @@ public class ElementUtils_AccessEnclosedElementsTest {
         MatcherAssert.assertThat(elementWIthNames, Matchers.hasSize(elements.size()));
     }
 
+    @Test
+    public void testFlattenEnclosedElementTree_WithNoMaxDepth_WithoutRoot() {
+
+
+        // prepare test
+        Element root = Mockito.mock(TypeElement.class);
+
+        Element field1 = Mockito.mock(VariableElement.class);
+        Element field2 = Mockito.mock(VariableElement.class);
+        Element field3 = Mockito.mock(VariableElement.class);
+
+
+        Element method1 = Mockito.mock(ExecutableElement.class);
+        Element method2 = Mockito.mock(ExecutableElement.class);
+        Element method3 = Mockito.mock(ExecutableElement.class);
+
+        Element method2_parameter1 = Mockito.mock(VariableElement.class);
+        Element method2_parameter2 = Mockito.mock(VariableElement.class);
+        Element method3_parameter1 = Mockito.mock(VariableElement.class);
+        Element method3_parameter2 = Mockito.mock(VariableElement.class);
+
+        List method2EnclosedElements = Utilities.convertVarargsToList(method2_parameter1, method2_parameter2);
+        List method3EnclosedElements = Utilities.convertVarargsToList(method3_parameter1, method3_parameter2);
+
+        List rootEnclosedElements = Utilities.convertVarargsToList(field1, field2, field3, method1, method2, method3);
+
+
+        Mockito.when(method2.getEnclosedElements()).thenReturn(method2EnclosedElements);
+        Mockito.when(method3.getEnclosedElements()).thenReturn(method3EnclosedElements);
+        Mockito.when(root.getEnclosedElements()).thenReturn(rootEnclosedElements);
+
+        // execute
+        List<? extends Element> result = ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree(root, false);
+
+        // verify
+        MatcherAssert.assertThat(result, Matchers.containsInAnyOrder(field1, field2, field3, method1, method2, method2_parameter1, method2_parameter2, method3, method3_parameter1, method3_parameter2));
+        MatcherAssert.assertThat(result, Matchers.not(Matchers.contains(root)));
+
+
+    }
+
+    @Test
+    public void testFlattenEnclosedElementTree_WithNoMaxDepth_WithRoot() {
+
+
+        // prepare test
+        Element root = Mockito.mock(TypeElement.class);
+
+        Element field1 = Mockito.mock(VariableElement.class);
+        Element field2 = Mockito.mock(VariableElement.class);
+        Element field3 = Mockito.mock(VariableElement.class);
+
+
+        Element method1 = Mockito.mock(ExecutableElement.class);
+        Element method2 = Mockito.mock(ExecutableElement.class);
+        Element method3 = Mockito.mock(ExecutableElement.class);
+
+        Element method2_parameter1 = Mockito.mock(VariableElement.class);
+        Element method2_parameter2 = Mockito.mock(VariableElement.class);
+        Element method3_parameter1 = Mockito.mock(VariableElement.class);
+        Element method3_parameter2 = Mockito.mock(VariableElement.class);
+
+        List method2EnclosedElements = Utilities.convertVarargsToList(method2_parameter1, method2_parameter2);
+        List method3EnclosedElements = Utilities.convertVarargsToList(method3_parameter1, method3_parameter2);
+
+        List rootEnclosedElements = Utilities.convertVarargsToList(field1, field2, field3, method1, method2, method3);
+
+
+        Mockito.when(method2.getEnclosedElements()).thenReturn(method2EnclosedElements);
+        Mockito.when(method3.getEnclosedElements()).thenReturn(method3EnclosedElements);
+        Mockito.when(root.getEnclosedElements()).thenReturn(rootEnclosedElements);
+
+        // execute
+        List<? extends Element> result = ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree(root, true);
+
+        // verify
+        MatcherAssert.assertThat(result, Matchers.containsInAnyOrder(root, field1, field2, field3, method1, method2, method2_parameter1, method2_parameter2, method3, method3_parameter1, method3_parameter2));
+
+
+    }
+
+    @Test
+    public void testFlattenEnclosedElementTree_WithMaxDepth_WithoutRoot() {
+
+
+        // prepare test
+        Element root = Mockito.mock(TypeElement.class);
+
+        Element field1 = Mockito.mock(VariableElement.class);
+        Element field2 = Mockito.mock(VariableElement.class);
+        Element field3 = Mockito.mock(VariableElement.class);
+
+
+        Element method1 = Mockito.mock(ExecutableElement.class);
+        Element method2 = Mockito.mock(ExecutableElement.class);
+        Element method3 = Mockito.mock(ExecutableElement.class);
+
+        Element method2_parameter1 = Mockito.mock(VariableElement.class);
+        Element method2_parameter2 = Mockito.mock(VariableElement.class);
+        Element method3_parameter1 = Mockito.mock(VariableElement.class);
+        Element method3_parameter2 = Mockito.mock(VariableElement.class);
+
+        List method2EnclosedElements = Utilities.convertVarargsToList(method2_parameter1, method2_parameter2);
+        List method3EnclosedElements = Utilities.convertVarargsToList(method3_parameter1, method3_parameter2);
+
+        List rootEnclosedElements = Utilities.convertVarargsToList(field1, field2, field3, method1, method2, method3);
+
+
+        Mockito.when(method2.getEnclosedElements()).thenReturn(method2EnclosedElements);
+        Mockito.when(method3.getEnclosedElements()).thenReturn(method3EnclosedElements);
+        Mockito.when(root.getEnclosedElements()).thenReturn(rootEnclosedElements);
+
+        // execute
+        List<? extends Element> result = ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree(root, false, 1);
+
+        // verify
+        MatcherAssert.assertThat(result, Matchers.containsInAnyOrder(field1, field2, field3, method1, method2, method3));
+        MatcherAssert.assertThat(result, Matchers.not(Matchers.contains(root, method2_parameter1, method2_parameter2, method3_parameter1, method2_parameter2)));
+
+
+    }
+
+    public void testFlattenEnclosedElementTree_WithMaxDepth_WithRoot() {
+
+
+        // prepare test
+        Element root = Mockito.mock(TypeElement.class);
+
+        Element field1 = Mockito.mock(VariableElement.class);
+        Element field2 = Mockito.mock(VariableElement.class);
+        Element field3 = Mockito.mock(VariableElement.class);
+
+
+        Element method1 = Mockito.mock(ExecutableElement.class);
+        Element method2 = Mockito.mock(ExecutableElement.class);
+        Element method3 = Mockito.mock(ExecutableElement.class);
+
+        Element method2_parameter1 = Mockito.mock(VariableElement.class);
+        Element method2_parameter2 = Mockito.mock(VariableElement.class);
+        Element method3_parameter1 = Mockito.mock(VariableElement.class);
+        Element method3_parameter2 = Mockito.mock(VariableElement.class);
+
+        List method2EnclosedElements = Utilities.convertVarargsToList(method2_parameter1, method2_parameter2);
+        List method3EnclosedElements = Utilities.convertVarargsToList(method3_parameter1, method3_parameter2);
+
+        List rootEnclosedElements = Utilities.convertVarargsToList(field1, field2, field3, method1, method2, method3);
+
+
+        Mockito.when(method2.getEnclosedElements()).thenReturn(method2EnclosedElements);
+        Mockito.when(method3.getEnclosedElements()).thenReturn(method3EnclosedElements);
+        Mockito.when(root.getEnclosedElements()).thenReturn(rootEnclosedElements);
+
+        // execute
+        List<? extends Element> result = ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree(root, true, 1);
+
+        // verify
+        MatcherAssert.assertThat(result, Matchers.containsInAnyOrder(root, field1, field2, field3, method1, method2, method3));
+        MatcherAssert.assertThat(result, Matchers.not(Matchers.contains(method2_parameter1, method2_parameter2, method3_parameter1, method2_parameter2)));
+
+
+    }
+
 }

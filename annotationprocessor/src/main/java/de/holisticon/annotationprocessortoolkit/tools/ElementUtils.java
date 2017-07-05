@@ -623,6 +623,68 @@ public final class ElementUtils {
             return Filters.ANNOTATION_FILTER.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
 
         }
+
+        /**
+         * Gets all enclosed elements of the element tree.
+         *
+         * @param element        the element to get the enclosed elements from
+         * @param addRootElement Defines if the passed element should be part of the result
+         * @return the flattened enclosed element tree of the passed element
+         */
+        public static List<? extends Element> flattenEnclosedElementTree(Element element, boolean addRootElement) {
+            return flattenEnclosedElementTree(element, addRootElement, Integer.MAX_VALUE);
+        }
+
+        /**
+         * Gets all enclosed elements of the element tree up to a specific depth.
+         *
+         * @param element        the element to get the enclosed elements from
+         * @param addRootElement Defines if the passed element should be part of the result
+         * @param maxDepth       the maximal tree depth for which the elements should be grabbed
+         * @return the flattened enclosed element tree of the passed element
+         */
+        public static List<Element> flattenEnclosedElementTree(Element element, boolean addRootElement, int maxDepth) {
+            List<Element> result = new ArrayList<Element>();
+
+
+            if (addRootElement) {
+                result.add(element);
+            }
+
+            flattenEnclosedElementTree(element, maxDepth, result, -1);
+
+            return result;
+        }
+
+        /**
+         * Gets all enclosed elements of the element tree.
+         *
+         * @param element      the element to get the enclosed elements from
+         * @param maxDepth     the maximal tree depth for which the elements should be grabbed
+         * @param result       the result array to be used
+         * @param currentDepth the current depth in the tree
+         * @return the flattened enclosed element tree of the passed element
+         */
+        private static void flattenEnclosedElementTree(Element element, int maxDepth, List<Element> result, int currentDepth) {
+
+            if (currentDepth < maxDepth) {
+
+                // don't add root element to result, this is done in the caller of this method
+                if (currentDepth >= 0) {
+                    result.add(element);
+                }
+
+                currentDepth++;
+
+                for (Element enclosedElement : element.getEnclosedElements()) {
+                    flattenEnclosedElementTree(enclosedElement, maxDepth, result, currentDepth);
+                }
+
+            }
+
+        }
+
+
     }
 
 
