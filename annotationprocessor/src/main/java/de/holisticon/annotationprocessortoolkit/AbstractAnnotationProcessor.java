@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Abstract base class with support for executing several tasks
+ * Abstract base class with support for executing several tasks.
  */
 public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
 
@@ -37,7 +37,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      * @param <E>
      * @return The filtered list
      */
-    protected <E extends Element> FluentElementFilter<E> createFluentElementFilter(List<E> elementListToFilter) {
+    public <E extends Element> FluentElementFilter<E> createFluentElementFilter(List<E> elementListToFilter) {
         return FluentElementFilter.createFluentFilter(elementListToFilter);
     }
 
@@ -48,7 +48,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      * @param methodElement the ExecutableElement instance to validate
      * @return FluentMethodValidator instance
      */
-    protected FluentExecutableElementValidator getFluentMethodValidator(ExecutableElement methodElement) {
+    public FluentExecutableElementValidator getFluentMethodValidator(ExecutableElement methodElement) {
         return new FluentExecutableElementValidator(frameworkToolWrapper, methodElement);
     }
 
@@ -59,7 +59,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      * @param element the element instance to validate
      * @return FluentTypeElementValidator instance
      */
-    protected FluentModifierElementValidator getFluentModifierElementValidator(Element element) {
+    public FluentModifierElementValidator getFluentModifierElementValidator(Element element) {
         return new FluentModifierElementValidator(frameworkToolWrapper, element);
     }
 
@@ -69,14 +69,14 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      * @param typeElement the TypeElement instance to validate
      * @return FluentMethodValidator instance
      */
-    protected FluentTypeElementValidator getFluentTypeValidator(TypeElement typeElement) {
+    public FluentTypeElementValidator getFluentTypeValidator(TypeElement typeElement) {
         return new FluentTypeElementValidator(frameworkToolWrapper, typeElement);
     }
 
 
-    protected Elements elementUtils;
-    protected Filer filer;
-    protected FrameworkToolWrapper frameworkToolWrapper;
+    private Elements elementUtils;
+    private Filer filer;
+    private FrameworkToolWrapper frameworkToolWrapper;
     private MessagerUtils messager;
     private TypeUtils typeUtils;
 
@@ -120,12 +120,24 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     }
 
 
-    protected MessagerUtils getMessager() {
+    public MessagerUtils getMessager() {
         return messager;
     }
 
-    protected TypeUtils getTypeUtils() {
+    public TypeUtils getTypeUtils() {
         return typeUtils;
+    }
+
+    public Elements getElementUtils() {
+        return elementUtils;
+    }
+
+    public Filer getFiler() {
+        return filer;
+    }
+
+    public FrameworkToolWrapper getFrameworkToolWrapper() {
+        return frameworkToolWrapper;
     }
 
 

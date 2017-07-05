@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 /**
  * Utility class which helps to handle different {@link Element} related tasks.
@@ -32,7 +31,7 @@ public final class ElementUtils {
     /**
      * Convenience utility class for checking the {@link ElementKind} of an Element.
      */
-    public final static class CheckKindOfElement {
+    public static final class CheckKindOfElement {
 
         /**
          * Hidden constructor.
@@ -129,12 +128,12 @@ public final class ElementUtils {
     /**
      * Convenience utility class for checking if the kind of an {@link Element}.
      */
-    public final static class CastElement {
+    public static final class CastElement {
 
         // look up tables for the different kind of types
-        private final static Set<ElementKind> typeElementKindLUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM);
-        private final static Set<ElementKind> variableElementKindLUT = Utilities.convertVarargsToSet(ElementKind.PARAMETER, ElementKind.FIELD);
-        private final static Set<ElementKind> executableElementKindLUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD);
+        private static final Set<ElementKind> TYPE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM);
+        private static final Set<ElementKind> VARIABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PARAMETER, ElementKind.FIELD);
+        private static final Set<ElementKind> EXECUTABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD);
 
         /**
          * Hidden constructor.
@@ -151,7 +150,7 @@ public final class ElementUtils {
          * @return true if passed element can be cast to TypeElement, otherwise false
          */
         public static boolean isTypeElement(Element e) {
-            return e != null && typeElementKindLUT.contains(e.getKind());
+            return e != null && TYPE_ELEMENT_KIND_LUT.contains(e.getKind());
         }
 
         /**
@@ -161,7 +160,7 @@ public final class ElementUtils {
          * @return true if passed element can be cast to VariableElement, otherwise false
          */
         public static boolean isVariableElement(Element e) {
-            return e != null && variableElementKindLUT.contains(e.getKind());
+            return e != null && VARIABLE_ELEMENT_KIND_LUT.contains(e.getKind());
         }
 
         /**
@@ -171,7 +170,7 @@ public final class ElementUtils {
          * @return true if passed element can be cast to ExecutableElement, otherwise false
          */
         public static boolean isExecutableElement(Element e) {
-            return e != null && executableElementKindLUT.contains(e.getKind());
+            return e != null && EXECUTABLE_ELEMENT_KIND_LUT.contains(e.getKind());
         }
 
         /**
@@ -312,7 +311,7 @@ public final class ElementUtils {
     /**
      * Convenience utility class for checking modifiers of an Element.
      */
-    public final static class CheckModifierOfElement {
+    public static final class CheckModifierOfElement {
 
         /**
          * Hidden constructor.
@@ -461,7 +460,7 @@ public final class ElementUtils {
     /**
      * Utility cass to access enclosing elements of a {@link Element}.
      */
-    public final static class AccessEnclosingElements {
+    public static final class AccessEnclosingElements {
 
         /**
          * Hidden constructor.
@@ -556,7 +555,7 @@ public final class ElementUtils {
     /**
      * Utility cass to access enclosed elements of a {@link Element}.
      */
-    public final static class AccessEnclosedElements {
+    public static final class AccessEnclosedElements {
 
         /**
          * Hidden constructor.
@@ -635,7 +634,7 @@ public final class ElementUtils {
          * @param element     the element to search within
          * @param nameRegexes the regular expressions used for name matching
          * @return the elements with matching name
-         * @throws PatternSyntaxException if passed pattern is invalid
+         * @throws {@link java.util.regex.PatternSyntaxException} if passed pattern is invalid
          */
         public static List<? extends Element> getEnclosedElementsByNameRegex(Element element, String... nameRegexes) {
 

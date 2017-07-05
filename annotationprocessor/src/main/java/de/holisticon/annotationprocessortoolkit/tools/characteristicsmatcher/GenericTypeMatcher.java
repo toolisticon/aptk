@@ -20,7 +20,7 @@ public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericTy
     @Override
     public boolean checkForMatchingCharacteristic(Element element, GenericType toCheckFor) {
 
-        return (element != null && toCheckFor != null) && typeUtils.GENERICS.genericTypeEquals(element.asType(), toCheckFor);
+        return (element != null && toCheckFor != null) && getTypeUtils().GENERICS.genericTypeEquals(element.asType(), toCheckFor);
 
     }
 
@@ -42,11 +42,11 @@ public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericTy
     private void createStringRepresentationRecursively(StringBuilder stringBuilder, GenericType toGetStringRepresentationFor) {
 
 
-        stringBuilder.append(typeUtils.getTypes().erasure(toGetStringRepresentationFor.getRawType()).toString());
+        stringBuilder.append(getTypeUtils().getTypes().erasure(toGetStringRepresentationFor.getRawType()).toString());
 
 
         // Check type parameters
-        if (toGetStringRepresentationFor.typeParameters.length > 0) {
+        if (toGetStringRepresentationFor.getTypeParameters().length > 0) {
 
             stringBuilder.append("<");
 
@@ -94,6 +94,9 @@ public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericTy
                     case GENERIC_TYPE:
                         createStringRepresentationRecursively(stringBuilder, (GenericType) currentGenericTypeType);
                         break;
+
+                    default:
+                        // does nothing
 
                 }
 

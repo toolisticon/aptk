@@ -36,7 +36,7 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
      * @return an immutable FluentExecutableElementValidator instance
      */
     public FluentTypeElementValidator isAssignableTo(Class type) {
-        return type != null ? isAssignableTo(typeUtils.TYPE_RETRIEVAL.getTypeElement(type)) : new FluentTypeElementValidator(this, false);
+        return type != null ? isAssignableTo(getTypeUtils().TYPE_RETRIEVAL.getTypeElement(type)) : new FluentTypeElementValidator(this, false);
     }
 
     /**
@@ -56,10 +56,10 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
      * @return an immutable FluentExecutableElementValidator instance
      */
     public FluentTypeElementValidator isAssignableTo(TypeMirror typeMirror) {
-        boolean check = this.currentValidationResult;
+        boolean check = this.getValidationResult();
 
-        if (typeMirror == null || !typeUtils.TYPE_COMPARISON.isAssignableTo(element, typeMirror)) {
-            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("type must be assignable to ${0}", typeMirror));
+        if (typeMirror == null || !getTypeUtils().TYPE_COMPARISON.isAssignableTo(getElement(), typeMirror)) {
+            getMessagerUtils().printMessage(getElement(), getMessageLevel(), getCustomOrDefaultMessage("type must be assignable to ${0}", typeMirror));
             check = isErrorLevel() ? false : check;
         }
 
@@ -72,12 +72,12 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
      * @return an immutable FluentExecutableElementValidator instance
      */
     public FluentTypeElementValidator hasNoArgConstructor() {
-        boolean check = this.currentValidationResult;
+        boolean check = this.getValidationResult();
 
 
         List<ExecutableElement> constructors =
                 CastElement.castElementList(
-                        FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                        FluentElementFilter.createFluentFilter(getElement().getEnclosedElements())
                                 .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CONSTRUCTOR)
                                 .getResult()
                         , ExecutableElement.class);

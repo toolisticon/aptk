@@ -50,12 +50,12 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
      */
     public FluentExecutableElementValidator isOfKind(ElementKind kind) {
 
-        boolean nextResult = this.currentValidationResult;
+        boolean nextResult = this.getValidationResult();
 
-        if (!ElementUtils.CheckKindOfElement.isOfKind(element, kind)) {
+        if (!ElementUtils.CheckKindOfElement.isOfKind(getElement(), kind)) {
 
             // validation failed - output message
-            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must be of kind %s", kind));
+            getMessagerUtils().printMessage(getElement(), getMessageLevel(), getCustomOrDefaultMessage("Element must be of kind %s", kind));
             nextResult = isErrorLevel() ? false : nextResult;
 
         }
@@ -71,12 +71,12 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
      */
     public FluentExecutableElementValidator hasVoidReturnType() {
 
-        boolean nextResult = this.currentValidationResult;
+        boolean nextResult = this.getValidationResult();
 
-        if (ElementUtils.CheckKindOfElement.isMethod(element) && !TypeUtils.CheckTypeKind.INSTANCE.isVoid(element.getReturnType())) {
+        if (ElementUtils.CheckKindOfElement.isMethod(getElement()) && !TypeUtils.CheckTypeKind.INSTANCE.isVoid(getElement().getReturnType())) {
 
             // validation failed - output message
-            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method must have void return type"));
+            getMessagerUtils().printMessage(getElement(), getMessageLevel(), getCustomOrDefaultMessage("Method must have void return type"));
             nextResult = isErrorLevel() ? false : nextResult;
 
 
@@ -93,12 +93,12 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
      */
     public FluentExecutableElementValidator hasNonVoidReturnType() {
 
-        boolean nextResult = this.currentValidationResult;
+        boolean nextResult = this.getValidationResult();
 
-        if (ElementUtils.CheckKindOfElement.isMethod(element) && TypeUtils.CheckTypeKind.INSTANCE.isVoid(element.getReturnType())) {
+        if (ElementUtils.CheckKindOfElement.isMethod(getElement()) && TypeUtils.CheckTypeKind.INSTANCE.isVoid(getElement().getReturnType())) {
 
             // validation failed - output message
-            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method must have non void return type"));
+            getMessagerUtils().printMessage(getElement(), getMessageLevel(), getCustomOrDefaultMessage("Method must have non void return type"));
             nextResult = isErrorLevel() ? false : nextResult;
 
         }
@@ -114,14 +114,18 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
      */
     public FluentExecutableElementValidator hasReturnType(Class type) {
 
-        boolean nextResult = this.currentValidationResult;
+        boolean nextResult = this.getValidationResult();
 
-        if (ElementUtils.CheckKindOfElement.isMethod(element) && hasNonVoidReturnType().getValidationResult()) {
+        if (ElementUtils.CheckKindOfElement.isMethod(getElement()) && hasNonVoidReturnType().getValidationResult()) {
 
-            if (type == null || !typeUtils.getTypes().isAssignable(element.getReturnType(), typeUtils.TYPE_RETRIEVAL.getTypeMirror(type))) {
+            if (type == null || !getTypeUtils().getTypes().isAssignable(getElement().getReturnType(), getTypeUtils().TYPE_RETRIEVAL.getTypeMirror(type))) {
 
                 // validation failed - output message
-                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Methods return type must be assignable to type ${0}", type.getSimpleName()));
+                getMessagerUtils().printMessage(
+                        getElement(),
+                        getMessageLevel(),
+                        getCustomOrDefaultMessage("Methods return type must be assignable to type ${0}", type.getSimpleName())
+                );
                 nextResult = isErrorLevel() ? false : nextResult;
 
             }
@@ -140,11 +144,17 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
      * @return an immutable FluentExecutableElementValidator instance
      */
     public FluentExecutableElementValidator hasName(String name) {
-        boolean nextResult = this.currentValidationResult;
+        boolean nextResult = this.getValidationResult();
 
-        if (name == null || !name.equals(element.getSimpleName().toString())) {
-            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have name ${0}, but has name ${1}", name, element.getSimpleName()));
+        if (name == null || !name.equals(getElement().getSimpleName().toString())) {
+
+            getMessagerUtils().printMessage(
+                    getElement(),
+                    getMessageLevel(),
+                    getCustomOrDefaultMessage("Element must have name ${0}, but has name ${1}", name, getElement().getSimpleName())
+            );
             nextResult = isErrorLevel() ? false : nextResult;
+
         }
 
         return createNextFluentValidator(nextResult);
@@ -156,37 +166,44 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
      * @return an immutable FluentExecutableElementValidator instance
      */
     public FluentExecutableElementValidator hasParameters() {
-        boolean nextResult = this.currentValidationResult;
+        boolean nextResult = this.getValidationResult();
 
-        if ((ElementUtils.CheckKindOfElement.isMethod(element) || ElementUtils.CheckKindOfElement.isConstructor(element)) && element.getParameters().isEmpty()) {
-            messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method must have parameters, but has none"));
+        if ((ElementUtils.CheckKindOfElement.isMethod(getElement()) || ElementUtils.CheckKindOfElement.isConstructor(getElement()))
+                && getElement().getParameters().isEmpty()) {
+
+            getMessagerUtils().printMessage(getElement(), getMessageLevel(), getCustomOrDefaultMessage("Method must have parameters, but has none"));
             nextResult = isErrorLevel() ? false : nextResult;
+
         }
 
         return createNextFluentValidator(nextResult);
     }
 
     /**
-     * Checks whether the method has parameters that are assignable to passed typed
+     * Checks whether the method has parameters that are assignable to passed typed.
      *
      * @param parameterTypes The parameter types
      * @return an immutable FluentExecutableElementValidator instance
      */
     public FluentExecutableElementValidator hasParameters(Class... parameterTypes) {
 
-        boolean nextResult = this.currentValidationResult;
+        boolean nextResult = this.getValidationResult();
 
-        if (ElementUtils.CheckKindOfElement.isMethod(element)) {
-            if (element.getParameters().size() != parameterTypes.length) {
-                //messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method number of parameters is ${0} but expected ${1}", element.getParameters().size(), parameterTypes.length));
+        if (ElementUtils.CheckKindOfElement.isMethod(getElement())) {
+            if (getElement().getParameters().size() != parameterTypes.length) {
+
                 triggerMismatchingParameterError(parameterTypes);
                 nextResult = isErrorLevel() ? false : nextResult;
+
             } else {
-                for (int i = 0; i < element.getParameters().size(); i++) {
-                    if (!element.getParameters().get(i).asType().equals(typeUtils.TYPE_RETRIEVAL.getTypeMirror(parameterTypes[i]))) {
+
+                for (int i = 0; i < getElement().getParameters().size(); i++) {
+
+                    if (!getElement().getParameters().get(i).asType().equals(getTypeUtils().TYPE_RETRIEVAL.getTypeMirror(parameterTypes[i]))) {
                         triggerMismatchingParameterError(parameterTypes);
                         nextResult = isErrorLevel() ? false : nextResult;
                     }
+
                 }
             }
         }
@@ -196,7 +213,10 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
     }
 
     private void triggerMismatchingParameterError(Class... parameterTypes) {
-        messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Method must have parameters of types ${1}, but has parameters of types ${0}", createStringRepresentationOfPassedTypes(element.getParameters()), createStringRepresentationOfPassedTypes(parameterTypes)));
+        getMessagerUtils().printMessage(getElement(), getMessageLevel(), getCustomOrDefaultMessage(
+                "Method must have parameters of types ${1}, but has parameters of types ${0}",
+                createStringRepresentationOfPassedTypes(getElement().getParameters()), createStringRepresentationOfPassedTypes(parameterTypes))
+        );
     }
 
     private String createStringRepresentationOfPassedTypes(Class[] types) {

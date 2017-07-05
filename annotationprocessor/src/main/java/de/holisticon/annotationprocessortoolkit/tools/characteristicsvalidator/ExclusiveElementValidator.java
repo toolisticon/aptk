@@ -14,7 +14,7 @@ public interface ExclusiveElementValidator<T> {
      * @param characteristicsToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public boolean hasOneOf(Element element, T... characteristicsToCheck);
+    boolean hasOneOf(Element element, T... characteristicsToCheck);
 
     /**
      * Checks if passed element is annotated with NONE of the passed characteristics.
@@ -23,6 +23,6 @@ public interface ExclusiveElementValidator<T> {
      * @param characteristicsToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public boolean hasNoneOf(Element element, T... characteristicsToCheck);
+    boolean hasNoneOf(Element element, T... characteristicsToCheck);
 
 }

@@ -15,7 +15,7 @@ public interface InclusiveElementValidator<T> extends ExclusiveElementValidator<
      * @param characteristicsToCheck the characteristics to check
      * @return true if all passed characteristics are present, otherwise false
      */
-    public boolean hasAllOf(Element element, T... characteristicsToCheck);
+    boolean hasAllOf(Element element, T... characteristicsToCheck);
 
     /**
      * Checks if passed element is annotated with at least one of the passed characteristics.
@@ -24,7 +24,7 @@ public interface InclusiveElementValidator<T> extends ExclusiveElementValidator<
      * @param characteristicsToCheck the annotation types to check for
      * @return true if at least one of the characteristics are present
      */
-    public boolean hasAtLeastOneOf(Element element, T... characteristicsToCheck);
+    boolean hasAtLeastOneOf(Element element, T... characteristicsToCheck);
 
 
 }

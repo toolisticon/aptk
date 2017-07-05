@@ -8,9 +8,8 @@ import javax.lang.model.type.TypeMirror;
 public class GenericType implements GenericTypeType {
 
 
-
-    public final TypeMirror rawType;
-    public final GenericTypeType[] typeParameters;
+    private final TypeMirror rawType;
+    private final GenericTypeType[] typeParameters;
 
     public <T extends GenericTypeType> GenericType(TypeMirror rawType, T... typeParameters) {
         this.rawType = rawType;
@@ -24,7 +23,6 @@ public class GenericType implements GenericTypeType {
     public GenericTypeType[] getTypeParameters() {
         return typeParameters;
     }
-
 
 
     public boolean hasTypeParameters() {

@@ -79,7 +79,10 @@ public class GenericCharacteristicsFilter<C> {
      * @return A fresh filtered list
      */
 
-    public <T extends Element> List<T> filterByCharacteristics(final ValidatorKind kind, boolean invertFilter, final List<T> listToFilter, final C... characteristics) {
+    public <T extends Element> List<T> filterByCharacteristics(
+            final ValidatorKind kind,
+            boolean invertFilter,
+            final List<T> listToFilter, final C... characteristics) {
 
         // return empty List if list to filter is null
         if (listToFilter == null) {

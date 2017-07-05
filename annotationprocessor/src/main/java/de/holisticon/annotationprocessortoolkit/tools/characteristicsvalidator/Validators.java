@@ -11,13 +11,25 @@ import java.lang.annotation.Annotation;
 /**
  * Convenience class to access existing validators.
  */
-public class Validators {
+public final class Validators {
 
-    public final static Validator<Modifier> MODIFIER_VALIDATOR = new Validator<Modifier>(new GenericElementCharacteristicValidator<Modifier>(Matchers.MODIFIER_MATCHER));
-    public final static Validator<String> NAME_VALIDATOR = new Validator<String>(new GenericElementCharacteristicValidator<String>(Matchers.NAME_MATCHER));
-    public final static Validator<String> REGEX_NAME_VALIDATOR = new Validator<String>(new GenericElementCharacteristicValidator<String>(Matchers.REGEX_NAME_MATCHER));
-    public final static Validator<Class<? extends Annotation>> ANNOTATION_VALIDATOR = new Validator<Class<? extends Annotation>>(new GenericElementCharacteristicValidator<Class<? extends Annotation>>(Matchers.ANNOTATION_MATCHER));
-    public final static Validator<ElementKind> ELEMENT_KIND_VALIDATOR = new Validator<ElementKind>(new GenericElementCharacteristicValidator<ElementKind>(Matchers.ELEMENT_KIND_MATCHER));
+    /**
+     * Hidden constructor.
+     */
+    private Validators() {
+
+    }
+
+    public static final Validator<Modifier> MODIFIER_VALIDATOR =
+            new Validator<Modifier>(new GenericElementCharacteristicValidator<Modifier>(Matchers.MODIFIER_MATCHER));
+    public static final Validator<String> NAME_VALIDATOR =
+            new Validator<String>(new GenericElementCharacteristicValidator<String>(Matchers.NAME_MATCHER));
+    public static final Validator<String> REGEX_NAME_VALIDATOR =
+            new Validator<String>(new GenericElementCharacteristicValidator<String>(Matchers.REGEX_NAME_MATCHER));
+    public static final Validator<Class<? extends Annotation>> ANNOTATION_VALIDATOR =
+            new Validator<Class<? extends Annotation>>(new GenericElementCharacteristicValidator<Class<? extends Annotation>>(Matchers.ANNOTATION_MATCHER));
+    public static final Validator<ElementKind> ELEMENT_KIND_VALIDATOR =
+            new Validator<ElementKind>(new GenericElementCharacteristicValidator<ElementKind>(Matchers.ELEMENT_KIND_MATCHER));
 
     public static Validator<Class[]> PARAMETER_VALIDATOR(FrameworkToolWrapper tools) {
         return new Validator<Class[]>(new GenericElementCharacteristicValidator<Class[]>(Matchers.PARAMETER_MATCHER(tools)));

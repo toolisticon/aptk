@@ -23,7 +23,7 @@ public class RawTypeMatcher extends GenericMatcherWithToolsSupport<Class> {
         }
 
         // cast to executable element for further checks
-        TypeUtils typeUtils = TypeUtils.getTypeUtils(tools);
+        TypeUtils typeUtils = TypeUtils.getTypeUtils(getFrameworkTools());
 
         return typeUtils.TYPE_COMPARISON.isErasedTypeEqual(element.asType(), typeUtils.TYPE_RETRIEVAL.getTypeMirror(toCheckFor));
 

@@ -102,7 +102,8 @@ public class MessagerUtils {
 
     /**
      * Creates a message by using a custom templating mechanism.
-     * Argument placeholder with the following format '${index}' (f.E. ${0} for the first argument) can be placed inside the message string to be replaced by the passed arguments.
+     * Argument placeholder with the following format '${index}'
+     * (f.E. ${0} for the first argument) can be placed inside the message string to be replaced by the passed arguments.
      * The placeholders will be replaced by the return value of the toString method invoked on passed arguments.
      * <p/>
      * This approach is much more faulty tolerant as using  String.format.

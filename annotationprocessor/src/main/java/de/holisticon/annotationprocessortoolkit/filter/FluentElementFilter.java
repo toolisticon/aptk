@@ -18,10 +18,10 @@ import java.util.List;
  *
  * @param <T>
  */
-public class FluentElementFilter<T extends Element> {
+public final class FluentElementFilter<T extends Element> {
 
 
-    public class ApplyFilter<C> {
+    public final class ApplyFilter<C> {
 
         private final GenericCharacteristicsFilter<C> filter;
         private boolean invertFiltering = false;
@@ -101,13 +101,24 @@ public class FluentElementFilter<T extends Element> {
     }
 
 
+    /**
+     * Applies TypeElement filter and casts the FluentElementFilter to TypeElement.
+     *
+     * @return the new FluentElementFilter based on TypeElements
+     */
     public FluentElementFilter<TypeElement> filterAndCastToTypeElement() {
-        return genericFilterAndCastToTypeElement(new ApplyFilter<ElementKind>(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CLASS).getResult(), TypeElement.class);
+        return genericFilterAndCastToTypeElement(
+                new ApplyFilter<ElementKind>(Filters.ELEMENT_KIND_FILTER)
+                        .filterByOneOf(ElementKind.CLASS).getResult()
+                , TypeElement.class
+        );
 
     }
 
-    private <Y extends Element> FluentElementFilter<Y> genericFilterAndCastToTypeElement
-            (List<? extends Element> elements, Class<Y> typeToCastTo) {
+    private <Y extends Element> FluentElementFilter<Y> genericFilterAndCastToTypeElement(
+            List<? extends Element> elements,
+            Class<Y> typeToCastTo
+    ) {
         return new FluentElementFilter<Y>(ElementUtils.CastElement.castElementList(elements, typeToCastTo));
     }
 
@@ -124,7 +135,7 @@ public class FluentElementFilter<T extends Element> {
     }
 
     /**
-     * Gets the filter result as a list
+     * Gets the filter result as a list.
      *
      * @return the filtered list
      */
@@ -133,7 +144,7 @@ public class FluentElementFilter<T extends Element> {
     }
 
     /**
-     * Checks if filter result is empty
+     * Checks if filter result is empty.
      *
      * @return true if filter result is empty, otherwise false
      */
@@ -142,7 +153,7 @@ public class FluentElementFilter<T extends Element> {
     }
 
     /**
-     * Checks if filter result contains exactly one element
+     * Checks if filter result contains exactly one element.
      *
      * @return true if filter result contains exactly one element, otherwise false
      */

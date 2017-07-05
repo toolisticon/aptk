@@ -17,9 +17,9 @@ import javax.lang.model.util.Types;
 /**
  * Utility class and wrapper for / of {@link Types}.
  */
-public class TypeUtils {
+public final class TypeUtils {
 
-    protected final FrameworkToolWrapper frameworkToolWrapper;
+    private final FrameworkToolWrapper frameworkToolWrapper;
 
     public final TypeRetrieval TYPE_RETRIEVAL = new TypeRetrieval();
     public final TypeComparison TYPE_COMPARISON = new TypeComparison();
@@ -28,6 +28,11 @@ public class TypeUtils {
     public final Generics GENERICS = new Generics();
 
 
+    /**
+     * Hidden constructor.
+     *
+     * @param frameworkToolWrapper the wrapped tools of processing environment
+     */
     private TypeUtils(FrameworkToolWrapper frameworkToolWrapper) {
         this.frameworkToolWrapper = frameworkToolWrapper;
     }
@@ -36,12 +41,12 @@ public class TypeUtils {
     /**
      * Embedded class for handling the TypeKind checks.
      */
-    public final static class CheckTypeKind {
+    public static final class CheckTypeKind {
 
-        public final static CheckTypeKind INSTANCE = new CheckTypeKind();
+        public static final CheckTypeKind INSTANCE = new CheckTypeKind();
 
         /**
-         * Hidden Constructor
+         * Hidden Constructor.
          */
         private CheckTypeKind() {
 
@@ -79,7 +84,7 @@ public class TypeUtils {
 
 
         /**
-         * Checks whether passed {@link TypeMirror} is of passed {@link TypeKind}
+         * Checks whether passed {@link TypeMirror} is of passed {@link TypeKind}.
          *
          * @param typeMirror
          * @param kind
@@ -93,17 +98,17 @@ public class TypeUtils {
     }
 
 
-    public class TypeRetrieval {
+    public final class TypeRetrieval {
 
         /**
-         * Hidden Constructor
+         * Hidden Constructor.
          */
         private TypeRetrieval() {
 
         }
 
         /**
-         * Gets a type element for a full qualified class name
+         * Gets a type element for a full qualified class name.
          *
          * @param fullQualifiedClassName
          * @return the type element for the passed full qualified class name or null if type element can't be found
@@ -119,7 +124,7 @@ public class TypeUtils {
         }
 
         /**
-         * Gets a TypeMirror for a full qualified class name
+         * Gets a TypeMirror for a full qualified class name.
          *
          * @param fullQualifiedClassName
          * @return the type mirror for the passed full qualified class name or null if corresponding type element can't be found
@@ -135,7 +140,7 @@ public class TypeUtils {
          * Gets {@link TypeElement} for class.
          *
          * @param type the class to get the {@link TypeElement} for
-         * @return The {@link TypeElement} that is related with the passed class or null if a TypeElement can't be found for passed class (f.e. if passed type represents an array)
+         * @return The {@link TypeElement} that is related with the passed class or null if a TypeElement can't be found for passed class (f.e. for an array)
          */
         public TypeElement getTypeElement(Class type) {
 
@@ -203,17 +208,17 @@ public class TypeUtils {
     }
 
 
-    public class TypeComparison {
+    public final class TypeComparison {
 
         /**
-         * Hidden Constructor
+         * Hidden Constructor.
          */
         private TypeComparison() {
 
         }
 
         /**
-         * Checks if passed typeElement is assignable to passed type
+         * Checks if passed typeElement is assignable to passed type.
          *
          * @param typeElement the type element to check
          * @param type        the class which typeElement must assignable to
@@ -224,7 +229,7 @@ public class TypeUtils {
         }
 
         /**
-         * Checks if passed typeElement is assignable to passed typeMirror
+         * Checks if passed typeElement is assignable to passed typeMirror.
          *
          * @param typeElement the type element to check
          * @param typeMirror  the type mirror which typeElement must assignable to
@@ -361,7 +366,8 @@ public class TypeUtils {
         }
 
         /**
-         * Checks whether both erased TypeMirror parameters represent the same type. (== raw types are equal)
+         * Checks whether both erased TypeMirror parameters represent the same type.
+         * (== raw types are equal)
          *
          * @param typeMirror1
          * @param typeMirror2
@@ -375,10 +381,10 @@ public class TypeUtils {
     }
 
 
-    public class Arrays {
+    public final class Arrays {
 
         /**
-         * Hidden Constructor
+         * Hidden Constructor.
          */
         private Arrays() {
 
@@ -424,7 +430,10 @@ public class TypeUtils {
          * @return true id passed type mirror is of kind array with component type, otherwise false
          */
         public boolean isArrayOfType(TypeMirror typeMirror, TypeMirror componentType) {
-            return typeMirror != null && componentType != null && CHECK_TYPE_KIND.isArray(typeMirror) && frameworkToolWrapper.getTypes().isSameType(getArraysComponentType(typeMirror), componentType);
+            return typeMirror != null
+                    && componentType != null
+                    && CHECK_TYPE_KIND.isArray(typeMirror)
+                    && frameworkToolWrapper.getTypes().isSameType(getArraysComponentType(typeMirror), componentType);
         }
 
 
@@ -494,13 +503,13 @@ public class TypeUtils {
             DeclaredType tmDeclaredType = (DeclaredType) typeMirror;
 
             // check if number of type parameters is matching
-            if (tmDeclaredType.getTypeArguments().size() != genericType.typeParameters.length) {
+            if (tmDeclaredType.getTypeArguments().size() != genericType.getTypeParameters().length) {
                 return false;
             }
 
 
             // Check type parameters
-            if (genericType.typeParameters.length > 0) {
+            if (genericType.getTypeParameters().length > 0) {
 
                 // Now check type parameters recursively
                 for (int i = 0; i < genericType.getTypeParameters().length; i++) {
@@ -639,7 +648,7 @@ public class TypeUtils {
 
 
             // Check type parameters
-            if (genericType.typeParameters.length > 0) {
+            if (genericType.getTypeParameters().length > 0) {
 
                 // Compare typeParameters
                 if (!(typeMirror instanceof DeclaredType)) {
@@ -649,7 +658,7 @@ public class TypeUtils {
                 DeclaredType tmDeclaredType = (DeclaredType) typeMirror;
 
                 // check if number of type parameters is matching
-                if (tmDeclaredType.getTypeArguments().size() != genericType.typeParameters.length) {
+                if (tmDeclaredType.getTypeArguments().size() != genericType.getTypeParameters().length) {
                     return false;
                 }
 
@@ -708,7 +717,9 @@ public class TypeUtils {
 
                     GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeType;
 
-                    if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(wildcardType.getExtendsBound()), getTypes().erasure(wildcard.getExtendsBound().getRawType()))) {
+                    if (!TYPE_COMPARISON.isAssignableTo(
+                            getTypes().erasure(wildcardType.getExtendsBound()),
+                            getTypes().erasure(wildcard.getExtendsBound().getRawType()))) {
                         return false;
                     }
 
@@ -728,7 +739,9 @@ public class TypeUtils {
 
                     GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeType;
 
-                    if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(wildcard.getSuperBound().getRawType()), getTypes().erasure(wildcardType.getSuperBound()))) {
+                    if (!TYPE_COMPARISON.isAssignableTo(
+                            getTypes().erasure(wildcard.getSuperBound().getRawType()),
+                            getTypes().erasure(wildcardType.getSuperBound()))) {
                         return false;
                     }
 

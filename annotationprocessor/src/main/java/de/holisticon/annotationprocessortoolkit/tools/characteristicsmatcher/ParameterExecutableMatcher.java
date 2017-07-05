@@ -39,7 +39,9 @@ public class ParameterExecutableMatcher extends GenericMatcherWithToolsSupport<C
 
 
         for (int i = 0; i < executableElement.getParameters().size(); i++) {
-            if (!executableElement.getParameters().get(i).asType().equals(TypeUtils.getTypeUtils(tools).TYPE_RETRIEVAL.getTypeMirror(toCheckFor[i]))) {
+            if (!executableElement.getParameters().get(i).asType().equals(
+                    TypeUtils.getTypeUtils(getFrameworkTools()).TYPE_RETRIEVAL.getTypeMirror(toCheckFor[i]))
+                    ) {
                 return false;
             }
         }

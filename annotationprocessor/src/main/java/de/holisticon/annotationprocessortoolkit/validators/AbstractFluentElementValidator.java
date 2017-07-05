@@ -35,11 +35,14 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
      * @return an immutable FluentExecutableElementValidator instance
      */
     public T hasModifiers(Modifier... modifiers) {
-        boolean nextResult = currentValidationResult;
+        boolean nextResult = getValidationResult();
 
         if (modifiers != null) {
-            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasAllOf(element, modifiers)) {
-                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers)));
+            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasAllOf(getElement(), modifiers)) {
+                getMessagerUtils().printMessage(
+                        getElement(), getMessageLevel(),
+                        getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers))
+                );
                 nextResult = isErrorLevel() ? false : nextResult;
             }
         }
@@ -54,11 +57,15 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
      * @return an immutable FluentExecutableElementValidator instance
      */
     public T hasNotModifiers(Modifier... modifiers) {
-        boolean nextResult = currentValidationResult;
+        boolean nextResult = getValidationResult();
 
         if (modifiers != null) {
-            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasNoneOf(element, modifiers)) {
-                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers)));
+            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasNoneOf(getElement(), modifiers)) {
+                getMessagerUtils().printMessage(
+                        getElement(),
+                        getMessageLevel(),
+                        getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers))
+                );
                 nextResult = isErrorLevel() ? false : nextResult;
             }
         }

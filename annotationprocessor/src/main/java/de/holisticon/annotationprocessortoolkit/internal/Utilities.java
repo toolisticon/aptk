@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Utility class that offers some basic utility methods.
  */
-public class Utilities {
+public final class Utilities {
 
     /**
      * Hidden constructor.

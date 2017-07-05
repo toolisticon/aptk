@@ -49,7 +49,7 @@ public class FluentValidatorTest {
         public TestFluentValidator<T> doValidation(boolean outcome) {
 
             if (!outcome) {
-                messagerUtils.printMessage(element, getMessageLevel(), getCustomOrDefaultMessage("XXX: ${0}", "A"));
+                getMessagerUtils().printMessage(getElement(), getMessageLevel(), getCustomOrDefaultMessage("XXX: ${0}", "A"));
             }
 
             return createNextFluentValidator(outcome);

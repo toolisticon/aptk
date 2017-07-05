@@ -58,7 +58,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                         );
 
 
-                                        MatcherAssert.assertThat(Matchers.GENERIC_TYPE_MATCHER(frameworkToolWrapper).getMatcher().getStringRepresentationOfPassedCharacteristic(genericTypeToConvert), org.hamcrest.Matchers.is("java.util.Map<? extends java.lang.StringBuilder, java.util.Comparator<? super java.util.List<?>>>"));
+                                        MatcherAssert.assertThat(Matchers.GENERIC_TYPE_MATCHER(getFrameworkToolWrapper()).getMatcher().getStringRepresentationOfPassedCharacteristic(genericTypeToConvert), org.hamcrest.Matchers.is("java.util.Map<? extends java.lang.StringBuilder, java.util.Comparator<? super java.util.List<?>>>"));
 
 
                                     }
@@ -89,7 +89,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                                 )
                                         );
 
-                                        MatcherAssert.assertThat("Should compare successful", Matchers.GENERIC_TYPE_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+                                        MatcherAssert.assertThat("Should compare successful", Matchers.GENERIC_TYPE_MATCHER(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
 
 
                                     }
@@ -120,7 +120,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
 
                                         );
 
-                                        MatcherAssert.assertThat("Should not compare successful", !Matchers.GENERIC_TYPE_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+                                        MatcherAssert.assertThat("Should not compare successful", !Matchers.GENERIC_TYPE_MATCHER(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
 
 
                                     }
@@ -161,7 +161,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                                 )
                                         );
 
-                                        MatcherAssert.assertThat("Should compare successful", Matchers.GENERIC_TYPE_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+                                        MatcherAssert.assertThat("Should compare successful", Matchers.GENERIC_TYPE_MATCHER(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
 
                                     }
                                 },
@@ -203,7 +203,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                                 )
                                         );
 
-                                        MatcherAssert.assertThat("Should not compare successful", !Matchers.GENERIC_TYPE_MATCHER(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+                                        MatcherAssert.assertThat("Should not compare successful", !Matchers.GENERIC_TYPE_MATCHER(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
 
 
                                     }

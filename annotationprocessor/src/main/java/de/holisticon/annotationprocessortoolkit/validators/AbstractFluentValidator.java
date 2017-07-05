@@ -14,13 +14,13 @@ import javax.tools.Diagnostic;
  */
 public abstract class AbstractFluentValidator<T extends AbstractFluentValidator, E extends Element> {
 
-    protected final FrameworkToolWrapper frameworkToolWrapper;
-    protected final MessagerUtils messagerUtils;
-    protected final TypeUtils typeUtils;
+    private final FrameworkToolWrapper frameworkToolWrapper;
+    private final MessagerUtils messagerUtils;
+    private final TypeUtils typeUtils;
 
-    protected final E element;
+    private final E element;
 
-    protected final boolean currentValidationResult;
+    private final boolean currentValidationResult;
 
     private Diagnostic.Kind messageLevel = Diagnostic.Kind.ERROR;
 
@@ -44,9 +44,29 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
         this.currentValidationResult = true;
     }
 
+    protected E getElement() {
+        return element;
+    }
+
+    protected TypeUtils getTypeUtils() {
+        return typeUtils;
+    }
+
+    protected FrameworkToolWrapper getFrameworkToolWrapper() {
+        return frameworkToolWrapper;
+    }
+
+    protected MessagerUtils getMessagerUtils() {
+        return messagerUtils;
+    }
+
+    public boolean isCurrentValidationResult() {
+        return currentValidationResult;
+    }
 
     protected AbstractFluentValidator(AbstractFluentValidator<T, E> previousFluentValidator, boolean nextResult) {
-        this.messageLevel = previousFluentValidator != null && previousFluentValidator.messageLevel != null ? previousFluentValidator.messageLevel : Diagnostic.Kind.ERROR;
+        this.messageLevel = previousFluentValidator != null
+                && previousFluentValidator.messageLevel != null ? previousFluentValidator.messageLevel : Diagnostic.Kind.ERROR;
 
         // config validator
         this.frameworkToolWrapper = previousFluentValidator.frameworkToolWrapper;
@@ -153,11 +173,11 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
      * Placeholders have the following format '${&lt;index&gt;}' like '${1}' for second parameter.
      * The index is starting with 0.
      *
-     * @param customMessage          the custom message string
-     * @param customMessageParameter the custom message parameters
+     * @param customMessageParam          the custom message string
+     * @param customMessageParameterParam the custom message parameters
      */
-    public T setCustomMessage(String customMessage, Object... customMessageParameter) {
-        setCustomMessage(this.messageLevel, customMessage, customMessageParameter);
+    public T setCustomMessage(String customMessageParam, Object... customMessageParameterParam) {
+        setCustomMessage(this.messageLevel, customMessageParam, customMessageParameterParam);
 
         return (T) this;
     }
@@ -170,14 +190,14 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
      * Keep in mind that the passed message level only affects the next validation.
      * If you want to change the message level for all following validation, choose dedicated message level setter methods instead.
      *
-     * @param messageLevel           the message level to use with for the next validation
-     * @param customMessage          the custom message string
-     * @param customMessageParameter the custom message parameters
+     * @param messageLevelParam           the message level to use with for the next validation
+     * @param customMessageParam          the custom message string
+     * @param customMessageParameterParam the custom message parameters
      */
-    public T setCustomMessage(Diagnostic.Kind messageLevel, String customMessage, Object... customMessageParameter) {
-        this.customMessageLevel = messageLevel;
-        this.customMessage = customMessage;
-        this.customMessageParameter = customMessageParameter;
+    public T setCustomMessage(Diagnostic.Kind messageLevelParam, String customMessageParam, Object... customMessageParameterParam) {
+        this.customMessageLevel = messageLevelParam;
+        this.customMessage = customMessageParam;
+        this.customMessageParameter = customMessageParameterParam;
 
         return (T) this;
     }

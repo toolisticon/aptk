@@ -3,10 +3,9 @@ package de.holisticon.annotationprocessortoolkit.validators;
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 
 /**
- * Fluent and immutable validator for validation of {@link Modifier} of {@link Element}.
+ * Fluent and immutable validator for validation of {@link javax.lang.model.element.Modifier} of {@link Element}.
  */
 public class FluentModifierElementValidator extends AbstractFluentElementValidator<FluentModifierElementValidator, Element> {
 
