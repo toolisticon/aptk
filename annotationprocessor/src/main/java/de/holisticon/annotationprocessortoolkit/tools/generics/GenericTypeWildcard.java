@@ -19,7 +19,7 @@ public class GenericTypeWildcard implements GenericTypeParameter {
      * @param superBound   the super bound to use
      * @param extendsBound the extends bound to use
      */
-    public GenericTypeWildcard(GenericType superBound, GenericType extendsBound) {
+    private GenericTypeWildcard(GenericType superBound, GenericType extendsBound) {
         this.superBound = superBound;
         this.extendsBound = extendsBound;
     }
@@ -77,6 +77,38 @@ public class GenericTypeWildcard implements GenericTypeParameter {
     @Override
     public GenericTypeKind getType() {
         return GenericTypeKind.WILDCARD;
+    }
+
+
+    /**
+     * Creates a pure wildcard
+     *
+     * @return the pure wildcard instance
+     */
+    public static GenericTypeWildcard createPureWildcard() {
+        return createWildcard(null, null);
+    }
+
+    /**
+     * Creates a extends wildcard
+     *
+     * @return the extends wildcard instance
+     */
+    public static GenericTypeWildcard createExtendsWildcard(GenericType extendsBound) {
+        return createWildcard(null, extendsBound);
+    }
+
+    /**
+     * Creates a super wildcard
+     *
+     * @return the super wildcard instance
+     */
+    public static GenericTypeWildcard createSuperWildcard(GenericType superBound) {
+        return createWildcard(superBound, null);
+    }
+
+    private static GenericTypeWildcard createWildcard(GenericType superBound, GenericType extendsBound) {
+        return new GenericTypeWildcard(superBound, extendsBound);
     }
 
 }

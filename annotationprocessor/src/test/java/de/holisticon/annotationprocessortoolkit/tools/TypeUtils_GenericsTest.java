@@ -133,7 +133,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                         GenericType genericType = getTypeUtils().GENERICS.createGenericType(
                                                 Map.class,
                                                 getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardPure()
+                                                getTypeUtils().GENERICS.createPureWildcard()
 
                                         );
 
@@ -329,7 +329,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                         GenericType genericType = getTypeUtils().GENERICS.createGenericType(
                                                 Map.class,
                                                 getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardPure()
+                                                getTypeUtils().GENERICS.createPureWildcard()
 
                                         );
 
@@ -565,7 +565,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                         GenericType genericType = getTypeUtils().GENERICS.createGenericType(
                                                 Map.class,
                                                 getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardPure()
+                                                getTypeUtils().GENERICS.createPureWildcard()
 
                                         );
 
@@ -801,7 +801,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                         GenericType genericType = getTypeUtils().GENERICS.createGenericType(
                                                 Map.class,
                                                 getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardPure()
+                                                getTypeUtils().GENERICS.createPureWildcard()
 
                                         );
 

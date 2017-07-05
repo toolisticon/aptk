@@ -50,7 +50,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                                         getTypeUtils().GENERICS.createWildcardWithSuperBound(
                                                                 getTypeUtils().GENERICS.createGenericType(
                                                                         List.class,
-                                                                        getTypeUtils().GENERICS.createWildcardPure()
+                                                                        getTypeUtils().GENERICS.createPureWildcard()
                                                                 )
                                                         )
 
@@ -154,7 +154,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                                         getTypeUtils().GENERICS.createWildcardWithSuperBound(
                                                                 getTypeUtils().GENERICS.createGenericType(
                                                                         List.class,
-                                                                        getTypeUtils().GENERICS.createWildcardPure()
+                                                                        getTypeUtils().GENERICS.createPureWildcard()
                                                                 )
                                                         )
 

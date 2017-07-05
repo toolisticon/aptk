@@ -454,20 +454,17 @@ public final class TypeUtils {
             return createGenericType(TYPE_RETRIEVAL.getTypeMirror(rawType), typeParameters);
         }
 
-        public GenericTypeWildcard createWildcard(GenericType superBound, GenericType extendsBound) {
-            return new GenericTypeWildcard(superBound, extendsBound);
-        }
 
         public GenericTypeWildcard createWildcardWithExtendsBound(GenericType extendsBound) {
-            return createWildcard(null, extendsBound);
+            return GenericTypeWildcard.createExtendsWildcard(extendsBound);
         }
 
         public GenericTypeWildcard createWildcardWithSuperBound(GenericType superBound) {
-            return createWildcard(superBound, null);
+            return GenericTypeWildcard.createSuperWildcard(superBound);
         }
 
-        public GenericTypeWildcard createWildcardPure() {
-            return createWildcard(null, null);
+        public GenericTypeWildcard createPureWildcard() {
+            return GenericTypeWildcard.createPureWildcard();
         }
 
 

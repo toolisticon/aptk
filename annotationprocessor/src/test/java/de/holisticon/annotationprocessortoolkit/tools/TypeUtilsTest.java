@@ -754,7 +754,7 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorTestBaseClass {
                                                                         getTypeUtils().GENERICS.createWildcardWithSuperBound(
                                                                                 getTypeUtils().GENERICS.createGenericType(
                                                                                         List.class,
-                                                                                        getTypeUtils().GENERICS.createWildcardPure()
+                                                                                        getTypeUtils().GENERICS.createPureWildcard()
                                                                                 )
                                                                         )
 
