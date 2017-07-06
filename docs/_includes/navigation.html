@@ -13,7 +13,7 @@
         {% assign menu_name = p.title %}
         {% endif %}
 
-        <div class="navitem"><a href="{{ p.url }}">{{ menu_name }} </a></div>
+        <div class="navitem"><a href="{{ p.url || relative_url}}">{{ menu_name }} </a></div>
         {% endif %}
 
         {% endfor %}
