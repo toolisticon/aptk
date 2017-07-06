@@ -8,7 +8,7 @@ layout: default
 </span>
 
 <p/>
-<a href="https://www.holisticon.de"><img src="/assets/img/sponsors/holisticon-logo.png"
+<a href="https://www.holisticon.de"><img src="{{ '/assets/img/sponsors/holisticon-logo.png' | relative_url }}"
                                          class="img-responsive"></a>
 
 <p/>
