@@ -93,7 +93,7 @@ So you need to do add the following to your annotation processors pom.xml:
         <dependency>
             <groupId>com.google.testing.compile</groupId>
             <artifactId>compile-testing</artifactId>
-            <!-- use version 0.8 if you need java 6 compatibility - later versions are based on java 8 -->
+            <!-- use version 0.9 if you need java 6 compatibility - later versions are based on java 8 -->
             <version>0.10</version>
             <scope>test</scope>
         </dependency>
