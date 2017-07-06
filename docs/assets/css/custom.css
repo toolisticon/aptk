@@ -1,0 +1,54 @@
+---
+---
+
+header {
+    padding-bottom: 2.5em;
+}
+
+header h1 {
+    font-size: 2em;
+}
+
+header h2 {
+    font-size: 1.5em;
+}
+
+#navigation {
+    position: relative;
+    font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
+    font-size: 1.5em;
+    color: #fff;
+    width: 940px;
+    margin: 0 auto;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 959px) { #navigation { width: 740px; } }
+@media only screen and (max-width: 767px) { #navigation{ width: 93%; } }
+
+
+#navigation .container {
+    position: absolute;
+    bottom: 0px;
+
+}
+
+#navigation .navitem {
+    float: left;
+    margin-right: 10px;
+    background-color: #9ddcff;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+
+
+.clearfloat {
+    clear: both;
+}
+
+

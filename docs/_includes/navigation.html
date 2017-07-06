@@ -1,0 +1,27 @@
+<div id="navigation">
+
+    <div class="container">
+
+        {% assign pages_by_dir = (site.html_pages | group_by:"dir" %}
+        {% assign rootpages = (site.html_pages | where:"dir", "/" | sort:"order" ) %}
+
+        {% for p in rootpages %}
+
+        {% if p.used_in_navigation != null && p.used_in_navigation == true %}
+        {% assign menu_name = p.menu_name %}
+        {% if menu_name == null %}
+        {% assign menu_name = p.title %}
+        {% endif %}
+
+        <div class="navitem"><a href="{{ p.url }}">{{ menu_name }} </a></div>
+        {% endif %}
+
+        {% endfor %}
+
+        <div class="navitem"><a href="/assets/api/1.0/test.html">API</a></div>
+
+
+        <div class="clearfloat"></div>
+    </div>
+
+</div>
