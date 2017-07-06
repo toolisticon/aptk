@@ -4,82 +4,40 @@
 [![Build Status](https://api.travis-ci.org/holisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/holisticon/annotation-processor-toolkit)
 [![Coverage Status](https://coveralls.io/repos/github/holisticon/annotation-processor-toolkit/badge.svg?branch=master)](https://coveralls.io/github/holisticon/annotation-processor-toolkit?branch=master)
 
-> Using the annotation processor mechanism can be a very good possibility to create source code based on annotated classes and methods or just to ensure the correct usage of the annotations in your source code. Sadly it's quite complicated to do so, because you have to cope with both java runtime and compile time model. This toolkit is an approach to ease the development of annotation processors by wrapping those java internals inside mostly fluent and immutable helper classes.
+Please check detailed documentation at the projects [github page](https://holisticon.github.io/annotation-processor-toolkit/)
 
-# Example
+# Why you should use this project?
 
-We will show you the difference between developing compile time validations with java tools and our project to detect incorrect usage of an annotation.
-We have an annotation processor that processes the TestAnnotation which is applicable on Classes which must be public, not abstract and must implement the SomeInterface interface.
+Nowadays one could not imagine Java development without annotions.
+They allow you to provide meta-data in your source code which can either be processed at run time via reflection or at compile time by using annotation processors.
 
-At first here's what the code looks like when you are using the java api:
+Annotation processors allow you to validate if your annotations are used correctly and allow you to generate resource files or even classes.
 
-    // example with java api
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+Validation by annotation processors can become quite handy if there are any constraints related with your annotations. Without validation by an annotation processor misuse of the annotation can only be detected on runtime. By using an annotation processor this can be validated at compile time and may trigger a compile error.
+Code or resource generation with annotations can also be very useful.
 
-        // ...
+Sadly it's quite uncomfortable to develop and test annotation processors.
+First problem is that you have to cope with both both java compile time and run time model, which can be very tricky at the beginning.
+Another problem is that the tools offered by the JDK only offer some basic support for development.
+This project supports you by offering utilities that allow you to develop annotation processors in a more comfortable way.
+It also reduces the complexity of handling compile time and run time model by shading common pitfalls behind it's api.'
+Additionally it introduces a common approach how those annotation processors can be tested.
 
-        if(!typeElement.getModifiers().contains(Modifier.PUBLIC)) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,"Type must be public",typeElement);
-        }
-
-        if(typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,"Type must not be abstract",typeElement);
-        }
-
-        if(!processingEnv.getTypeUtils().isAssignable(typeElement,
-                processingEnv.getElementUtils().getTypeElement(SomeInterface.class.getCanonicalName()))) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,"Type must be assignable to SomeInterface",typeElement);
-        }
-
-        // ...
-
-    }
-
-Now take a look at the implementation done with the annotation-processor-toolkit
-
-    // example with annotation-processor-toolkit triggered from your
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
-        // ...
-
-        this.getFluentTypeValidator(typeElement)
-            .hasModifiers(Modifier.PUBLIC)
-            .hasNotModifiers(Modifier.ABSTRACT)
-            .isAssignableTo(SomeInterface.class)
-            .getValidationResult()
-
-        // ...
-
-    }
-
-That's it. In case of a failing validation, a default error message for the failed kind of validation will be printed to the compiler.
-As you can see, it's far more readable and better to understand.
-
-But now you can say what about print a custom message as a warning. That's also possible:
-
-
-    // example with annotation-processor-toolkit triggered from your
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
-        // ...
-
-        this.getFluentTypeValidator(element)
-            .setCustomMessage(Diagnostic.Kind.WARNING, "The class annotated with annotation ${0} must be public.", TestAnnotation.class.getCanonicalName()).hasModifiers(Modifier.PUBLIC)
-            .setCustomMessage(Diagnostic.Kind.WARNING, "The class annotated with annotation ${0} must not be abstract.", TestAnnotation.class.getCanonicalName()).hasNotModifiers(Modifier.ABSTRACT)
-            .setCustomMessage(Diagnostic.Kind.ERROR, "The class annotated with annotation ${0} must be assignable to SomeInterface", TestAnnotation.class.getCanonicalName()).isAssignableTo(SomeInterface.class)
-            .getValidationResult();
-
-        // ...
-
-    }
+# Features
+- provides support for Class conversion from runtime to compile time model (Class / FQN to Element and TypeMirror)
+- provides support for accessing the compile time element tree
+- provides generic Element based filters, validator and matchers
+- provides fluent element validation and filtering api
+- provides basic support for creation of resources
+- provides support for setting up unit and integration (compile time) tests
 
 # How does it work?
 
 This project offers an abstract base class which extends the AbstractProcessor class offered by the java framework.
 This class provides support for validating different kinds of Elements in a fluent way and offers you helper functions to do some filtering.
 
-Since your annotation processor later mostly will be bound as a provided dependency you should use the maven shade plugin to embed the annotation-processor-toolkit classes into your annotation processor artifact.
-So you need to do add the following to your annotation processors pom.xml:
+Since your annotation processor later mostly will be bound as a provided dependency you should use the maven shade plugin to embed the annotation-processor-toolkit and all other 3rd party dependency classes into your annotation processor artifact.
+This can be done by adding the following to your annotation processors pom.xml:
 
      <dependencies>
 
@@ -133,9 +91,9 @@ So you need to do add the following to your annotation processors pom.xml:
 
 Then your annotation processor needs to extends the de.holisticon.annotationprocessor.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
 
-You can find a small example project for an annotation processor in our [example](example/).
+Please check our example provided in the github.
 
-# Contributing to annotation-processor-toolkit
+# Contributing
 
 We welcome any kind of suggestions and pull requests.
 
