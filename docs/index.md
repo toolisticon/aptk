@@ -2,6 +2,8 @@
 layout: default
 used_in_navigation: true
 menu_name: Home
+isSection: false
+isIndex: true
 order: 1
 ---
 
@@ -18,9 +20,10 @@ Code or resource generation with annotations can also be very useful.
 Sadly it's quite uncomfortable to develop and test annotation processors.
 First problem is that you have to cope with both both java compile time and run time model, which can be very tricky at the beginning.
 Another problem is that the tools offered by the JDK only offer some basic support for development.
+
 This project supports you by offering utilities that allow you to develop annotation processors in a more comfortable way.
-It also reduces the complexity of handling compile time and run time model by shading common pitfalls behind it's api.'
-Additionally it introduces a common approach how those annotation processors can be tested.
+It also reduces the complexity of handling compile time and run time model by shading common pitfalls behind it's api.
+Additionally it introduces a common approach for testing your annotation processors.
 
 # Features
 - provides support for Class conversion from runtime to compile time model (Class / FQN to Element and TypeMirror)
