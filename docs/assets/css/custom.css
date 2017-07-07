@@ -22,33 +22,147 @@ header h2 {
     margin: 0 auto;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 959px) { #navigation { width: 740px; } }
-@media only screen and (max-width: 767px) { #navigation{ width: 93%; } }
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+    #navigation {
+        width: 740px;
+    }
+}
 
+@media only screen and (max-width: 767px) {
+    #navigation {
+        width: 93%;
+    }
+}
 
 #navigation .container {
     position: absolute;
-    bottom: 0px;
+    bottom: -7px;
 
 }
 
-#navigation .navitem {
+/* navigation menu */
+
+#navigation .container ul {
+    position: relative;
+    margin: 0 auto;
+    list-style: none;
+    padding-left: 0px;
+    color: #fff;
+}
+
+
+
+#navigation .container ul li {
     float: left;
-    margin-right: 5px;
-    background-color: #9ddcff;
-    border-top: 1px solid #fff;
-    border-left: 1px solid #fff;
-    border-right: 1px solid #fff;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+    margin: 0 0 0 0;
+    font-size: 1em;
+    line-height: 50px;
+    padding-left: 0px;
+    padding-right: 20px;
 }
 
+#navigation .container ul li a {
+    color: #fff;
+    text-decoration: none;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    background-color: transparent;
+}
 
+#navigation .container ul li a:hover {
+    color: #999;
+}
 
-.clearfloat {
-    clear: both;
+#navigation .container ul li img {
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin: 14px 5px;
+    padding: 6px;
+    background: #999;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+#navigation .container ul li:hover img {
+    background-color: #000;
+}
+
+#navigation .container ul ul {
+    position: absolute;
+    top: -9999px;
+    background-color: #fff;
+    padding: 0;
+    margin: 0 0 0 -5px;
+    -webkit-box-shadow: 0 10px 20px #888;
+    -moz-box-shadow: 0 10px 20px #888;
+    box-shadow: 0 10px 20px #888;
+    z-index: 4;
+}
+
+#navigation .container ul ul:before {
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 10px;
+    top: -5px;
+    left: 20px;
+    background-color: #5996ff;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    z-index: -1;
+}
+
+#navigation .container ul li:hover ul {
+    top: 45px;
+    background-color: #fff;
+}
+
+#navigation .container ul ul li {
+    float: none;
+    font-size: 16px;
+    padding: 5px 10px;
+    text-align: left;
+    text-transform: uppercase;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+    line-height: 25px;
+    background-color: #5996ff;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    z-index: 3;
+}
+
+#navigation .container ul ul a {
+    color: #fff;
+    text-decoration: none;
+    background-color: #fff;
+}
+
+#navigation .container ul ul li.all {
+    font-size: 12px;
+    border-bottom: none;
+    text-transform: none;
+}
+
+#navigation .container ul ul li:hover {
+    background-color: #333;
+    color: #fff;
 }
 
 
