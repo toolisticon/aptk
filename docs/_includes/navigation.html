@@ -8,7 +8,7 @@
         <ul>
             {% for p in rootpages %}
 
-                {% if p.used_in_navigation != null && p.used_in_navigation == true %}
+                {% if p.used_in_navigation != null and p.used_in_navigation == true %}
                     {% assign menu_name = p.menu_name %}
 
                     {% if menu_name == null %}
@@ -31,18 +31,23 @@
 
                         <li><a {% if page.url contains subpageDirectory %} class="current"{% endif %} href="#">{{ menu_name }}</a>
 
+
                             {% if p.isSection == true and subpages != empty %}
                             <ul>
 
-                                {% for p2 in subpages %}
-                                {% assign p2menu_name = p2.menu_name %}
-                                {% if p2menu_name == null %}
-                                {% assign p2menu_name = p2.title %}
-                                {% endif %}
 
-                                <a href="{{ p2.url || relative_url}}">
-                                    <li>{{p2menu_name}}</li>
-                                </a>
+                                {% for p2 in subpages %}
+                                    {% assign p2menu_name = p2.menu_name %}
+                                    {% if p2menu_name == null %}
+                                        {% assign p2menu_name = p2.title %}
+                                    {% endif %}
+
+                                    {% if p2.used_in_navigation != null and p2.used_in_navigation == true %}
+
+                                        <a href="{{ p2.url || relative_url}}">
+                                            <li>{{p2menu_name}}</li>
+                                        </a>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                             {% endif %}

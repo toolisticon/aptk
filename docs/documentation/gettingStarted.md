@@ -8,11 +8,11 @@ order: 2
 
 # Prerequisites
 
-There are not much preconditions regarding the usage of the annotation processor toolkit.
+There are not many preconditions regarding the usage of the annotation processor toolkit.
 You just need a JDK 6 or higher to get started.
 
 Nevertheless we recommend you to use Maven for building your annotation processor project.
-This page explains what needs to added to your Maven configuration to enable the annotation processor toolkit support to your project.
+This page explains what needs to be configured in your Maven configuration to enable the annotation processor toolkit in your projects.
 
 # Build and dependency management
 ## Dependency mangement
@@ -48,7 +48,7 @@ We recommend you to repackage all 3rd party dependencies of your annotation proc
 
 This should be done for several reasons:
 
-1. To get rid of versioning conflicts between the dependencies of your annotation processor and code to be processed.
+1. To get rid of versioning conflicts between the dependencies of your annotation processor and of the code to be processed.
 2. You need to add just one provided scope dependency to the code you want to be processed, since provided dependencies aren't handled transitively by Maven
 
 In Maven, this can be done by using the shade plugin:
@@ -133,6 +133,10 @@ To enable the annotation processor toolkit support use the _de.holisticon.annota
 
 ## Declare which annotations are processed by the annotation processor
 
+There are two approaches to tell the compiler which annotations are supported by an annnotation processor.
+
+It can either be done by annotation or by overwriting the _getSupportedAnnotationTypes_ method declared by the _javax.annotation.processing.AbstractProcessor_ class.
+
 ### By annotation
 
 Supported annotations can be defined by adding the _SupportedAnnotationTypes_ annotation to your annotation processor class:
@@ -156,17 +160,17 @@ An alternative approach is to overwrite the _getSupportedAnnotationTypes_ method
            return SUPPORTED_ANNOTATION_TYPES;
         }
 
-The logic to load supported annotations is implemented in _javax.annotation.processing.AbstractProcessor.getSupportedAnnotationTypes()_.
+The logic to configure supported annotations by  the _SupportedAnnotationTypes_ annotation is implemented in _javax.annotation.processing.AbstractProcessor.getSupportedAnnotationTypes()_.
 So overwriting of this method might break configuration by annotation.
 
-## Setup annotation processor SPI
+## Setup annotation processor detection
 
-Since annotation processors are internally using the SPI you need to create a file _javax.annotation.processing.Processor_ in _/src/main/resources_.
+Since annotation processors are internally detected via a _Service Provider Interface (SPI)_ you need to create a file _javax.annotation.processing.Processor_ in _/src/main/resources_.
 The file just contains a list of full qualified annotation processor class names (one per line).
 So just add you full qualified class name of your annotation processor to it.
 
 # Applying the annotation processor
-Your annotation processor will be automatically applied if it resides in class path during the compilation.
+Your annotation processor will be automatically detected and applied if it resides in class path during the compilation.
 Therefore you should add it as a provided dependency to your projects.
 
 
