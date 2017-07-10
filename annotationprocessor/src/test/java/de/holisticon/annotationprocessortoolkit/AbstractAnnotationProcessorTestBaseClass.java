@@ -20,7 +20,7 @@ import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
  */
 public abstract class AbstractAnnotationProcessorTestBaseClass {
 
-    public final static String TEST_EXECUTION_MESSAGE = "TEST WAS EXECUTED";
+    public final static String TEST_EXECUTION_MESSAGE = "!!!??? - TEST WAS EXECUTED - ???!!!";
 
     public abstract static class AbstractTestAnnotationProcessorClass extends AbstractAnnotationProcessor {
 

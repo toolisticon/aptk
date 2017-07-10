@@ -1,6 +1,8 @@
 package de.holisticon.example.annotationprocessortoolkit.annotationprocessor;
 
-import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorProcessingTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.AnnotationProcessorTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.builder.AnnotationProcessorTestBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -10,11 +12,11 @@ import java.util.List;
 
 
 @RunWith(Parameterized.class)
-public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorTest<MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor> {
+public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorProcessingTest<MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor> {
 
 
-    public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, String resource, String[] errors, String[] warnings) {
-        super(description, resource, errors, warnings);
+    public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, AnnotationProcessorTestConfiguration annotationProcessorTestConfiguration) {
+        super(annotationProcessorTestConfiguration);
     }
 
     @Override
@@ -26,9 +28,34 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
     public static List<Object[]> data() {
 
         return Arrays.asList(new Object[][]{
-                {"Test valid usage", "testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java", new String[]{}, new String[]{}},
-                {"Test invalid usage : non void return type", "testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java", new String[]{"Method must have void return type"}, new String[]{}},
-                {"Test invalid usage : non String parameter", "testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java", new String[]{"Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]"}, new String[]{}},
+                {
+                        "Test valid usage",
+                        AnnotationProcessorTestBuilder.createTestConfig()
+                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
+                                .compilationShouldSucceed()
+                                .build()
+                },
+                {
+                        "Test invalid usage : non void return type",
+                        AnnotationProcessorTestBuilder.createTestConfig()
+                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
+                                .compilationShouldFail()
+                                .addMessageValidator()
+                                    .setErrorChecks("Method must have void return type")
+                                .finishMessageEvaluation()
+                                .build()
+                },
+                {
+                        "Test invalid usage : non String parameter",
+                        AnnotationProcessorTestBuilder.createTestConfig()
+                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
+                                .compilationShouldFail()
+                                .addMessageValidator()
+                                    .setErrorChecks("Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]")
+                                .finishMessageEvaluation()
+                                .build()
+                },
+
 
         });
 

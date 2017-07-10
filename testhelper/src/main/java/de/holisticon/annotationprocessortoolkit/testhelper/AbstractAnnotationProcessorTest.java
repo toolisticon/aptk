@@ -1,7 +1,7 @@
 package de.holisticon.annotationprocessortoolkit.testhelper;
 
 import com.google.testing.compile.CompileTester;
-import com.google.testing.compile.JavaFileObjects;
+import org.hamcrest.MatcherAssert;
 
 import javax.annotation.processing.Processor;
 import javax.tools.JavaFileObject;
@@ -14,69 +14,58 @@ import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
  * Abstract base class which allows parameterized tests.
  */
 
-public abstract class AbstractAnnotationProcessorTest<T extends Processor> {
+public abstract class AbstractAnnotationProcessorTest {
 
     public final static String TEST_EXECUTION_MESSAGE = "!!!--- TEST WAS EXECUTED ---!!!";
 
-    private final String description;
-    private final String resource;
-    private final String[] errors;
-    private final String[] warnings;
+    AnnotationProcessorTestConfiguration annotationProcessorTestConfiguration;
 
-    public AbstractAnnotationProcessorTest(String description, String resource, String[] errors, String[] warnings) {
-        this.description = description;
-        this.resource = resource;
-        this.errors = errors;
-        this.warnings = warnings;
+    public AbstractAnnotationProcessorTest(AnnotationProcessorTestConfiguration annotationProcessorTestConfiguration) {
+        this.annotationProcessorTestConfiguration = annotationProcessorTestConfiguration;
     }
 
+
+    /**
+     * Gets the annotation processor to used for testing.
+     *
+     * @return the annotation processor to use for testing
+     */
     protected abstract Processor getAnnotationProcessor();
+
+    /**
+     * Gets the {@link JavaFileObject} to be compiled.
+     *
+     * @return the code to be compiled
+     */
+    protected abstract JavaFileObject getSourceFileForCompilation();
+
 
     private Processor getWrappedProcessor() {
         return AnnotationProcessorWrapper.wrapProcessor(getAnnotationProcessor());
     }
 
+
     protected void test() {
 
-        /*-
-        // unfortunately this will only work with java 8 ...
+        JavaFileObject testClassSource = getSourceFileForCompilation();
 
-        Compilation compilation = Compiler.javac().withProcessors(this.getAnnotationProcessor()).compile(JavaFileObjects.forResource(resource));
-
-        System.out.println("ERRORS:");
-        for (Diagnostic error : compilation.errors()) {
-            System.out.println(error.getMessage(Locale.GERMANY));
-        }
-
-        if (errors.length > 0) {
-            detectMessages(errors, compilation.errors());
-        }
-        assertThat("Should detect " + errors.length + " errors:", compilation.errors().size(), is(errors.length));
+        TestMessageValidator messageValidationTest = (TestMessageValidator) getTestOfType(annotationProcessorTestConfiguration.getTestcases(), TestValidatorType.MESSAGE_VALIDATOR);
 
 
-        System.out.println("WARNINGS:");
-        for (Diagnostic warning : compilation.warnings()) {
-            System.out.println(warning.getMessage(Locale.GERMANY));
-        }
-
-        if (warnings.length > 0) {
-            detectMessages(warnings, compilation.warnings());
-        }
-        assertThat("Should detect " + warnings.length + " warnings:", compilation.warnings().size(), is(warnings.length));
-
-        */
-
-        JavaFileObject testClassSource = JavaFileObjects.forResource(resource);
-
-        if (errors.length == 0) {
+        if (messageValidationTest == null || messageValidationTest.getErrors().length == 0) {
             CompileTester.SuccessfulCompilationClause compileTester = assertAbout(javaSource())
                     .that(testClassSource)
                     .processedWith(this.getWrappedProcessor()).compilesWithoutError();
 
+            if (annotationProcessorTestConfiguration.getCompilingShouldSucceed() != null) {
+                MatcherAssert.assertThat("Compiling should have succeed", annotationProcessorTestConfiguration.getCompilingShouldSucceed());
+            }
 
             // check for warnings
-            for (String warning : warnings) {
-                compileTester.withWarningContaining(warning);
+            if (messageValidationTest != null) {
+                for (String warning : messageValidationTest.getWarnings()) {
+                    compileTester.withWarningContaining(warning);
+                }
             }
 
 
@@ -88,8 +77,12 @@ public abstract class AbstractAnnotationProcessorTest<T extends Processor> {
                     .that(testClassSource)
                     .processedWith(this.getWrappedProcessor()).failsToCompile();
 
-            // check for warnings
-            for (String error : errors) {
+            if (annotationProcessorTestConfiguration.getCompilingShouldSucceed() != null) {
+                MatcherAssert.assertThat("Compiling should have failed", !annotationProcessorTestConfiguration.getCompilingShouldSucceed());
+            }
+
+            // check for errors
+            for (String error : messageValidationTest.getErrors()) {
                 compileTester.withErrorContaining(error);
             }
 
@@ -100,35 +93,27 @@ public abstract class AbstractAnnotationProcessorTest<T extends Processor> {
 
     }
 
-    /*- UUsed with Java 8
-    private void detectMessages(String[] messages, ImmutableList<Diagnostic<? extends JavaFileObject>> compileMessages) {
+    protected AnnotationProcessorTestConfiguration getAnnotationProcessorTestConfiguration() {
+        return annotationProcessorTestConfiguration;
+    }
 
-        for (String message : messages) {
+    private TestValidator getTestOfType(TestValidator[] testValidators, TestValidatorType type) {
 
-            boolean found = false;
+        if (testValidators == null || type == null) {
+            return null;
+        }
 
-            UnmodifiableIterator<Diagnostic<? extends JavaFileObject>> iterator = compileMessages.iterator();
+        for (TestValidator testValidator : testValidators) {
 
-            while (iterator.hasNext()) {
-
-                Diagnostic<? extends JavaFileObject> diagnostic = iterator.next();
-
-
-                if (message.equals(diagnostic.getMessage(Locale.GERMANY))) {
-                    found = true;
-                    break;
-                }
-
+            if (type.equals(testValidator.getAnnotationProcessorTestType())) {
+                return testValidator;
             }
-
-            Assert.assertTrue(String.format("Should have contained '%s' message", message), found);
-
 
         }
 
+        return null;
 
     }
-    */
 
 
 }
