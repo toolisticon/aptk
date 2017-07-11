@@ -42,7 +42,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
                                 .compilationShouldFail()
                                 .addMessageValidator()
                                     .setErrorChecks("Method must have void return type")
-                                .finishMessageEvaluation()
+                                .finishMessageValidator()
                                 .build()
                 },
                 {
@@ -52,7 +52,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
                                 .compilationShouldFail()
                                 .addMessageValidator()
                                     .setErrorChecks("Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]")
-                                .finishMessageEvaluation()
+                                .finishMessageValidator()
                                 .build()
                 },
 

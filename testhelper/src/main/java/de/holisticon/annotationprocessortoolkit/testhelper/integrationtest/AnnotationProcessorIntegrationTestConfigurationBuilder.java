@@ -75,7 +75,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilder {
             return this;
         }
 
-        public BaseConfigurationBuilder finishMessageEvaluation() {
+        public BaseConfigurationBuilder finishMessageValidator() {
             baseConfigurationBuilder.testMessageValidator = new TestMessageValidator(
                     errors != null ? errors : new String[0],
                     warnings != null ? warnings : new String[0]
