@@ -94,13 +94,6 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilder {
 
     }
 
-    public static BaseConfigurationBuilder createUnitTestConfig() {
-
-        AnnotationProcessorIntegrationTestConfigurationBuilder testBuilder = new AnnotationProcessorIntegrationTestConfigurationBuilder();
-
-        return testBuilder.start();
-
-    }
 
 
 }
