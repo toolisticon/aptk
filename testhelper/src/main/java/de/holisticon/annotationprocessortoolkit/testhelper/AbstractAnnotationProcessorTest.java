@@ -56,15 +56,28 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
                 annotationProcessorCommonTestConfiguration.getTestcases(),
                 TestValidatorType.MESSAGE_VALIDATOR);
 
+        // check if error messages and shouldSucceed aren't set contradictionary
+        if (annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed() != null
+                && annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed().booleanValue()
+                && messageValidationTest != null
+                && messageValidationTest.getErrors().length > 0) {
+            throw new InvalidTestConfigurationException("Test configuration error : Compilation should succeed but also error messages !");
+        }
 
-        if (messageValidationTest == null || messageValidationTest.getErrors().length == 0) {
+
+        if (
+                (
+                        annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed() == null
+                                || annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed().booleanValue()
+                ) && (
+                        messageValidationTest == null
+                                || messageValidationTest.getErrors().length == 0
+                )
+                ) {
             CompileTester.SuccessfulCompilationClause compileTester = assertAbout(javaSource())
                     .that(testClassSource)
                     .processedWith(this.getWrappedProcessor()).compilesWithoutError();
 
-            if (annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed() != null) {
-                MatcherAssert.assertThat("Compiling should have succeed", annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed());
-            }
 
             // check for warnings
             if (messageValidationTest != null) {
@@ -87,8 +100,10 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
             }
 
             // check for errors
-            for (String error : messageValidationTest.getErrors()) {
-                compileTester.withErrorContaining(error);
+            if (messageValidationTest != null && messageValidationTest.getErrors() != null) {
+                for (String error : messageValidationTest.getErrors()) {
+                    compileTester.withErrorContaining(error);
+                }
             }
 
             // check if test was executed
