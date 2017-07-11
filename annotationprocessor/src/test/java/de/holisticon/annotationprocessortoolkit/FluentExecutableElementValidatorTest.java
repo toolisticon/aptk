@@ -56,7 +56,7 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
                                         MatcherAssert.assertThat(getFluentMethodValidator(testElement).hasReturnType(String.class).getValidationResult(), Matchers.is(false));
 
 
-                                        getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass.class);
+                                        getTypeUtils().doTypeRetrieval().getTypeElement(AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass.class);
 
                                     }
                                 },

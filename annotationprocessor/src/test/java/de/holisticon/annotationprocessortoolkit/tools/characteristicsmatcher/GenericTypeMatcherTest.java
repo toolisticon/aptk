@@ -41,16 +41,16 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        GenericType genericTypeToConvert = getTypeUtils().GENERICS.createGenericType(Map.class,
-                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
-                                                        getTypeUtils().GENERICS.createGenericType(StringBuilder.class)
+                                        GenericType genericTypeToConvert = getTypeUtils().doGenerics().createGenericType(Map.class,
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(StringBuilder.class)
                                                 ),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         Comparator.class,
-                                                        getTypeUtils().GENERICS.createWildcardWithSuperBound(
-                                                                getTypeUtils().GENERICS.createGenericType(
+                                                        getTypeUtils().doGenerics().createWildcardWithSuperBound(
+                                                                getTypeUtils().doGenerics().createGenericType(
                                                                         List.class,
-                                                                        getTypeUtils().GENERICS.createPureWildcard()
+                                                                        getTypeUtils().doGenerics().createPureWildcard()
                                                                 )
                                                         )
 
@@ -81,11 +81,11 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
 
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(Map.class,
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         Comparator.class,
-                                                        getTypeUtils().GENERICS.createGenericType(Long.class)
+                                                        getTypeUtils().doGenerics().createGenericType(Long.class)
                                                 )
                                         );
 
@@ -111,11 +111,11 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
 
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(Map.class,
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         Comparator.class,
-                                                        getTypeUtils().GENERICS.createGenericType(Double.class)
+                                                        getTypeUtils().doGenerics().createGenericType(Double.class)
                                                 )
 
                                         );
@@ -145,16 +145,16 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
 
                                         //  Map<? extends StringBuilder, Comparator<? super List<?>>>
 
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(Map.class,
-                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
-                                                        getTypeUtils().GENERICS.createGenericType(StringBuilder.class)
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(Map.class,
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(StringBuilder.class)
                                                 ),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         Comparator.class,
-                                                        getTypeUtils().GENERICS.createWildcardWithSuperBound(
-                                                                getTypeUtils().GENERICS.createGenericType(
+                                                        getTypeUtils().doGenerics().createWildcardWithSuperBound(
+                                                                getTypeUtils().doGenerics().createGenericType(
                                                                         List.class,
-                                                                        getTypeUtils().GENERICS.createPureWildcard()
+                                                                        getTypeUtils().doGenerics().createPureWildcard()
                                                                 )
                                                         )
 
@@ -186,17 +186,17 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
                                         //  Map<? extends StringBuilder, Comparator<? super List<?>>>
 
 
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
-                                                        getTypeUtils().GENERICS.createGenericType(StringBuilder.class)
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(StringBuilder.class)
                                                 ),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         Comparator.class,
-                                                        getTypeUtils().GENERICS.createWildcardWithSuperBound(
-                                                                getTypeUtils().GENERICS.createGenericType(
+                                                        getTypeUtils().doGenerics().createWildcardWithSuperBound(
+                                                                getTypeUtils().doGenerics().createGenericType(
                                                                         List.class,
-                                                                        getTypeUtils().GENERICS.createWildcardWithExtendsBound(getTypeUtils().GENERICS.createGenericType(String.class))
+                                                                        getTypeUtils().doGenerics().createWildcardWithExtendsBound(getTypeUtils().doGenerics().createGenericType(String.class))
                                                                 )
                                                         )
 

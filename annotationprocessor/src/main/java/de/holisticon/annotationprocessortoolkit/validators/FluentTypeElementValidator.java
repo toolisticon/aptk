@@ -36,7 +36,7 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
      * @return an immutable FluentExecutableElementValidator instance
      */
     public FluentTypeElementValidator isAssignableTo(Class type) {
-        return type != null ? isAssignableTo(getTypeUtils().TYPE_RETRIEVAL.getTypeElement(type)) : new FluentTypeElementValidator(this, false);
+        return type != null ? isAssignableTo(getTypeUtils().doTypeRetrieval().getTypeElement(type)) : new FluentTypeElementValidator(this, false);
     }
 
     /**
@@ -58,7 +58,7 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
     public FluentTypeElementValidator isAssignableTo(TypeMirror typeMirror) {
         boolean check = this.getValidationResult();
 
-        if (typeMirror == null || !getTypeUtils().TYPE_COMPARISON.isAssignableTo(getElement(), typeMirror)) {
+        if (typeMirror == null || !getTypeUtils().doTypeComparison().isAssignableTo(getElement(), typeMirror)) {
             getMessagerUtils().printMessage(getElement(), getMessageLevel(), getCustomOrDefaultMessage("type must be assignable to ${0}", typeMirror));
             check = isErrorLevel() ? false : check;
         }

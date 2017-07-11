@@ -44,7 +44,7 @@ public class ParameterFQNExecutableMatcher extends GenericMatcherWithToolsSuppor
 
         for (int i = 0; i < executableElement.getParameters().size(); i++) {
 
-            TypeMirror parameterTypeMirror = TypeUtils.getTypeUtils(getFrameworkTools()).TYPE_RETRIEVAL.getTypeMirror(toCheckFor[i]);
+            TypeMirror parameterTypeMirror = TypeUtils.getTypeUtils(getFrameworkTools()).doTypeRetrieval().getTypeMirror(toCheckFor[i]);
             if (parameterTypeMirror == null) {
                 return false;
             }

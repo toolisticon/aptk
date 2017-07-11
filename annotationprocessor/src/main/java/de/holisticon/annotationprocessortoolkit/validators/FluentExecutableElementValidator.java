@@ -118,7 +118,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
         if (ElementUtils.CheckKindOfElement.isMethod(getElement()) && hasNonVoidReturnType().getValidationResult()) {
 
-            if (type == null || !getTypeUtils().getTypes().isAssignable(getElement().getReturnType(), getTypeUtils().TYPE_RETRIEVAL.getTypeMirror(type))) {
+            if (type == null || !getTypeUtils().getTypes().isAssignable(getElement().getReturnType(), getTypeUtils().doTypeRetrieval().getTypeMirror(type))) {
 
                 // validation failed - output message
                 getMessagerUtils().printMessage(
@@ -199,7 +199,7 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
                 for (int i = 0; i < getElement().getParameters().size(); i++) {
 
-                    if (!getElement().getParameters().get(i).asType().equals(getTypeUtils().TYPE_RETRIEVAL.getTypeMirror(parameterTypes[i]))) {
+                    if (!getElement().getParameters().get(i).asType().equals(getTypeUtils().doTypeRetrieval().getTypeMirror(parameterTypes[i]))) {
                         triggerMismatchingParameterError(parameterTypes);
                         nextResult = isErrorLevel() ? false : nextResult;
                     }

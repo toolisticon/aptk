@@ -38,7 +38,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                 new Object[][]{
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 1 - exactly same type",
+                                "TypeUtils.doGenerics().isAssignable : test case 1 - exactly same type",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -50,22 +50,22 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         Map.class,
-                                                        getTypeUtils().GENERICS.createGenericType(String.class),
-                                                        getTypeUtils().GENERICS.createGenericType(String.class)
+                                                        getTypeUtils().doGenerics().createGenericType(String.class),
+                                                        getTypeUtils().doGenerics().createGenericType(String.class)
                                                 )
                                         );
 
 
-                                        MatcherAssert.assertThat("Should detect assignable for exactly the same type", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Should detect assignable for exactly the same type", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -76,7 +76,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 1 - non matching type parameter inbetween ",
+                                "TypeUtils.doGenerics().isAssignable : test case 1 - non matching type parameter inbetween ",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -88,22 +88,22 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         HashMap.class,
-                                                        getTypeUtils().GENERICS.createGenericType(String.class),
-                                                        getTypeUtils().GENERICS.createGenericType(String.class)
+                                                        getTypeUtils().doGenerics().createGenericType(String.class),
+                                                        getTypeUtils().doGenerics().createGenericType(String.class)
                                                 )
                                         );
 
 
-                                        MatcherAssert.assertThat("Should detect non matching type parameter inbetween", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Should detect non matching type parameter inbetween", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -114,7 +114,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 1 - pure wildcard for 2nd Map inbetween ",
+                                "TypeUtils.doGenerics().isAssignable : test case 1 - pure wildcard for 2nd Map inbetween ",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -126,19 +126,19 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createPureWildcard()
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createPureWildcard()
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Should detect assignability for pure wildcard", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Should detect assignability for pure wildcard", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -150,7 +150,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 1 - with super - matching type parameter for super inbetween",
+                                "TypeUtils.doGenerics().isAssignable : test case 1 - with super - matching type parameter for super inbetween",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -162,24 +162,24 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithSuperBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithSuperBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 HashMap.class,
-                                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                                getTypeUtils().GENERICS.createGenericType(String.class)
+                                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                                getTypeUtils().doGenerics().createGenericType(String.class)
                                                         )
                                                 )
                                         );
 
 
-                                        MatcherAssert.assertThat("Should detect assignability for extends case", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Should detect assignability for extends case", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -190,7 +190,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 2 - with extends - matching type parameter for extends inbetween ",
+                                "TypeUtils.doGenerics().isAssignable : test case 2 - with extends - matching type parameter for extends inbetween ",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -202,24 +202,24 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, HashMap<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 HashMap.class,
-                                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                                getTypeUtils().GENERICS.createGenericType(String.class)
+                                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                                getTypeUtils().doGenerics().createGenericType(String.class)
                                                         )
                                                 )
                                         );
 
 
-                                        MatcherAssert.assertThat("Should detect assignability for extends case", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Should detect assignability for extends case", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -230,7 +230,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 3 - with extends clause on Type Mirror and GenericType - must not be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 3 - with extends clause on Type Mirror and GenericType - must not be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -242,23 +242,23 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? extends HashMap<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         HashMap.class,
-                                                        getTypeUtils().GENERICS.createGenericType(String.class),
-                                                        getTypeUtils().GENERICS.createGenericType(String.class)
+                                                        getTypeUtils().doGenerics().createGenericType(String.class),
+                                                        getTypeUtils().doGenerics().createGenericType(String.class)
                                                 )
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Extends on assignee side can't be assigned to a Generic Type", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Extends on assignee side can't be assigned to a Generic Type", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -269,7 +269,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 3 - with extends clause on Type Mirror and super on GenericType - must not be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 3 - with extends clause on Type Mirror and super on GenericType - must not be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -281,25 +281,25 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? extends HashMap<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithSuperBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithSuperBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 HashMap.class,
-                                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                                getTypeUtils().GENERICS.createGenericType(String.class)
+                                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                                getTypeUtils().doGenerics().createGenericType(String.class)
                                                         )
                                                 )
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Extends on assignee side can't be assigned to a super wildcard Type", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Extends on assignee side can't be assigned to a super wildcard Type", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -310,7 +310,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 3 - with extends clause on Type Mirror and pure wildcard - must be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 3 - with extends clause on Type Mirror and pure wildcard - must be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -322,19 +322,19 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? extends HashMap<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createPureWildcard()
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createPureWildcard()
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Extends on assignee side must be detected as assignable with a pure wildcard Type", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Extends on assignee side must be detected as assignable with a pure wildcard Type", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -345,7 +345,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 3 - with extends clause on Type Mirror and valid extends wildcard - must be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 3 - with extends clause on Type Mirror and valid extends wildcard - must be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -357,25 +357,25 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? extends HashMap<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 Map.class,
-                                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                                getTypeUtils().GENERICS.createGenericType(String.class)
+                                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                                getTypeUtils().doGenerics().createGenericType(String.class)
                                                         )
                                                 )
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Extends on assignee side must be detected as assignable with a valid extends wildcard Type", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Extends on assignee side must be detected as assignable with a valid extends wildcard Type", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -385,7 +385,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                         },
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 3 - with extends clause on Type Mirror and valid extends wildcard - missing generic types - must be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 3 - with extends clause on Type Mirror and valid extends wildcard - missing generic types - must be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -397,15 +397,15 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? extends HashMap<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 Map.class
                                                         )
                                                 )
@@ -413,7 +413,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                         );
 
 
-                                        MatcherAssert.assertThat("Extends on assignee side must be detected as assignable with a valid extends wildcard Type", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Extends on assignee side must be detected as assignable with a valid extends wildcard Type", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -424,7 +424,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 3 - with extends clause on Type Mirror and invalid extends wildcard  - must not be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 3 - with extends clause on Type Mirror and invalid extends wildcard  - must not be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -436,15 +436,15 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? extends HashMap<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 TreeMap.class
                                                         )
                                                 )
@@ -452,7 +452,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                         );
 
 
-                                        MatcherAssert.assertThat("Extends on assignee side must be detected as assignable with a invalid extends wildcard Type", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Extends on assignee side must be detected as assignable with a invalid extends wildcard Type", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -466,7 +466,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         // #######################
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 4 - with super clause on Type Mirror and GenericType - must not be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 4 - with super clause on Type Mirror and GenericType - must not be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -478,23 +478,23 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         HashMap.class,
-                                                        getTypeUtils().GENERICS.createGenericType(String.class),
-                                                        getTypeUtils().GENERICS.createGenericType(String.class)
+                                                        getTypeUtils().doGenerics().createGenericType(String.class),
+                                                        getTypeUtils().doGenerics().createGenericType(String.class)
                                                 )
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Super on assignee side can't be assigned to a Generic Type", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Super on assignee side can't be assigned to a Generic Type", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -505,7 +505,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 4 - with super clause on Type Mirror and extends on GenericType - must not be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 4 - with super clause on Type Mirror and extends on GenericType - must not be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -517,25 +517,25 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 HashMap.class,
-                                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                                getTypeUtils().GENERICS.createGenericType(String.class)
+                                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                                getTypeUtils().doGenerics().createGenericType(String.class)
                                                         )
                                                 )
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Super on assignee side can't be assigned to a super wildcard Type", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Super on assignee side can't be assigned to a super wildcard Type", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -546,7 +546,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 4 - with super clause on Type Mirror and pure wildcard - must be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 4 - with super clause on Type Mirror and pure wildcard - must be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -558,19 +558,19 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createPureWildcard()
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createPureWildcard()
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a pure wildcard Type", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a pure wildcard Type", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -581,7 +581,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 4 - with super clause on Type Mirror and valid super wildcard - must be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 4 - with super clause on Type Mirror and valid super wildcard - must be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -593,25 +593,25 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithSuperBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithSuperBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 HashMap.class,
-                                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                                getTypeUtils().GENERICS.createGenericType(String.class)
+                                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                                getTypeUtils().doGenerics().createGenericType(String.class)
                                                         )
                                                 )
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a valid super wildcard Type", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a valid super wildcard Type", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -621,7 +621,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                         },
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 4 - with super clause on Type Mirror and valid super wildcard - missing generic types - must be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 4 - with super clause on Type Mirror and valid super wildcard - missing generic types - must be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -633,15 +633,15 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithSuperBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithSuperBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 HashMap.class
                                                         )
                                                 )
@@ -649,7 +649,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                         );
 
 
-                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a valid super wildcard Type", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a valid super wildcard Type", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -660,7 +660,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 4 - with super clause on Type Mirror and invalid super wildcard  - must not be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 4 - with super clause on Type Mirror and invalid super wildcard  - must not be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -672,15 +672,15 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithSuperBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithSuperBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 Collection.class
                                                         )
                                                 )
@@ -688,7 +688,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                         );
 
 
-                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a invalid super wildcard Type", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a invalid super wildcard Type", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -702,7 +702,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         // #######################
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 5 - with pure wildcare clause on Type Mirror and GenericType - must not be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 5 - with pure wildcare clause on Type Mirror and GenericType - must not be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -714,23 +714,23 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createGenericType(
                                                         HashMap.class,
-                                                        getTypeUtils().GENERICS.createGenericType(String.class),
-                                                        getTypeUtils().GENERICS.createGenericType(String.class)
+                                                        getTypeUtils().doGenerics().createGenericType(String.class),
+                                                        getTypeUtils().doGenerics().createGenericType(String.class)
                                                 )
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Pure wildcard on assignee side can't be assigned to a Generic Type", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Pure wildcard on assignee side can't be assigned to a Generic Type", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -741,7 +741,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 5 - with pure wildcard clause on Type Mirror and extends on GenericType - must not be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 5 - with pure wildcard clause on Type Mirror and extends on GenericType - must not be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -753,25 +753,25 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithExtendsBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 HashMap.class,
-                                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                                getTypeUtils().GENERICS.createGenericType(String.class)
+                                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                                getTypeUtils().doGenerics().createGenericType(String.class)
                                                         )
                                                 )
 
                                         );
 
 
-                                        MatcherAssert.assertThat("pure wildcard on assignee side can't be assigned to a extends wildcard Type", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("pure wildcard on assignee side can't be assigned to a extends wildcard Type", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -782,7 +782,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 5 - with pure wildcard clause on Type Mirror and pure wildcard - must be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 5 - with pure wildcard clause on Type Mirror and pure wildcard - must be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -794,19 +794,19 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createPureWildcard()
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createPureWildcard()
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Pure wildcard on assignee side must be detected as assignable with a pure wildcard Type", getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Pure wildcard on assignee side must be detected as assignable with a pure wildcard Type", getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }
@@ -817,7 +817,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
                         {
-                                "TypeUtils.GENERICS.isAssignable : test case 5 - with pure wildcard clause on Type Mirror and  super wildcard - must not be assignable",
+                                "TypeUtils.doGenerics().isAssignable : test case 5 - with pure wildcard clause on Type Mirror and  super wildcard - must not be assignable",
                                 new AbstractTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
@@ -829,25 +829,25 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                        TypeElement typeElement = getTypeUtils().TYPE_RETRIEVAL.getTypeElement(AbstractTestAnnotationProcessorClass.class);
+                                        TypeElement typeElement = getTypeUtils().doTypeRetrieval().getTypeElement(AbstractTestAnnotationProcessorClass.class);
 
 
                                         // Map<String, ? super Map<String, String>>
-                                        GenericType genericType = getTypeUtils().GENERICS.createGenericType(
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
                                                 Map.class,
-                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                getTypeUtils().GENERICS.createWildcardWithSuperBound(
-                                                        getTypeUtils().GENERICS.createGenericType(
+                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                getTypeUtils().doGenerics().createWildcardWithSuperBound(
+                                                        getTypeUtils().doGenerics().createGenericType(
                                                                 HashMap.class,
-                                                                getTypeUtils().GENERICS.createGenericType(String.class),
-                                                                getTypeUtils().GENERICS.createGenericType(String.class)
+                                                                getTypeUtils().doGenerics().createGenericType(String.class),
+                                                                getTypeUtils().doGenerics().createGenericType(String.class)
                                                         )
                                                 )
 
                                         );
 
 
-                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a valid super wildcard Type", !getTypeUtils().GENERICS.genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
+                                        MatcherAssert.assertThat("Super on assignee side must be detected as assignable with a valid super wildcard Type", !getTypeUtils().doGenerics().genericIsAssignableTo(method.getParameters().get(0).asType(), genericType));
 
 
                                     }

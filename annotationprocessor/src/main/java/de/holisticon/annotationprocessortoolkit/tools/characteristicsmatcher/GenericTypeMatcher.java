@@ -22,7 +22,7 @@ public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericTy
     @Override
     public boolean checkForMatchingCharacteristic(Element element, GenericType toCheckFor) {
 
-        return (element != null && toCheckFor != null) && getTypeUtils().GENERICS.genericTypeEquals(element.asType(), toCheckFor);
+        return (element != null && toCheckFor != null) && getTypeUtils().doGenerics().genericTypeEquals(element.asType(), toCheckFor);
 
     }
 

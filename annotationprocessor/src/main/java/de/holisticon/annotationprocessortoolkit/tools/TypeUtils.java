@@ -21,11 +21,11 @@ public final class TypeUtils {
 
     private final FrameworkToolWrapper frameworkToolWrapper;
 
-    public final TypeRetrieval TYPE_RETRIEVAL = new TypeRetrieval();
-    public final TypeComparison TYPE_COMPARISON = new TypeComparison();
-    public final Arrays ARRAYS = new Arrays();
-    public final CheckTypeKind CHECK_TYPE_KIND = CheckTypeKind.INSTANCE;
-    public final Generics GENERICS = new Generics();
+    private final TypeRetrieval typeRetrieval = new TypeRetrieval();
+    private final TypeComparison typeComparison = new TypeComparison();
+    private final Arrays arrays = new Arrays();
+    private final CheckTypeKind checkTypeKind = CheckTypeKind.INSTANCE;
+    private final Generics generics = new Generics();
 
 
     /**
@@ -281,7 +281,7 @@ public final class TypeUtils {
          * @return true if typeElement is assignable to genericType otherwise false.
          */
         public boolean isAssignableTo(TypeMirror typeMirror, GenericType genericType) {
-            return typeMirror != null && genericType != null && GENERICS.genericIsAssignableTo(typeMirror, genericType);
+            return typeMirror != null && genericType != null && generics.genericIsAssignableTo(typeMirror, genericType);
         }
 
 
@@ -300,8 +300,8 @@ public final class TypeUtils {
                 return false;
             }
 
-            TypeElement _2ndTypeElement = TYPE_RETRIEVAL.getTypeElement(type);
-            return _2ndTypeElement != null && isErasedTypeEqual(typeElement.asType(), _2ndTypeElement.asType());
+            TypeElement secondTypeElement = typeRetrieval.getTypeElement(type);
+            return secondTypeElement != null && isErasedTypeEqual(typeElement.asType(), secondTypeElement.asType());
         }
 
         /**
@@ -338,7 +338,7 @@ public final class TypeUtils {
          * @return true if passed type represents same type as passed type, otherwise false
          */
         public boolean isTypeEqual(TypeMirror typeMirror, Class type) {
-            return typeMirror != null && type != null && isErasedTypeEqual(typeMirror, TYPE_RETRIEVAL.getTypeMirror(type));
+            return typeMirror != null && type != null && isErasedTypeEqual(typeMirror, typeRetrieval.getTypeMirror(type));
         }
 
         /**
@@ -362,7 +362,7 @@ public final class TypeUtils {
          * @return true if both typeMirror and genericType represent the same type
          */
         public boolean isTypeEqual(TypeMirror typeMirror, GenericType genericType) {
-            return GENERICS.genericTypeEquals(typeMirror, genericType);
+            return generics.genericTypeEquals(typeMirror, genericType);
         }
 
         /**
@@ -397,7 +397,7 @@ public final class TypeUtils {
          * @return returns the component TypeMirror of the passed array TypeMirror, returns null if passed TypeMirror isn't an array or null
          */
         public TypeMirror getArraysComponentType(TypeMirror typeMirror) {
-            return typeMirror != null && CHECK_TYPE_KIND.isArray(typeMirror) ? ((ArrayType) typeMirror).getComponentType() : null;
+            return typeMirror != null && checkTypeKind.isArray(typeMirror) ? ((ArrayType) typeMirror).getComponentType() : null;
         }
 
         /**
@@ -408,7 +408,7 @@ public final class TypeUtils {
          * @return true id passed type mirror is of kind array with component type, otherwise false
          */
         public boolean isArrayOfType(TypeMirror typeMirror, Class type) {
-            return type != null & isArrayOfType(typeMirror, TYPE_RETRIEVAL.getTypeMirror(type));
+            return type != null & isArrayOfType(typeMirror, typeRetrieval.getTypeMirror(type));
         }
 
         /**
@@ -419,7 +419,7 @@ public final class TypeUtils {
          * @return true id passed type mirror is of kind array with component type, otherwise false
          */
         public boolean isArrayOfType(TypeMirror typeMirror, String fullQualifiedClassName) {
-            return fullQualifiedClassName != null & isArrayOfType(typeMirror, TYPE_RETRIEVAL.getTypeMirror(fullQualifiedClassName));
+            return fullQualifiedClassName != null & isArrayOfType(typeMirror, typeRetrieval.getTypeMirror(fullQualifiedClassName));
         }
 
         /**
@@ -432,7 +432,7 @@ public final class TypeUtils {
         public boolean isArrayOfType(TypeMirror typeMirror, TypeMirror componentType) {
             return typeMirror != null
                     && componentType != null
-                    && CHECK_TYPE_KIND.isArray(typeMirror)
+                    && checkTypeKind.isArray(typeMirror)
                     && frameworkToolWrapper.getTypes().isSameType(getArraysComponentType(typeMirror), componentType);
         }
 
@@ -447,11 +447,11 @@ public final class TypeUtils {
         }
 
         public <T extends GenericTypeParameter> GenericType createGenericType(Class rawType, T... typeParameters) {
-            return createGenericType(TYPE_RETRIEVAL.getTypeMirror(rawType), typeParameters);
+            return createGenericType(typeRetrieval.getTypeMirror(rawType), typeParameters);
         }
 
         public <T extends GenericTypeParameter> GenericType createGenericType(String rawType, T... typeParameters) {
-            return createGenericType(TYPE_RETRIEVAL.getTypeMirror(rawType), typeParameters);
+            return createGenericType(typeRetrieval.getTypeMirror(rawType), typeParameters);
         }
 
 
@@ -488,7 +488,7 @@ public final class TypeUtils {
             }
 
             // Compare raw types - this will not work for super wildcard type since it has Object as raw type
-            if (!TYPE_COMPARISON.isErasedTypeEqual(typeMirror, typeMirrorToCompareWith)) {
+            if (!typeComparison.isErasedTypeEqual(typeMirror, typeMirrorToCompareWith)) {
                 return false;
             }
 
@@ -633,7 +633,7 @@ public final class TypeUtils {
             }
 
             // Compare raw types - this will not work for super wildcard type since it has Object as raw type
-            if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(typeMirror), getTypes().erasure(typeMirrorToCompareWith))) {
+            if (!typeComparison.isAssignableTo(getTypes().erasure(typeMirror), getTypes().erasure(typeMirrorToCompareWith))) {
                 return false;
             }
 
@@ -714,7 +714,7 @@ public final class TypeUtils {
 
                     GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeParameter;
 
-                    if (!TYPE_COMPARISON.isAssignableTo(
+                    if (!typeComparison.isAssignableTo(
                             getTypes().erasure(wildcardType.getExtendsBound()),
                             getTypes().erasure(wildcard.getExtendsBound().getRawType()))) {
                         return false;
@@ -736,7 +736,7 @@ public final class TypeUtils {
 
                     GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeParameter;
 
-                    if (!TYPE_COMPARISON.isAssignableTo(
+                    if (!typeComparison.isAssignableTo(
                             getTypes().erasure(wildcard.getSuperBound().getRawType()),
                             getTypes().erasure(wildcardType.getSuperBound()))) {
                         return false;
@@ -761,7 +761,7 @@ public final class TypeUtils {
 
                 // RAW - RAW must have exactly the same type
                 GenericType genericType = (GenericType) genericTypeParameter;
-                if (!TYPE_COMPARISON.isErasedTypeEqual(getTypes().erasure(declaredType), getTypes().erasure(genericType.getRawType()))) {
+                if (!typeComparison.isErasedTypeEqual(getTypes().erasure(declaredType), getTypes().erasure(genericType.getRawType()))) {
                     return false;
                 }
 
@@ -779,7 +779,7 @@ public final class TypeUtils {
                 } else if (wildcard.hasSuperBound()) {
 
                     // GenericTypes super bound type mirror must be assignable to TypeMirrors super bound
-                    if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(wildcard.getSuperBound().getRawType()), getTypes().erasure(declaredType))) {
+                    if (!typeComparison.isAssignableTo(getTypes().erasure(wildcard.getSuperBound().getRawType()), getTypes().erasure(declaredType))) {
                         return false;
                     }
 
@@ -789,7 +789,7 @@ public final class TypeUtils {
                 } else if (wildcard.hasExtendsBound()) {
 
                     // type mirrors extends bound type mirror must be assignable to GenericTypes extends bound
-                    if (!TYPE_COMPARISON.isAssignableTo(getTypes().erasure(declaredType), getTypes().erasure(wildcard.getExtendsBound().getRawType()))) {
+                    if (!typeComparison.isAssignableTo(getTypes().erasure(declaredType), getTypes().erasure(wildcard.getExtendsBound().getRawType()))) {
                         return false;
                     }
 
@@ -815,6 +815,26 @@ public final class TypeUtils {
      */
     public Types getTypes() {
         return frameworkToolWrapper.getTypes();
+    }
+
+    public TypeRetrieval doTypeRetrieval() {
+        return typeRetrieval;
+    }
+
+    public TypeComparison doTypeComparison() {
+        return typeComparison;
+    }
+
+    public Arrays doArrays() {
+        return arrays;
+    }
+
+    public CheckTypeKind doCheckTypeKind() {
+        return checkTypeKind;
+    }
+
+    public Generics doGenerics() {
+        return generics;
     }
 
     /**
