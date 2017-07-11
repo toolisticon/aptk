@@ -18,13 +18,13 @@ public class AnnotationProcessorUnitTestConfigurationBuilder {
 
         protected Boolean shouldCompileSuccessfully;
         protected TestMessageValidator testMessageValidator;
-        protected AbstractAnnotationProcessorUnitTest.AbstractTestAnnotationProcessorClass processor;
+        protected AbstractUnitTestAnnotationProcessorClass processor;
 
         public MessageEvaluation addMessageValidator() {
             return new MessageEvaluation(this);
         }
 
-        public BaseConfigurationBuilder setProcessor(AbstractAnnotationProcessorUnitTest.AbstractTestAnnotationProcessorClass processor) {
+        public BaseConfigurationBuilder setProcessor(AbstractUnitTestAnnotationProcessorClass processor) {
             this.processor = processor;
             return this;
         }

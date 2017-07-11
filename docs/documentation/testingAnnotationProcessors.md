@@ -15,18 +15,20 @@ This can be done by using the com.google.testing.compile compile-testing framewo
 One thing to mention is that JDK >=6 is supported up to version 0.9 - all following versions are base on JDK >=8.
 
 This project simplifies testing even more by hiding the complexity of using the compile-testing framework.
+It allows you to simply do integration tests with your annotation processors by offering you the possibility to process source files and checking the results.
+Additionally it helps you to build unit tests for components that rely on the _ProcessingEnvironment_.
 
 We will show you what needs to be done in the following...
 
-## Setting up a test
+## Setting up an integration test
 
 Setting up a junit test is quite easy. This framework is using parameterized unit tests to do some testing.
 
 Here's a small example for a testcase that validates the compile outcome. This is quite useful for annotation processors that are doing validations about the usage of annotations:
 
-    package de.holisticon.example.annotationprocessortoolkit.annotationprocessor;
-
-    import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorTest;
+    import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
+    import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
+    import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
     import org.junit.Test;
     import org.junit.runner.RunWith;
     import org.junit.runners.Parameterized;
@@ -36,11 +38,11 @@ Here's a small example for a testcase that validates the compile outcome. This i
 
 
     @RunWith(Parameterized.class)
-    public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorTest<MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor> {
+    public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorIntegrationTest<MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor> {
 
 
-        public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, String resource, String[] errors, String[] warnings) {
-            super(description, resource, errors, warnings);
+        public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
+            super(annotationProcessorIntegrationTestConfiguration);
         }
 
         @Override
@@ -52,9 +54,34 @@ Here's a small example for a testcase that validates the compile outcome. This i
         public static List<Object[]> data() {
 
             return Arrays.asList(new Object[][]{
-                    {"Test valid usage", "testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java", new String[]{}, new String[]{}},
-                    {"Test invalid usage : non void return type", "testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java", new String[]{"Method must have void return type"}, new String[]{}},
-                    {"Test invalid usage : non String parameter", "testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java", new String[]{"Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]"}, new String[]{}},
+                    {
+                            "Test valid usage",
+                            AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                                    .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
+                                    .compilationShouldSucceed()
+                                    .build()
+                    },
+                    {
+                            "Test invalid usage : non void return type",
+                            AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                                    .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
+                                    .compilationShouldFail()
+                                    .addMessageValidator()
+                                        .setErrorChecks("Method must have void return type")
+                                    .finishMessageEvaluation()
+                                    .build()
+                    },
+                    {
+                            "Test invalid usage : non String parameter",
+                            AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                                    .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
+                                    .compilationShouldFail()
+                                    .addMessageValidator()
+                                        .setErrorChecks("Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]")
+                                    .finishMessageEvaluation()
+                                    .build()
+                    },
+
 
             });
 
@@ -62,9 +89,12 @@ Here's a small example for a testcase that validates the compile outcome. This i
 
 
         @Test
-        public void testCorrectnessOfAdviceArgumentAnnotation() {
+        public void test() {
             super.test();
         }
+
+
+    }
 
 So basically you need to do the following things:
 
@@ -74,6 +104,84 @@ So basically you need to do the following things:
 4. Create a constructor with parameters _(String description, String resource, String[] errors, String[] warnings)_ which delegates to super constructor.
 5. Create a method that provides the parameterized test data. (Annotated with _@Parameterized.Parameters_)
 6. Add a test method which delegated to super.test()
+
+## Setting up an unit test
+
+Setting up an unit test is similar to the integration test:
+
+    import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+    import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+    import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+    import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+    import org.hamcrest.MatcherAssert;
+    import org.junit.Test;
+    import org.junit.runner.RunWith;
+    import org.junit.runners.Parameterized;
+
+    import javax.lang.model.element.TypeElement;
+    import java.util.Arrays;
+    import java.util.List;
+
+    @RunWith(Parameterized.class)
+    public class TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest extends AbstractAnnotationProcessorUnitTest {
+
+        public TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest(String description, AnnotationProcessorUnitTestConfiguration configuration) {
+            super(configuration);
+        }
+
+        @Parameterized.Parameters(name = "{index}: \"{0}\"")
+        public static List<Object[]> data() {
+
+            return Arrays.asList(new Object[][]{
+                    {
+                            "Test valid usage with assignable parameters",
+                            AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                    .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                        @Override
+                                        protected void testCase(TypeElement element) {
+
+                                            TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
+                                            unit.init(this.processingEnv);
+
+                                            MatcherAssert.assertThat("Should be assignable to Object", unit.isAssignableTo(element, Object.class.getCanonicalName()));
+
+                                        }
+                                    })
+                                    .compilationShouldSucceed()
+                                    .build()
+                    },
+                    {
+                            "Test valid usage with non assignable parameters",
+                            AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                    .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                        @Override
+                                        protected void testCase(TypeElement element) {
+
+                                            TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
+                                            unit.init(this.processingEnv);
+
+                                            MatcherAssert.assertThat("Should not be assignable to String", !unit.isAssignableTo(element, String.class.getCanonicalName()));
+
+                                        }
+                                    })
+                                    .compilationShouldSucceed()
+                                    .build()
+                    },
+
+
+            });
+
+        }
+
+
+        @Test
+        public void test() {
+            super.test();
+        }
+
+    }
+
+Please check example projects in github for further information.
 
 # Best practices
 

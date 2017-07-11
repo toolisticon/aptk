@@ -2,6 +2,7 @@ package de.holisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 
 import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import org.hamcrest.MatcherAssert;
@@ -27,7 +28,7 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest extends 
                 {
                         "Test valid usage with assignable parameters",
                         AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                .setProcessor(new AbstractTestAnnotationProcessorClass() {
+                                .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
 
@@ -44,7 +45,7 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest extends 
                 {
                         "Test valid usage with non assignable parameters",
                         AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                .setProcessor(new AbstractTestAnnotationProcessorClass() {
+                                .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                     @Override
                                     protected void testCase(TypeElement element) {
 

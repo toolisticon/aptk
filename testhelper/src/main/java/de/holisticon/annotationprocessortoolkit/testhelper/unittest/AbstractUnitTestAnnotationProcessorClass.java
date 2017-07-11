@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Base annotation processor for unit tests.
  */
-public abstract class AbstractTestAnnotationProcessorClass extends AbstractAnnotationProcessor {
+public abstract class AbstractUnitTestAnnotationProcessorClass extends AbstractAnnotationProcessor {
 
     private final static Set<String> SUPPORTED_ANNOTATION_TYPES = AbstractAnnotationProcessor.createSupportedAnnotationSet(TestAnnotation.class);
 

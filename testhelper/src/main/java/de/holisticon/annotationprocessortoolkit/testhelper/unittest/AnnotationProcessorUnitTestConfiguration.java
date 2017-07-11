@@ -9,17 +9,17 @@ import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestValidat
  */
 public class AnnotationProcessorUnitTestConfiguration extends AnnotationProcessorCommonTestConfiguration {
 
-    private final AbstractAnnotationProcessorUnitTest.AbstractTestAnnotationProcessorClass processor;
+    private final AbstractUnitTestAnnotationProcessorClass processor;
 
 
-    public AnnotationProcessorUnitTestConfiguration(AbstractAnnotationProcessorUnitTest.AbstractTestAnnotationProcessorClass processor, Boolean compilingShouldSucceed, TestValidator... testcases) {
+    public AnnotationProcessorUnitTestConfiguration(AbstractUnitTestAnnotationProcessorClass processor, Boolean compilingShouldSucceed, TestValidator... testcases) {
         super(compilingShouldSucceed, testcases);
 
         this.processor = processor;
 
     }
 
-    public AbstractAnnotationProcessorUnitTest.AbstractTestAnnotationProcessorClass getProcessor() {
+    public AbstractUnitTestAnnotationProcessorClass getProcessor() {
         return processor;
     }
 

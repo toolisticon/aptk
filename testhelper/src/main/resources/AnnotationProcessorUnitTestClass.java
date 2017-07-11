@@ -10,7 +10,7 @@ import java.util.Map;
  * Test class for annotation processor tools.
  */
 @TestAnnotation
-public class AnnotationProcessorTestClass {
+public class AnnotationProcessorUnitTestClass {
 
     private String privateField;
     protected String protectedField;
@@ -66,11 +66,11 @@ public class AnnotationProcessorTestClass {
         int y = 0;
     }
 
-    public AnnotationProcessorTestClass() {
+    public AnnotationProcessorUnitTestClass() {
 
     }
 
-    public AnnotationProcessorTestClass(String withParameter) {
+    public AnnotationProcessorUnitTestClass(String withParameter) {
 
     }
 
