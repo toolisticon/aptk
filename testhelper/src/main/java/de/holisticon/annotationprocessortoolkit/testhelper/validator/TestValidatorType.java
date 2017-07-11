@@ -1,4 +1,4 @@
-package de.holisticon.annotationprocessortoolkit.testhelper;
+package de.holisticon.annotationprocessortoolkit.testhelper.validator;
 
 /**
  * This enum is used to distinct different kinds of tests.

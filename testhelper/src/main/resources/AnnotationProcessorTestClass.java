@@ -1,8 +1,6 @@
 package de.holisticon.annotationprocessor;
 
-import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation1;
-import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation2;
-import de.holisticon.annotationprocessortoolkit.TestAnnotation;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 
 import java.util.Comparator;
 import java.util.List;
@@ -73,12 +71,6 @@ public class AnnotationProcessorTestClass {
     }
 
     public AnnotationProcessorTestClass(String withParameter) {
-
-    }
-
-    @FilterTestAnnotation1
-    @FilterTestAnnotation2
-    public synchronized void synchronizedMethod() {
 
     }
 

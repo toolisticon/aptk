@@ -1,13 +1,13 @@
-package de.holisticon.annotationprocessortoolkit.testhelper.builder;
+package de.holisticon.annotationprocessortoolkit.testhelper.unittest;
 
 
-import de.holisticon.annotationprocessortoolkit.testhelper.AnnotationProcessorTestConfiguration;
-import de.holisticon.annotationprocessortoolkit.testhelper.TestMessageValidator;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestMessageValidator;
 
-public class AnnotationProcessorTestBuilder {
+public class AnnotationProcessorUnitTestConfigurationBuilder {
 
 
-    private AnnotationProcessorTestBuilder() {
+    private AnnotationProcessorUnitTestConfigurationBuilder() {
     }
 
     public BaseConfigurationBuilder start() {
@@ -18,17 +18,17 @@ public class AnnotationProcessorTestBuilder {
 
         protected Boolean shouldCompileSuccessfully;
         protected TestMessageValidator testMessageValidator;
-        protected String sourceFileToCompile;
+        protected AbstractAnnotationProcessorUnitTest.AbstractTestAnnotationProcessorClass processor;
 
         public MessageEvaluation addMessageValidator() {
             return new MessageEvaluation(this);
         }
 
-
-        public BaseConfigurationBuilder setSourceFileToCompile(String srcFileToCompile) {
-            sourceFileToCompile = srcFileToCompile;
+        public BaseConfigurationBuilder setProcessor(AbstractAnnotationProcessorUnitTest.AbstractTestAnnotationProcessorClass processor) {
+            this.processor = processor;
             return this;
         }
+
 
         public BaseConfigurationBuilder compilationShouldFail() {
             shouldCompileSuccessfully = false;
@@ -40,11 +40,11 @@ public class AnnotationProcessorTestBuilder {
             return this;
         }
 
-        public AnnotationProcessorTestConfiguration build() {
+        public AnnotationProcessorUnitTestConfiguration build() {
             if (testMessageValidator == null) {
-                return new AnnotationProcessorTestConfiguration(sourceFileToCompile, shouldCompileSuccessfully);
+                return new AnnotationProcessorUnitTestConfiguration(processor, shouldCompileSuccessfully);
             } else {
-                return new AnnotationProcessorTestConfiguration(sourceFileToCompile, shouldCompileSuccessfully,
+                return new AnnotationProcessorUnitTestConfiguration(processor, shouldCompileSuccessfully,
                         testMessageValidator);
             }
         }
@@ -87,7 +87,7 @@ public class AnnotationProcessorTestBuilder {
 
     public static BaseConfigurationBuilder createTestConfig() {
 
-        AnnotationProcessorTestBuilder testBuilder = new AnnotationProcessorTestBuilder();
+        AnnotationProcessorUnitTestConfigurationBuilder testBuilder = new AnnotationProcessorUnitTestConfigurationBuilder();
 
         return testBuilder.start();
 

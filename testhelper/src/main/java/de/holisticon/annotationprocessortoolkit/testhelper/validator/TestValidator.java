@@ -1,4 +1,4 @@
-package de.holisticon.annotationprocessortoolkit.testhelper;
+package de.holisticon.annotationprocessortoolkit.testhelper.validator;
 
 /**
  * Interface that helps to detect the type of testcase.

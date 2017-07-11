@@ -39,5 +39,9 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends Abstract
         return false;
     }
 
+    protected boolean isAssignableTo(Element element, String fqn) {
+        return getTypeUtils().getTypes().isAssignable(element.asType(), getTypeUtils().TYPE_RETRIEVAL.getTypeMirror(fqn));
+    }
+
 
 }

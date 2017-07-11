@@ -1,27 +1,20 @@
 package de.holisticon.annotationprocessortoolkit.testhelper;
 
-/**
- * Configuration of the an annotation processor test.
- */
-public class AnnotationProcessorTestConfiguration {
+import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestValidator;
 
-    private final String source;
+/**
+ * Common test configuration.
+ */
+public class AnnotationProcessorCommonTestConfiguration {
+
     private final Boolean compilingShouldSucceed;
 
     private final TestValidator[] testcases;
 
-    public AnnotationProcessorTestConfiguration( String source, Boolean compilingShouldSucceed, TestValidator... testcases) {
-        this.source = source;
+    public AnnotationProcessorCommonTestConfiguration(Boolean compilingShouldSucceed, TestValidator... testcases) {
         this.compilingShouldSucceed = compilingShouldSucceed;
         this.testcases = testcases;
     }
-
-
-
-    public String getSource() {
-        return source;
-    }
-
 
     public Boolean getCompilingShouldSucceed() {
         return compilingShouldSucceed;
@@ -30,4 +23,5 @@ public class AnnotationProcessorTestConfiguration {
     public TestValidator[] getTestcases() {
         return testcases;
     }
+
 }

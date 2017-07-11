@@ -1,4 +1,4 @@
-package de.holisticon.annotationprocessortoolkit.testhelper;
+package de.holisticon.annotationprocessortoolkit.testhelper.validator;
 
 /**
  * A test that checks for compiler messages.

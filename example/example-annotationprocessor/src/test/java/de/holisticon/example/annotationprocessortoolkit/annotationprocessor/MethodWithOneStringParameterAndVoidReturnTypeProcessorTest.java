@@ -1,8 +1,8 @@
 package de.holisticon.example.annotationprocessortoolkit.annotationprocessor;
 
-import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorProcessingTest;
-import de.holisticon.annotationprocessortoolkit.testhelper.AnnotationProcessorTestConfiguration;
-import de.holisticon.annotationprocessortoolkit.testhelper.builder.AnnotationProcessorTestBuilder;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -12,11 +12,11 @@ import java.util.List;
 
 
 @RunWith(Parameterized.class)
-public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorProcessingTest<MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor> {
+public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorIntegrationTest<MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor> {
 
 
-    public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, AnnotationProcessorTestConfiguration annotationProcessorTestConfiguration) {
-        super(annotationProcessorTestConfiguration);
+    public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
+        super(annotationProcessorIntegrationTestConfiguration);
     }
 
     @Override
@@ -30,14 +30,14 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
         return Arrays.asList(new Object[][]{
                 {
                         "Test valid usage",
-                        AnnotationProcessorTestBuilder.createTestConfig()
+                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
                                 .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
                                 .compilationShouldSucceed()
                                 .build()
                 },
                 {
                         "Test invalid usage : non void return type",
-                        AnnotationProcessorTestBuilder.createTestConfig()
+                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
                                 .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
                                 .compilationShouldFail()
                                 .addMessageValidator()
@@ -47,7 +47,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
                 },
                 {
                         "Test invalid usage : non String parameter",
-                        AnnotationProcessorTestBuilder.createTestConfig()
+                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
                                 .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
                                 .compilationShouldFail()
                                 .addMessageValidator()
@@ -63,7 +63,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
 
 
     @Test
-    public void testCorrectnessOfAdviceArgumentAnnotation() {
+    public void test() {
         super.test();
     }
 

@@ -1,6 +1,10 @@
 package de.holisticon.annotationprocessortoolkit.testhelper;
 
 import com.google.testing.compile.CompileTester;
+import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestMessageValidator;
+import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestValidator;
+import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestValidatorType;
 import org.hamcrest.MatcherAssert;
 
 import javax.annotation.processing.Processor;
@@ -14,14 +18,14 @@ import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
  * Abstract base class which allows parameterized tests.
  */
 
-public abstract class AbstractAnnotationProcessorTest {
+public abstract class AbstractAnnotationProcessorTest <T extends AnnotationProcessorCommonTestConfiguration> {
 
     public final static String TEST_EXECUTION_MESSAGE = "!!!--- TEST WAS EXECUTED ---!!!";
 
-    AnnotationProcessorTestConfiguration annotationProcessorTestConfiguration;
+    T annotationProcessorCommonTestConfiguration;
 
-    public AbstractAnnotationProcessorTest(AnnotationProcessorTestConfiguration annotationProcessorTestConfiguration) {
-        this.annotationProcessorTestConfiguration = annotationProcessorTestConfiguration;
+    public AbstractAnnotationProcessorTest(T annotationProcessorCommonTestConfiguration) {
+        this.annotationProcessorCommonTestConfiguration = annotationProcessorCommonTestConfiguration;
     }
 
 
@@ -49,7 +53,7 @@ public abstract class AbstractAnnotationProcessorTest {
 
         JavaFileObject testClassSource = getSourceFileForCompilation();
 
-        TestMessageValidator messageValidationTest = (TestMessageValidator) getTestOfType(annotationProcessorTestConfiguration.getTestcases(), TestValidatorType.MESSAGE_VALIDATOR);
+        TestMessageValidator messageValidationTest = (TestMessageValidator) getTestOfType(annotationProcessorCommonTestConfiguration.getTestcases(), TestValidatorType.MESSAGE_VALIDATOR);
 
 
         if (messageValidationTest == null || messageValidationTest.getErrors().length == 0) {
@@ -57,8 +61,8 @@ public abstract class AbstractAnnotationProcessorTest {
                     .that(testClassSource)
                     .processedWith(this.getWrappedProcessor()).compilesWithoutError();
 
-            if (annotationProcessorTestConfiguration.getCompilingShouldSucceed() != null) {
-                MatcherAssert.assertThat("Compiling should have succeed", annotationProcessorTestConfiguration.getCompilingShouldSucceed());
+            if (annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed() != null) {
+                MatcherAssert.assertThat("Compiling should have succeed", annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed());
             }
 
             // check for warnings
@@ -77,8 +81,8 @@ public abstract class AbstractAnnotationProcessorTest {
                     .that(testClassSource)
                     .processedWith(this.getWrappedProcessor()).failsToCompile();
 
-            if (annotationProcessorTestConfiguration.getCompilingShouldSucceed() != null) {
-                MatcherAssert.assertThat("Compiling should have failed", !annotationProcessorTestConfiguration.getCompilingShouldSucceed());
+            if (annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed() != null) {
+                MatcherAssert.assertThat("Compiling should have failed", !annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed());
             }
 
             // check for errors
@@ -93,8 +97,8 @@ public abstract class AbstractAnnotationProcessorTest {
 
     }
 
-    protected AnnotationProcessorTestConfiguration getAnnotationProcessorTestConfiguration() {
-        return annotationProcessorTestConfiguration;
+    protected T getAnnotationProcessorTestConfiguration() {
+        return annotationProcessorCommonTestConfiguration;
     }
 
     private TestValidator getTestOfType(TestValidator[] testValidators, TestValidatorType type) {
