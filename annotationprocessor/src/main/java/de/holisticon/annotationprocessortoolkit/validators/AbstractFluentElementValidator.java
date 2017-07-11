@@ -38,7 +38,7 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
         boolean nextResult = getValidationResult();
 
         if (modifiers != null) {
-            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasAllOf(getElement(), modifiers)) {
+            if (!Validators.getModifierValidator().getValidator().hasAllOf(getElement(), modifiers)) {
                 getMessagerUtils().printMessage(
                         getElement(), getMessageLevel(),
                         getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers))
@@ -60,7 +60,7 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
         boolean nextResult = getValidationResult();
 
         if (modifiers != null) {
-            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasNoneOf(getElement(), modifiers)) {
+            if (!Validators.getModifierValidator().getValidator().hasNoneOf(getElement(), modifiers)) {
                 getMessagerUtils().printMessage(
                         getElement(),
                         getMessageLevel(),

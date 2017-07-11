@@ -44,8 +44,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase1")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase1")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -82,8 +82,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase1")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase1")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -120,8 +120,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase1")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase1")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -156,8 +156,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase1")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase1")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -196,8 +196,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase2")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase2")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -236,8 +236,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase3")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase3")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -275,8 +275,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase3")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase3")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -316,8 +316,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase3")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase3")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -351,8 +351,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase3")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase3")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -391,8 +391,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase3")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase3")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -430,8 +430,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase3")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase3")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -472,8 +472,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase4")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase4")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -511,8 +511,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase4")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase4")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -552,8 +552,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase4")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase4")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -587,8 +587,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase4")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase4")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -627,8 +627,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase4")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase4")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -666,8 +666,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase4")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase4")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -708,8 +708,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase5")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase5")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -747,8 +747,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase5")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase5")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -788,8 +788,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase5")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase5")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
@@ -823,8 +823,8 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                                     protected void testCase(TypeElement element) {
 
                                         List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.NAME_FILTER).filterByOneOf("isAssignable_testCase5")
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase5")
                                                 .getResult();
 
                                         ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));

@@ -78,7 +78,7 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
         List<ExecutableElement> constructors =
                 CastElement.castElementList(
                         FluentElementFilter.createFluentFilter(getElement().getEnclosedElements())
-                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CONSTRUCTOR)
+                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.CONSTRUCTOR)
                                 .getResult()
                         , ExecutableElement.class);
 

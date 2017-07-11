@@ -5,7 +5,7 @@ package de.holisticon.annotationprocessortoolkit.tools.generics;
  * <p/>
  * It may define extends and super wildcards or a pure wildcard.
  */
-public class GenericTypeWildcard implements GenericTypeParameter {
+public final class GenericTypeWildcard implements GenericTypeParameter {
 
     private final GenericType superBound;
     private final GenericType extendsBound;
@@ -81,7 +81,7 @@ public class GenericTypeWildcard implements GenericTypeParameter {
 
 
     /**
-     * Creates a pure wildcard
+     * Creates a pure wildcard.
      *
      * @return the pure wildcard instance
      */
@@ -90,7 +90,7 @@ public class GenericTypeWildcard implements GenericTypeParameter {
     }
 
     /**
-     * Creates a extends wildcard
+     * Creates a extends wildcard.
      *
      * @return the extends wildcard instance
      */
@@ -99,7 +99,7 @@ public class GenericTypeWildcard implements GenericTypeParameter {
     }
 
     /**
-     * Creates a super wildcard
+     * Creates a super wildcard.
      *
      * @return the super wildcard instance
      */

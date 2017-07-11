@@ -38,12 +38,12 @@ public class GenericCharacteristicFilterTest extends AbstractAnnotationProcessor
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        List<Element> filteredList = Filters.MODIFIER_FILTER.getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED);
+                                        List<Element> filteredList = Filters.getModifierFilter().getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED);
                                         MatcherAssert.assertThat("Must have exactly one element'", filteredList, Matchers.hasSize(1));
                                         MatcherAssert.assertThat("Must find one element with name 'synchronizedMethod'", filteredList.get(0).getSimpleName().toString(), Matchers.is("synchronizedMethod"));
 
                                         // shouldn't find anything
-                                        filteredList = Filters.MODIFIER_FILTER.getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
+                                        filteredList = Filters.getModifierFilter().getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
                                         MatcherAssert.assertThat("Must have noelement'", filteredList, Matchers.<Element>empty());
 
 

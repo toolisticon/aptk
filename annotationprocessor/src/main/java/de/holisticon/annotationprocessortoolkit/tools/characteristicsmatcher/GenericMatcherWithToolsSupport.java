@@ -24,7 +24,7 @@ public abstract class GenericMatcherWithToolsSupport<T> implements GenericMatche
     }
 
     /**
-     * Getter the wrapper for the utility classes offered by {@link ProcessEnvironment}
+     * Getter the wrapper for the utility classes offered by {@link ProcessEnvironment}.
      *
      * @return
      */
@@ -33,7 +33,7 @@ public abstract class GenericMatcherWithToolsSupport<T> implements GenericMatche
     }
 
     /**
-     * Provides access to {@link TypeUtils};
+     * Provides access to {@link TypeUtils}.
      *
      * @return a TypeUtils instance
      */

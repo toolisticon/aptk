@@ -20,114 +20,137 @@ public final class Validators {
 
     }
 
-    public static final Validator<Modifier> MODIFIER_VALIDATOR =
-            new Validator<Modifier>(new GenericElementCharacteristicValidator<Modifier>(Matchers.MODIFIER_MATCHER));
-    public static final Validator<String> NAME_VALIDATOR =
-            new Validator<String>(new GenericElementCharacteristicValidator<String>(Matchers.NAME_MATCHER));
-    public static final Validator<String> REGEX_NAME_VALIDATOR =
-            new Validator<String>(new GenericElementCharacteristicValidator<String>(Matchers.REGEX_NAME_MATCHER));
-    public static final Validator<Class<? extends Annotation>> ANNOTATION_VALIDATOR =
-            new Validator<Class<? extends Annotation>>(new GenericElementCharacteristicValidator<Class<? extends Annotation>>(Matchers.ANNOTATION_MATCHER));
-    public static final Validator<ElementKind> ELEMENT_KIND_VALIDATOR =
-            new Validator<ElementKind>(new GenericElementCharacteristicValidator<ElementKind>(Matchers.ELEMENT_KIND_MATCHER));
+    private static final Validator<Modifier> MODIFIER_VALIDATOR =
+            new Validator<Modifier>(new GenericElementCharacteristicValidator<Modifier>(Matchers.getModifierMatcher()));
+    private static final Validator<String> NAME_VALIDATOR =
+            new Validator<String>(new GenericElementCharacteristicValidator<String>(Matchers.getNameMatcher()));
+    private static final Validator<String> REGEX_NAME_VALIDATOR =
+            new Validator<String>(new GenericElementCharacteristicValidator<String>(Matchers.getRegexNameMatcher()));
+    private static final Validator<Class<? extends Annotation>> ANNOTATION_VALIDATOR =
+            new Validator<Class<? extends Annotation>>(new GenericElementCharacteristicValidator<Class<? extends Annotation>>(Matchers.getAnnotationMatcher()));
+    private static final Validator<ElementKind> ELEMENT_KIND_VALIDATOR =
+            new Validator<ElementKind>(new GenericElementCharacteristicValidator<ElementKind>(Matchers.getElementKindMatcher()));
 
-    public static Validator<Class[]> PARAMETER_VALIDATOR(FrameworkToolWrapper tools) {
-        return new Validator<Class[]>(new GenericElementCharacteristicValidator<Class[]>(Matchers.PARAMETER_MATCHER(tools)));
+    public static Validator<Modifier> getModifierValidator() {
+        return MODIFIER_VALIDATOR;
     }
 
-    public static Validator<String[]> PARAMETER_FQN_VALIDATOR(FrameworkToolWrapper tools) {
-        return new Validator<String[]>(new GenericElementCharacteristicValidator<String[]>(Matchers.PARAMETER_FQN_MATCHER(tools)));
+    public static Validator<String> getNameValidator() {
+        return NAME_VALIDATOR;
     }
 
-    public static Validator<Class> RAW_TYPE_VALIDATOR(FrameworkToolWrapper tools) {
-        return new Validator<Class>(new GenericElementCharacteristicValidator<Class>(Matchers.RAW_TYPE_MATCHER(tools)));
+    public static Validator<String> getRegexNameValidator() {
+        return REGEX_NAME_VALIDATOR;
     }
 
-    public static Validator<GenericType> GENERIC_TYPE_VALIDATOR(FrameworkToolWrapper tools) {
-        return new Validator<GenericType>(new GenericElementCharacteristicValidator<GenericType>(Matchers.GENERIC_TYPE_MATCHER(tools)));
+    public static Validator<Class<? extends Annotation>> getAnnotationValidator() {
+        return ANNOTATION_VALIDATOR;
     }
 
-
-    /**
-     * Convenience method for getting and using a Modifier matching validator.
-     *
-     * @return the validator instance
-     */
-    public static InclusiveElementValidator<Modifier> getModifierValidator() {
-        return MODIFIER_VALIDATOR.getValidator();
+    public static Validator<ElementKind> getElementKindValidator() {
+        return ELEMENT_KIND_VALIDATOR;
     }
 
-    /**
-     * Convenience method for getting and using a name matching validator.
-     *
-     * @return the validator instance
-     */
-    public static ExclusiveElementValidator<String> getNameValidator() {
-        return NAME_VALIDATOR.getValidator();
+    public static Validator<Class[]> getParameterValidator(FrameworkToolWrapper tools) {
+        return new Validator<Class[]>(new GenericElementCharacteristicValidator<Class[]>(Matchers.getParameterMatcher(tools)));
     }
 
-    /**
-     * Convenience method for getting and using a name matching validator by regular expressions.
-     *
-     * @return the validator instance
-     */
-    public static InclusiveElementValidator<String> getRegexNameValidator() {
-        return REGEX_NAME_VALIDATOR.getValidator();
+    public static Validator<String[]> getParameterFqnValidator(FrameworkToolWrapper tools) {
+        return new Validator<String[]>(new GenericElementCharacteristicValidator<String[]>(Matchers.getParameterFqnMatcher(tools)));
     }
 
-    /**
-     * Convenience method for getting and using an annotation matching validator.
-     *
-     * @return the validator instance
-     */
-    public static InclusiveElementValidator<Class<? extends Annotation>> getAnnotationValidator() {
-        return ANNOTATION_VALIDATOR.getValidator();
+    public static Validator<Class> getRawTypeValidator(FrameworkToolWrapper tools) {
+        return new Validator<Class>(new GenericElementCharacteristicValidator<Class>(Matchers.getRawTypeMatcher(tools)));
     }
 
-    /**
-     * Convenience method for getting and using a ElementKind matching validator.
-     *
-     * @return the validator instance
-     */
-    public static ExclusiveElementValidator<ElementKind> getElementKindValidator() {
-        return ELEMENT_KIND_VALIDATOR.getValidator();
+    public static Validator<GenericType> getGenericTypeValidator(FrameworkToolWrapper tools) {
+        return new Validator<GenericType>(new GenericElementCharacteristicValidator<GenericType>(Matchers.getGenericTypeMatcher(tools)));
     }
 
 
-    /**
-     * Convenience method for getting and using a parameter type matching validator.
-     *
-     * @return the validator instance
-     */
-    public static ExclusiveElementValidator<Class[]> getParameterValidator(FrameworkToolWrapper frameworkToolWrapper) {
-        return PARAMETER_VALIDATOR(frameworkToolWrapper).getValidator();
-    }
+    public static class InAndExclusiveElementValidators {
+        /**
+         * Convenience method for getting and using a Modifier matching validator.
+         *
+         * @return the validator instance
+         */
+        public static InclusiveElementValidator<Modifier> getModifierValidator() {
+            return MODIFIER_VALIDATOR.getValidator();
+        }
 
-    /**
-     * Convenience method for getting and using a parameter type matching validator.
-     *
-     * @return the validator instance
-     */
-    public static ExclusiveElementValidator<String[]> getParameterFqnValidator(FrameworkToolWrapper frameworkToolWrapper) {
-        return PARAMETER_FQN_VALIDATOR(frameworkToolWrapper).getValidator();
-    }
+        /**
+         * Convenience method for getting and using a name matching validator.
+         *
+         * @return the validator instance
+         */
+        public static ExclusiveElementValidator<String> getNameValidator() {
+            return NAME_VALIDATOR.getValidator();
+        }
+
+        /**
+         * Convenience method for getting and using a name matching validator by regular expressions.
+         *
+         * @return the validator instance
+         */
+        public static InclusiveElementValidator<String> getRegexNameValidator() {
+            return REGEX_NAME_VALIDATOR.getValidator();
+        }
+
+        /**
+         * Convenience method for getting and using an annotation matching validator.
+         *
+         * @return the validator instance
+         */
+        public static InclusiveElementValidator<Class<? extends Annotation>> getAnnotationValidator() {
+            return ANNOTATION_VALIDATOR.getValidator();
+        }
+
+        /**
+         * Convenience method for getting and using a ElementKind matching validator.
+         *
+         * @return the validator instance
+         */
+        public static ExclusiveElementValidator<ElementKind> getElementKindValidator() {
+            return ELEMENT_KIND_VALIDATOR.getValidator();
+        }
 
 
-    /**
-     * Convenience method for getting and using a raw type matching validator.
-     *
-     * @return the validator instance
-     */
-    public static ExclusiveElementValidator<Class> getRawTypeValidator(FrameworkToolWrapper frameworkToolWrapper) {
-        return RAW_TYPE_VALIDATOR(frameworkToolWrapper).getValidator();
-    }
+        /**
+         * Convenience method for getting and using a parameter type matching validator.
+         *
+         * @return the validator instance
+         */
+        public static ExclusiveElementValidator<Class[]> getParameterValidator(FrameworkToolWrapper frameworkToolWrapper) {
+            return Validators.getParameterValidator(frameworkToolWrapper).getValidator();
+        }
 
-    /**
-     * Convenience method for getting and using a raw type matching validator.
-     *
-     * @return the validator instance
-     */
-    public static ExclusiveElementValidator<GenericType> getGenericTypeValidator(FrameworkToolWrapper frameworkToolWrapper) {
-        return GENERIC_TYPE_VALIDATOR(frameworkToolWrapper).getValidator();
+        /**
+         * Convenience method for getting and using a parameter type matching validator.
+         *
+         * @return the validator instance
+         */
+        public static ExclusiveElementValidator<String[]> getParameterFqnValidator(FrameworkToolWrapper frameworkToolWrapper) {
+            return Validators.getParameterFqnValidator(frameworkToolWrapper).getValidator();
+        }
+
+
+        /**
+         * Convenience method for getting and using a raw type matching validator.
+         *
+         * @return the validator instance
+         */
+        public static ExclusiveElementValidator<Class> getRawTypeValidator(FrameworkToolWrapper frameworkToolWrapper) {
+            return Validators.getRawTypeValidator(frameworkToolWrapper).getValidator();
+        }
+
+        /**
+         * Convenience method for getting and using a raw type matching validator.
+         *
+         * @return the validator instance
+         */
+        public static ExclusiveElementValidator<GenericType> getGenericTypeValidator(FrameworkToolWrapper frameworkToolWrapper) {
+            return Validators.getGenericTypeValidator(frameworkToolWrapper).getValidator();
+        }
+
     }
 }

@@ -17,7 +17,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_OneOf() {
 
-        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator());
+        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator());
 
         Element element = Mockito.mock(Element.class);
         spy.hasOf(ValidatorKind.ONE_OF, element, Modifier.ABSTRACT);
@@ -29,7 +29,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_AtLeastOneOf() {
 
-        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator());
+        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator());
 
         Element element = Mockito.mock(Element.class);
         spy.hasOf(ValidatorKind.AT_LEAST_ONE_OF, element, Modifier.ABSTRACT);
@@ -41,7 +41,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_AllOf() {
 
-        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator());
+        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator());
 
         Element element = Mockito.mock(Element.class);
         spy.hasOf(ValidatorKind.ALL_OF, element, Modifier.ABSTRACT);
@@ -53,7 +53,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_NoneOf() {
 
-        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator());
+        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator());
 
         Element element = Mockito.mock(Element.class);
         spy.hasOf(ValidatorKind.NONE_OF, element, Modifier.ABSTRACT);
@@ -65,7 +65,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_nullValuedKind() {
 
-        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator());
+        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator());
 
         Element element = Mockito.mock(Element.class);
         MatcherAssert.assertThat(spy.hasOf(null, element, Modifier.ABSTRACT), Matchers.is(false));
@@ -81,7 +81,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_oneOf_nullValuedElement() {
 
-        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator());
+        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator());
 
         MatcherAssert.assertThat(spy.hasOf(ValidatorKind.ONE_OF, null, Modifier.ABSTRACT), Matchers.is(false));
 
@@ -93,7 +93,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_atLeastOneOf_nullValuedElement() {
 
-        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator());
+        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator());
 
         MatcherAssert.assertThat(spy.hasOf(ValidatorKind.AT_LEAST_ONE_OF, null, Modifier.ABSTRACT), Matchers.is(false));
 
@@ -105,7 +105,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_allOf_nullValuedElement() {
 
-        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator());
+        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator());
 
         MatcherAssert.assertThat(spy.hasOf(ValidatorKind.ALL_OF, null, Modifier.ABSTRACT), Matchers.is(false));
 
@@ -117,7 +117,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_noneOf_nullValuedElement() {
 
-        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.getModifierValidator());
+        GenericElementCharacteristicValidator<Modifier> spy = Mockito.spy((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator());
 
         MatcherAssert.assertThat(spy.hasOf(ValidatorKind.NONE_OF, null, Modifier.ABSTRACT), Matchers.is(false));
 

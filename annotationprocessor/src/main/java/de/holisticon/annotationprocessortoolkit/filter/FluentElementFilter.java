@@ -108,7 +108,7 @@ public final class FluentElementFilter<T extends Element> {
      */
     public FluentElementFilter<TypeElement> filterAndCastToTypeElement() {
         return genericFilterAndCastToTypeElement(
-                new ApplyFilter<ElementKind>(Filters.ELEMENT_KIND_FILTER)
+                new ApplyFilter<ElementKind>(Filters.getElementKindFilter())
                         .filterByOneOf(ElementKind.CLASS).getResult()
                 , TypeElement.class
         );
