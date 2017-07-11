@@ -52,16 +52,17 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
      * @param nextResult              the validation result to be used with validator
      */
     protected AbstractFluentValidator(AbstractFluentValidator<T, E> previousFluentValidator, boolean nextResult) {
-        this.messageLevel = previousFluentValidator != null
-                && previousFluentValidator.messageLevel != null ? previousFluentValidator.messageLevel : Diagnostic.Kind.ERROR;
+
+
+        this.messageLevel = previousFluentValidator != null ? previousFluentValidator.messageLevel : Diagnostic.Kind.ERROR;
 
         // config validator
-        this.frameworkToolWrapper = previousFluentValidator.frameworkToolWrapper;
-        this.messagerUtils = previousFluentValidator.messagerUtils;
-        this.typeUtils = previousFluentValidator.typeUtils;
+        this.frameworkToolWrapper = previousFluentValidator != null ? previousFluentValidator.frameworkToolWrapper : null;
+        this.messagerUtils = previousFluentValidator != null ? previousFluentValidator.messagerUtils : null;
+        this.typeUtils = previousFluentValidator != null ? previousFluentValidator.typeUtils : null;
 
         // element and current validation result
-        this.element = previousFluentValidator.element;
+        this.element = previousFluentValidator != null ? previousFluentValidator.element : null;
         this.currentValidationResult = nextResult;
 
     }

@@ -1,7 +1,5 @@
 package de.holisticon.annotationprocessortoolkit.testhelper;
 
-import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
-
 import javax.annotation.processing.Completion;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -16,9 +14,9 @@ import javax.tools.Diagnostic;
 import java.util.Set;
 
 /**
- * Wrapper class for {@link AbstractAnnotationProcessor}. Allows generic creation of generic unit tests.
+ * Wrapper class for {@link Processor}. Allows generic creation of generic unit tests.
  */
-public class AnnotationProcessorWrapper implements Processor {
+public final class AnnotationProcessorWrapper implements Processor {
 
     private final Processor wrappedProcessor;
     private Messager messager;

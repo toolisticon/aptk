@@ -9,12 +9,16 @@ import javax.tools.JavaFileObject;
 /**
  * Abstract test base class used to check if source files are processed correctly.
  */
-public abstract class AbstractAnnotationProcessorIntegrationTest<T extends Processor> extends AbstractAnnotationProcessorTest<AnnotationProcessorIntegrationTestConfiguration> {
+public abstract class AbstractAnnotationProcessorIntegrationTest<T extends Processor>
+        extends AbstractAnnotationProcessorTest<AnnotationProcessorIntegrationTestConfiguration> {
 
 
 
-    protected AbstractAnnotationProcessorIntegrationTest(AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
+    protected AbstractAnnotationProcessorIntegrationTest(
+            AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
+
         super(annotationProcessorIntegrationTestConfiguration);
+
     }
 
     @Override

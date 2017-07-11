@@ -1,10 +1,13 @@
 package de.holisticon.annotationprocessortoolkit.testhelper.unittest;
 
 
-import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestMessageValidator;
 
-public class AnnotationProcessorUnitTestConfigurationBuilder {
+
+/**
+ * Configuration builder class for of unit tests.
+ */
+public final class AnnotationProcessorUnitTestConfigurationBuilder {
 
 
     private AnnotationProcessorUnitTestConfigurationBuilder() {
@@ -14,18 +17,18 @@ public class AnnotationProcessorUnitTestConfigurationBuilder {
         return new BaseConfigurationBuilder();
     }
 
-    public class BaseConfigurationBuilder {
+    public static class BaseConfigurationBuilder {
 
-        protected Boolean shouldCompileSuccessfully;
-        protected TestMessageValidator testMessageValidator;
-        protected AbstractUnitTestAnnotationProcessorClass processor;
+        private Boolean shouldCompileSuccessfully;
+        private TestMessageValidator testMessageValidator;
+        private AbstractUnitTestAnnotationProcessorClass processor;
 
         public MessageEvaluation addMessageValidator() {
             return new MessageEvaluation(this);
         }
 
-        public BaseConfigurationBuilder setProcessor(AbstractUnitTestAnnotationProcessorClass processor) {
-            this.processor = processor;
+        public BaseConfigurationBuilder setProcessor(AbstractUnitTestAnnotationProcessorClass processorToBeSet) {
+            this.processor = processorToBeSet;
             return this;
         }
 
@@ -51,33 +54,33 @@ public class AnnotationProcessorUnitTestConfigurationBuilder {
     }
 
 
-    public class MessageEvaluation {
+    public static class MessageEvaluation {
 
         private final BaseConfigurationBuilder baseConfigurationBuilder;
-        private String[] warnings;
-        private String[] errors;
+        private String[] warningChecks;
+        private String[] errorChecks;
 
 
         MessageEvaluation(BaseConfigurationBuilder baseConfigurationBuilder) {
             this.baseConfigurationBuilder = baseConfigurationBuilder;
         }
 
-        public MessageEvaluation setWarningChecks(String... warnings) {
+        public MessageEvaluation setWarningChecks(String... warningChecksToSet) {
 
-            this.warnings = warnings;
+            this.warningChecks = warningChecksToSet;
             return this;
 
         }
 
-        public MessageEvaluation setErrorChecks(String... errors) {
-            this.errors = errors;
+        public MessageEvaluation setErrorChecks(String... errorChecksToSet) {
+            this.errorChecks = errorChecksToSet;
             return this;
         }
 
         public BaseConfigurationBuilder finishMessageValidator() {
             baseConfigurationBuilder.testMessageValidator = new TestMessageValidator(
-                    errors != null ? errors : new String[0],
-                    warnings != null ? warnings : new String[0]
+                    errorChecks != null ? errorChecks : new String[0],
+                    warningChecks != null ? warningChecks : new String[0]
             );
             return baseConfigurationBuilder;
         }

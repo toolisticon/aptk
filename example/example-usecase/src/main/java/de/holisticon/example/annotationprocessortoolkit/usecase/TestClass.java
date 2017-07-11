@@ -5,7 +5,7 @@ import de.holisticon.example.annotationprocessortoolkit.annotations.SomeInterfac
 import de.holisticon.example.annotationprocessortoolkit.annotations.TypeThatIsAssignableToInterfaceAnnotation;
 
 /**
- * Test class to show that the annotation processors are working correctly
+ * Test class to show that the annotation processors are working correctly.
  */
 
 

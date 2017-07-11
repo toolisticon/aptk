@@ -408,7 +408,7 @@ public final class TypeUtils {
          * @return true id passed type mirror is of kind array with component type, otherwise false
          */
         public boolean isArrayOfType(TypeMirror typeMirror, Class type) {
-            return type != null & isArrayOfType(typeMirror, typeRetrieval.getTypeMirror(type));
+            return type != null && isArrayOfType(typeMirror, typeRetrieval.getTypeMirror(type));
         }
 
         /**
@@ -419,7 +419,7 @@ public final class TypeUtils {
          * @return true id passed type mirror is of kind array with component type, otherwise false
          */
         public boolean isArrayOfType(TypeMirror typeMirror, String fullQualifiedClassName) {
-            return fullQualifiedClassName != null & isArrayOfType(typeMirror, typeRetrieval.getTypeMirror(fullQualifiedClassName));
+            return fullQualifiedClassName != null && isArrayOfType(typeMirror, typeRetrieval.getTypeMirror(fullQualifiedClassName));
         }
 
         /**
@@ -586,13 +586,13 @@ public final class TypeUtils {
 
         private boolean compareGenericTypeDeclaredTypeRecursively(DeclaredType declaredType, GenericTypeParameter genericTypeParameter) {
 
-            if (genericTypeParameter.getType() != GenericTypeKind.GENERIC_TYPE) {
+            if (genericTypeParameter == null || genericTypeParameter.getType() != GenericTypeKind.GENERIC_TYPE) {
                 return false;
             } else {
 
                 GenericType genericType = (GenericType) genericTypeParameter;
 
-                if (declaredType != null && genericType != null && !compareGenericTypesRecursively(declaredType, genericType)) {
+                if (declaredType != null && !compareGenericTypesRecursively(declaredType, genericType)) {
                     return false;
                 }
 

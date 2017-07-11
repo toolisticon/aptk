@@ -3,7 +3,10 @@ package de.holisticon.annotationprocessortoolkit.testhelper.integrationtest;
 
 import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestMessageValidator;
 
-public class AnnotationProcessorIntegrationTestConfigurationBuilder {
+/**
+ * Configuration builder class for  of integration tests.
+ */
+public final class AnnotationProcessorIntegrationTestConfigurationBuilder {
 
 
     private AnnotationProcessorIntegrationTestConfigurationBuilder() {
@@ -13,11 +16,11 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilder {
         return new BaseConfigurationBuilder();
     }
 
-    public class BaseConfigurationBuilder {
+    public static class BaseConfigurationBuilder {
 
-        protected Boolean shouldCompileSuccessfully;
-        protected TestMessageValidator testMessageValidator;
-        protected String sourceFileToCompile;
+        private Boolean shouldCompileSuccessfully;
+        private TestMessageValidator testMessageValidator;
+        private String sourceFileToCompile;
 
         public MessageEvaluation addMessageValidator() {
             return new MessageEvaluation(this);
@@ -41,44 +44,46 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilder {
 
         public AnnotationProcessorIntegrationTestConfiguration build() {
             if (testMessageValidator == null) {
-                return new AnnotationProcessorIntegrationTestConfiguration(sourceFileToCompile, shouldCompileSuccessfully);
+                return new AnnotationProcessorIntegrationTestConfiguration(
+                        sourceFileToCompile,
+                        shouldCompileSuccessfully);
             } else {
-                return new AnnotationProcessorIntegrationTestConfiguration(sourceFileToCompile, shouldCompileSuccessfully,
+                return new AnnotationProcessorIntegrationTestConfiguration(
+                        sourceFileToCompile,
+                        shouldCompileSuccessfully,
                         testMessageValidator);
             }
         }
     }
 
 
-
-
-    public class MessageEvaluation {
+    public static class MessageEvaluation {
 
         private final BaseConfigurationBuilder baseConfigurationBuilder;
-        private String[] warnings;
-        private String[] errors;
+        private String[] warningChecks;
+        private String[] errorChecks;
 
 
         MessageEvaluation(BaseConfigurationBuilder baseConfigurationBuilder) {
             this.baseConfigurationBuilder = baseConfigurationBuilder;
         }
 
-        public MessageEvaluation setWarningChecks(String... warnings) {
+        public MessageEvaluation setWarningChecks(String... warningChecksToSet) {
 
-            this.warnings = warnings;
+            this.warningChecks = warningChecksToSet;
             return this;
 
         }
 
-        public MessageEvaluation setErrorChecks(String... errors) {
-            this.errors = errors;
+        public MessageEvaluation setErrorChecks(String... errorChecksToSet) {
+            this.errorChecks = errorChecksToSet;
             return this;
         }
 
         public BaseConfigurationBuilder finishMessageValidator() {
             baseConfigurationBuilder.testMessageValidator = new TestMessageValidator(
-                    errors != null ? errors : new String[0],
-                    warnings != null ? warnings : new String[0]
+                    errorChecks != null ? errorChecks : new String[0],
+                    warningChecks != null ? warningChecks : new String[0]
             );
             return baseConfigurationBuilder;
         }
@@ -93,7 +98,6 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilder {
         return testBuilder.start();
 
     }
-
 
 
 }

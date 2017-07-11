@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public abstract class AbstractUnitTestAnnotationProcessorClass extends AbstractAnnotationProcessor {
 
-    private final static Set<String> SUPPORTED_ANNOTATION_TYPES = AbstractAnnotationProcessor.createSupportedAnnotationSet(TestAnnotation.class);
+    private static final Set<String> SUPPORTED_ANNOTATION_TYPES = AbstractAnnotationProcessor.createSupportedAnnotationSet(TestAnnotation.class);
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {

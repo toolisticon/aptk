@@ -14,11 +14,13 @@ import java.util.Set;
 /**
  * Test annotation processor which demonstrates the usage of the annotation processor toolkit.
  */
-@SupportedAnnotationTypes({"de.holisticon.example.annotationprocessortoolkit.annotations.TypeThatIsAssignableToInterfaceAnnotation"})
+@SupportedAnnotationTypes("de.holisticon.example.annotationprocessortoolkit.annotations.TypeThatIsAssignableToInterfaceAnnotation")
 public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends AbstractAnnotationProcessor {
 
-    // Overriding the getSupportedAnnotationTypes instead of using the SupportedAnnotationTypes annotation might be an option this is especially useful if you have inheritance
-    // private final static Set<String> SUPPORTED_ANNOTATION_TYPES = createSupportedAnnotationSet(TypeThatIsAssignableToInterfaceAnnotation.class);
+    // Overriding the getSupportedAnnotationTypes instead of using the SupportedAnnotationTypes annotation
+    // might be an option this is especially useful if you have inheritance
+    // private final static Set<String> SUPPORTED_ANNOTATION_TYPES =
+    //     createSupportedAnnotationSet(TypeThatIsAssignableToInterfaceAnnotation.class);
     // @Override
     // public Set<String> getSupportedAnnotationTypes() {
     //    return SUPPORTED_ANNOTATION_TYPES;
@@ -31,7 +33,9 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends Abstract
 
 
             // validator already will print output so additional actions are not necessary
-            getFluentTypeValidator(ElementUtils.CastElement.castToTypeElement(element)).isAssignableTo(SomeInterface.class).getValidationResult();
+            getFluentTypeValidator(ElementUtils.CastElement.castToTypeElement(element))
+                    .isAssignableTo(SomeInterface.class)
+                    .getValidationResult();
 
         }
 
@@ -40,7 +44,12 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends Abstract
     }
 
     protected boolean isAssignableTo(Element element, String fqn) {
-        return getTypeUtils().getTypes().isAssignable(element.asType(), getTypeUtils().doTypeRetrieval().getTypeMirror(fqn));
+        return getTypeUtils()
+                .getTypes()
+                .isAssignable(
+                        element.asType(),
+                        getTypeUtils().doTypeRetrieval().getTypeMirror(fqn)
+                );
     }
 
 

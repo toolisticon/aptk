@@ -1,6 +1,5 @@
 package de.holisticon.annotationprocessortoolkit.testhelper.unittest;
 
-import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import de.holisticon.annotationprocessortoolkit.testhelper.AnnotationProcessorCommonTestConfiguration;
 import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestValidator;
 
@@ -12,9 +11,12 @@ public class AnnotationProcessorUnitTestConfiguration extends AnnotationProcesso
     private final AbstractUnitTestAnnotationProcessorClass processor;
 
 
-    public AnnotationProcessorUnitTestConfiguration(AbstractUnitTestAnnotationProcessorClass processor, Boolean compilingShouldSucceed, TestValidator... testcases) {
-        super(compilingShouldSucceed, testcases);
+    public AnnotationProcessorUnitTestConfiguration(
+            AbstractUnitTestAnnotationProcessorClass processor,
+            Boolean compilingShouldSucceed,
+            TestValidator... testcases) {
 
+        super(compilingShouldSucceed, testcases);
         this.processor = processor;
 
     }

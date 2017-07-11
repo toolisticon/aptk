@@ -6,24 +6,24 @@ import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestValidat
 /**
  * Configuration of the an annotation processor test.
  */
-public class AnnotationProcessorIntegrationTestConfiguration extends AnnotationProcessorCommonTestConfiguration{
+public class AnnotationProcessorIntegrationTestConfiguration extends AnnotationProcessorCommonTestConfiguration {
 
     private final String source;
 
 
-    public AnnotationProcessorIntegrationTestConfiguration(String source, Boolean compilingShouldSucceed, TestValidator... testcases) {
-        super(compilingShouldSucceed,testcases);
+    public AnnotationProcessorIntegrationTestConfiguration(
+            String source,
+            Boolean compilingShouldSucceed,
+            TestValidator... testcases) {
 
+        super(compilingShouldSucceed, testcases);
         this.source = source;
 
     }
 
 
-
     public String getSource() {
         return source;
     }
-
-
 
 }

@@ -1,7 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.testhelper;
 
 import com.google.testing.compile.CompileTester;
-import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
 import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestMessageValidator;
 import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestValidator;
 import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestValidatorType;
@@ -18,11 +17,11 @@ import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
  * Abstract base class which allows parameterized tests.
  */
 
-public abstract class AbstractAnnotationProcessorTest <T extends AnnotationProcessorCommonTestConfiguration> {
+public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProcessorCommonTestConfiguration> {
 
-    public final static String TEST_EXECUTION_MESSAGE = "!!!--- TEST WAS EXECUTED ---!!!";
+    public static final String TEST_EXECUTION_MESSAGE = "!!!--- TEST WAS EXECUTED ---!!!";
 
-    T annotationProcessorCommonTestConfiguration;
+    private T annotationProcessorCommonTestConfiguration;
 
     public AbstractAnnotationProcessorTest(T annotationProcessorCommonTestConfiguration) {
         this.annotationProcessorCommonTestConfiguration = annotationProcessorCommonTestConfiguration;
@@ -53,7 +52,9 @@ public abstract class AbstractAnnotationProcessorTest <T extends AnnotationProce
 
         JavaFileObject testClassSource = getSourceFileForCompilation();
 
-        TestMessageValidator messageValidationTest = (TestMessageValidator) getTestOfType(annotationProcessorCommonTestConfiguration.getTestcases(), TestValidatorType.MESSAGE_VALIDATOR);
+        TestMessageValidator messageValidationTest = (TestMessageValidator) getTestOfType(
+                annotationProcessorCommonTestConfiguration.getTestcases(),
+                TestValidatorType.MESSAGE_VALIDATOR);
 
 
         if (messageValidationTest == null || messageValidationTest.getErrors().length == 0) {

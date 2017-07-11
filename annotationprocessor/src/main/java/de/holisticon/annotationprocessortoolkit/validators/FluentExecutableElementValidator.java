@@ -116,22 +116,24 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
 
         boolean nextResult = this.getValidationResult();
 
-        if (ElementUtils.CheckKindOfElement.isMethod(getElement()) && hasNonVoidReturnType().getValidationResult()) {
+        if (type != null) {
+            if (ElementUtils.CheckKindOfElement.isMethod(getElement()) && hasNonVoidReturnType().getValidationResult()) {
 
-            if (type == null || !getTypeUtils().getTypes().isAssignable(getElement().getReturnType(), getTypeUtils().doTypeRetrieval().getTypeMirror(type))) {
+                if (!getTypeUtils().getTypes().isAssignable(getElement().getReturnType(), getTypeUtils().doTypeRetrieval().getTypeMirror(type))) {
 
-                // validation failed - output message
-                getMessagerUtils().printMessage(
-                        getElement(),
-                        getMessageLevel(),
-                        getCustomOrDefaultMessage("Methods return type must be assignable to type ${0}", type.getSimpleName())
-                );
-                nextResult = isErrorLevel() ? false : nextResult;
+                    // validation failed - output message
+                    getMessagerUtils().printMessage(
+                            getElement(),
+                            getMessageLevel(),
+                            getCustomOrDefaultMessage("Methods return type must be assignable to type ${0}", type.getSimpleName())
+                    );
+                    nextResult = isErrorLevel() ? false : nextResult;
 
+                }
+
+            } else {
+                nextResult = false;
             }
-
-        } else {
-            nextResult = false;
         }
 
         return createNextFluentValidator(nextResult);

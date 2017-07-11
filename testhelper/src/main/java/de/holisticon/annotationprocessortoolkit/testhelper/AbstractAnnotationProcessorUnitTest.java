@@ -22,7 +22,7 @@ public abstract class AbstractAnnotationProcessorUnitTest extends AbstractAnnota
     @Override
     protected JavaFileObject getSourceFileForCompilation() {
         URL url = AbstractAnnotationProcessorUnitTest.class.getClassLoader().getResource("AnnotationProcessorUnitTestClass.java");
-        return JavaFileObjects.forResource(url);
+        return url != null ? JavaFileObjects.forResource(url) : null;
     }
 
     @Override
