@@ -19,6 +19,7 @@ This page explains what needs to be configured in your Maven configuration to en
 
 You need to add the following dependencies to your Maven configuration, if you want to develop and test your annotation processors :
 
+```xml
      <dependencies>
 
          <!-- Needed for developing your annotation processors -->
@@ -38,6 +39,7 @@ You need to add the following dependencies to your Maven configuration, if you w
         </dependency>
 
      </dependencies>
+```
 
 The testhelper module internally uses com.google.testing.compile compile-testing as a dependency.
 To maintain compatibility with Java 6 JDKs version 0.9 is used. All following versions are based on Java 8 JDK.
@@ -53,6 +55,7 @@ This should be done for several reasons:
 
 In Maven, this can be done by using the shade plugin:
 
+```xml
      <build>
          <plugins>
 
@@ -83,17 +86,19 @@ In Maven, this can be done by using the shade plugin:
 
          </plugins>
      </build>
+```
 
 # Building your annotation processor
 
 Annotation processor are internally build on top of a SPI.
 So you just need to do two things to create an annotation processor.
 
-## Create the annotation processor Class
+## Create the annotation processor Class‚
 
 Usually your annotation processor class would have to extend the _javax.annotation.processing.AbstractProcessor_ class provided by the JDK.
 To enable the annotation processor toolkit support use the _de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_ instead.
 
+```java
     package de.holisticon.example.annotationprocessortoolkit.annotationprocessor;
 
     import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
@@ -131,6 +136,8 @@ To enable the annotation processor toolkit support use the _de.holisticon.annota
 
     }
 
+```
+
 ## Declare which annotations are processed by the annotation processor
 
 There are two approaches to tell the compiler which annotations are supported by an annnotation processor.
@@ -154,11 +161,13 @@ This is quite elegant but has some drawbacks:
 
 An alternative approach is to overwrite the _getSupportedAnnotationTypes_ method:
 
+```java
         private final static Set<String> SUPPORTED_ANNOTATION_TYPES = createSupportedAnnotationSet(Annotation1.class, Annotation2.class);
         @Override
         public Set<String> getSupportedAnnotationTypes() {
            return SUPPORTED_ANNOTATION_TYPES;
         }
+```
 
 The logic to configure supported annotations by  the _SupportedAnnotationTypes_ annotation is implemented in _javax.annotation.processing.AbstractProcessor.getSupportedAnnotationTypes()_.
 So overwriting of this method might break configuration by annotation.

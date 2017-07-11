@@ -26,6 +26,7 @@ Setting up a junit test is quite easy. This framework is using parameterized uni
 
 Here's a small example for a testcase that validates the compile outcome. This is quite useful for annotation processors that are doing validations about the usage of annotations:
 
+```java
     import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
     import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
     import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
@@ -95,6 +96,7 @@ Here's a small example for a testcase that validates the compile outcome. This i
 
 
     }
+```
 
 So basically you need to do the following things:
 
@@ -109,6 +111,7 @@ So basically you need to do the following things:
 
 Setting up an unit test is similar to the integration test:
 
+```java
     import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
     import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
     import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
@@ -180,6 +183,7 @@ Setting up an unit test is similar to the integration test:
         }
 
     }
+```
 
 Please check example projects in github for further information.
 
@@ -190,6 +194,7 @@ Checks for messages are testing if the defined String is contained in one of the
 So think about introducing message codes in your annotation processor.
 Error codes could enabled or disabled via some kind of toggle:
 
+```java
     package net.bytebuddy.annotationprocessor.advice;
 
     import net.bytebuddy.asm.Advice;
@@ -259,5 +264,6 @@ Error codes could enabled or disabled via some kind of toggle:
             }
 
         }
+```
 
 By doing this you are able to check existing of errors / warning by it's code rather than it's message.
