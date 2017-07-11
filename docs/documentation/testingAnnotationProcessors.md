@@ -27,75 +27,75 @@ Setting up a junit test is quite easy. This framework is using parameterized uni
 Here's a small example for a testcase that validates the compile outcome. This is quite useful for annotation processors that are doing validations about the usage of annotations:
 
 ```java
-    import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
-    import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
-    import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
-    import org.junit.Test;
-    import org.junit.runner.RunWith;
-    import org.junit.runners.Parameterized;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
-    import java.util.Arrays;
-    import java.util.List;
-
-
-    @RunWith(Parameterized.class)
-    public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorIntegrationTest<MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor> {
+import java.util.Arrays;
+import java.util.List;
 
 
-        public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
-            super(annotationProcessorIntegrationTestConfiguration);
-        }
-
-        @Override
-        protected MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor getAnnotationProcessor() {
-            return new MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor();
-        }
-
-        @Parameterized.Parameters(name = "{index}: \"{0}\"")
-        public static List<Object[]> data() {
-
-            return Arrays.asList(new Object[][]{
-                    {
-                            "Test valid usage",
-                            AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                    .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
-                                    .compilationShouldSucceed()
-                                    .build()
-                    },
-                    {
-                            "Test invalid usage : non void return type",
-                            AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                    .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
-                                    .compilationShouldFail()
-                                    .addMessageValidator()
-                                        .setErrorChecks("Method must have void return type")
-                                    .finishMessageEvaluation()
-                                    .build()
-                    },
-                    {
-                            "Test invalid usage : non String parameter",
-                            AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                    .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
-                                    .compilationShouldFail()
-                                    .addMessageValidator()
-                                        .setErrorChecks("Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]")
-                                    .finishMessageEvaluation()
-                                    .build()
-                    },
+@RunWith(Parameterized.class)
+public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorIntegrationTest<MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor> {
 
 
-            });
+    public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
+        super(annotationProcessorIntegrationTestConfiguration);
+    }
 
-        }
+    @Override
+    protected MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor getAnnotationProcessor() {
+        return new MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor();
+    }
+
+    @Parameterized.Parameters(name = "{index}: \"{0}\"")
+    public static List<Object[]> data() {
+
+        return Arrays.asList(new Object[][]{
+                {
+                        "Test valid usage",
+                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
+                                .compilationShouldSucceed()
+                                .build()
+                },
+                {
+                        "Test invalid usage : non void return type",
+                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
+                                .compilationShouldFail()
+                                .addMessageValidator()
+                                    .setErrorChecks("Method must have void return type")
+                                .finishMessageEvaluation()
+                                .build()
+                },
+                {
+                        "Test invalid usage : non String parameter",
+                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
+                                .compilationShouldFail()
+                                .addMessageValidator()
+                                    .setErrorChecks("Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]")
+                                .finishMessageEvaluation()
+                                .build()
+                },
 
 
-        @Test
-        public void test() {
-            super.test();
-        }
-
+        });
 
     }
+
+
+    @Test
+    public void test() {
+        super.test();
+    }
+
+
+}
 ```
 
 So basically you need to do the following things:
@@ -112,77 +112,77 @@ So basically you need to do the following things:
 Setting up an unit test is similar to the integration test:
 
 ```java
-    import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
-    import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
-    import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
-    import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
-    import org.hamcrest.MatcherAssert;
-    import org.junit.Test;
-    import org.junit.runner.RunWith;
-    import org.junit.runners.Parameterized;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
-    import javax.lang.model.element.TypeElement;
-    import java.util.Arrays;
-    import java.util.List;
+import javax.lang.model.element.TypeElement;
+import java.util.Arrays;
+import java.util.List;
 
-    @RunWith(Parameterized.class)
-    public class TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest extends AbstractAnnotationProcessorUnitTest {
+@RunWith(Parameterized.class)
+public class TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest extends AbstractAnnotationProcessorUnitTest {
 
-        public TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest(String description, AnnotationProcessorUnitTestConfiguration configuration) {
-            super(configuration);
-        }
+    public TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest(String description, AnnotationProcessorUnitTestConfiguration configuration) {
+        super(configuration);
+    }
 
-        @Parameterized.Parameters(name = "{index}: \"{0}\"")
-        public static List<Object[]> data() {
+    @Parameterized.Parameters(name = "{index}: \"{0}\"")
+    public static List<Object[]> data() {
 
-            return Arrays.asList(new Object[][]{
-                    {
-                            "Test valid usage with assignable parameters",
-                            AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                    .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                        @Override
-                                        protected void testCase(TypeElement element) {
+        return Arrays.asList(new Object[][]{
+                {
+                        "Test valid usage with assignable parameters",
+                        AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
 
-                                            TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
-                                            unit.init(this.processingEnv);
+                                        TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
+                                        unit.init(this.processingEnv);
 
-                                            MatcherAssert.assertThat("Should be assignable to Object", unit.isAssignableTo(element, Object.class.getCanonicalName()));
+                                        MatcherAssert.assertThat("Should be assignable to Object", unit.isAssignableTo(element, Object.class.getCanonicalName()));
 
-                                        }
-                                    })
-                                    .compilationShouldSucceed()
-                                    .build()
-                    },
-                    {
-                            "Test valid usage with non assignable parameters",
-                            AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                    .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                        @Override
-                                        protected void testCase(TypeElement element) {
+                                    }
+                                })
+                                .compilationShouldSucceed()
+                                .build()
+                },
+                {
+                        "Test valid usage with non assignable parameters",
+                        AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
 
-                                            TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
-                                            unit.init(this.processingEnv);
+                                        TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
+                                        unit.init(this.processingEnv);
 
-                                            MatcherAssert.assertThat("Should not be assignable to String", !unit.isAssignableTo(element, String.class.getCanonicalName()));
+                                        MatcherAssert.assertThat("Should not be assignable to String", !unit.isAssignableTo(element, String.class.getCanonicalName()));
 
-                                        }
-                                    })
-                                    .compilationShouldSucceed()
-                                    .build()
-                    },
-
-
-            });
-
-        }
+                                    }
+                                })
+                                .compilationShouldSucceed()
+                                .build()
+                },
 
 
-        @Test
-        public void test() {
-            super.test();
-        }
+        });
 
     }
+
+
+    @Test
+    public void test() {
+        super.test();
+    }
+
+}
 ```
 
 Please check example projects in github for further information.
@@ -195,75 +195,75 @@ So think about introducing message codes in your annotation processor.
 Error codes could enabled or disabled via some kind of toggle:
 
 ```java
-    package net.bytebuddy.annotationprocessor.advice;
+package net.bytebuddy.annotationprocessor.advice;
 
-    import net.bytebuddy.asm.Advice;
+import net.bytebuddy.asm.Advice;
+
+/**
+ * Messages used by annotation processors of Advice annotations.
+ */
+public enum Messages {
+
+    COMMON_ERROR_1("COMMON_ERR_01", "Error message 1"),
+    COMMON_ERROR_2("COMMON_ERR_02", "Error message 2"),
+    COMMON_WARNING_1 ("COMMON_WARN_01", "Warning 1"),
+    SPECIFIC_ERROR_1("SPEC_01", "...");
 
     /**
-     * Messages used by annotation processors of Advice annotations.
+     * Flag that defines if messages codes will be written as part of the message.
      */
-    public enum Messages {
+    private static boolean printMessageCodes = false;
 
-            COMMON_ERROR_1("COMMON_ERR_01", "Error message 1"),
-            COMMON_ERROR_2("COMMON_ERR_02", "Error message 2"),
-            COMMON_WARNING_1 ("COMMON_WARN_01", "Warning 1"),
-            SPECIFIC_ERROR_1("SPEC_01", "...");
+    /**
+     * the message code.
+     */
+    private final String code;
 
-            /**
-             * Flag that defines if messages codes will be written as part of the message.
-             */
-            private static boolean printMessageCodes = false;
+    /**
+     * the message text.
+     */
+    private final String message;
 
-            /**
-             * the message code.
-             */
-            private final String code;
+    /**
+     * Constructor.
+     *
+     * @param code    the message code
+     * @param message the message text
+     */
+    private Messages(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 
-            /**
-             * the message text.
-             */
-            private final String message;
+    /**
+     * Gets the code of the message.
+     *
+     * @return the message code
+     */
+    public String getCode() {
+        return this.code;
+    }
 
-            /**
-             * Constructor.
-             *
-             * @param code    the message code
-             * @param message the message text
-             */
-            private Messages(String code, String message) {
-                this.code = code;
-                this.message = message;
-            }
-
-            /**
-             * Gets the code of the message.
-             *
-             * @return the message code
-             */
-            public String getCode() {
-                return this.code;
-            }
-
-            /**
-             * Gets the message text.
-             *
-             * @return the message text
-             */
-            public String getMessage() {
-                return (printMessageCodes ? "[" + code + "] : " : "") + message;
-            }
+    /**
+     * Gets the message text.
+     *
+     * @return the message text
+     */
+    public String getMessage() {
+        return (printMessageCodes ? "[" + code + "] : " : "") + message;
+    }
 
 
-            /**
-             * Allows toggling if message codes should be printed.
-             *
-             * @param printMessageCodes defines if message codes should be part of the message text
-             */
-            public static void setPrintMessageCodes(boolean printMessageCodes) {
-                Messages.printMessageCodes = printMessageCodes;
-            }
+    /**
+     * Allows toggling if message codes should be printed.
+     *
+     * @param printMessageCodes defines if message codes should be part of the message text
+     */
+    public static void setPrintMessageCodes(boolean printMessageCodes) {
+        Messages.printMessageCodes = printMessageCodes;
+    }
 
-        }
+}
 ```
 
 By doing this you are able to check existing of errors / warning by it's code rather than it's message.

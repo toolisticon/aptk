@@ -172,3 +172,6 @@ header h2 {
     color: #fff;
 }
 
+pre code {
+    background-color: transparent;
+}
