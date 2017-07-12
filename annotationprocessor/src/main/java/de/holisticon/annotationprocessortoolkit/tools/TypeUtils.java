@@ -6,6 +6,7 @@ import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeKind;
 import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeParameter;
 import de.holisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
@@ -391,6 +392,15 @@ public final class TypeUtils {
         }
 
         /**
+         * Checks if passed TypeMirror is an array.
+         * @param typeMirror the TypeMirror to check
+         * @return true if passed TypeMiroor is not null and of kind array.
+         */
+        public boolean isArray(TypeMirror typeMirror) {
+            return typeMirror == null && typeMirror.getKind().equals(TypeKind.ARRAY);
+        }
+
+        /**
          * Gets the component type of an array TypeMirror.
          *
          * @param typeMirror
@@ -401,40 +411,106 @@ public final class TypeUtils {
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a void type or not.
+         * Checks whether passed {@link TypeMirror} is a an array with passed component type.
          *
          * @param typeMirror the {@link TypeMirror} to check
          * @param type       the component type to check for
-         * @return true id passed type mirror is of kind array with component type, otherwise false
+         * @return true if passed type mirror is of kind array with component type, otherwise false
          */
         public boolean isArrayOfType(TypeMirror typeMirror, Class type) {
             return type != null && isArrayOfType(typeMirror, typeRetrieval.getTypeMirror(type));
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a void type or not.
+         * Checks whether passed {@link TypeMirror} is a an array with passed component type.
          *
          * @param typeMirror             the {@link TypeMirror} to check
          * @param fullQualifiedClassName the component type to check for
-         * @return true id passed type mirror is of kind array with component type, otherwise false
+         * @return true if passed type mirror is of kind array with component type, otherwise false
          */
         public boolean isArrayOfType(TypeMirror typeMirror, String fullQualifiedClassName) {
             return fullQualifiedClassName != null && isArrayOfType(typeMirror, typeRetrieval.getTypeMirror(fullQualifiedClassName));
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a void type or not.
+         * Checks whether passed {@link TypeMirror} is a an array with passed component type.
          *
          * @param typeMirror    the {@link TypeMirror} to check
          * @param componentType the arrays component type to check for
-         * @return true id passed type mirror is of kind array with component type, otherwise false
+         * @return true if passed type mirror is of kind array with component type, otherwise false
          */
         public boolean isArrayOfType(TypeMirror typeMirror, TypeMirror componentType) {
             return typeMirror != null
                     && componentType != null
                     && checkTypeKind.isArray(typeMirror)
-                    && frameworkToolWrapper.getTypes().isSameType(getArraysComponentType(typeMirror), componentType);
+                    && doTypeComparison().isTypeEqual(getArraysComponentType(typeMirror), componentType);
         }
+
+        /**
+         * Checks whether passed {@link TypeMirror} is a an array with passed component type.
+         *
+         * @param typeMirror    the {@link TypeMirror} to check
+         * @param genericType the arrays generic component type to check for
+         * @return true if passed type mirror is of kind array with component type, otherwise false
+         */
+        public boolean isArrayOfType(TypeMirror typeMirror, GenericType genericType) {
+            return typeMirror != null
+                    && genericType != null
+                    && checkTypeKind.isArray(typeMirror)
+                    && doTypeComparison().isTypeEqual(getArraysComponentType(typeMirror), genericType);
+        }
+
+
+        /**
+         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         *
+         * @param typeMirror the {@link TypeMirror} to check
+         * @param type       the component type to check for
+         * @return true if passed type mirror is of kind array with component type, otherwise false
+         */
+        public boolean isArrayAssignableTo(TypeMirror typeMirror, Class type) {
+            return type != null && isArrayAssignableTo(typeMirror, typeRetrieval.getTypeMirror(type));
+        }
+
+        /**
+         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         *
+         * @param typeMirror             the {@link TypeMirror} to check
+         * @param fullQualifiedClassName the component type to check for
+         * @return true if passed type mirror is of kind array with component type, otherwise false
+         */
+        public boolean isArrayAssignableTo(TypeMirror typeMirror, String fullQualifiedClassName) {
+            return fullQualifiedClassName != null && isArrayAssignableTo(typeMirror, typeRetrieval.getTypeMirror(fullQualifiedClassName));
+        }
+
+        /**
+         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         *
+         * @param typeMirror    the {@link TypeMirror} to check
+         * @param componentType the arrays component type to check for
+         * @return true if passed type mirror is of kind array with component type, otherwise false
+         */
+        public boolean isArrayAssignableTo(TypeMirror typeMirror, TypeMirror componentType) {
+            return typeMirror != null
+                    && componentType != null
+                    && checkTypeKind.isArray(typeMirror)
+                    && doTypeComparison().isAssignableTo(getArraysComponentType(typeMirror), componentType);
+        }
+
+        /**
+         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         *
+         * @param typeMirror    the {@link TypeMirror} to check
+         * @param genericType the arrays generic component type to check for
+         * @return true if passed type mirror is of kind array with component type, otherwise false
+         */
+        public boolean isArrayAssignableTo(TypeMirror typeMirror, GenericType genericType) {
+            return typeMirror != null
+                    && genericType != null
+                    && checkTypeKind.isArray(typeMirror)
+                    && doTypeComparison().isAssignableTo(getArraysComponentType(typeMirror), genericType);
+        }
+
 
 
     }
@@ -841,10 +917,19 @@ public final class TypeUtils {
      * Gets an instance of this TypeUtils class.
      *
      * @param frameworkToolWrapper the wrapper instance that provides the {@link javax.annotation.processing.ProcessingEnvironment} tools
-     * @return the type utils
+     * @return the type utils instance
      */
     public static TypeUtils getTypeUtils(FrameworkToolWrapper frameworkToolWrapper) {
         return new TypeUtils(frameworkToolWrapper);
+    }
+
+    /**
+     * Gets an instance of a TypeUtils class.
+     * @param processingEnvironment the processing environment to use
+     * @return the type utils instance
+     */
+    public static TypeUtils getTypeUtils(ProcessingEnvironment processingEnvironment) {
+        return new TypeUtils(new FrameworkToolWrapper(processingEnvironment));
     }
 
 

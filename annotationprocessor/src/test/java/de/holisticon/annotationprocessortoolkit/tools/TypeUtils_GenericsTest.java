@@ -14,6 +14,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -858,6 +859,162 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorTestBaseC
                         },
 
 
+                        {
+                                "TypeUtils.doArrays().isArrayOfType : test case 6 - comparison with GenericType - matching",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase6")
+                                                .getResult();
+
+                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+
+                                        // Comparator<String>
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
+                                                Comparator.class,
+                                                getTypeUtils().doGenerics().createGenericType(String.class)
+                                        );
+
+
+                                        MatcherAssert.assertThat("comparison with GenericType for exactly matching types should return true", getTypeUtils().doArrays().isArrayOfType(method.getParameters().get(0).asType(), genericType));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.doArrays().isArrayOfType : test case 6 - comparison with GenericType - non matching",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase6")
+                                                .getResult();
+
+                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+
+                                        // Comparator<String>
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
+                                                Comparator.class,
+                                                getTypeUtils().doGenerics().createGenericType(Object.class)
+                                        );
+
+
+                                        MatcherAssert.assertThat("comparison with GenericType for assignable types should return false", !getTypeUtils().doArrays().isArrayOfType(method.getParameters().get(0).asType(), genericType));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.isArrayAssignableTo(). : test case 6 - comparison with GenericType - matching - with wildcard",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase6")
+                                                .getResult();
+
+                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+
+                                        // Comparator<String>
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
+                                                Comparator.class,
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(Map.class)
+                                                )
+                                        );
+
+
+                                        MatcherAssert.assertThat("comparison with GenericType - matching - with wildcard should return true", getTypeUtils().doArrays().isArrayAssignableTo(method.getParameters().get(1).asType(), genericType));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.doArrays().isArrayAssignableTo : test case 6 - comparison with GenericType - with wildcard - non matching",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase6")
+                                                .getResult();
+
+                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+
+                                        // Comparator<String>
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
+                                                Comparator.class,
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(String.class)
+                                                )
+                                        );
+
+
+                                        MatcherAssert.assertThat("comparison with GenericType - with wildcard - non matching return false", !getTypeUtils().doArrays().isArrayAssignableTo(method.getParameters().get(1).asType(), genericType));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
+                        {
+                                "TypeUtils.isArrayAssignableTo(). : test case 6 - comparison with GenericType - assignable type - with wildcards on both sides",
+                                new AbstractTestAnnotationProcessorClass() {
+                                    @Override
+                                    protected void testCase(TypeElement element) {
+
+                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("isAssignable_testCase6")
+                                                .getResult();
+
+                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+
+                                        // Comparator<String>
+                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
+                                                Comparator.class,
+                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
+                                                        getTypeUtils().doGenerics().createGenericType(Map.class)
+                                                )
+                                        );
+
+
+                                        MatcherAssert.assertThat("comparison with GenericType - assignable type - with wildcards on both sides should return true", getTypeUtils().doArrays().isArrayAssignableTo(method.getParameters().get(2).asType(), genericType));
+
+
+                                    }
+                                },
+                                true
+
+
+                        },
 
 
                 }

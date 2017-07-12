@@ -1,5 +1,6 @@
 import de.holisticon.annotationprocessortoolkit.TestAnnotation;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,10 @@ public class GenericsTestClass {
     }
 
     public void isAssignable_testCase5(Map<String, ?> parameter) {
+
+    }
+
+    public void isAssignable_testCase6(Comparator<String>[] comparators1, Comparator<HashMap>[] comparators2, Comparator<? extends HashMap>[] comparators3) {
 
     }
 
