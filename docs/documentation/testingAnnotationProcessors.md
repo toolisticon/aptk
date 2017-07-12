@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: imprintBottom
 used_in_navigation: true
 menu_name: Testing Annotation Processors
 order: 3
@@ -55,33 +55,33 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
     public static List<Object[]> data() {
 
         return Arrays.asList(new Object[][]{
-                {
-                        "Test valid usage",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
-                                .compilationShouldSucceed()
-                                .build()
-                },
-                {
-                        "Test invalid usage : non void return type",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
-                                .compilationShouldFail()
-                                .addMessageValidator()
-                                    .setErrorChecks("Method must have void return type")
-                                .finishMessageValidator()
-                                .build()
-                },
-                {
-                        "Test invalid usage : non String parameter",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
-                                .compilationShouldFail()
-                                .addMessageValidator()
-                                    .setErrorChecks("Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]")
-                                .finishMessageValidator()
-                                .build()
-                },
+            {
+                "Test valid usage",
+                AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                    .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
+                    .compilationShouldSucceed()
+                    .build()
+            },
+            {
+                "Test invalid usage : non void return type",
+                AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                    .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
+                    .compilationShouldFail()
+                    .addMessageValidator()
+                        .setErrorChecks("Method must have void return type")
+                    .finishMessageValidator()
+                    .build()
+            },
+            {
+                "Test invalid usage : non String parameter",
+                AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                    .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
+                    .compilationShouldFail()
+                    .addMessageValidator()
+                        .setErrorChecks("Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]")
+                    .finishMessageValidator()
+                    .build()
+            },
 
 
         });
@@ -128,48 +128,59 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest extends AbstractAnnotationProcessorUnitTest {
 
-    public TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest(String description, AnnotationProcessorUnitTestConfiguration configuration) {
+    public TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest(
+        String description,
+        AnnotationProcessorUnitTestConfiguration configuration) {
+
         super(configuration);
+
     }
 
     @Parameterized.Parameters(name = "{index}: \"{0}\"")
     public static List<Object[]> data() {
 
         return Arrays.asList(new Object[][]{
-                {
-                        "Test valid usage with assignable parameters",
-                        AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+            {
+                "Test valid usage with assignable parameters",
+                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                    .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                        @Override
+                        protected void testCase(TypeElement element) {
 
-                                        TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
-                                        unit.init(this.processingEnv);
+                            TypeThatIsAssignableToInterfaceAnnotationProcessor unit =
+                                new TypeThatIsAssignableToInterfaceAnnotationProcessor();
+                            unit.init(this.processingEnv);
 
-                                        MatcherAssert.assertThat("Should be assignable to Object", unit.isAssignableTo(element, Object.class.getCanonicalName()));
+                            MatcherAssert.assertThat(
+                                "Should be assignable to Object",
+                                unit.isAssignableTo(element, Object.class.getCanonicalName())
+                            );
 
-                                    }
-                                })
-                                .compilationShouldSucceed()
-                                .build()
-                },
-                {
-                        "Test valid usage with non assignable parameters",
-                        AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                        }
+                    })
+                    .compilationShouldSucceed()
+                    .build()
+            },
+            {
+                "Test valid usage with non assignable parameters",
+                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                    .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                        @Override
+                        protected void testCase(TypeElement element) {
 
-                                        TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
-                                        unit.init(this.processingEnv);
+                            TypeThatIsAssignableToInterfaceAnnotationProcessor unit =
+                                new TypeThatIsAssignableToInterfaceAnnotationProcessor();
+                            unit.init(this.processingEnv);
 
-                                        MatcherAssert.assertThat("Should not be assignable to String", !unit.isAssignableTo(element, String.class.getCanonicalName()));
+                            MatcherAssert.assertThat(
+                                "Should not be assignable to String",
+                                !unit.isAssignableTo(element, String.class.getCanonicalName()));
 
-                                    }
-                                })
-                                .compilationShouldSucceed()
-                                .build()
-                },
+                        }
+                    })
+                    .compilationShouldSucceed()
+                    .build()
+            },
 
 
         });

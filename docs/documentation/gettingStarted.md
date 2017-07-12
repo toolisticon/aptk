@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: imprintBottom
 used_in_navigation: true
 menu_name: Getting Started
 order: 2
@@ -46,6 +46,29 @@ To maintain compatibility with Java 6 JDKs version 0.9 is used. All following ve
 
 ## Additional configurations
 
+### Disable annotation processing for your annotation processor modules
+
+You need to disable annotation processing during compilation of your annotation processor modules.
+Otherwise the java compiler will detect the _javax.annotation.processing.Processor_ file and will try to access you annotation processor which is not yet compiled.
+This will cause the build to fail.
+
+Annotation processing can be disabled by setting the _proc_ configuration to _none_ in the Maven compiler plugin configuration in your annotation processor modules:
+
+```xml
+<plugin>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.1</version>
+    <configuration>
+        <verbose>true</verbose>
+        <source>1.6</source>
+        <target>1.6</target>
+        <proc>none</proc>
+    </configuration>
+</plugin>
+```
+
+### Repackage dependencies of your annotation processor
+
 We recommend you to repackage all 3rd party dependencies of your annotation processor in your build artifact.
 
 This should be done for several reasons:
@@ -88,12 +111,21 @@ In Maven, this can be done by using the shade plugin:
  </build>
 ```
 
+**One remark**: By repackaging 3rd party dependencies into your module those dependencies will become part of your distribution.
+Therefore you need to check the licenses of those dependencies regarding legal issues.
+
+You need to check if:
+- repackaging / altering of the 3rd party code is allowed
+- is 3rd party dependencies license compatible with yours
+- which license terms must be fulfilled (like that you have to provide a copy of their license, describe what has changed by you, ...)
+
+
 # Building your annotation processor
 
 Annotation processor are internally build on top of a SPI.
 So you just need to do two things to create an annotation processor.
 
-## Create the annotation processor Class‚
+## Create the annotation processor Class
 
 Usually your annotation processor class would have to extend the _javax.annotation.processing.AbstractProcessor_ class provided by the JDK.
 To enable the annotation processor toolkit support use the _de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_ instead.
