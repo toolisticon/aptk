@@ -76,6 +76,62 @@ public class TypeUtils_CheckTypeKindTest {
     }
 
     // ---------------------------------------------
+    // -- isDeclared tests
+    // ---------------------------------------------
+
+
+    @Test
+    public void testCheckTypeKind_isDeclared() {
+
+
+        MatcherAssert.assertThat("Should detect void type kind", TypeUtils.CheckTypeKind.INSTANCE.isDeclared(getTypeMirrorMockOfKind(TypeKind.DECLARED)));
+
+    }
+
+    @Test
+    public void testCheckTypeKind_isDeclared_noVoidKind() {
+
+
+        MatcherAssert.assertThat("Should not detect void type kind", !TypeUtils.CheckTypeKind.INSTANCE.isDeclared(getTypeMirrorMockOfKind(TypeKind.EXECUTABLE)));
+
+    }
+
+    @Test
+    public void testCheckTypeKind_isDeclared_nullSafety() {
+
+        MatcherAssert.assertThat("Should return false for null valued parameter", !TypeUtils.CheckTypeKind.INSTANCE.isDeclared(null));
+
+    }
+
+    // ---------------------------------------------
+    // -- isExecutable tests
+    // ---------------------------------------------
+
+
+    @Test
+    public void testCheckTypeKind_isExecutable() {
+
+
+        MatcherAssert.assertThat("Should detect void type kind", TypeUtils.CheckTypeKind.INSTANCE.isExecutable(getTypeMirrorMockOfKind(TypeKind.EXECUTABLE)));
+
+    }
+
+    @Test
+    public void testCheckTypeKind_isExecutable_noVoidKind() {
+
+
+        MatcherAssert.assertThat("Should not detect void type kind", !TypeUtils.CheckTypeKind.INSTANCE.isExecutable(getTypeMirrorMockOfKind(TypeKind.DECLARED)));
+
+    }
+
+    @Test
+    public void testCheckTypeKind_isExecutable_nullSafety() {
+
+        MatcherAssert.assertThat("Should return false for null valued parameter", !TypeUtils.CheckTypeKind.INSTANCE.isExecutable(null));
+
+    }
+
+    // ---------------------------------------------
     // -- isPrimitive tests
     // ---------------------------------------------
 

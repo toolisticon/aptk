@@ -152,7 +152,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      *
      * @return the Elements utils
      */
-    public Elements getElementUtils() {
+    public Elements getElements() {
         return elementUtils;
     }
 

@@ -1,35 +1,20 @@
 ---
 layout: imprintBottom
 used_in_navigation: true
-menu_name: Basics
+menu_name: Type utilities
 order: 1
 ---
-# About the examples
+# Type utilities
 
-The examples describe the usage of the tools from inside your annotation processor that extends the *de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor* class.
+The examples on this page describe the usage of the TypeUtils from inside your annotation processor that extends the *de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor* class.
 
-Nevertheless all tools can be instantiated and used elsewhere:
+Nevertheless you are able to get a TypeUtils instance via a static getter:
 
 ```java
-
-// Get TypeUtils which provides utilities for working with TypeElements and Type Mirrors
-// (TypeElement and TypeMirror retrieval and comparision)
 TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
-
-// ElementUtils can be used in a static way. f.e.
-ElementUtils.CheckModifierOfElement.hasFinalModifier(element);
-
-// Get MessagerUtils which provides utilities for triggering compiler messages
-MessagerUtils messagerUtils = MessagerUtils.getMessagerUtils(processingEnvironment);
-
-
 ```
 
-
-
-
-
-# Retrieve TypeElement and TypeMirror
+## Retrieve TypeElement and TypeMirror
 
 It can be quite helpful to be able to retrieve TypeElement or TypeMirror by Class or by full qualified class name.
 It allows you to compare types and to check if types are assignable to each other.
@@ -56,14 +41,8 @@ It allows you to compare types and to check if types are assignable to each othe
     TypeElement typeElement4 = getTypeUtils().doTypeRetrieval().getTypeElement(Long.class);
 ```
 
-## Remarks
-There are some pitfalls when you are working with TypeMirrors and TypeElement.
 
-- You can use Class to do the lookup. This just is working if corresponding type is already compiled (f.e. by types declared in dependencies). For all other types you should use the full qualified classname instead.
-- For some types no TypeElement exists. In general it affects all types which don't extend java.lang.Object - this corresponds to all primitive and array types.
-- Retrieval of a TypeMirror that has a specific generic type signature is very difficult. If you want to check equality or assignability of generic types use the generic tools provided by this project.
-
-# Generic types
+## Generic types
 
 As stated in the previous section it is not easy to create or a TypeMirror with a specific generic signature.
 This project introduces the *GenericType* class which can be used for comparison.
@@ -97,7 +76,7 @@ GenericType genericType2 = getTypeUtils().doGenerics().createGenericType(
 );
 ```
 
-# Comparison of TypeElements and TypeMirrors
+## Comparison of TypeElements and TypeMirrors
 
 TypeMirrors and TypeElements can be checked for equaltity or assignability:
 
@@ -141,7 +120,7 @@ getTypeUtils().doTypeComparison().isAssignableTo(
 );
 ```
 
-# Check kind of TypeMirror
+## Check kind of TypeMirror
 
 The project offers a convenient way to check the kind of a TypeMirror:
 
@@ -152,7 +131,7 @@ boolean result = getTypeUtils().doCheckTypeKind().isVoid(typeMirror);
 boolean result = getTypeUtils().doCheckTypeKind().isOfTypeKind(typeMirror, typeKind);
 ```
 
-# Get and check component TypeMirror of an array
+## Get and check component TypeMirror of an array
 
 The project offers a convenient way to get and check the component type of an array:
 

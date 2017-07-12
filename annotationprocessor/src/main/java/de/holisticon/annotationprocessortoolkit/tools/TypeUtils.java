@@ -83,6 +83,26 @@ public final class TypeUtils {
             return typeMirror != null && typeMirror.getKind().isPrimitive();
         }
 
+        /**
+         * Checks whether passed TypeMirror represents a declared class, interface or enum.
+         *
+         * @param typeMirror the {@link TypeMirror} to check
+         * @return true if passed typeMirror has primitive TypeKind, otherwise false
+         */
+        public boolean isDeclared(TypeMirror typeMirror) {
+            return isOfTypeKind(typeMirror, TypeKind.DECLARED);
+        }
+
+
+        /**
+         * Checks whether passed TypeMirror represents an executable method, constructor or a (static) init block.
+         *
+         * @param typeMirror the {@link TypeMirror} to check
+         * @return true if passed typeMirror has primitive TypeKind, otherwise false
+         */
+        public boolean isExecutable(TypeMirror typeMirror) {
+            return isOfTypeKind(typeMirror, TypeKind.EXECUTABLE);
+        }
 
         /**
          * Checks whether passed {@link TypeMirror} is of passed {@link TypeKind}.
