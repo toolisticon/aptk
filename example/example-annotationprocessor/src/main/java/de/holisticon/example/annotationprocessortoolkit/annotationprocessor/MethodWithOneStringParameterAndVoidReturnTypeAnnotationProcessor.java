@@ -36,24 +36,6 @@ public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor ex
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-        MessagerUtils messager = MessagerUtils.getMessagerUtils(processingEnv);
-
-        getMessager().error(element, "Message with placeholders ${1} before ${2}", "p1", "p2");
-
-        ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree
-        ElementUtils.AccessEnclosingElements.getFlattenedEnclosingElementsTree
-ExecutableElement element = null;
-        boolean result = new FluentExecutableElementValidator(getFrameworkToolWrapper(),element)
-                .isMethod()
-                .warning().setCustomMessage("MESSAGE WITH ${0}HOLDER", "PLACE").hasName("methodName")
-                .hasNonVoidReturnType()
-                .hasModifiers(Modifier.STATIC,Modifier.PUBLIC)
-                .hasParameters(String.class, Long.class)
-                .getValidationResult();
-
-        new FluentModifierElementValidator().
-
-
         for (Element element : roundEnv.getElementsAnnotatedWith(
                 MethodWithOneStringParameterAndVoidReturnTypeAnnotation.class)) {
 
