@@ -3,6 +3,7 @@ package de.holisticon.annotationprocessortoolkit.tools;
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 
 import javax.annotation.processing.Messager;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
@@ -98,6 +99,10 @@ public class MessagerUtils {
 
     public static MessagerUtils getMessagerUtils(FrameworkToolWrapper frameworkToolWrapper) {
         return new MessagerUtils(frameworkToolWrapper.getMessager());
+    }
+
+    public static MessagerUtils getMessagerUtils(ProcessingEnvironment processingEnvironment) {
+        return getMessagerUtils(new FrameworkToolWrapper(processingEnvironment));
     }
 
     /**
