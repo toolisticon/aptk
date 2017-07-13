@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class AbstractAnnotationProcessorUnitTestTest extends AbstractAnnotationP
                                         new AbstractUnitTestAnnotationProcessorClass() {
                                             @Override
                                             protected void testCase(TypeElement element) {
-                                                getMessager().warning(element, "MURKS");
+                                                processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "MURKS", element);
                                             }
                                         }
                                 )
@@ -72,7 +73,7 @@ public class AbstractAnnotationProcessorUnitTestTest extends AbstractAnnotationP
                                         new AbstractUnitTestAnnotationProcessorClass() {
                                             @Override
                                             protected void testCase(TypeElement element) {
-                                                getMessager().warning(element, "MURKS");
+                                                processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "MURKS", element);
                                             }
                                         }
                                 )
@@ -91,7 +92,7 @@ public class AbstractAnnotationProcessorUnitTestTest extends AbstractAnnotationP
                                         new AbstractUnitTestAnnotationProcessorClass() {
                                             @Override
                                             protected void testCase(TypeElement element) {
-                                                getMessager().error(element, "MURKS");
+                                                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "MURKS", element);
                                             }
                                         }
                                 )
@@ -107,7 +108,7 @@ public class AbstractAnnotationProcessorUnitTestTest extends AbstractAnnotationP
                                         new AbstractUnitTestAnnotationProcessorClass() {
                                             @Override
                                             protected void testCase(TypeElement element) {
-                                                getMessager().error(element, "MURKS");
+                                                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "MURKS", element);
                                             }
                                         }
                                 )
@@ -126,7 +127,7 @@ public class AbstractAnnotationProcessorUnitTestTest extends AbstractAnnotationP
                                         new AbstractUnitTestAnnotationProcessorClass() {
                                             @Override
                                             protected void testCase(TypeElement element) {
-                                                getMessager().error(element, "MURKS");
+                                                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "MURKS", element);
                                             }
                                         }
                                 )

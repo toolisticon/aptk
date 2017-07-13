@@ -1,8 +1,7 @@
 package de.holisticon.annotationprocessortoolkit.testhelper.testcases;
 
 
-import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
-
+import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.TypeElement;
@@ -13,7 +12,7 @@ import java.util.Set;
  */
 
 @SupportedAnnotationTypes("de.holisticon.annotationprocessortoolkit.testhelper.TestAnnotation")
-public class TestAnnotationProcessorWithMissingNoArgConstructor extends AbstractAnnotationProcessor {
+public class TestAnnotationProcessorWithMissingNoArgConstructor extends AbstractProcessor {
 
     public TestAnnotationProcessorWithMissingNoArgConstructor(String x) {
 

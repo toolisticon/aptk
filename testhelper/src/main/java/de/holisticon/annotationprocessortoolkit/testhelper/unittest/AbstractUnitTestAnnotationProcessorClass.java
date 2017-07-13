@@ -1,19 +1,23 @@
 package de.holisticon.annotationprocessortoolkit.testhelper.unittest;
 
-import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
-
+import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Base annotation processor for unit tests.
  */
-public abstract class AbstractUnitTestAnnotationProcessorClass extends AbstractAnnotationProcessor {
+public abstract class AbstractUnitTestAnnotationProcessorClass extends AbstractProcessor {
 
-    private static final Set<String> SUPPORTED_ANNOTATION_TYPES = AbstractAnnotationProcessor.createSupportedAnnotationSet(TestAnnotation.class);
+    private static final Set<String> SUPPORTED_ANNOTATION_TYPES = new HashSet<String>();
+
+    static {
+        SUPPORTED_ANNOTATION_TYPES.add(TestAnnotation.class.getCanonicalName());
+    }
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
@@ -36,7 +40,7 @@ public abstract class AbstractUnitTestAnnotationProcessorClass extends AbstractA
 
     protected void triggerError(String message) {
 
-        this.getMessager().getMessager().printMessage(Diagnostic.Kind.ERROR, message);
+        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, message);
 
     }
 }

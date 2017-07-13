@@ -1,6 +1,5 @@
 package de.holisticon.annotationprocessortoolkit.testhelper;
 
-import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
 import de.holisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotation;
 import de.holisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotationProcessor;
 import de.holisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotationProcessorWithMissingNoArgConstructor;
@@ -9,6 +8,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
@@ -38,7 +38,7 @@ public class AnnotationProcessorWrapperTest {
     @Test(expected = IllegalArgumentException.class)
     public void createWrapperWithNullValuedInstance() {
 
-        Processor unit = AnnotationProcessorWrapper.wrapProcessor((AbstractAnnotationProcessor) null);
+        Processor unit = AnnotationProcessorWrapper.wrapProcessor((AbstractProcessor) null);
 
 
     }
@@ -71,7 +71,7 @@ public class AnnotationProcessorWrapperTest {
     @Test
     public void testWrappedSupportedOptionsCall() {
 
-        AbstractAnnotationProcessor processorSpy = Mockito.spy(AbstractAnnotationProcessor.class);
+        AbstractProcessor processorSpy = Mockito.spy(AbstractProcessor.class);
 
         Processor unit = AnnotationProcessorWrapper.wrapProcessor(processorSpy);
         unit.getSupportedOptions();
@@ -84,7 +84,7 @@ public class AnnotationProcessorWrapperTest {
     @Test
     public void testWrappedSupportedAnnotationTypesCall() {
 
-        AbstractAnnotationProcessor processorSpy = Mockito.spy(AbstractAnnotationProcessor.class);
+        AbstractProcessor processorSpy = Mockito.spy(AbstractProcessor.class);
 
         Processor unit = AnnotationProcessorWrapper.wrapProcessor(processorSpy);
         unit.getSupportedAnnotationTypes();
@@ -97,7 +97,7 @@ public class AnnotationProcessorWrapperTest {
     @Test
     public void testWrappedSupportedSourceVersionCall() {
 
-        AbstractAnnotationProcessor processorSpy = Mockito.spy(AbstractAnnotationProcessor.class);
+        AbstractProcessor processorSpy = Mockito.spy(AbstractProcessor.class);
 
         Processor unit = AnnotationProcessorWrapper.wrapProcessor(processorSpy);
         unit.getSupportedSourceVersion();
@@ -111,7 +111,7 @@ public class AnnotationProcessorWrapperTest {
     @Test
     public void testWrappedInitCall() {
 
-        AbstractAnnotationProcessor processorSpy = Mockito.spy(AbstractAnnotationProcessor.class);
+        AbstractProcessor processorSpy = Mockito.spy(AbstractProcessor.class);
 
         Messager messager = Mockito.spy(Messager.class);
         ProcessingEnvironment processingEnvironment = Mockito.spy(ProcessingEnvironment.class);
@@ -129,7 +129,7 @@ public class AnnotationProcessorWrapperTest {
     @Test
     public void testWrappedProcessCall() {
 
-        AbstractAnnotationProcessor processorSpy = Mockito.spy(AbstractAnnotationProcessor.class);
+        AbstractProcessor processorSpy = Mockito.spy(AbstractProcessor.class);
 
         Messager messager = Mockito.spy(Messager.class);
         ProcessingEnvironment processingEnvironment = Mockito.spy(ProcessingEnvironment.class);
@@ -154,7 +154,7 @@ public class AnnotationProcessorWrapperTest {
     @Test
     public void testWrappedCompletionsCall() {
 
-        AbstractAnnotationProcessor processorSpy = Mockito.spy(AbstractAnnotationProcessor.class);
+        AbstractProcessor processorSpy = Mockito.spy(AbstractProcessor.class);
 
         Element element = Mockito.mock(Element.class);
         AnnotationMirror annotationMirror = Mockito.mock(AnnotationMirror.class);

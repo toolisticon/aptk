@@ -11,6 +11,7 @@ import org.junit.runners.Parameterized;
 
 import javax.annotation.processing.Processor;
 import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,8 +68,9 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                         new AbstractUnitTestAnnotationProcessorClass() {
                             @Override
                             protected void testCase(TypeElement element) {
-                                getMessager().warning(element, "MURKS");
+                                processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "MURKS", element);
                             }
+
                         },
                         null
                 },
@@ -85,7 +87,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                         new AbstractUnitTestAnnotationProcessorClass() {
                             @Override
                             protected void testCase(TypeElement element) {
-                                getMessager().warning(element, "MURKS");
+                                processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "MURKS", element);
                             }
                         },
                         null
@@ -99,7 +101,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                         new AbstractUnitTestAnnotationProcessorClass() {
                             @Override
                             protected void testCase(TypeElement element) {
-                                getMessager().error(element, "MURKS");
+                                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "MURKS", element);
                             }
                         },
                         null
@@ -116,7 +118,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                         new AbstractUnitTestAnnotationProcessorClass() {
                             @Override
                             protected void testCase(TypeElement element) {
-                                getMessager().error(element, "MURKS");
+                                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "MURKS", element);
                             }
                         },
                         null
@@ -133,7 +135,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                         new AbstractUnitTestAnnotationProcessorClass() {
                             @Override
                             protected void testCase(TypeElement element) {
-                                getMessager().error(element, "MURKS");
+                                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "MURKS", element);
                             }
                         },
                         InvalidTestConfigurationException.class
