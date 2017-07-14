@@ -1,0 +1,13 @@
+de.holisticon.annotationprocessortoolkit
+de.holisticon.annotationprocessortoolkit.filter
+de.holisticon.annotationprocessortoolkit.internal
+de.holisticon.annotationprocessortoolkit.testhelper
+de.holisticon.annotationprocessortoolkit.testhelper.integrationtest
+de.holisticon.annotationprocessortoolkit.testhelper.unittest
+de.holisticon.annotationprocessortoolkit.testhelper.validator
+de.holisticon.annotationprocessortoolkit.tools
+de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter
+de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher
+de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator
+de.holisticon.annotationprocessortoolkit.tools.generics
+de.holisticon.annotationprocessortoolkit.validators
