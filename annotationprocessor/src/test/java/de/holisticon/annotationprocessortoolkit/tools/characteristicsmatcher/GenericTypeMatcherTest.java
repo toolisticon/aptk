@@ -1,11 +1,17 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
-import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessorTestBaseClass;
 import de.holisticon.annotationprocessortoolkit.filter.FluentElementFilter;
+import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
+import de.holisticon.annotationprocessortoolkit.tools.TypeUtils;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 import de.holisticon.annotationprocessortoolkit.tools.generics.GenericType;
 import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -22,10 +28,10 @@ import java.util.Map;
  * Unit test for {@link GenericTypeMatcher}.
  */
 @RunWith(Parameterized.class)
-public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseClass {
+public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest {
 
-    public GenericTypeMatcherTest(String message, AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
-        super(ElementUtils.class.getSimpleName() + ": " + message, testcase, compilationShouldSucceed);
+    public GenericTypeMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+        super(configuration);
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
@@ -37,178 +43,207 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
 
                         {
                                 "getStringRepresentationOfPassedCharacteristic : create String representation correctl",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(
+                                                new AbstractUnitTestAnnotationProcessorClass() {
+                                                    @Override
+                                                    protected void testCase(TypeElement element) {
 
-                                        GenericType genericTypeToConvert = getTypeUtils().doGenerics().createGenericType(Map.class,
-                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
-                                                        getTypeUtils().doGenerics().createGenericType(StringBuilder.class)
-                                                ),
-                                                getTypeUtils().doGenerics().createGenericType(
-                                                        Comparator.class,
-                                                        getTypeUtils().doGenerics().createWildcardWithSuperBound(
-                                                                getTypeUtils().doGenerics().createGenericType(
-                                                                        List.class,
-                                                                        getTypeUtils().doGenerics().createPureWildcard()
+                                                        TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
+
+                                                        GenericType genericTypeToConvert = typeUtils.doGenerics().createGenericType(Map.class,
+                                                                typeUtils.doGenerics().createWildcardWithExtendsBound(
+                                                                        typeUtils.doGenerics().createGenericType(StringBuilder.class)
+                                                                ),
+                                                                typeUtils.doGenerics().createGenericType(
+                                                                        Comparator.class,
+                                                                        typeUtils.doGenerics().createWildcardWithSuperBound(
+                                                                                typeUtils.doGenerics().createGenericType(
+                                                                                        List.class,
+                                                                                        typeUtils.doGenerics().createPureWildcard()
+                                                                                )
+                                                                        )
+
                                                                 )
-                                                        )
-
-                                                )
-                                        );
+                                                        );
 
 
-                                        MatcherAssert.assertThat(Matchers.getGenericTypeMatcher(getFrameworkToolWrapper()).getMatcher().getStringRepresentationOfPassedCharacteristic(genericTypeToConvert), org.hamcrest.Matchers.is("java.util.Map<? extends java.lang.StringBuilder, java.util.Comparator<? super java.util.List<?>>>"));
+                                                        MatcherAssert.assertThat(Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().getStringRepresentationOfPassedCharacteristic(genericTypeToConvert), org.hamcrest.Matchers.is("java.util.Map<? extends java.lang.StringBuilder, java.util.Comparator<? super java.util.List<?>>>"));
 
 
-                                    }
-                                },
-                                true
+                                                    }
+
+                                                }
+                                        )
+                                        .build()
 
 
                         },
 
                         {
                                 "checkForMatchingCharacteristic : Should be able to compare generic type",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
+                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
 
-                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
 
-
-                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(Map.class,
-                                                getTypeUtils().doGenerics().createGenericType(String.class),
-                                                getTypeUtils().doGenerics().createGenericType(
-                                                        Comparator.class,
-                                                        getTypeUtils().doGenerics().createGenericType(Long.class)
-                                                )
-                                        );
-
-                                        MatcherAssert.assertThat("Should compare successful", Matchers.getGenericTypeMatcher(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+                                                              ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
 
-                                    }
-                                },
-                                true
+                                                              GenericType genericType = typeUtils.doGenerics().createGenericType(Map.class,
+                                                                      typeUtils.doGenerics().createGenericType(String.class),
+                                                                      typeUtils.doGenerics().createGenericType(
+                                                                              Comparator.class,
+                                                                              typeUtils.doGenerics().createGenericType(Long.class)
+                                                                      )
+                                                              );
+
+                                                              MatcherAssert.assertThat("Should compare successful", Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "checkForMatchingCharacteristic : Should not be able to compare generic type",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
-
-                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
-
-                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(Map.class,
-                                                getTypeUtils().doGenerics().createGenericType(String.class),
-                                                getTypeUtils().doGenerics().createGenericType(
-                                                        Comparator.class,
-                                                        getTypeUtils().doGenerics().createGenericType(Double.class)
-                                                )
+                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
 
-                                        );
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
 
-                                        MatcherAssert.assertThat("Should not compare successful", !Matchers.getGenericTypeMatcher(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+                                                              ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
 
-                                    }
-                                },
-                                true
+                                                              GenericType genericType = typeUtils.doGenerics().createGenericType(Map.class,
+                                                                      typeUtils.doGenerics().createGenericType(String.class),
+                                                                      typeUtils.doGenerics().createGenericType(
+                                                                              Comparator.class,
+                                                                              typeUtils.doGenerics().createGenericType(Double.class)
+                                                                      )
+
+                                                              );
+
+                                                              MatcherAssert.assertThat("Should not compare successful", !Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
 
                         {
                                 "checkForMatchingCharacteristic : Should be able to compare generic type with wildcards",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
-
-                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
 
 
-                                        //  Map<? extends StringBuilder, Comparator<? super List<?>>>
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
 
-                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(Map.class,
-                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
-                                                        getTypeUtils().doGenerics().createGenericType(StringBuilder.class)
-                                                ),
-                                                getTypeUtils().doGenerics().createGenericType(
-                                                        Comparator.class,
-                                                        getTypeUtils().doGenerics().createWildcardWithSuperBound(
-                                                                getTypeUtils().doGenerics().createGenericType(
-                                                                        List.class,
-                                                                        getTypeUtils().doGenerics().createPureWildcard()
-                                                                )
-                                                        )
+                                                              ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
-                                                )
-                                        );
 
-                                        MatcherAssert.assertThat("Should compare successful", Matchers.getGenericTypeMatcher(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+                                                              //  Map<? extends StringBuilder, Comparator<? super List<?>>>
 
-                                    }
-                                },
-                                true
+                                                              GenericType genericType = typeUtils.doGenerics().createGenericType(Map.class,
+                                                                      typeUtils.doGenerics().createWildcardWithExtendsBound(
+                                                                              typeUtils.doGenerics().createGenericType(StringBuilder.class)
+                                                                      ),
+                                                                      typeUtils.doGenerics().createGenericType(
+                                                                              Comparator.class,
+                                                                              typeUtils.doGenerics().createWildcardWithSuperBound(
+                                                                                      typeUtils.doGenerics().createGenericType(
+                                                                                              List.class,
+                                                                                              typeUtils.doGenerics().createPureWildcard()
+                                                                                      )
+                                                                              )
+
+                                                                      )
+                                                              );
+
+                                                              MatcherAssert.assertThat("Should compare successful", Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
 
                         {
                                 "checkForMatchingCharacteristic : Should not be able to compare generic type with wildcards",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
-                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
+                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
 
-                                        ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
 
-
-                                        //  Map<? extends StringBuilder, Comparator<? super List<?>>>
-
-
-                                        GenericType genericType = getTypeUtils().doGenerics().createGenericType(
-                                                Map.class,
-                                                getTypeUtils().doGenerics().createWildcardWithExtendsBound(
-                                                        getTypeUtils().doGenerics().createGenericType(StringBuilder.class)
-                                                ),
-                                                getTypeUtils().doGenerics().createGenericType(
-                                                        Comparator.class,
-                                                        getTypeUtils().doGenerics().createWildcardWithSuperBound(
-                                                                getTypeUtils().doGenerics().createGenericType(
-                                                                        List.class,
-                                                                        getTypeUtils().doGenerics().createWildcardWithExtendsBound(getTypeUtils().doGenerics().createGenericType(String.class))
-                                                                )
-                                                        )
-
-                                                )
-                                        );
-
-                                        MatcherAssert.assertThat("Should not compare successful", !Matchers.getGenericTypeMatcher(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+                                                              ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
 
-                                    }
-                                },
-                                true
+                                                              //  Map<? extends StringBuilder, Comparator<? super List<?>>>
+
+
+                                                              GenericType genericType = typeUtils.doGenerics().createGenericType(
+                                                                      Map.class,
+                                                                      typeUtils.doGenerics().createWildcardWithExtendsBound(
+                                                                              typeUtils.doGenerics().createGenericType(StringBuilder.class)
+                                                                      ),
+                                                                      typeUtils.doGenerics().createGenericType(
+                                                                              Comparator.class,
+                                                                              typeUtils.doGenerics().createWildcardWithSuperBound(
+                                                                                      typeUtils.doGenerics().createGenericType(
+                                                                                              List.class,
+                                                                                              typeUtils.doGenerics().createWildcardWithExtendsBound(typeUtils.doGenerics().createGenericType(String.class))
+                                                                                      )
+                                                                              )
+
+                                                                      )
+                                                              );
+
+                                                              MatcherAssert.assertThat("Should not compare successful", !Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -219,6 +254,11 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorTestBaseC
         );
 
 
+    }
+
+    @Test
+    public void test() {
+        super.test();
     }
 
 }

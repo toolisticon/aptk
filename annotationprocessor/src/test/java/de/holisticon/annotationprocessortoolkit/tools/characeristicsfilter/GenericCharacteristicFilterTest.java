@@ -1,17 +1,22 @@
 package de.holisticon.annotationprocessortoolkit.tools.characeristicsfilter;
 
-import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessorTestBaseClass;
+import com.google.testing.compile.JavaFileObjects;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator.ValidatorKind;
-import de.holisticon.annotationprocessortoolkit.validators.FluentExecutableElementValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.tools.JavaFileObject;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,11 +24,16 @@ import java.util.List;
  * unit test for {@link de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.GenericCharacteristicsFilter}.
  */
 @RunWith(Parameterized.class)
-public class GenericCharacteristicFilterTest extends AbstractAnnotationProcessorTestBaseClass {
+public class GenericCharacteristicFilterTest extends AbstractAnnotationProcessorUnitTest {
 
 
-    public GenericCharacteristicFilterTest(String message, AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
-        super(FluentExecutableElementValidator.class.getSimpleName() + ": " + message, testcase, compilationShouldSucceed);
+    public GenericCharacteristicFilterTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+        super(configuration);
+    }
+
+    @Override
+    protected JavaFileObject getSourceFileForCompilation() {
+        return JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
@@ -34,33 +44,37 @@ public class GenericCharacteristicFilterTest extends AbstractAnnotationProcessor
 
                         {
                                 "findByAll : happy path",
-                                new AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(
+                                                new AbstractUnitTestAnnotationProcessorClass() {
 
-                                        List<Element> filteredList = Filters.getModifierFilter().getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED);
-                                        MatcherAssert.assertThat("Must have exactly one element'", filteredList, Matchers.hasSize(1));
-                                        MatcherAssert.assertThat("Must find one element with name 'synchronizedMethod'", filteredList.get(0).getSimpleName().toString(), Matchers.is("synchronizedMethod"));
+                                                    @Override
+                                                    protected void testCase(TypeElement element) {
 
-                                        // shouldn't find anything
-                                        filteredList = Filters.getModifierFilter().getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
-                                        MatcherAssert.assertThat("Must have noelement'", filteredList, Matchers.<Element>empty());
+                                                        List<Element> filteredList = Filters.getModifierFilter().getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED);
+                                                        MatcherAssert.assertThat("Must have exactly one element'", filteredList, Matchers.hasSize(1));
+                                                        MatcherAssert.assertThat("Must find one element with name 'synchronizedMethod'", filteredList.get(0).getSimpleName().toString(), Matchers.is("synchronizedMethod"));
 
-
-                                    }
-                                },
-                                true
-
-
-                        },
+                                                        // shouldn't find anything
+                                                        filteredList = Filters.getModifierFilter().getFilter().filterByCharacteristics(ValidatorKind.ALL_OF, false, (List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
+                                                        MatcherAssert.assertThat("Must have noelement'", filteredList, Matchers.<Element>empty());
 
 
+                                                    }
+                                                }
+                                        )
+                                        .build()
+
+                        }
                 }
-
         );
 
 
     }
 
-
+    @Test
+    public void test() {
+        super.test();
+    }
 }

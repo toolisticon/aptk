@@ -1,6 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
-import de.holisticon.annotationprocessortoolkit.TestAnnotation;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.mockito.Mockito;

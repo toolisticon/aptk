@@ -17,12 +17,7 @@
 
     <dependencies>
 
-        <!--
-        <dependency>
-            <groupId>de.holisticon.annotationprocessortoolkit</groupId>
-            <artifactId>annotationprocessor</artifactId>
-        </dependency>
--->
+
         <dependency>
             <groupId>com.google.testing.compile</groupId>
             <artifactId>compile-testing</artifactId>

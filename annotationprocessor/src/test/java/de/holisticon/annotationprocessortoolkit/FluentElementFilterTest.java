@@ -1,8 +1,16 @@
 package de.holisticon.annotationprocessortoolkit;
 
+import com.google.testing.compile.JavaFileObjects;
+import de.holisticon.annotationprocessortoolkit.filter.FluentElementFilter;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -10,6 +18,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.tools.JavaFileObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,10 +27,10 @@ import java.util.List;
  * Unit test for {@link de.holisticon.annotationprocessortoolkit.filter.FluentElementFilter}.
  */
 @RunWith(Parameterized.class)
-public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBaseClass {
+public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest {
 
-    public FluentElementFilterTest(String message, AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
-        super(FluentElementFilterTest.class.getSimpleName() + ": " + message, testcase, compilationShouldSucceed);
+    public FluentElementFilterTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+        super(configuration);
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
@@ -33,102 +42,117 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
 
                         {
                                 "filterByKinds",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> results = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
-                                                .getResult();
+                                                              List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.hasSize(8));
+                                                              MatcherAssert.assertThat(results, Matchers.hasSize(8));
 
-                                        for (Element resultElement : results) {
-                                            MatcherAssert.assertThat(resultElement.getKind(), Matchers.is(ElementKind.FIELD));
-                                        }
+                                                              for (Element resultElement : results) {
+                                                                  MatcherAssert.assertThat(resultElement.getKind(), Matchers.is(ElementKind.FIELD));
+                                                              }
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByKinds and filterByModifiers",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
-                                                .applyFilter(Filters.getModifierFilter()).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
-                                                .getResult();
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
+                                                                      .applyFilter(Filters.getModifierFilter()).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(1));
-                                        MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(1));
+                                                              MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByKinds : null valued element",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> results = createFluentElementFilter(null)
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
-                                                .getResult();
+                                                              List<? extends Element> results = FluentElementFilter.createFluentFilter(null)
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(results, Matchers.hasSize(0));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByKinds : null valued filter argument should reurn unfiltered list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> results = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(null)
-                                                .getResult();
+                                                              List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(null)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size()));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByKinds : should return unfiltered list for non existing filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> results = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf()
-                                                .getResult();
+                                                              List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf()
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size()));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -136,24 +160,27 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
                         //--
                         {
                                 "inverseFilterByKinds : return list for matching filter arguments",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> results = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf(ElementKind.FIELD)
-                                                .getResult();
+                                                              List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf(ElementKind.FIELD)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size() - 8));
+                                                              MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size() - 8));
 
-                                        for (Element resultElement : results) {
-                                            MatcherAssert.assertThat(resultElement.getKind(), Matchers.not(ElementKind.FIELD));
-                                        }
+                                                              for (Element resultElement : results) {
+                                                                  MatcherAssert.assertThat(resultElement.getKind(), Matchers.not(ElementKind.FIELD));
+                                                              }
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -161,58 +188,67 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
 
                         {
                                 "inverseFilterByKinds : null valued element",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> results = createFluentElementFilter(null)
-                                                .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf(ElementKind.FIELD)
-                                                .getResult();
+                                                              List<? extends Element> results = FluentElementFilter.createFluentFilter(null)
+                                                                      .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf(ElementKind.FIELD)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(results, Matchers.hasSize(0));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByKinds : should return empty list for inverted filtering with null valued filter argument ",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> results = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf(null)
-                                                .getResult();
+                                                              List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf(null)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.<Element>empty());
+                                                              MatcherAssert.assertThat(results, Matchers.<Element>empty());
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByKinds : should return empty list noninverted, non existing filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> results = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf()
-                                                .getResult();
+                                                              List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf()
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(results, Matchers.<Element>empty());
+                                                              MatcherAssert.assertThat(results, Matchers.<Element>empty());
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -220,122 +256,140 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
 
                         {
                                 "filterByNames : returns list for one matching filter arguments",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // one search attribute
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("publicStaticField")
-                                                .getResult();
+                                                              // one search attribute
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("publicStaticField")
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(1));
-                                        MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(1));
+                                                              MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByNames : returns list for two matching filter arguments",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // two search attributes
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("publicStaticField", "synchronizedMethod")
-                                                .getResult();
+                                                              // two search attributes
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("publicStaticField", "synchronizedMethod")
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(2));
-                                        MatcherAssert.assertThat(convertToList(result.get(0).getSimpleName().toString(), result.get(1).getSimpleName().toString()), Matchers.containsInAnyOrder("publicStaticField", "synchronizedMethod"));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(2));
+                                                              MatcherAssert.assertThat(convertToList(result.get(0).getSimpleName().toString(), result.get(1).getSimpleName().toString()), Matchers.containsInAnyOrder("publicStaticField", "synchronizedMethod"));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByNames : returns empty list for non matching filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // returns empty result
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).filterByOneOf("XXX")
-                                                .getResult();
+                                                              // returns empty result
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("XXX")
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(0));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByNames : returns unfiltered list for non existing filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle no passed filter args correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).filterByOneOf()
-                                                .getResult();
+                                                              // handle no passed filter args correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf()
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByNames : should return unfiltered list for null valued filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle nulls correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).filterByOneOf(null)
-                                                .getResult();
+                                                              // handle nulls correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf(null)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
 
                         {
                                 "filterByNames : returns empty list for null value element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // null valued element list
-                                        List<? extends Element> result =
-                                                createFluentElementFilter(null)
-                                                        .applyFilter(Filters.getNameFilter()).filterByOneOf(null)
-                                                        .getResult();
+                                                              // null valued element list
+                                                              List<? extends Element> result =
+                                                                      FluentElementFilter.createFluentFilter(null)
+                                                                              .applyFilter(Filters.getNameFilter()).filterByOneOf(null)
+                                                                              .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(0));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -345,127 +399,145 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
 
                         {
                                 "inverseFilterByNames : returns list for one matching filter arguments",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // one search attribute
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).invert().filterByOneOf("publicStaticField")
-                                                .getResult();
+                                                              // one search attribute
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf("publicStaticField")
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
 
-                                        for (Element resultElement : result) {
-                                            MatcherAssert.assertThat(resultElement.getSimpleName().toString(), Matchers.not("publicStaticField"));
-                                        }
+                                                              for (Element resultElement : result) {
+                                                                  MatcherAssert.assertThat(resultElement.getSimpleName().toString(), Matchers.not("publicStaticField"));
+                                                              }
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByNames : returns list for two matching filter arguments",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // two search attributes
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).invert().filterByOneOf("publicStaticField", "synchronizedMethod")
-                                                .getResult();
+                                                              // two search attributes
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf("publicStaticField", "synchronizedMethod")
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 2));
-                                        for (Element resultElement : result) {
-                                            MatcherAssert.assertThat("Must nor be publicStaticField or synchronizedMethod", !resultElement.getSimpleName().equals("publicStaticField") && !resultElement.getSimpleName().equals("synchronizedMethod"));
-                                        }
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 2));
+                                                              for (Element resultElement : result) {
+                                                                  MatcherAssert.assertThat("Must nor be publicStaticField or synchronizedMethod", !resultElement.getSimpleName().equals("publicStaticField") && !resultElement.getSimpleName().equals("synchronizedMethod"));
+                                                              }
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByNames : returns empty list for non matching filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // returns empty result
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).invert().filterByOneOf("XXX")
-                                                .getResult();
+                                                              // returns empty result
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf("XXX")
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByNames : should return empty list for non existing filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle no passed filter args correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).invert().filterByOneOf()
-                                                .getResult();
+                                                              // handle no passed filter args correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf()
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.<Element>empty());
+                                                              MatcherAssert.assertThat(result, Matchers.<Element>empty());
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByNames : should return empty list for inverted filtering with null valued filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle nulls correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getNameFilter()).invert().filterByOneOf(null)
-                                                .getResult();
+                                                              // handle nulls correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf(null)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.<Element>empty());
+                                                              MatcherAssert.assertThat(result, Matchers.<Element>empty());
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
 
                         {
                                 "inverseFilterByNames : returns empty list for null value element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // null valued element list
-                                        List<? extends Element> result =
-                                                createFluentElementFilter(null)
-                                                        .applyFilter(Filters.getNameFilter()).invert().filterByOneOf(null)
-                                                        .getResult();
+                                                              // null valued element list
+                                                              List<? extends Element> result =
+                                                                      FluentElementFilter.createFluentFilter(null)
+                                                                              .applyFilter(Filters.getNameFilter()).invert().filterByOneOf(null)
+                                                                              .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(0));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -473,126 +545,144 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
 
                         {
                                 "filterByNameWithRegularExpressions : returns empty list for one matching filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // one search attribute
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getRegexNameFilter()).filterByOneOf("publicSt.*Field")
-                                                .getResult();
+                                                              // one search attribute
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf("publicSt.*Field")
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(1));
-                                        MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(1));
+                                                              MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByNameWithRegularExpressions : returns list for two matching filter arguments",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // two search attributes
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getRegexNameFilter()).filterByOneOf("publicSt.*Field", "synchr.*Method")
-                                                .getResult();
+                                                              // two search attributes
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf("publicSt.*Field", "synchr.*Method")
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(2));
-                                        MatcherAssert.assertThat(convertToList(result.get(0).getSimpleName().toString(), result.get(1).getSimpleName().toString()), Matchers.containsInAnyOrder("publicStaticField", "synchronizedMethod"));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(2));
+                                                              MatcherAssert.assertThat(convertToList(result.get(0).getSimpleName().toString(), result.get(1).getSimpleName().toString()), Matchers.containsInAnyOrder("publicStaticField", "synchronizedMethod"));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByNameWithRegularExpressions : returns empty list for non matching filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // returns empty result
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getRegexNameFilter()).filterByOneOf("XXX")
-                                                .getResult();
+                                                              // returns empty result
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf("XXX")
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(0));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByNameWithRegularExpressions : returns unfiltered list for non existing filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle no passed filter args correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getRegexNameFilter()).filterByOneOf()
-                                                .getResult();
+                                                              // handle no passed filter args correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf()
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByNameWithRegularExpressions : should return unfiltered list for null valued filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle nulls correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getRegexNameFilter()).filterByOneOf(null)
-                                                .getResult();
+                                                              // handle nulls correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf(null)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByNameWithRegularExpressions : returns empty list for null value element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // handle nulls correctly
-                                        List<? extends Element> result = createFluentElementFilter(null)
-                                                .applyFilter(Filters.getRegexNameFilter()).filterByOneOf(null)
-                                                .getResult();
+                                                              // handle nulls correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(null)
+                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf(null)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(0));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -600,126 +690,144 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
 
                         {
                                 "filterByAnnotation : returns empty list for one matching filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // one search attribute
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(FilterTestAnnotation1.class)
-                                                .getResult();
+                                                              // one search attribute
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(FilterTestAnnotation1.class)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(1));
-                                        MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("synchronizedMethod"));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(1));
+                                                              MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("synchronizedMethod"));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByAnnotation : returns list for two matching filter arguments",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // two search attributes
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
-                                                .getResult();
+                                                              // two search attributes
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(1));
-                                        MatcherAssert.assertThat(convertToList(result.get(0).getSimpleName().toString()), Matchers.containsInAnyOrder("synchronizedMethod"));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(1));
+                                                              MatcherAssert.assertThat(convertToList(result.get(0).getSimpleName().toString()), Matchers.containsInAnyOrder("synchronizedMethod"));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByAnnotation : returns empty list for non matching filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // returns empty result
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(TestAnnotation.class)
-                                                .getResult();
+                                                              // returns empty result
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(TestAnnotation.class)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(0));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByAnnotation : returns empty list for non existing filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle no passed filter args correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).filterByOneOf()
-                                                .getResult();
+                                                              // handle no passed filter args correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf()
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByAnnotation : should returns unfiltered list for null valued filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle nulls correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(null)
-                                                .getResult();
+                                                              // handle nulls correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(null)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "filterByAnnotation : returns empty list for null value element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // handle nulls correctly
-                                        List<? extends Element> result = createFluentElementFilter(null)
-                                                .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(FilterTestAnnotation1.class)
-                                                .getResult();
+                                                              // handle nulls correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(null)
+                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(FilterTestAnnotation1.class)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(0));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -729,401 +837,477 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
 
                         {
                                 "inverseFilterByAnnotation : returns list for one matching filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // one search attribute
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf(FilterTestAnnotation1.class)
-                                                .getResult();
+                                                              // one search attribute
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf(FilterTestAnnotation1.class)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
 
-                                        for (Element resultElement : result) {
-                                            MatcherAssert.assertThat(resultElement.getSimpleName().toString(), Matchers.not("synchronizedMethod"));
-                                        }
+                                                              for (Element resultElement : result) {
+                                                                  MatcherAssert.assertThat(resultElement.getSimpleName().toString(), Matchers.not("synchronizedMethod"));
+                                                              }
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByAnnotation : returns list for two matching filter arguments",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // two search attributes
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).invert().filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
-                                                .getResult();
+                                                              // two search attributes
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
 
-                                        for (Element resultElement : result) {
-                                            MatcherAssert.assertThat(resultElement.getSimpleName().toString(), Matchers.not("synchronizedMethod"));
-                                        }
+                                                              for (Element resultElement : result) {
+                                                                  MatcherAssert.assertThat(resultElement.getSimpleName().toString(), Matchers.not("synchronizedMethod"));
+                                                              }
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByAnnotation : returns full list for non matching filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // returns empty result
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).invert().filterByAllOf(FilterTestAnnotation1.class, TestAnnotation.class)
-                                                .getResult();
+                                                              // returns empty result
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByAllOf(FilterTestAnnotation1.class, TestAnnotation.class)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByAnnotation : returns empty list for non existing filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle no passed filter args correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf()
-                                                .getResult();
+                                                              // handle no passed filter args correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf()
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.<Element>empty());
+                                                              MatcherAssert.assertThat(result, Matchers.<Element>empty());
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByAnnotation : should return empty list for inverted filtering with null valued filter argument",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // handle nulls correctly
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf(null)
-                                                .getResult();
+                                                              // handle nulls correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf(null)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.<Element>empty());
+                                                              MatcherAssert.assertThat(result, Matchers.<Element>empty());
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "inverseFilterByAnnotation : returns empty list for null value element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // handle nulls correctly
-                                        List<? extends Element> result = createFluentElementFilter(null)
-                                                .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf(FilterTestAnnotation1.class)
-                                                .getResult();
+                                                              // handle nulls correctly
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(null)
+                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf(FilterTestAnnotation1.class)
+                                                                      .getResult();
 
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(0));
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(0));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
 
                         {
                                 "isEmpty : succeeding validation with empty element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects empty results correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(new ArrayList<Element>()).isEmpty(), Matchers.is(true));
+                                                              // detects empty results correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(new ArrayList<Element>()).isEmpty(), Matchers.is(true));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "isEmpty : failing validation with  multiple element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // detects non empty result correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(element.getEnclosedElements()).isEmpty(), Matchers.is(false));
+                                                              // detects non empty result correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(element.getEnclosedElements()).isEmpty(), Matchers.is(false));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "isEmpty : succeeding validation with null valued element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // detects non empty result correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(null).isEmpty(), Matchers.is(true));
+                                                              // detects non empty result correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(null).isEmpty(), Matchers.is(true));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSingleElemen : failing validation with empty element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects empty results correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(new ArrayList<Element>()).hasSingleElement(), Matchers.is(false));
+                                                              // detects empty results correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(new ArrayList<Element>()).hasSingleElement(), Matchers.is(false));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSingleElement : succeeding validation with one element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects single result elements correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(convertToList(element)).hasSingleElement(), Matchers.is(true));
+                                                              // detects single result elements correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(convertToList(element)).hasSingleElement(), Matchers.is(true));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSingleElement : failing validation with multiple element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // detects multiple elements correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(element.getEnclosedElements()).hasSingleElement(), Matchers.is(false));
+                                                              // detects multiple elements correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(element.getEnclosedElements()).hasSingleElement(), Matchers.is(false));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSingleElement : failing validation with null valued element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // detects multiple elements correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(null).hasSingleElement(), Matchers.is(false));
+                                                              // detects multiple elements correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(null).hasSingleElement(), Matchers.is(false));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasMultipleElements : succeeding validation with multiple elements",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects multiple elements correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(element.getEnclosedElements()).hasMultipleElements(), Matchers.is(true));
+                                                              // detects multiple elements correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(element.getEnclosedElements()).hasMultipleElements(), Matchers.is(true));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+
+                                        )
+                                        .build()
                         },
                         {
                                 "hasMultipleElements : failing validation with empty list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects empty results correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(new ArrayList<Element>()).hasMultipleElements(), Matchers.is(false));
+                                                              // detects empty results correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(new ArrayList<Element>()).hasMultipleElements(), Matchers.is(false));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasMultipleElements : failing validation with one element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects single result elements correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(convertToList(element)).hasMultipleElements(), Matchers.is(false));
+                                                              // detects single result elements correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(convertToList(element)).hasMultipleElements(), Matchers.is(false));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasMultipleElements : failing validation with null valued element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects single result elements correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(null).hasMultipleElements(), Matchers.is(false));
+                                                              // detects single result elements correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(null).hasMultipleElements(), Matchers.is(false));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSize : suucceeding validition with empty empty list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects empty results correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(new ArrayList<Element>()).hasSize(0), Matchers.is(true));
+                                                              // detects empty results correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(new ArrayList<Element>()).hasSize(0), Matchers.is(true));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSize : succeeding validition with one element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // detects single result elements correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(convertToList(element)).hasSize(1), Matchers.is(true));
+                                                              // detects single result elements correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(convertToList(element)).hasSize(1), Matchers.is(true));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSize : succeeding validition with multi element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects multiple elements correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(element.getEnclosedElements()).hasSize(element.getEnclosedElements().size()), Matchers.is(true));
+                                                              // detects multiple elements correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(element.getEnclosedElements()).hasSize(element.getEnclosedElements().size()), Matchers.is(true));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSize : succeeding validition with null valued empty list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
 
-                                        // detects null valued element list correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter((List<Element>) null).hasSize(3), Matchers.is(false));
+                                                              // detects null valued element list correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter((List<Element>) null).hasSize(3), Matchers.is(false));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSize : failing validation",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects empty results correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(element.getEnclosedElements()).hasSize(0), Matchers.is(false));
+                                                              // detects empty results correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(element.getEnclosedElements()).hasSize(0), Matchers.is(false));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "hasSize : failing validation",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects empty results correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(element.getEnclosedElements()).hasSize(0), Matchers.is(false));
+                                                              // detects empty results correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(element.getEnclosedElements()).hasSize(0), Matchers.is(false));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "geResultSize : null valued element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects empty results correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(null).getResultSize(), Matchers.is(0));
+                                                              // detects empty results correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(null).getResultSize(), Matchers.is(0));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         },
                         {
                                 "geResultSize : null valued element list",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        // detects empty results correctly
-                                        MatcherAssert.assertThat(createFluentElementFilter(element.getEnclosedElements()).getResultSize(), Matchers.is(element.getEnclosedElements().size()));
+                                                              // detects empty results correctly
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentFilter(element.getEnclosedElements()).getResultSize(), Matchers.is(element.getEnclosedElements().size()));
 
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
                         }
 
                 }
@@ -1133,6 +1317,16 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorTestBase
 
     }
 
+
+    @Override
+    protected JavaFileObject getSourceFileForCompilation() {
+        return JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
+    }
+
+    @Test
+    public void test() {
+        super.test();
+    }
 
     public static <T> List<T> convertToList(T... element) {
 

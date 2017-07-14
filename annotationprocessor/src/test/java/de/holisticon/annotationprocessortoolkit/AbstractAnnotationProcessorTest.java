@@ -1,8 +1,14 @@
 package de.holisticon.annotationprocessortoolkit;
 
+import de.holisticon.annotationprocessortoolkit.filter.FluentElementFilter;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -14,10 +20,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessorTestBaseClass {
+public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessorUnitTest {
 
-    public AbstractAnnotationProcessorTest(String message, AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
-        super(message, testcase, compilationShouldSucceed);
+    public AbstractAnnotationProcessorTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+        super(configuration);
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
@@ -29,28 +35,31 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
                         {
                                 "FluentElementFilter : Do filterings",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> result = createFluentElementFilter(element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
-                                                .getResult();
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(8));
-
-
-                                        result = createFluentElementFilter(
-                                                element.getEnclosedElements())
-                                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
-                                                .applyFilter(Filters.getModifierFilter()).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
-                                                .getResult();
-                                        MatcherAssert.assertThat(result, Matchers.hasSize(1));
-                                        MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
+                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
+                                                                      .getResult();
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(8));
 
 
-                                    }
-                                },
-                                true
+                                                              result = FluentElementFilter.createFluentFilter(
+                                                                      element.getEnclosedElements())
+                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
+                                                                      .applyFilter(Filters.getModifierFilter()).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
+                                                                      .getResult();
+                                                              MatcherAssert.assertThat(result, Matchers.hasSize(1));
+                                                              MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -81,5 +90,10 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
     }
 
+
+    @Test
+    public void test() {
+        super.test();
+    }
 
 }

@@ -429,6 +429,13 @@
 
 
             <dependency>
+                <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+                <artifactId>testhelper</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>com.google.testing.compile</groupId>
                 <artifactId>compile-testing</artifactId>
                 <version>${google-compile-testing.version}</version>

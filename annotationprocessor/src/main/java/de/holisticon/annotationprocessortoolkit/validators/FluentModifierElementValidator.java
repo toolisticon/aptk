@@ -2,6 +2,7 @@ package de.holisticon.annotationprocessortoolkit.validators;
 
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 
 /**
@@ -25,6 +26,14 @@ public class FluentModifierElementValidator extends AbstractFluentElementValidat
 
     protected FluentModifierElementValidator createNextFluentValidator(boolean nextResult) {
         return new FluentModifierElementValidator(this, nextResult);
+    }
+
+    public static FluentModifierElementValidator createFluentModifierElementValidator(FrameworkToolWrapper frameworkToolWrapper, Element executableElement) {
+        return new FluentModifierElementValidator(frameworkToolWrapper, executableElement);
+    }
+
+    public static FluentModifierElementValidator createFluentModifierElementValidator(ProcessingEnvironment processingEnvironment, Element executableElement) {
+        return new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnvironment), executableElement);
     }
 
 }

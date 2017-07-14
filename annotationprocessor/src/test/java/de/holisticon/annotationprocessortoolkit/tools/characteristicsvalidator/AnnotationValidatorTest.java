@@ -1,7 +1,7 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
 
 import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation2;
-import de.holisticon.annotationprocessortoolkit.TestAnnotation;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.AnnotationMatcher;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matcher;
 import org.hamcrest.MatcherAssert;

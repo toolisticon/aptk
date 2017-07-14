@@ -1,4 +1,4 @@
-import de.holisticon.annotationprocessortoolkit.TestAnnotation;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 
 import java.util.Comparator;
 import java.util.HashMap;

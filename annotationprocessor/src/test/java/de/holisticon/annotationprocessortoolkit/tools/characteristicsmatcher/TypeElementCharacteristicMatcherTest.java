@@ -1,8 +1,13 @@
 package de.holisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
-import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessorTestBaseClass;
+import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
 import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -17,10 +22,10 @@ import java.util.List;
  * Unit test for {@link ParameterExecutableMatcher}.
  */
 @RunWith(Parameterized.class)
-public class TypeElementCharacteristicMatcherTest extends AbstractAnnotationProcessorTestBaseClass {
+public class TypeElementCharacteristicMatcherTest extends AbstractAnnotationProcessorUnitTest {
 
-    public TypeElementCharacteristicMatcherTest(String message, AbstractAnnotationProcessorTestBaseClass.AbstractTestAnnotationProcessorClass testcase, boolean compilationShouldSucceed) {
-        super(ElementUtils.class.getSimpleName() + ": " + message, testcase, compilationShouldSucceed);
+    public TypeElementCharacteristicMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+        super(configuration);
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
@@ -32,39 +37,45 @@ public class TypeElementCharacteristicMatcherTest extends AbstractAnnotationProc
 
                         {
                                 "TypeElementCharacteristicMatcherTest match",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "publicField");
-                                        MatcherAssert.assertThat("Precondition: should have found one field", result.size() == 1);
-                                        MatcherAssert.assertThat("Precondition: dound method has to be of type ExecutableElement", result.get(0) instanceof VariableElement);
+                                                              List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "publicField");
+                                                              MatcherAssert.assertThat("Precondition: should have found one field", result.size() == 1);
+                                                              MatcherAssert.assertThat("Precondition: dound method has to be of type ExecutableElement", result.get(0) instanceof VariableElement);
 
 
-                                        MatcherAssert.assertThat("Should have found matching type", Matchers.getRawTypeMatcher(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(result.get(0), String.class));
+                                                              MatcherAssert.assertThat("Should have found matching type", Matchers.getRawTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(result.get(0), String.class));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
                         {
                                 "TypeElementCharacteristicMatcherTest no match",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
-                                        List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "publicField");
-                                        MatcherAssert.assertThat("Precondition: should have found one field", result.size() == 1);
-                                        MatcherAssert.assertThat("Precondition: dound method has to be of type ExecutableElement", result.get(0) instanceof VariableElement);
+                                                              List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "publicField");
+                                                              MatcherAssert.assertThat("Precondition: should have found one field", result.size() == 1);
+                                                              MatcherAssert.assertThat("Precondition: dound method has to be of type ExecutableElement", result.get(0) instanceof VariableElement);
 
 
-                                        MatcherAssert.assertThat("Should not have found matching type", !Matchers.getRawTypeMatcher(getFrameworkToolWrapper()).getMatcher().checkForMatchingCharacteristic(result.get(0), Boolean.class));
+                                                              MatcherAssert.assertThat("Should not have found matching type", !Matchers.getRawTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(result.get(0), Boolean.class));
 
-                                    }
-                                },
-                                true
+                                                          }
+                                                      }
+                                        )
+                                        .build()
 
 
                         },
@@ -74,5 +85,10 @@ public class TypeElementCharacteristicMatcherTest extends AbstractAnnotationProc
         );
 
 
+    }
+
+    @Test
+    public void test() {
+        super.test();
     }
 }

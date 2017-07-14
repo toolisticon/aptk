@@ -15,7 +15,7 @@ import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
 
 /**
- * Created by tobiasstamann on 04.04.17.
+ * Unit test for {@link MessagerUtils}.
  */
 public class MessagerUtilsTest {
 

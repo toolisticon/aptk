@@ -4,6 +4,7 @@ import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
 import de.holisticon.annotationprocessortoolkit.tools.TypeUtils;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
@@ -281,4 +282,11 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
     }
 
 
+    public static FluentExecutableElementValidator createFluentExecutableElementValidator(FrameworkToolWrapper frameworkToolWrapper, ExecutableElement executableElement) {
+        return new FluentExecutableElementValidator(frameworkToolWrapper, executableElement);
+    }
+
+    public static FluentExecutableElementValidator createFluentExecutableElementValidator(ProcessingEnvironment processingEnvironment, ExecutableElement executableElement) {
+        return new FluentExecutableElementValidator(new FrameworkToolWrapper(processingEnvironment), executableElement);
+    }
 }
