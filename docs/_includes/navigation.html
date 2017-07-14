@@ -8,56 +8,54 @@
         <ul>
             {% for p in rootpages %}
 
-            {% if p.used_in_navigation != null and p.used_in_navigation == true %}
-            {% assign menu_name = p.menu_name %}
+                {% if p.used_in_navigation != null and p.used_in_navigation == true %}
+                    {% assign menu_name = p.menu_name %}
 
-            {% if menu_name == null %}
-            {% assign menu_name = p.title %}
-            {% endif %}
-
-            {% assign subpageDirectory = (p.url | remove_first:'.html' | remove_first:'/' | prepend:'/' | append:'/') %}
-            {% assign subpages = site.html_pages | where:"dir", subpageDirectory | sort:"order" %}
-
-            {% if p.isSection == false %}
-
-            {% if p.isIndex == true %}
-            <li><a {% if page.url== p.url || relative_url %} class="current" {% endif %}
-                   href="{{ p.url || relative_url}}">{{ menu_name }}</a>
-                {% else %}
-            <li><a {% if page.url contains subpageDirectory %} class="current" {% endif %}
-                   href="{{ p.url || relative_url}}">{{ menu_name }}</a>
-                {% endif %}
-
-
-                {% else %}
-
-            <li><a {% if page.url contains subpageDirectory %} class="current" {% endif %} href="#">{{ menu_name }}</a>
-
-
-                {% if p.isSection == true and subpages != empty %}
-                <ul>
-
-
-                    {% for p2 in subpages %}
-                    {% assign p2menu_name = p2.menu_name %}
-                    {% if p2menu_name == null %}
-                    {% assign p2menu_name = p2.title %}
+                    {% if menu_name == null %}
+                        {% assign menu_name = p.title %}
                     {% endif %}
 
-                    {% if p2.used_in_navigation != null and p2.used_in_navigation == true %}
+                    {% assign subpageDirectory = (p.url | remove_first:'.html' | remove_first:'/' | prepend:'/' | append:'/') %}
+                    {% assign subpages = site.html_pages | where:"dir", subpageDirectory | sort:"order" %}
 
-                    <a href="{{ p2.url || relative_url}}">
-                        <li>{{p2menu_name}}</li>
-                    </a>
+                    {% if p.isSection == false %}
+
+                        {% if p.isIndex == true %}
+                            <li><a {% if page.url == p.url || relative_url  %} class="current"{% endif %} href="{{ p.url || relative_url}}">{{ menu_name }}</a>
+                        {% else %}
+                            <li><a {% if page.url contains subpageDirectory %} class="current"{% endif %} href="{{ p.url || relative_url}}">{{ menu_name }}</a>
+                        {% endif %}
+
+
+                    {% else %}
+
+                        <li><a {% if page.url contains subpageDirectory %} class="current"{% endif %} href="#">{{ menu_name }}</a>
+
+
+                            {% if p.isSection == true and subpages != empty %}
+                            <ul>
+
+
+                                {% for p2 in subpages %}
+                                    {% assign p2menu_name = p2.menu_name %}
+                                    {% if p2menu_name == null %}
+                                        {% assign p2menu_name = p2.title %}
+                                    {% endif %}
+
+                                    {% if p2.used_in_navigation != null and p2.used_in_navigation == true %}
+
+                                        <a href="{{ p2.url || relative_url}}">
+                                            <li>{{p2menu_name}}</li>
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+
+                        </li>
+
                     {% endif %}
-                    {% endfor %}
-                </ul>
                 {% endif %}
-
-            </li>
-
-            {% endif %}
-            {% endif %}
 
             {% endfor %}
 
