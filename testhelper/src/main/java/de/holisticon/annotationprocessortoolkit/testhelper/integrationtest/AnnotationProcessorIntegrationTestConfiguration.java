@@ -3,6 +3,8 @@ package de.holisticon.annotationprocessortoolkit.testhelper.integrationtest;
 import de.holisticon.annotationprocessortoolkit.testhelper.AnnotationProcessorCommonTestConfiguration;
 import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestValidator;
 
+import javax.tools.JavaFileObject;
+
 /**
  * Configuration of the an annotation processor test.
  */
@@ -14,9 +16,10 @@ public class AnnotationProcessorIntegrationTestConfiguration extends AnnotationP
     public AnnotationProcessorIntegrationTestConfiguration(
             String source,
             Boolean compilingShouldSucceed,
+            JavaFileObject[] expectedGeneratedFileObjects,
             TestValidator... testcases) {
 
-        super(compilingShouldSucceed, testcases);
+        super(compilingShouldSucceed, expectedGeneratedFileObjects, testcases);
         this.source = source;
 
     }

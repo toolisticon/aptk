@@ -3,6 +3,8 @@ package de.holisticon.annotationprocessortoolkit.testhelper.unittest;
 
 import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestMessageValidator;
 
+import javax.tools.JavaFileObject;
+
 
 /**
  * Configuration builder class for of unit tests.
@@ -20,6 +22,7 @@ public final class AnnotationProcessorUnitTestConfigurationBuilder {
     public static class BaseConfigurationBuilder {
 
         private Boolean shouldCompileSuccessfully;
+        private JavaFileObject[] expectedGeneratedJavaFileObjects;
         private TestMessageValidator testMessageValidator;
         private AbstractUnitTestAnnotationProcessorClass processor;
 
@@ -43,11 +46,16 @@ public final class AnnotationProcessorUnitTestConfigurationBuilder {
             return this;
         }
 
+        public BaseConfigurationBuilder resourceShouldMatch(JavaFileObject... expectedGeneratedJavaFileObjects) {
+            this.expectedGeneratedJavaFileObjects = expectedGeneratedJavaFileObjects;
+            return this;
+        }
+
         public AnnotationProcessorUnitTestConfiguration build() {
             if (testMessageValidator == null) {
-                return new AnnotationProcessorUnitTestConfiguration(processor, shouldCompileSuccessfully);
+                return new AnnotationProcessorUnitTestConfiguration(processor, shouldCompileSuccessfully, expectedGeneratedJavaFileObjects);
             } else {
-                return new AnnotationProcessorUnitTestConfiguration(processor, shouldCompileSuccessfully,
+                return new AnnotationProcessorUnitTestConfiguration(processor, shouldCompileSuccessfully, expectedGeneratedJavaFileObjects,
                         testMessageValidator);
             }
         }

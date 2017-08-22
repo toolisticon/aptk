@@ -78,6 +78,13 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
                     .that(testClassSource)
                     .processedWith(this.getWrappedProcessor()).compilesWithoutError();
 
+            // check for created files
+
+            if (annotationProcessorCommonTestConfiguration.getExpectedGeneratedJavaFileObjects() != null) {
+                for (JavaFileObject fileObject : annotationProcessorCommonTestConfiguration.getExpectedGeneratedJavaFileObjects()) {
+                    compileTester = compileTester.and().generatesFiles(fileObject);
+                }
+            }
 
             // check for warnings
             if (messageValidationTest != null) {

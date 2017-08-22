@@ -3,6 +3,8 @@ package de.holisticon.annotationprocessortoolkit.testhelper.integrationtest;
 
 import de.holisticon.annotationprocessortoolkit.testhelper.validator.TestMessageValidator;
 
+import javax.tools.JavaFileObject;
+
 /**
  * Configuration builder class for  of integration tests.
  */
@@ -16,11 +18,14 @@ public final class AnnotationProcessorIntegrationTestConfigurationBuilder {
         return new BaseConfigurationBuilder();
     }
 
+
     public static class BaseConfigurationBuilder {
+
 
         private Boolean shouldCompileSuccessfully;
         private TestMessageValidator testMessageValidator;
         private String sourceFileToCompile;
+        private JavaFileObject[] expectedGeneratedJavaFileObjects;
 
         public MessageEvaluation addMessageValidator() {
             return new MessageEvaluation(this);
@@ -42,15 +47,22 @@ public final class AnnotationProcessorIntegrationTestConfigurationBuilder {
             return this;
         }
 
+        public BaseConfigurationBuilder resourceShouldMatch(JavaFileObject... expectedGeneratedJavaFileObjects) {
+            this.expectedGeneratedJavaFileObjects = expectedGeneratedJavaFileObjects;
+            return this;
+        }
+
         public AnnotationProcessorIntegrationTestConfiguration build() {
             if (testMessageValidator == null) {
                 return new AnnotationProcessorIntegrationTestConfiguration(
                         sourceFileToCompile,
-                        shouldCompileSuccessfully);
+                        shouldCompileSuccessfully,
+                        expectedGeneratedJavaFileObjects);
             } else {
                 return new AnnotationProcessorIntegrationTestConfiguration(
                         sourceFileToCompile,
                         shouldCompileSuccessfully,
+                        expectedGeneratedJavaFileObjects,
                         testMessageValidator);
             }
         }

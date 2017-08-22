@@ -81,26 +81,6 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     private TypeUtils typeUtils;
 
 
-    public static class FileObjectWrapper {
-        private final FileObject fileObject;
-        private final Writer foWriter;
-
-        public FileObjectWrapper(FileObject fileObject) throws IOException {
-            this.fileObject = fileObject;
-            this.foWriter = fileObject.openWriter();
-        }
-
-        public void append(String content) throws IOException {
-            foWriter.append(content);
-            foWriter.flush();
-        }
-
-        public void close() throws IOException {
-            foWriter.flush();
-            foWriter.close();
-        }
-    }
-
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);

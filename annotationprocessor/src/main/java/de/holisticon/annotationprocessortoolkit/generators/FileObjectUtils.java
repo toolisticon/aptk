@@ -1,0 +1,91 @@
+package de.holisticon.annotationprocessortoolkit.generators;
+
+import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
+import javax.tools.StandardLocation;
+import java.io.IOException;
+
+/**
+ * Utility class for handling {@link javax.tools.FileObject}.
+ */
+public class FileObjectUtils {
+
+    private final FrameworkToolWrapper frameworkToolWrapper;
+
+    /**
+     * Hidden constructor that prevents instantiation.
+     */
+    private FileObjectUtils(FrameworkToolWrapper frameworkToolWrapper) {
+        this.frameworkToolWrapper = frameworkToolWrapper;
+    }
+
+    /**
+     * Gets a SimpleResourceReader for reading a resource file.
+     *
+     * @param fileName the file name of the resource to be opened
+     * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
+     */
+    public SimpleResourceReader getResource(String fileName, String targetPackage) throws IOException {
+        return new SimpleResourceReader(frameworkToolWrapper.getFiler().getResource(StandardLocation.SOURCE_OUTPUT, targetPackage != null ? targetPackage : "", fileName));
+    }
+
+    /**
+     * Gets a SimpleResourceReader for reading a resource file.
+     *
+     * @param fileName the file name of the resource to be opened
+     * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
+     */
+    public SimpleResourceReader getResource(String fileName) throws IOException {
+        return getResource(fileName, "");
+    }
+
+    /**
+     * Creates a resource file resident in SOURCE_OUTPUT in root package with give name.
+     *
+     * @param fileName            the file name to use
+     * @param targetPackage       the target package to use
+     * @param originatingElements the originating elements responsible for resource file creation.
+     * @return SimpleResourceWriter if it hasn't been created before.
+     * @throws IOException
+     * @throws javax.annotation.processing.FilerException if the same pathname has already been created
+     */
+    public SimpleResourceWriter createResource(String fileName, String targetPackage, Element... originatingElements) throws IOException {
+        return new SimpleResourceWriter(frameworkToolWrapper.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, targetPackage != null ? targetPackage : "", fileName, originatingElements));
+    }
+
+    /**
+     * Creates a resurce file resident in SOURCE_OUTPUT in root package with give name.
+     *
+     * @param fileName the file name to use
+     * @return SimpleResourceWriter if it hasn't been created before.
+     * @throws IOException
+     * @throws javax.annotation.processing.FilerException if the same pathname has already been created
+     */
+    public SimpleResourceWriter createResource(String fileName) throws IOException {
+        return createResource(fileName, "");
+    }
+
+
+    /**
+     * Gets an instance of this TypeUtils class.
+     *
+     * @param frameworkToolWrapper the wrapper instance that provides the {@link javax.annotation.processing.ProcessingEnvironment} tools
+     * @return the type utils instance
+     */
+    public static FileObjectUtils getFileObjectUtils(FrameworkToolWrapper frameworkToolWrapper) {
+        return new FileObjectUtils(frameworkToolWrapper);
+    }
+
+    /**
+     * Gets an instance of a TypeUtils class.
+     *
+     * @param processingEnvironment the processing environment to use
+     * @return the type utils instance
+     */
+    public static FileObjectUtils getTypeUtils(ProcessingEnvironment processingEnvironment) {
+        return new FileObjectUtils(new FrameworkToolWrapper(processingEnvironment));
+    }
+
+}
