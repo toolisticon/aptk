@@ -68,6 +68,14 @@ public class FileObjectUtils {
     }
 
 
+    public SimpleJavaWriter createClassFile(String fileName, Element... originatingElements) throws IOException {
+        return new SimpleJavaWriter(frameworkToolWrapper.getFiler().createClassFile(fileName, originatingElements));
+    }
+
+    public SimpleJavaWriter createSourceFile(String fileName, Element... originatingElements) throws IOException {
+        return new SimpleJavaWriter(frameworkToolWrapper.getFiler().createSourceFile(fileName, originatingElements));
+    }
+
     /**
      * Gets an instance of this TypeUtils class.
      *

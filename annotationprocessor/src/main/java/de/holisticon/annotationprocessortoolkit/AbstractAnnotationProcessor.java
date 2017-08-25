@@ -1,6 +1,7 @@
 package de.holisticon.annotationprocessortoolkit;
 
 import de.holisticon.annotationprocessortoolkit.filter.FluentElementFilter;
+import de.holisticon.annotationprocessortoolkit.generators.FileObjectUtils;
 import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import de.holisticon.annotationprocessortoolkit.tools.TypeUtils;
@@ -16,9 +17,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
-import javax.tools.FileObject;
-import java.io.IOException;
-import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.List;
@@ -79,6 +77,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     private FrameworkToolWrapper frameworkToolWrapper;
     private MessagerUtils messager;
     private TypeUtils typeUtils;
+    private FileObjectUtils fileObjectUtils;
 
 
     @Override
@@ -91,6 +90,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
         typeUtils = TypeUtils.getTypeUtils(frameworkToolWrapper);
         filer = processingEnv.getFiler();
         elementUtils = processingEnv.getElementUtils();
+        fileObjectUtils = FileObjectUtils.getFileObjectUtils(frameworkToolWrapper);
 
     }
 
@@ -143,6 +143,15 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      */
     public Filer getFiler() {
         return filer;
+    }
+
+    /**
+     * Gets the {@link FileObjectUtils}.
+     *
+     * @return the FileObjectUtils.
+     */
+    public FileObjectUtils getFileObjectUtils() {
+        return fileObjectUtils;
     }
 
 

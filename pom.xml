@@ -15,6 +15,7 @@
         <!-- modules -->
         <module>annotationprocessor</module>
         <module>example</module>
+        <module>templating</module>
 
         <!-- test scope module -->
         <module>testhelper</module>
@@ -424,6 +425,12 @@
             <dependency>
                 <groupId>de.holisticon.annotationprocessortoolkit</groupId>
                 <artifactId>annotationprocessor</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+                <artifactId>templating</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

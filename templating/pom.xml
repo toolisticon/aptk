@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>annotationprocessor</artifactId>
+    <artifactId>templating</artifactId>
     <packaging>bundle</packaging>
 
     <parent>
@@ -11,28 +11,14 @@
         <version>0.5.1-SNAPSHOT</version>
     </parent>
 
-    <name>annotationprocessor</name>
+    <name>templating</name>
     <description>Please refer to https://github.com/holisticon/annotation-processor-toolkit</description>
 
 
     <dependencies>
 
-        <dependency>
-            <groupId>de.holisticon.annotationprocessortoolkit</groupId>
-            <artifactId>templating</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>de.holisticon.annotationprocessortoolkit</groupId>
-            <artifactId>testhelper</artifactId>
-        </dependency>
 
 
-        <dependency>
-            <groupId>com.google.testing.compile</groupId>
-            <artifactId>compile-testing</artifactId>
-            <scope>test</scope>
-        </dependency>
 
 
     </dependencies>
