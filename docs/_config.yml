@@ -13,7 +13,7 @@ repository: "holisticon/annotation-processor-toolkit"
 email: your-email@example.com
 description: >
   Eases development and testing of annotation processors
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/annotation-processor-toolkit" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  holisticon
 
