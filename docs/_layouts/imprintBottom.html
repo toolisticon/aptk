@@ -5,12 +5,15 @@
 <body>
 
 {% include header.html %}
+
+<link rel="stylesheet" href="{{ '/assets/css/imprintBottom.css' | relative_url }}" type="text/css">
+
 {% include navigation.html %}
 
 
 <div id="content-wrapper">
     <div class="inner clearfix">
-        <section id="main-content-full-width">
+        <section id="main-content" class="full-width">
             {{ content }}
         </section>
 

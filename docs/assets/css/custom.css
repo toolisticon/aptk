@@ -1,9 +1,5 @@
--
--
--
--
--
--
+---
+---
 
 header {
     padding-bottom: 2.5em;
@@ -182,4 +178,9 @@ pre code {
 
 #bottombar p a{
     font-weight: bolder;
+}
+
+#main-content.full-width{
+    float: none;
+    width: auto;
 }
