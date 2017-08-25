@@ -8,10 +8,9 @@ import de.holisticon.annotationprocessortoolkit.templating.templateblocks.Templa
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.TemplateBlockType;
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.VariableTextTemplateBlock;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -199,25 +198,29 @@ public class ParseUtilities {
         return null;
     }
 
-    public static String readResourceToString( String resourcefileName) throws Exception {
+    public static String readResourceToString(String resourcefileName) throws Exception {
 
         InputStream inputStream = ParseUtilities.class.getResourceAsStream(resourcefileName);
         return readFromInputStream(inputStream);
 
     }
 
-    private static String readFromInputStream(InputStream inputStream)
-            throws IOException {
-        StringBuilder resultStringBuilder = new StringBuilder();
+    public static String readFromInputStream(InputStream stream) throws IOException {
 
-        BufferedReader br
-                = new BufferedReader(new InputStreamReader(inputStream));
-        String line;
-        while ((line = br.readLine()) != null) {
-            resultStringBuilder.append(line).append("\n");
+        byte[] buffer = new byte[10000];
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        int line = 0;
+        // read bytes from stream, and store them in buffer
+        while ((line = stream.read(buffer)) != -1) {
+            // Writes bytes from byte array (buffer) into output stream.
+            os.write(buffer, 0, line);
         }
+        stream.close();
+        os.flush();
+        os.close();
 
-        return resultStringBuilder.toString();
+        return new String(os.toByteArray());
     }
 
 
