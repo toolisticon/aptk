@@ -1,5 +1,6 @@
 language: java
-sudo: false
+dist: precise
+sudo: required
 jdk:
 - openjdk6
 install: mvn install -DskipTests=true -q
