@@ -11,12 +11,22 @@ public class NextDetectedBlockResult {
     private final int beginIndex;
     private final int endIndex;
     private final String attributes;
+    private final String content;
+    private final String remainingStringToBeProcessed;
 
-    public NextDetectedBlockResult(TemplateBlockType templateBlockType, int beginIndex, int endIndex, String attributes) {
+    public NextDetectedBlockResult(
+            TemplateBlockType templateBlockType,
+            int beginIndex,
+            int endIndex,
+            String attributes,
+            String content,
+            String remainingStringToBeProcessed) {
         this.templateBlockType = templateBlockType;
         this.beginIndex = beginIndex;
         this.endIndex = endIndex;
         this.attributes = attributes;
+        this.content = content;
+        this.remainingStringToBeProcessed = remainingStringToBeProcessed;
     }
 
     public TemplateBlockType getTemplateBlockType() {
@@ -33,6 +43,14 @@ public class NextDetectedBlockResult {
 
     public String getAttributes() {
         return attributes;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getRemainingStringToBeProcessed() {
+        return this.remainingStringToBeProcessed;
     }
 
 

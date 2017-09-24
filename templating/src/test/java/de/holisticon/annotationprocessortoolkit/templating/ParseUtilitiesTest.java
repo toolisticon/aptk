@@ -1,8 +1,8 @@
 package de.holisticon.annotationprocessortoolkit.templating;
 
-import de.holisticon.annotationprocessortoolkit.templating.templateblocks.TemplateBlockType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -180,17 +180,27 @@ public class ParseUtilitiesTest {
     }
 
     @Test
-    public void getControlBlockTemplateString_getControlBlockString() throws Exception {
+    @Ignore
+    public void parseString_ComplexTemplateWithAllControlBlocks() throws Exception {
 
-        final String TEMPLATE_STRING = ParseUtilities.readResourceToString("/GetControlBlockTemplateStringTestTemplate.tpl");
-        final String EXPECTED_RESULT = ParseUtilities.readResourceToString("/GetControlBlockTemplateStringTestTemplate.expectedResult");
 
-        MatcherAssert.assertThat(
-                ParseUtilities.getControlBlockTemplateString(
-                        TemplateBlockType.FOR,
-                        TEMPLATE_STRING).getControlBlockString(),
-                Matchers.is(EXPECTED_RESULT));
+        final String TEMPLATE_STRING = ParseUtilities.readResourceToString("/ComplexTemplateWithAllBlockTypes.tpl");
+        final String EXPECTED_RESULT = ParseUtilities.readResourceToString("/ComplexTemplateWithAllBlockTypes.expectedResult");
 
+        Map<String, Object> values = new HashMap<String, Object>();
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        List<ComplexTemplateWithControlBlockPojo> loopValues = new ArrayList<ComplexTemplateWithControlBlockPojo>();
+        loopValues.add(new ComplexTemplateWithControlBlockPojo(1));
+        loopValues.add(new ComplexTemplateWithControlBlockPojo(2));
+        loopValues.add(new ComplexTemplateWithControlBlockPojo(3));
+
+        model.put("loopValues", loopValues);
+        values.put("model", model);
+
+
+        MatcherAssert.assertThat(ParseUtilities.parseString(TEMPLATE_STRING).getContent(values), Matchers.is(EXPECTED_RESULT));
 
     }
 

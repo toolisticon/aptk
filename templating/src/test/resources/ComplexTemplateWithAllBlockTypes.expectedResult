@@ -1,0 +1,10 @@
+abc
+!<for name: model.loopValues>value : $<name.value>
+!<if xyz>
+abc
+def
+!<static>
+!<if>
+!</static>
+!</if>
+!</for>

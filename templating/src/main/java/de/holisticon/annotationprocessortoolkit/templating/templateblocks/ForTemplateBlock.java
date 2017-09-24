@@ -36,7 +36,6 @@ public class ForTemplateBlock implements TemplateBlock {
 
         this.loopVariableName = matcher.group(1);
         this.accessPath = matcher.group(2);
-        ;
         this.templateString = templateString;
 
 

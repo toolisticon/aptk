@@ -3,7 +3,9 @@ package de.holisticon.annotationprocessortoolkit.templating;
 import de.holisticon.annotationprocessortoolkit.templating.exceptions.InvalidPathException;
 import de.holisticon.annotationprocessortoolkit.templating.exceptions.MissingClosingTagException;
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.ForTemplateBlock;
+import de.holisticon.annotationprocessortoolkit.templating.templateblocks.IfTemplateBlock;
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.PlainTextTemplateBlock;
+import de.holisticon.annotationprocessortoolkit.templating.templateblocks.StaticTemplateBlock;
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.TemplateBlockBinder;
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.TemplateBlockType;
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.VariableTextTemplateBlock;
@@ -45,32 +47,13 @@ public class ParseUtilities {
         }
     }
 
-    /**
-     * Result of the getControlBlockTemplateString utility method.
-     */
-    public static class GetControlBlockTemplateStringResult {
 
-        public String controlBlockString;
-        public String restOfTheTemplateStringToBeProcessed;
-
-
-        public GetControlBlockTemplateStringResult(String controlBlockString, String restOfTheTemplateStringToBeProcessed) {
-            this.controlBlockString = controlBlockString;
-            this.restOfTheTemplateStringToBeProcessed = restOfTheTemplateStringToBeProcessed;
-        }
-
-        public String getControlBlockString() {
-            return controlBlockString;
-        }
-
-        public String getRestOfTheTemplateStringToBeProcessed() {
-            return restOfTheTemplateStringToBeProcessed;
-        }
-    }
 
     private enum NextBlockType {
         NONE,
         FOR,
+        IF,
+        STATIC,
         DYNAMIC_TEXT
     }
 
@@ -84,7 +67,7 @@ public class ParseUtilities {
 
         TemplateBlockBinder binder = new TemplateBlockBinder(tmpTemplateString);
 
-        NextDetectedBlockResult nextBlock = TemplateBlockType.getNextBlockType(templateString);
+        NextDetectedBlockResult nextBlock = TemplateBlockType.getNextBlock(templateString);
 
         while (nextBlock != null) {
 
@@ -92,6 +75,9 @@ public class ParseUtilities {
             if (nextBlock.getBeginIndex() != 0) {
                 binder.addTemplateBlock(new PlainTextTemplateBlock(tmpTemplateString.substring(0, nextBlock.getBeginIndex())));
             }
+
+
+
 
             switch (nextBlock.getTemplateBlockType()) {
 
@@ -103,17 +89,33 @@ public class ParseUtilities {
                 }
                 case FOR: {
 
-                    GetControlBlockTemplateStringResult result = getControlBlockTemplateString(nextBlock.getTemplateBlockType(), templateString.substring(nextBlock.getEndIndex()));
 
-                    ForTemplateBlock forTemplateBlock = new ForTemplateBlock(nextBlock.getAttributes(), result.getControlBlockString());
+                    ForTemplateBlock forTemplateBlock = new ForTemplateBlock(nextBlock.getAttributes(), nextBlock.getContent());
                     binder.addTemplateBlock(forTemplateBlock);
 
                     forTemplateBlock.setBinder(parseString(forTemplateBlock.getTemplateString()));
-                    tmpTemplateString = result.getRestOfTheTemplateStringToBeProcessed();
+                    tmpTemplateString = nextBlock.getRemainingStringToBeProcessed();
 
                     break;
                 }
                 case IF: {
+
+                    IfTemplateBlock ifTemplateBlock = new IfTemplateBlock(nextBlock.getAttributes(), nextBlock.getContent());
+                    binder.addTemplateBlock(ifTemplateBlock);
+
+                    ifTemplateBlock.setBinder(parseString(ifTemplateBlock.getTemplateString()));
+                    tmpTemplateString = nextBlock.getRemainingStringToBeProcessed();
+
+                    break;
+                }
+                case STATIC: {
+
+
+                    StaticTemplateBlock staticTemplateBlock = new StaticTemplateBlock(nextBlock.getContent());
+                    binder.addTemplateBlock(staticTemplateBlock);
+
+                    tmpTemplateString = nextBlock.getRemainingStringToBeProcessed();
+
 
                     break;
                 }
@@ -122,7 +124,7 @@ public class ParseUtilities {
             }
 
             // get next block type
-            nextBlock = TemplateBlockType.getNextBlockType(tmpTemplateString);
+            nextBlock = TemplateBlockType.getNextBlock(tmpTemplateString);
         }
 
         // add last plain text block
@@ -131,50 +133,8 @@ public class ParseUtilities {
         return binder;
     }
 
-    protected static GetControlBlockTemplateStringResult getControlBlockTemplateString(TemplateBlockType templateBlockType, String templateString) {
-
-        // return null for null valued templateBlockType or no control block type
-        if (templateBlockType == null || !templateBlockType.isControlBlock()) {
-            return null;
-        }
 
 
-        // control blocks can contain other control blocks of same kind so we cannot use the template String up to the first occurence of the end tag
-
-
-        Matcher endMatcher = templateBlockType.getEndControlBlockPattern().matcher(templateString);
-        Matcher startMatcher = null;
-
-
-        if (!endMatcher.find()) {
-            throw new MissingClosingTagException("Cannot find closing tag for " + templateBlockType.name() + " control block");
-        }
-
-        int currentStartMatcherIndex = 0;
-        int currentEndMatcherIndex = endMatcher.end();
-
-        while (true) {
-
-            int startMatcherStartIndex = startMatcher != null ? startMatcher.end() : 0;
-
-            // check for given start matcher in span beginning to current end tag
-            startMatcher = templateBlockType.getStartControlBlockPattern().matcher(templateString.substring(0, endMatcher.start()));
-
-            if (startMatcher.find(startMatcherStartIndex)) {
-                currentStartMatcherIndex = startMatcher.end();
-                if (!endMatcher.find(endMatcher.end())) {
-                    throw new MissingClosingTagException("Cannot find closing tag for " + templateBlockType.name() + " control block");
-                } else {
-                    currentEndMatcherIndex = endMatcher.end();
-                }
-            } else {
-                return new GetControlBlockTemplateStringResult(templateString.substring(0, endMatcher.start()), templateString.substring(endMatcher.end()));
-            }
-
-
-        }
-
-    }
 
 
     protected static ParserResult getNextDynamicText(String templateString) {
@@ -201,7 +161,12 @@ public class ParseUtilities {
     public static String readResourceToString(String resourcefileName) throws Exception {
 
         InputStream inputStream = ParseUtilities.class.getResourceAsStream(resourcefileName);
-        return readFromInputStream(inputStream);
+        if (inputStream != null) {
+            return readFromInputStream(inputStream);
+        } else {
+            throw new IllegalArgumentException("Can't open resource file '" + resourcefileName + "'");
+        }
+
 
     }
 
