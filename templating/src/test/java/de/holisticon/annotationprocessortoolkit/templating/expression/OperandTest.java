@@ -27,7 +27,7 @@ public class OperandTest {
 
     @Test
     public void OperandType_getOperand_testString() {
-        MatcherAssert.assertThat(OperandType.getOperandType("\"1234\""), Matchers.is(OperandType.STRING));
+        MatcherAssert.assertThat(OperandType.getOperandType("'1234'"), Matchers.is(OperandType.STRING));
     }
 
     @Test
