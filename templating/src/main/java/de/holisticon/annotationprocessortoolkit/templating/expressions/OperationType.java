@@ -17,7 +17,7 @@ public enum OperationType {
         public Operand doOperation(Operand operand1, Operand operand2) {
 
             doBaseChecks(this, operand1, operand2, true, true);
-            return OperandFactory.createOperationResult(Boolean.class, Boolean.logicalAnd((Boolean) operand1.value(), (Boolean) operand2.value()));
+            return OperandFactory.createOperationResult(Boolean.class, (Boolean) operand1.value() && (Boolean) operand2.value());
 
         }
     },
@@ -26,7 +26,7 @@ public enum OperationType {
         public Operand doOperation(Operand operand1, Operand operand2) {
 
             doBaseChecks(this, operand1, operand2, true, true);
-            return OperandFactory.createOperationResult(Boolean.class, Boolean.logicalOr((Boolean) operand1.value(), (Boolean) operand2.value()));
+            return OperandFactory.createOperationResult(Boolean.class, (Boolean) operand1.value() || (Boolean) operand2.value());
 
         }
 
