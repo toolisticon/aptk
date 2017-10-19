@@ -1,24 +1,17 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Expression;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
 
+
 /**
- * Expression Based Operand.
+ * Dynamic operand queried from models.
  */
-public class ExpressionOperand extends Operand <Object>{
+public class DynamicOperand extends Operand<Object> {
 
-    private final Expression expression;
-
-    public ExpressionOperand(OperandType operandType, String expressionString, boolean negate,  Expression expression) {
+    public DynamicOperand(OperandType operandType, String expressionString, boolean negate) {
         super(operandType, expressionString, negate);
 
-        this.expression = expression;
-    }
-
-    public Expression getExpression() {
-        return expression;
     }
 
     @Override
@@ -30,6 +23,5 @@ public class ExpressionOperand extends Operand <Object>{
     public Object value() {
         return null;
     }
-
 
 }

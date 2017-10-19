@@ -1,6 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions;
 
-import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.ExpressionOperand;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +83,10 @@ public class ExpressionParser {
                 // parse subexpression
                 ExpressionParseResult subExpressionResult = parseExpressionRecursively(expressionString.substring(index), true);
 
-                operands.add(new ExpressionOperand(OperandType.EXPRESSION, expressionString.substring(index, expressionString.length() - subExpressionResult.getRestString().length()), subExpressionResult.getExpression()));
+                operands.add(
+                        OperandFactory.createOperand(OperandType.EXPRESSION, expressionString.substring(index, expressionString.length() - subExpressionResult.getRestString().length()), negated, subExpressionResult.getExpression())
+                );
+
 
                 // use rest String
                 expressionString = subExpressionResult.getRestString();
@@ -93,7 +96,12 @@ public class ExpressionParser {
 
                 // get Operand
                 OperandTypeSearchResult operandTypeSearchResult = getOperandType(expressionString, index);
-                operands.add(new Operand(operandTypeSearchResult.getValue(), expressionString.substring(index, operandTypeSearchResult.getEndIndex())));
+
+                operands.add(
+                        OperandFactory.createOperand(operandTypeSearchResult.getValue(), expressionString.substring(index, operandTypeSearchResult.getEndIndex()), negated, null)
+                );
+
+
                 index = operandTypeSearchResult.getEndIndex();
 
             }

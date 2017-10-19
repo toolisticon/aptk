@@ -6,11 +6,13 @@ import java.util.regex.Pattern;
 
 
 public enum OperandType {
-    DOUBLE("(\\d+[.]\\d+)"),
-    LONG("(\\d+)"),
+    DOUBLE("([-]?\\d+[.]\\d+)"),
+    LONG("([-]?\\d+)"),
     STRING("'(.*)'"),
     BOOLEAN("((?:true)|(?:false))"),
     DYNAMIC_VALUE("\\w+(?:[.]\\w+)*"),
+    NULL_VALUE("null"),
+    OPERATION_RESULT(null),
     EXPRESSION(null);
 
 
