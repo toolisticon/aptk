@@ -31,7 +31,7 @@ public class ExpressionTest {
     private <T> void doTestSingleOperand(Class<T> type, T value) {
 
         Operand[] operands = getArray(OperandFactory.createOperationResult(type, value));
-        OperationType[] operationTypes = getArray();
+        OperationType[] operationTypes = new OperationType[0];
 
         Expression givenExpression = new Expression(operands, operationTypes);
 
