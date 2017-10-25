@@ -321,7 +321,7 @@ public class OperationTypeTest {
 
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void equal_doOperation_withValidOperands_DoubleAndLongValues_Test() {
 
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);

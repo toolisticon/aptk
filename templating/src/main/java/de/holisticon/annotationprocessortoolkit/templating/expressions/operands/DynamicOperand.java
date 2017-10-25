@@ -2,6 +2,7 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions.operands
 
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
 
 
 /**
@@ -9,8 +10,8 @@ import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandTy
  */
 public class DynamicOperand extends Operand<Object> {
 
-    public DynamicOperand(OperandType operandType, String expressionString, boolean negate) {
-        super(operandType, expressionString, negate);
+    public DynamicOperand(OperandType operandType, String expressionString,  OperationType[] unaryOperationsToBeApplied) {
+        super(operandType, expressionString, unaryOperationsToBeApplied);
 
     }
 

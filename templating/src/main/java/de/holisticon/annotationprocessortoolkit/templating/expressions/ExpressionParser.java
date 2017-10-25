@@ -40,7 +40,6 @@ public class ExpressionParser {
 
     public static ExpressionParseResult parseExpressionRecursively(String expressionString, boolean usedBrackets) {
 
-        final Pattern negatePattern = Pattern.compile("[ ]*[!]");
         final Pattern openingBracePattern = Pattern.compile("[ ]*[(][ ]*");
         final Pattern closingBracePattern = Pattern.compile("[ ]*[)][ ]*");
 
@@ -64,14 +63,32 @@ public class ExpressionParser {
 
             boolean negated = false;
 
-            // check if next operand / expression is negated
-            Matcher negateMatcher = negatePattern.matcher(expressionString);
-            if (negateMatcher.find(index) && negateMatcher.start() == index) {
 
-                index = negateMatcher.end();
-                negated = true;
+            // determine unary operations to be applied on operand
+            List<OperationType> unaryOperationTypesToBeApplied = new ArrayList<OperationType>();
 
+            boolean found = false;
+            while(found) {
+                // next iteration
+                found = false;
+
+                for (OperationType operationType : OperationType.getOperationsByOperationTypeMode(OperationTypeMode.UNARY)) {
+
+                    Matcher unaryOperationMatcher = operationType.getOperationPattern().matcher(expressionString);
+                    if (unaryOperationMatcher.find(index) && unaryOperationMatcher.start() == index) {
+
+                        index = unaryOperationMatcher.end();
+
+                        unaryOperationTypesToBeApplied.add(operationType);
+                        found = true;
+                        break;
+
+                    }
+
+                }
             }
+
+
 
 
             // check if brace is opened => do subexpression
@@ -84,7 +101,7 @@ public class ExpressionParser {
                 ExpressionParseResult subExpressionResult = parseExpressionRecursively(expressionString.substring(index), true);
 
                 operands.add(
-                        OperandFactory.createOperand(OperandType.EXPRESSION, expressionString.substring(index, expressionString.length() - subExpressionResult.getRestString().length()), negated, subExpressionResult.getExpression())
+                        OperandFactory.createOperand(OperandType.EXPRESSION, expressionString.substring(index, expressionString.length() - subExpressionResult.getRestString().length()), unaryOperationTypesToBeApplied.toArray(new OperationType[unaryOperationTypesToBeApplied.size()]), subExpressionResult.getExpression())
                 );
 
 
@@ -98,7 +115,7 @@ public class ExpressionParser {
                 OperandTypeSearchResult operandTypeSearchResult = getOperandType(expressionString, index);
 
                 operands.add(
-                        OperandFactory.createOperand(operandTypeSearchResult.getValue(), expressionString.substring(index, operandTypeSearchResult.getEndIndex()), negated, null)
+                        OperandFactory.createOperand(operandTypeSearchResult.getValue(), expressionString.substring(index, operandTypeSearchResult.getEndIndex()), unaryOperationTypesToBeApplied.toArray(new OperationType[unaryOperationTypesToBeApplied.size()]), null)
                 );
 
 
@@ -112,7 +129,7 @@ public class ExpressionParser {
                 Matcher closingBracketMatcher = closingBracePattern.matcher(expressionString);
                 if (closingBracketMatcher.find(index) && closingBracketMatcher.start() == index) {
 
-                    return new ExpressionParseResult(new Expression(operands.toArray(), (OperationType[]) operations.toArray(new OperationType[operations.size()])), expressionString.substring(closingBracketMatcher.end()));
+                    return new ExpressionParseResult(new Expression(operands.toArray(new Operand[operands.size()]), (OperationType[]) operations.toArray(new OperationType[operations.size()])), expressionString.substring(closingBracketMatcher.end()));
 
                 }
 
@@ -125,7 +142,7 @@ public class ExpressionParser {
             throw new IllegalArgumentException("Can't find closing bracket");
         }
         OperationType[] operationsArray = operations.toArray(new OperationType[operations.size()]);
-        return new ExpressionParseResult(new Expression(operands.toArray(), operationsArray), expressionString.substring(index));
+        return new ExpressionParseResult(new Expression(operands.toArray(new Operand[operands.size()]), operationsArray), expressionString.substring(index));
 
     }
 
@@ -139,7 +156,7 @@ public class ExpressionParser {
      */
     public static OperationTypeSearchResult getOperationType(String expressionString, int index) {
 
-        for (OperationType operationType : OperationType.values()) {
+        for (OperationType operationType : OperationType.getOperationsByOperationTypeMode(OperationTypeMode.BINARY)) {
 
             Matcher matcher = operationType.getOperationPattern().matcher(expressionString);
             if (matcher.find(index) && matcher.start() == index) {

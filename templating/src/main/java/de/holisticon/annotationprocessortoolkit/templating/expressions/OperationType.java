@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public enum OperationType {
 
-    NEGATE("[!]", 0, OperationTypeMode.UNARY, InternalOperandTypeForCalculations.BOOLEAN) {
+    NEGATE("[ ]*[!]", 0, OperationTypeMode.UNARY, InternalOperandTypeForCalculations.BOOLEAN) {
         @Override
         public Operand doOperation(Operand... operands) {
 
@@ -73,6 +73,24 @@ public enum OperationType {
 
             InternalOperandTypeForCalculations internalOperandTypeForCalculations1 = InternalOperandTypeForCalculations.getOperationModeForOperand(operand1);
             InternalOperandTypeForCalculations internalOperandTypeForCalculations2 = InternalOperandTypeForCalculations.getOperationModeForOperand(operand2);
+
+            // check for Decimals and floating points => make it comparable
+            if (
+                    (
+                            InternalOperandTypeForCalculations.FLOAT.equals(internalOperandTypeForCalculations1)
+                                    && InternalOperandTypeForCalculations.DECIMAL.equals(internalOperandTypeForCalculations2)
+                    ) || (
+                            InternalOperandTypeForCalculations.FLOAT.equals(internalOperandTypeForCalculations2)
+                                    && InternalOperandTypeForCalculations.DECIMAL.equals(internalOperandTypeForCalculations1)
+                    )
+                    ) {
+
+                operand1 = OperandFactory.createOperationResult(Double.class, convertToDouble(operand1));
+                operand2 = OperandFactory.createOperationResult(Double.class, convertToDouble(operand2));
+                internalOperandTypeForCalculations1 = InternalOperandTypeForCalculations.getOperationModeForOperand(operand1);
+                internalOperandTypeForCalculations2 = InternalOperandTypeForCalculations.getOperationModeForOperand(operand2);
+
+            }
 
 
             if (!operand1.getOperandsJavaType().equals(operand2.getOperandsJavaType()) && !internalOperandTypeForCalculations1.equals(internalOperandTypeForCalculations2)) {
@@ -504,7 +522,7 @@ public enum OperationType {
      * @param operationTypeMode the OperationType
      * @return An array for passed operationTypeMode, an empty array for passed null value
      */
-    public OperationType[] getOperationsByOperationTypeMode(OperationTypeMode operationTypeMode) {
+    public static OperationType[] getOperationsByOperationTypeMode(OperationTypeMode operationTypeMode) {
 
         List<OperationType> result = new ArrayList<OperationType>();
 

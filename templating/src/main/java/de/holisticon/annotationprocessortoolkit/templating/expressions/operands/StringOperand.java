@@ -2,14 +2,15 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions.operands
 
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
 
 /**
  * String based operand.
  */
 public class StringOperand extends Operand<String> {
 
-    public StringOperand(OperandType operandType, String expressionString, boolean negate) {
-        super(operandType, expressionString, negate);
+    public StringOperand(OperandType operandType, String expressionString,  OperationType[] unaryOperationsToBeApplied) {
+        super(operandType, expressionString, unaryOperationsToBeApplied);
 
     }
 

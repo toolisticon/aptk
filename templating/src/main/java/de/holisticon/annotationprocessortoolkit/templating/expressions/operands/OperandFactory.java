@@ -3,6 +3,7 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions.operands
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Expression;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
 
 /**
  * Created by tobiasstamann on 06.10.17.
@@ -24,7 +25,7 @@ public class OperandFactory {
      * @param expression       Just used for OperandType EXPRESSION
      * @return
      */
-    public static Operand createOperand(OperandType operandType, String expressionString, boolean negate, Expression expression) {
+    public static Operand createOperand(OperandType operandType, String expressionString, OperationType[] unaryOperationsToBeApplied, Expression expression) {
 
         if ((operandType == null) || (expressionString == null)) {
             throw new IllegalArgumentException("operandType and expressionString must not be null");
@@ -34,27 +35,27 @@ public class OperandFactory {
 
         switch (operandType) {
             case BOOLEAN: {
-                operand = new BooleanOperand(operandType, expressionString, negate);
+                operand = new BooleanOperand(operandType, expressionString, unaryOperationsToBeApplied);
                 break;
             }
             case LONG: {
-                operand = new LongOperand(operandType, expressionString, negate);
+                operand = new LongOperand(operandType, expressionString, unaryOperationsToBeApplied);
                 break;
             }
             case DOUBLE: {
-                operand = new DoubleOperand(operandType, expressionString, negate);
+                operand = new DoubleOperand(operandType, expressionString, unaryOperationsToBeApplied);
                 break;
             }
             case STRING: {
-                operand = new StringOperand(operandType, expressionString, negate);
+                operand = new StringOperand(operandType, expressionString, unaryOperationsToBeApplied);
                 break;
             }
             case DYNAMIC_VALUE: {
-                operand = new DynamicOperand(operandType, expressionString, negate);
+                operand = new DynamicOperand(operandType, expressionString, unaryOperationsToBeApplied);
                 break;
             }
             case EXPRESSION: {
-                operand = new ExpressionOperand(operandType, expressionString, negate, expression);
+                operand = new ExpressionOperand(operandType, expressionString, unaryOperationsToBeApplied, expression);
                 break;
             }
             default:
@@ -67,7 +68,7 @@ public class OperandFactory {
 
 
     public static OperationResultOperand createOperationResult(Class type, Object value) {
-        return new OperationResultOperand(type,value);
+        return new OperationResultOperand(type, value);
     }
 
 }

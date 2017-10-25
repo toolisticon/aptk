@@ -3,6 +3,7 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions.operands
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Expression;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
 
 /**
  * Expression Based Operand.
@@ -11,8 +12,8 @@ public class ExpressionOperand extends Operand <Object>{
 
     private final Expression expression;
 
-    public ExpressionOperand(OperandType operandType, String expressionString, boolean negate,  Expression expression) {
-        super(operandType, expressionString, negate);
+    public ExpressionOperand(OperandType operandType, String expressionString, OperationType[] unaryOperationsToBeApplied, Expression expression) {
+        super(operandType, expressionString, unaryOperationsToBeApplied);
 
         this.expression = expression;
     }

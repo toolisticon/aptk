@@ -5,13 +5,15 @@ public abstract class Operand<T> {
 
     private final OperandType operandType;
     private final String expressionString;
-    private boolean negate;
+    private final OperationType[] unaryOperationsToBeApplied;
 
 
-    public Operand(OperandType operandType, String expressionString, boolean negate) {
+    public Operand(OperandType operandType, String expressionString, OperationType[] unaryOperationsToBeApplied) {
+
         this.operandType = operandType;
-        this.negate = negate;
         this.expressionString = expressionString;
+        this.unaryOperationsToBeApplied = unaryOperationsToBeApplied;
+
     }
 
 
@@ -21,6 +23,36 @@ public abstract class Operand<T> {
 
     public OperandType getOperandType() {
         return operandType;
+    }
+
+    protected OperationType[] getUnaryOperationsToBeApplied() {
+        return unaryOperationsToBeApplied;
+    }
+
+    /**
+     * Determines the java type after unary operations.
+     *
+     * @return the java type after the execution of all unary operations
+     * @throws IllegalArgumentException if at least one unary operation can't be applied.
+     */
+    protected Class determineJavaTypeAfterUnaryOperations() {
+
+        if (unaryOperationsToBeApplied.length > 0) {
+
+            Class startType = getOperandsJavaType();
+
+            // use reverse order for evaluation
+            for (int i = unaryOperationsToBeApplied.length - 1; i >= 0; i--) {
+
+                OperationType unaryOperation = unaryOperationsToBeApplied[i];
+
+                //if (unaryOperation.) {
+
+                //}
+
+            }
+        }
+        return null;
     }
 
     /**
