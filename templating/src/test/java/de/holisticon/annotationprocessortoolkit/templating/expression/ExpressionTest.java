@@ -2,6 +2,7 @@ package de.holisticon.annotationprocessortoolkit.templating.expression;
 
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Expression;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
 import org.hamcrest.MatcherAssert;
@@ -744,18 +745,33 @@ public class ExpressionTest {
         doTestSingleOperation(createOperand(Integer.class, 4), OperationType.EQUAL, createOperand(Float.class, 4.0f), true);
         doTestSingleOperation(createOperand(Integer.class, 4), OperationType.EQUAL, createOperand(Double.class, 4.0), true);
 
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.EQUAL, createOperand(Long.class, 5L), false);
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.EQUAL, createOperand(Float.class, 5.0f), false);
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.EQUAL, createOperand(Double.class, 5.0), false);
+
         doTestSingleOperation(createOperand(Long.class, 4L), OperationType.EQUAL, createOperand(Integer.class, 4), true);
         doTestSingleOperation(createOperand(Long.class, 4L), OperationType.EQUAL, createOperand(Float.class, 4.0f), true);
         doTestSingleOperation(createOperand(Long.class, 4L), OperationType.EQUAL, createOperand(Double.class, 4.0), true);
+
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.EQUAL, createOperand(Integer.class, 5), false);
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.EQUAL, createOperand(Float.class, 5.0f), false);
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.EQUAL, createOperand(Double.class, 5.0), false);
 
         doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.EQUAL, createOperand(Long.class, 4L), true);
         doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.EQUAL, createOperand(Integer.class, 4), true);
         doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.EQUAL, createOperand(Double.class, 4.0), true);
 
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.EQUAL, createOperand(Long.class, 5L), false);
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.EQUAL, createOperand(Integer.class, 5), false);
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.EQUAL, createOperand(Double.class, 5.0), false);
+
         doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.EQUAL, createOperand(Long.class, 4L), true);
         doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.EQUAL, createOperand(Float.class, 4.0f), true);
         doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.EQUAL, createOperand(Integer.class, 4), true);
 
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.EQUAL, createOperand(Long.class, 5L), false);
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.EQUAL, createOperand(Float.class, 5.0f), false);
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.EQUAL, createOperand(Integer.class, 5), false);
 
     }
 
@@ -763,6 +779,69 @@ public class ExpressionTest {
     // -- NOT EQUAL
     // ------------------------------------------------------
 
+    @Test
+    public void evaluate_ExpressionWithTwoOperandsAndOneOperation_notEqual_Test() {
+
+        // equality tests
+        doTestSingleOperation(createOperand(Boolean.class, true), OperationType.NOT_EQUAL, createOperand(Boolean.class, true), false);
+        doTestSingleOperation(createOperand(Boolean.class, true), OperationType.NOT_EQUAL, createOperand(Boolean.class, false), true);
+
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.NOT_EQUAL, createOperand(Integer.class, 4), false);
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.NOT_EQUAL, createOperand(Integer.class, 5), true);
+
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.NOT_EQUAL, createOperand(Long.class, 4L), false);
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.NOT_EQUAL, createOperand(Long.class, 5L), true);
+
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.NOT_EQUAL, createOperand(Float.class, 4.0f), false);
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.NOT_EQUAL, createOperand(Float.class, 5.0f), true);
+
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.NOT_EQUAL, createOperand(Double.class, 4.0), false);
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.NOT_EQUAL, createOperand(Double.class, 5.0), true);
+
+        doTestSingleOperation(createOperand(String.class, "4"), OperationType.NOT_EQUAL, createOperand(String.class, "4"), false);
+        doTestSingleOperation(createOperand(String.class, "4"), OperationType.NOT_EQUAL, createOperand(String.class, "5"), true);
+
+        Object testObjectEquality = new EqualTestClassWithoutEqualAndHashcodeImplementation();
+        doTestSingleOperation(createOperand(Object.class, testObjectEquality), OperationType.NOT_EQUAL, createOperand(Object.class, testObjectEquality), false);
+        doTestSingleOperation(createOperand(Object.class, new EqualTestClassWithoutEqualAndHashcodeImplementation()), OperationType.NOT_EQUAL, createOperand(Object.class, new EqualTestClassWithoutEqualAndHashcodeImplementation()), true);
+
+        doTestSingleOperation(createOperand(Object.class, new EqualTestClassWithEqualAndHashcodeImplementation(5)), OperationType.NOT_EQUAL, createOperand(Object.class, new EqualTestClassWithEqualAndHashcodeImplementation(5)), false);
+        doTestSingleOperation(createOperand(Object.class, new EqualTestClassWithEqualAndHashcodeImplementation(5)), OperationType.NOT_EQUAL, createOperand(Object.class, new EqualTestClassWithEqualAndHashcodeImplementation(10)), true);
+
+        // cross type operation
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.NOT_EQUAL, createOperand(Long.class, 4L), false);
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.NOT_EQUAL, createOperand(Float.class, 4.0f), false);
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.NOT_EQUAL, createOperand(Double.class, 4.0), false);
+
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.NOT_EQUAL, createOperand(Long.class, 5L), true);
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.NOT_EQUAL, createOperand(Float.class, 5.0f), true);
+        doTestSingleOperation(createOperand(Integer.class, 4), OperationType.NOT_EQUAL, createOperand(Double.class, 5.0), true);
+
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.NOT_EQUAL, createOperand(Integer.class, 4), false);
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.NOT_EQUAL, createOperand(Float.class, 4.0f), false);
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.NOT_EQUAL, createOperand(Double.class, 4.0), false);
+
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.NOT_EQUAL, createOperand(Integer.class, 5), true);
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.NOT_EQUAL, createOperand(Float.class, 5.0f), true);
+        doTestSingleOperation(createOperand(Long.class, 4L), OperationType.NOT_EQUAL, createOperand(Double.class, 5.0), true);
+
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.NOT_EQUAL, createOperand(Long.class, 4L), false);
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.NOT_EQUAL, createOperand(Integer.class, 4), false);
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.NOT_EQUAL, createOperand(Double.class, 4.0), false);
+
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.NOT_EQUAL, createOperand(Long.class, 5L), true);
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.NOT_EQUAL, createOperand(Integer.class, 5), true);
+        doTestSingleOperation(createOperand(Float.class, 4.0f), OperationType.NOT_EQUAL, createOperand(Double.class, 5.0), true);
+
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.NOT_EQUAL, createOperand(Long.class, 4L), false);
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.NOT_EQUAL, createOperand(Float.class, 4.0f), false);
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.NOT_EQUAL, createOperand(Integer.class, 4), false);
+
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.NOT_EQUAL, createOperand(Long.class, 5L), true);
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.NOT_EQUAL, createOperand(Float.class, 5.0f), true);
+        doTestSingleOperation(createOperand(Double.class, 4.0), OperationType.NOT_EQUAL, createOperand(Integer.class, 5), true);
+
+    }
 
     // ------------------------------------------------------
     // -- BOOLEAN OR
@@ -791,6 +870,19 @@ public class ExpressionTest {
         doTestSingleOperation(createOperand(Integer.class, 15), OperationType.OR, createOperand(Boolean.class, true), 15.0);
 
     }
+
+    // ------------------------------------------------------
+    // -- NEGATE
+    // ------------------------------------------------------
+
+
+    @Test
+    public void evaluate_negate_Test() {
+        MatcherAssert.assertThat((Boolean)OperandFactory.createOperand(OperandType.BOOLEAN, "true", getArray(OperationType.NEGATE),null).value(),Matchers.is(false));
+        MatcherAssert.assertThat((Boolean)OperandFactory.createOperand(OperandType.BOOLEAN, "false", getArray(OperationType.NEGATE),null).value(),Matchers.is(true));
+
+    }
+
 
     // ------------------------------------------------------
     // -- Common stuff
