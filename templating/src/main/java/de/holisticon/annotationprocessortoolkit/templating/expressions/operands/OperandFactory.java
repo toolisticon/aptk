@@ -35,33 +35,40 @@ public class OperandFactory {
 
         switch (operandType) {
             case BOOLEAN: {
-                operand = new BooleanOperand(operandType, expressionString, unaryOperationsToBeApplied);
+                operand = new BooleanOperand(operandType, expressionString);
                 break;
             }
             case LONG: {
-                operand = new LongOperand(operandType, expressionString, unaryOperationsToBeApplied);
+                operand = new LongOperand(operandType, expressionString);
                 break;
             }
             case DOUBLE: {
-                operand = new DoubleOperand(operandType, expressionString, unaryOperationsToBeApplied);
+                operand = new DoubleOperand(operandType, expressionString);
                 break;
             }
             case STRING: {
-                operand = new StringOperand(operandType, expressionString, unaryOperationsToBeApplied);
+                operand = new StringOperand(operandType, expressionString);
                 break;
             }
             case DYNAMIC_VALUE: {
-                operand = new DynamicOperand(operandType, expressionString, unaryOperationsToBeApplied);
+                operand = new DynamicOperand(operandType, expressionString);
                 break;
             }
             case EXPRESSION: {
-                operand = new ExpressionOperand(operandType, expressionString, unaryOperationsToBeApplied, expression);
+                operand = new ExpressionOperand(operandType, expressionString, expression);
                 break;
             }
             default:
                 throw new IllegalArgumentException("operandType " + operandType + " currently not implemented");
         }
 
+        if (unaryOperationsToBeApplied != null && unaryOperationsToBeApplied.length >= 1) {
+            for (int i = unaryOperationsToBeApplied.length - 1; i >= 0; i--) {
+
+                operand = OperandFactory.createUnaryOperand(operand, unaryOperationsToBeApplied[i]);
+
+            }
+        }
 
         return operand;
     }
@@ -69,6 +76,10 @@ public class OperandFactory {
 
     public static OperationResultOperand createOperationResult(Class type, Object value) {
         return new OperationResultOperand(type, value);
+    }
+
+    public static UnaryOperationWrapperOperand createUnaryOperand(Operand operand, OperationType operationType) {
+        return new UnaryOperationWrapperOperand(operand, operationType);
     }
 
 }

@@ -39,6 +39,40 @@ public class ExpressionParserTest {
     }
 
     @Test
+    public void parseExpression_parseNegation_negatedTrue_Test() {
+        Expression expression = ExpressionParser.parseExpression("!true");
+
+        MatcherAssert.assertThat(expression.getOperands().length, Matchers.is(1));
+        MatcherAssert.assertThat(expression.getOperationTypes().length, Matchers.is(0));
+
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(false));
+
+    }
+
+
+    @Test
+    public void parseExpression_parseNegation_negatedFalse_Test() {
+        Expression expression = ExpressionParser.parseExpression("!false");
+
+        MatcherAssert.assertThat(expression.getOperands().length, Matchers.is(1));
+        MatcherAssert.assertThat(expression.getOperationTypes().length, Matchers.is(0));
+
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+    }
+
+    @Test
+    public void parseExpression_parseNegation_moreComplexQuery_Test() {
+        Expression expression = ExpressionParser.parseExpression("!false || !true");
+
+        //MatcherAssert.assertThat(expression.getOperands().length, Matchers.is(1));
+        //MatcherAssert.assertThat(expression.getOperationTypes().length, Matchers.is(0));
+
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(false));
+
+    }
+
+    @Test
     public void parseExpression_parseString_simpleExpressionWithoutBraces() {
 
         Expression expression = ExpressionParser.parseExpression("'abv' == 1 && true != false || 1.4 > 1.2 >= 1 < abc.def <= abc");

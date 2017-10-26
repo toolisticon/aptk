@@ -9,8 +9,8 @@ import de.holisticon.annotationprocessortoolkit.templating.expressions.Operation
  */
 public class BooleanOperand extends Operand<Boolean> {
 
-    public BooleanOperand(OperandType operandType, String expressionString,  OperationType[] unaryOperationsToBeApplied) {
-        super(operandType, expressionString, unaryOperationsToBeApplied);
+    public BooleanOperand(OperandType operandType, String expressionString) {
+        super(operandType, expressionString);
 
     }
 

@@ -67,7 +67,7 @@ public class ExpressionParser {
             // determine unary operations to be applied on operand
             List<OperationType> unaryOperationTypesToBeApplied = new ArrayList<OperationType>();
 
-            boolean found = false;
+            boolean found = true;
             while(found) {
                 // next iteration
                 found = false;

@@ -13,7 +13,7 @@ public class OperationResultOperand extends Operand<Object> {
     private final Object value;
 
     public OperationResultOperand(Class<Object> type, Object value) {
-        super(OperandType.OPERATION_RESULT, null, new OperationType[0]);
+        super(OperandType.OPERATION_RESULT, null);
 
         this.type = type;
         this.value = value;

@@ -5,6 +5,7 @@ import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.UnaryOperationWrapperOperand;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -878,8 +879,15 @@ public class ExpressionTest {
 
     @Test
     public void evaluate_negate_Test() {
-        MatcherAssert.assertThat((Boolean)OperandFactory.createOperand(OperandType.BOOLEAN, "true", getArray(OperationType.NEGATE),null).value(),Matchers.is(false));
-        MatcherAssert.assertThat((Boolean)OperandFactory.createOperand(OperandType.BOOLEAN, "false", getArray(OperationType.NEGATE),null).value(),Matchers.is(true));
+
+        MatcherAssert.assertThat((Boolean) createUnaryOperand(OperationType.NEGATE,true).value(), Matchers.is(false));
+        MatcherAssert.assertThat((Boolean)createUnaryOperand(OperationType.NEGATE,false).value(),Matchers.is(true));
+
+    }
+
+    private UnaryOperationWrapperOperand createUnaryOperand (OperationType operationType, Boolean value) {
+        Operand operand = OperandFactory.createOperand(OperandType.BOOLEAN, "" + value, getArray(OperationType.NEGATE), null);
+        return OperandFactory.createUnaryOperand(operand, operationType);
 
     }
 

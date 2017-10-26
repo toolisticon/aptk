@@ -9,8 +9,8 @@ import de.holisticon.annotationprocessortoolkit.templating.expressions.Operation
  */
 public class LongOperand extends Operand <Long>{
 
-    public LongOperand(OperandType operandType, String expressionString,  OperationType[] unaryOperationsToBeApplied) {
-        super(operandType, expressionString, unaryOperationsToBeApplied);
+    public LongOperand(OperandType operandType, String expressionString) {
+        super(operandType, expressionString);
 
     }
 
