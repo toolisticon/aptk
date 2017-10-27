@@ -13,8 +13,8 @@ public class ExpressionOperand extends Operand<Object> {
 
     private Operand calculatedExpressionOperand;
 
-    public ExpressionOperand(OperandType operandType, String expressionString, Expression expression) {
-        super(operandType, expressionString);
+    public ExpressionOperand( String expressionString, Expression expression) {
+        super(OperandType.EXPRESSION, expressionString);
 
         this.expression = expression;
     }

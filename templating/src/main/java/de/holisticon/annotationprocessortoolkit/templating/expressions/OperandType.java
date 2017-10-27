@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public enum OperandType {
     DOUBLE("([-]?\\d+[.]\\d+)"),
     LONG("([-]?\\d+)"),
-    STRING("'(.*)'"),
+    STRING("['](.*?)(?<!(?:[\\\\]{2}){0,500}[\\\\])[']"),
     BOOLEAN("((?:true)|(?:false))"),
     DYNAMIC_VALUE("\\w+(?:[.]\\w+)*"),
     NULL_VALUE("null"),
@@ -16,14 +16,16 @@ public enum OperandType {
     EXPRESSION(null);
 
 
+    private final String regExpr;
     private final Pattern operandPattern;
 
     private OperandType(String regExpr) {
+        this.regExpr = regExpr;
         this.operandPattern = regExpr != null ? Pattern.compile(regExpr) : null;
     }
 
     public Pattern getOperandPattern() {
-        return operandPattern;
+        return regExpr != null ? Pattern.compile(regExpr) : null;
     }
 
     public static OperandType getOperandType(String operandString) {

@@ -64,14 +64,18 @@ public class ExpressionParserTest {
     @Test
     public void parseExpression_parseNegation_bracesA_Test() {
 
+        MatcherAssert.assertThat((Boolean) ExpressionParser.parseExpression("'' + (40 * (2+3)) == '200'").evaluateExpression().value(), Matchers.is(true));
+
+
         MatcherAssert.assertThat((Boolean) ExpressionParser.parseExpression("!(!false || !true)").evaluateExpression().value(), Matchers.is(false));
         MatcherAssert.assertThat((Boolean) ExpressionParser.parseExpression("!(!false || (!true || true))").evaluateExpression().value(), Matchers.is(false));
         MatcherAssert.assertThat((Long) ExpressionParser.parseExpression("(40 * (2+3))").evaluateExpression().value(), Matchers.is(200L));
         MatcherAssert.assertThat((Boolean) ExpressionParser.parseExpression("40 * (2+3) == 200").evaluateExpression().value(), Matchers.is(true));
         MatcherAssert.assertThat((Boolean) ExpressionParser.parseExpression("40 * (2+3) == 200.0 || false && true").evaluateExpression().value(), Matchers.is(true));
-        MatcherAssert.assertThat((Boolean) ExpressionParser.parseExpression("\"\" + (40 * (2+3)) == \"200\" || false && true").evaluateExpression().value(), Matchers.is(true));
+        MatcherAssert.assertThat((String) ExpressionParser.parseExpression("'' + (40 * (2+3))").evaluateExpression().value(), Matchers.is("200"));
+        MatcherAssert.assertThat((Boolean) ExpressionParser.parseExpression("'' + (40 * (2+3)) == '200'").evaluateExpression().value(), Matchers.is(true));
 
-
+        MatcherAssert.assertThat((Boolean) ExpressionParser.parseExpression("'' + (40 * (2+3)) == '200' || false && true").evaluateExpression().value(), Matchers.is(true));
 
     }
 

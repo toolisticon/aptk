@@ -10,8 +10,8 @@ import de.holisticon.annotationprocessortoolkit.templating.expressions.Operation
  */
 public class DoubleOperand extends Operand<Double> {
 
-    public DoubleOperand(OperandType operandType, String expressionString) {
-        super(operandType, expressionString);
+    public DoubleOperand( String expressionString) {
+        super(OperandType.DOUBLE, expressionString);
 
     }
 

@@ -880,14 +880,13 @@ public class ExpressionTest {
     @Test
     public void evaluate_negate_Test() {
 
-        MatcherAssert.assertThat((Boolean) createUnaryOperand(OperationType.NEGATE,true).value(), Matchers.is(false));
-        MatcherAssert.assertThat((Boolean)createUnaryOperand(OperationType.NEGATE,false).value(),Matchers.is(true));
+        MatcherAssert.assertThat((Boolean) createUnaryOperand(OperationType.NEGATE, true).value(), Matchers.is(false));
+        MatcherAssert.assertThat((Boolean) createUnaryOperand(OperationType.NEGATE, false).value(), Matchers.is(true));
 
     }
 
-    private UnaryOperationWrapperOperand createUnaryOperand (OperationType operationType, Boolean value) {
-        Operand operand = OperandFactory.createOperand(OperandType.BOOLEAN, "" + value, getArray(OperationType.NEGATE), null);
-        return OperandFactory.createUnaryOperand(operand, operationType);
+    private Operand createUnaryOperand(OperationType operationType, Boolean value) {
+        return OperandFactory.createOperand(OperandType.BOOLEAN, "" + value, getArray(OperationType.NEGATE), null);
 
     }
 

@@ -3,7 +3,6 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -136,52 +135,9 @@ public enum OperationType {
         @Override
         public Operand doOperation(Operand... operands) {
 
-            // do initial checks for constraints
-            doBaseChecks(this, operands, false, false);
 
-            // must be done after the base check !
-            Operand operand1 = operands[0];
-            Operand operand2 = operands[1];
+            return OperationType.NEGATE.doOperation(OperationType.EQUAL.doOperation(operands));
 
-            boolean result = false;
-
-            InternalOperandTypeForCalculations internalOperandTypeForCalculations1 = InternalOperandTypeForCalculations.getOperationModeForOperand(operand1);
-            InternalOperandTypeForCalculations internalOperandTypeForCalculations2 = InternalOperandTypeForCalculations.getOperationModeForOperand(operand2);
-
-
-            if (!operand1.getOperandsJavaType().equals(operand2.getOperandsJavaType()) && !internalOperandTypeForCalculations1.equals(internalOperandTypeForCalculations2)) {
-                throw new IllegalArgumentException("Incompatible operand types in '==' operation");
-            }
-
-
-            if (operand1.value() == null && operand2.value() == null) {
-                result = true;
-            } else if ((operand1.value() == null && operand2.value() != null) || (operand1.value() != null && operand2.value() == null)) {
-                result = false;
-            } else {
-
-                if (InternalOperandTypeForCalculations.FLOAT.equals(internalOperandTypeForCalculations1) && InternalOperandTypeForCalculations.FLOAT.equals(internalOperandTypeForCalculations2)) {
-
-                    Double operand1Value = convertToDouble(operand1);
-                    Double operand2Value = convertToDouble(operand2);
-
-                    result = operand1Value.equals(operand2Value);
-
-                } else if (InternalOperandTypeForCalculations.DECIMAL.equals(internalOperandTypeForCalculations1) && InternalOperandTypeForCalculations.DECIMAL.equals(internalOperandTypeForCalculations2)) {
-
-                    // do decimal based operation
-                    Long operand1Value = convertToLong(operand1);
-                    Long operand2Value = convertToLong(operand2);
-
-                    result = operand1Value.equals(operand2Value);
-
-                } else {
-                    result = operand1.value().equals(operand2.value());
-                }
-            }
-
-
-            return OperandFactory.createOperationResult(Boolean.class, !result);
         }
     },
     LESS_OR_EQUAL_THAN("[<][=]", 60, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.DECIMAL, InternalOperandTypeForCalculations.FLOAT) {
@@ -544,7 +500,30 @@ public enum OperationType {
             }
         }
 
-        result.sort(new ExecutionOrderComparator());
+        result.sort(new Comparator<OperationType>() {
+            @Override
+            public int compare(OperationType o1, OperationType o2) {
+
+                if (o1 == null && o2 == null) {
+                    return 0;
+                } else if (o1 != null && o2 == null) {
+                    return -1;
+                } else if (o1 == null && o2 != null) {
+                    return 1;
+                } else {
+
+                    if (o1.getOperationExecutionOrder() == o2.getOperationExecutionOrder()) {
+                        return 0;
+                    } else if (o1.getOperationExecutionOrder() < o2.getOperationExecutionOrder()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+
+                }
+            }
+
+        });
 
         return result.toArray(new OperationType[result.size()]);
     }
@@ -680,28 +659,5 @@ public enum OperationType {
         return null;
     }
 
-    private static class ExecutionOrderComparator implements Comparator<OperationType> {
-        @Override
-        public int compare(OperationType o1, OperationType o2) {
-
-            if (o1 == null && o2 == null) {
-                return 0;
-            } else if (o1 != null && o2 == null) {
-                return -1;
-            } else if (o1 == null && o2 != null) {
-                return 1;
-            } else {
-
-                if (o1.getOperationExecutionOrder() == o2.getOperationExecutionOrder()) {
-                    return 0;
-                } else if (o1.getOperationExecutionOrder()< o2.getOperationExecutionOrder()) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-
-            }
-        }
-    }
 
 }

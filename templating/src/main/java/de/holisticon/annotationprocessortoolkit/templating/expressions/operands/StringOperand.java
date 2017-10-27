@@ -2,15 +2,38 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions.operands
 
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
+
+import java.util.regex.Matcher;
 
 /**
  * String based operand.
  */
 public class StringOperand extends Operand<String> {
 
-    public StringOperand(OperandType operandType, String expressionString) {
-        super(operandType, expressionString);
+    private final String internalValue;
+
+    public StringOperand(String expressionString) {
+        super(OperandType.STRING, expressionString);
+
+
+        Matcher matcher = getOperandType().getOperandPattern().matcher(expressionString);
+        if (matcher.find()) {
+
+            String tempValue = matcher.group(1);
+
+            // replace escaped single quotes
+            tempValue = tempValue.replaceAll("\\\\[']", "'");
+
+            // replace escaped escape chars
+            tempValue = tempValue.replaceAll("\\\\", "\\");
+
+
+            internalValue = tempValue;
+
+        } else {
+            internalValue = null;
+        }
+
 
     }
 
@@ -21,7 +44,7 @@ public class StringOperand extends Operand<String> {
 
     @Override
     public String value() {
-        return getExpressionString();
+        return internalValue;
     }
 
 

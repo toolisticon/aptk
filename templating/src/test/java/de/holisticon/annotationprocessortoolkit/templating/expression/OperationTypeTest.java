@@ -497,13 +497,14 @@ public class OperationTypeTest {
 
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void notEqual_doOperation_withValidOperands_DoubleAndLongValues_Test() {
 
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        OperationType.NOT_EQUAL.doOperation(operand1, operand2).value();
+        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+
 
     }
 

@@ -10,8 +10,8 @@ import de.holisticon.annotationprocessortoolkit.templating.expressions.Operation
  */
 public class DynamicOperand extends Operand<Object> {
 
-    public DynamicOperand(OperandType operandType, String expressionString) {
-        super(operandType, expressionString);
+    public DynamicOperand( String expressionString) {
+        super(OperandType.DYNAMIC_VALUE, expressionString);
 
     }
 

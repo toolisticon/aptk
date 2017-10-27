@@ -35,27 +35,27 @@ public class OperandFactory {
 
         switch (operandType) {
             case BOOLEAN: {
-                operand = new BooleanOperand(operandType, expressionString);
+                operand = new BooleanOperand( expressionString);
                 break;
             }
             case LONG: {
-                operand = new LongOperand(operandType, expressionString);
+                operand = new LongOperand( expressionString);
                 break;
             }
             case DOUBLE: {
-                operand = new DoubleOperand(operandType, expressionString);
+                operand = new DoubleOperand( expressionString);
                 break;
             }
             case STRING: {
-                operand = new StringOperand(operandType, expressionString);
+                operand = new StringOperand(expressionString);
                 break;
             }
             case DYNAMIC_VALUE: {
-                operand = new DynamicOperand(operandType, expressionString);
+                operand = new DynamicOperand( expressionString);
                 break;
             }
             case EXPRESSION: {
-                operand = new ExpressionOperand(operandType, expressionString, expression);
+                operand = new ExpressionOperand( expressionString, expression);
                 break;
             }
             default:
