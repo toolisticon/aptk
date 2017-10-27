@@ -692,7 +692,13 @@ public enum OperationType {
                 return 1;
             } else {
 
-                return Integer.compare(o1.getOperationExecutionOrder(), o2.getOperationExecutionOrder());
+                if (o1.getOperationExecutionOrder() == o2.getOperationExecutionOrder()) {
+                    return 0;
+                } else if (o1.getOperationExecutionOrder()< o2.getOperationExecutionOrder()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
 
             }
         }
