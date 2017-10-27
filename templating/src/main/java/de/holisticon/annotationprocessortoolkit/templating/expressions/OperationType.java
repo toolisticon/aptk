@@ -3,6 +3,8 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +29,7 @@ public enum OperationType {
 
         }
     },
-    AND("[&]{2}", 50, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.BOOLEAN) {
+    AND("[&]{2}", 80, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.BOOLEAN) {
         @Override
         public Operand doOperation(Operand... operands) {
 
@@ -42,7 +44,7 @@ public enum OperationType {
 
         }
     },
-    OR("[|]{2}", 60, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.BOOLEAN) {
+    OR("[|]{2}", 85, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.BOOLEAN) {
         @Override
         public Operand doOperation(Operand... operands) {
 
@@ -58,7 +60,7 @@ public enum OperationType {
         }
 
     },
-    EQUAL("[=]{2}", 80, OperationTypeMode.BINARY) {
+    EQUAL("[=]{2}", 70, OperationTypeMode.BINARY) {
         @Override
         public Operand doOperation(Operand... operands) {
 
@@ -130,7 +132,7 @@ public enum OperationType {
 
         }
     },
-    NOT_EQUAL("[!][=]", 80, OperationTypeMode.BINARY) {
+    NOT_EQUAL("[!][=]", 70, OperationTypeMode.BINARY) {
         @Override
         public Operand doOperation(Operand... operands) {
 
@@ -182,7 +184,7 @@ public enum OperationType {
             return OperandFactory.createOperationResult(Boolean.class, !result);
         }
     },
-    LESS_OR_EQUAL_THAN("[<][=]", 80, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.DECIMAL, InternalOperandTypeForCalculations.FLOAT) {
+    LESS_OR_EQUAL_THAN("[<][=]", 60, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.DECIMAL, InternalOperandTypeForCalculations.FLOAT) {
         @Override
         public Operand doOperation(Operand... operands) {
 
@@ -217,7 +219,7 @@ public enum OperationType {
 
         }
     },
-    GREATER_OR_EQUAL_THAN("[>][=]", 80, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.DECIMAL, InternalOperandTypeForCalculations.FLOAT) {
+    GREATER_OR_EQUAL_THAN("[>][=]", 60, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.DECIMAL, InternalOperandTypeForCalculations.FLOAT) {
         @Override
         public Operand doOperation(Operand... operands) {
 
@@ -253,7 +255,7 @@ public enum OperationType {
 
         }
     },
-    LESS_THAN("[<]", 81, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.DECIMAL, InternalOperandTypeForCalculations.FLOAT) {
+    LESS_THAN("[<]", 60, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.DECIMAL, InternalOperandTypeForCalculations.FLOAT) {
         @Override
         public Operand doOperation(Operand... operands) {
 
@@ -288,7 +290,7 @@ public enum OperationType {
 
         }
     },
-    GREATER_THAN("[>]", 81, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.DECIMAL, InternalOperandTypeForCalculations.FLOAT) {
+    GREATER_THAN("[>]", 60, OperationTypeMode.BINARY, InternalOperandTypeForCalculations.DECIMAL, InternalOperandTypeForCalculations.FLOAT) {
         @Override
         public Operand doOperation(Operand... operands) {
 
@@ -516,6 +518,16 @@ public enum OperationType {
         return operationPattern;
     }
 
+
+    /**
+     * Gets the operations execution order weight.
+     *
+     * @return the execution order weight
+     */
+    public int getOperationExecutionOrder() {
+        return operationExecutionOrder;
+    }
+
     /**
      * Gets the operations by OperationTypeMode.
      *
@@ -531,6 +543,8 @@ public enum OperationType {
                 result.add(operationType);
             }
         }
+
+        result.sort(new ExecutionOrderComparator());
 
         return result.toArray(new OperationType[result.size()]);
     }
@@ -587,13 +601,14 @@ public enum OperationType {
         if (doSupportedTypesCheck) {
             for (int i = 0; i < operationType.getOperationTypeMode().getNumberOfOperands(); i++) {
                 if (!supportedTypes.contains(operands[i].getOperandsJavaType())) {
-                    throw new IllegalArgumentException("At least one operand type isn't supported by the operation");
+                    throw new IllegalArgumentException("At least one operand type (" + Operand.getStringRepresentationOfOperandsJavaTypes(operands) + ") isn't supported by the operation " + operationType.name());
                 }
             }
         }
 
 
     }
+
 
     /**
      * Converts an operand to a String value by using it's toString method.
@@ -665,5 +680,22 @@ public enum OperationType {
         return null;
     }
 
+    private static class ExecutionOrderComparator implements Comparator<OperationType> {
+        @Override
+        public int compare(OperationType o1, OperationType o2) {
+
+            if (o1 == null && o2 == null) {
+                return 0;
+            } else if (o1 != null && o2 == null) {
+                return -1;
+            } else if (o1 == null && o2 != null) {
+                return 1;
+            } else {
+
+                return Integer.compare(o1.getOperationExecutionOrder(), o2.getOperationExecutionOrder());
+
+            }
+        }
+    }
 
 }

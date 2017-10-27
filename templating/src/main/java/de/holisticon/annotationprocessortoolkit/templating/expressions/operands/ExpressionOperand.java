@@ -11,6 +11,8 @@ public class ExpressionOperand extends Operand<Object> {
 
     private final Expression expression;
 
+    private Operand calculatedExpressionOperand;
+
     public ExpressionOperand(OperandType operandType, String expressionString, Expression expression) {
         super(operandType, expressionString);
 
@@ -23,13 +25,19 @@ public class ExpressionOperand extends Operand<Object> {
 
     @Override
     public Class<Object> getOperandsJavaType() {
-        return null;
+        return calculateExpression().getOperandsJavaType();
     }
 
     @Override
     public Object value() {
-        return null;
+        return calculateExpression().value();
     }
 
+    private Operand calculateExpression() {
+        if (this.calculatedExpressionOperand == null) {
+            this.calculatedExpressionOperand = expression.evaluateExpression();
+        }
+        return calculatedExpressionOperand;
+    }
 
 }
