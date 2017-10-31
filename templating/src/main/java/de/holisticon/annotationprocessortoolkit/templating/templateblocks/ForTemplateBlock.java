@@ -1,6 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.templating.templateblocks;
 
-import de.holisticon.annotationprocessortoolkit.templating.ParseUtilities;
+import de.holisticon.annotationprocessortoolkit.templating.ModelPathResolver;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +56,7 @@ public class ForTemplateBlock implements TemplateBlock {
         variables.putAll(outerVariables);
 
         // get array or List
-        Object values = ParseUtilities.resolvePath(outerVariables, accessPath);
+        Object values = ModelPathResolver.resolveModelPath(outerVariables, accessPath).getValue();
 
         StringBuilder stringBuilder = new StringBuilder();
         if (values != null) {

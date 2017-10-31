@@ -1,7 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.templating;
 
 import de.holisticon.annotationprocessortoolkit.templating.exceptions.InvalidPathException;
-import de.holisticon.annotationprocessortoolkit.templating.exceptions.MissingClosingTagException;
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.ForTemplateBlock;
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.IfTemplateBlock;
 import de.holisticon.annotationprocessortoolkit.templating.templateblocks.PlainTextTemplateBlock;
@@ -48,7 +47,6 @@ public class ParseUtilities {
     }
 
 
-
     private enum NextBlockType {
         NONE,
         FOR,
@@ -75,8 +73,6 @@ public class ParseUtilities {
             if (nextBlock.getBeginIndex() != 0) {
                 binder.addTemplateBlock(new PlainTextTemplateBlock(tmpTemplateString.substring(0, nextBlock.getBeginIndex())));
             }
-
-
 
 
             switch (nextBlock.getTemplateBlockType()) {
@@ -134,9 +130,6 @@ public class ParseUtilities {
     }
 
 
-
-
-
     protected static ParserResult getNextDynamicText(String templateString) {
 
         if (templateString == null) {
@@ -189,116 +182,7 @@ public class ParseUtilities {
     }
 
 
-    public static Object resolvePath(Map<String, Object> model, String path) {
-
-        if (model == null || path == null) {
-            return null;
-        }
-
-        // break path strings to path tokens
-        String[] pathTokens = path.split("[.]");
-
-        Object currentNode = model;
-
-        for (String currentPathToken : pathTokens) {
-
-            if (currentNode == null) {
-                throw new InvalidPathException("Path cannot be resolved. Encountered null value in path so token " + currentPathToken + " cannot be applied.");
-            } else if (currentNode.getClass().isArray()) {
-                throw new InvalidPathException("Path cannot be resolved. Encountered array in path so token \" + currentPathToken + \" cannot be applied.");
-            } else if (currentNode instanceof Map) {
-
-                currentNode = ((Map) currentNode).get(currentPathToken);
-
-            } else {
-
-                // POJOS
-
-                // get getter
-                String getterName = getGetter(currentNode, currentPathToken);
-
-                if (getterName == null) {
-                    throw new InvalidPathException("Path cannot be resolved. Path token " + currentPathToken + " not resolvable");
-                }
-
-                // now call method via reflection
-                try {
-                    Method getterMethodToCall = currentNode.getClass().getMethod(getterName);
-
-                    currentNode = getterMethodToCall.invoke(currentNode);
-
-                } catch (NoSuchMethodException e) {
-                    // can be ignored - because it's guaranteed that the method exists
-                } catch (Exception e) {
-                    throw new InvalidPathException("Path cannot be resolved. Cannot invoke getter method", e);
-                }
 
 
-            }
-
-
-        }
-
-        return currentNode;
-
-    }
-
-    /**
-     * Gets the name of the getter.
-     * Getter method must take no parameters and must be public
-     *
-     * @param instance          the instance to search the getter in
-     * @param fieldNameOrGetter the name of the field or method to get the getter for
-     * @return the name of the method or getter method or null if no callable getter can be found
-     */
-    protected static String getGetter(Object instance, String fieldNameOrGetter) {
-
-        final String[] GETTER_PREFIXES = {"get", "is", "has"};
-
-        final String trimmedFieldNameOrGetter = fieldNameOrGetter != null ? fieldNameOrGetter.trim() : null;
-
-        if (instance == null || trimmedFieldNameOrGetter == null || trimmedFieldNameOrGetter.length() == 0) {
-            return null;
-        }
-
-        try {
-
-            // check if passed fieldNameOrGetter is already method without parameter
-            Method method = instance.getClass().getMethod(trimmedFieldNameOrGetter.trim());
-
-            if (java.lang.reflect.Modifier.isPublic(method.getModifiers())) {
-                return trimmedFieldNameOrGetter;
-            }
-
-
-        } catch (NoSuchMethodException e) {
-            // ignore this
-        }
-
-        // now check existence of method with getter prefixes - return first match
-        for (String getterPrefix : GETTER_PREFIXES) {
-
-            // construct getter name
-            String getterName = getterPrefix + trimmedFieldNameOrGetter.substring(0, 1).toUpperCase() + trimmedFieldNameOrGetter.substring(1);
-
-
-            try {
-
-                // check if passed fieldNameOrGetter is already method without parameter
-                Method method = instance.getClass().getMethod(getterName);
-                if (java.lang.reflect.Modifier.isPublic(method.getModifiers())) {
-                    return getterName;
-                }
-
-            } catch (NoSuchMethodException e) {
-                // ignore this
-            }
-
-
-        }
-
-        return null;
-
-    }
 
 }

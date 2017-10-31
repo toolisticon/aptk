@@ -7,6 +7,8 @@ import de.holisticon.annotationprocessortoolkit.templating.expressions.Operation
 
 /**
  * Floating point based operand.
+ *
+ * Uses Double.valueOf to get value from expression.
  */
 public class DoubleOperand extends Operand<Double> {
 

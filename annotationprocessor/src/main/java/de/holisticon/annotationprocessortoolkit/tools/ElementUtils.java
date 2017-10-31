@@ -612,7 +612,7 @@ public final class ElementUtils {
         }
 
         /**
-         * Returns all enclosed elements with matching name for passed regular expression.
+         * Returns all enclosed elements with matching name for passed regular expressions.
          *
          * @param element the element to search within
          * @param name    the name to search for
@@ -667,7 +667,7 @@ public final class ElementUtils {
 
 
         /**
-         * Returns all enclosed elements with matching name for passed regular expression.
+         * Returns all enclosed elements with matching name for passed regular expressions.
          *
          * @param element the element to search within
          * @param kind    the kinds to filter

@@ -1,5 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.templating.templateblocks;
 
+import de.holisticon.annotationprocessortoolkit.templating.ModelPathResolver;
 import de.holisticon.annotationprocessortoolkit.templating.ParseUtilities;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ public class VariableTextTemplateBlock implements TemplateBlock {
 
     private final String accessPath;
 
-    public VariableTextTemplateBlock( String accessPath) {
+    public VariableTextTemplateBlock(String accessPath) {
         this.accessPath = accessPath;
     }
 
@@ -24,10 +25,9 @@ public class VariableTextTemplateBlock implements TemplateBlock {
 
     @Override
     public String getContent(Map<String, Object> variables) {
-        Object valueToPrint = ParseUtilities.resolvePath(variables, accessPath);
 
-
-        return valueToPrint != null ? valueToPrint.toString() : null;
+        ModelPathResolver.ResolvedModelPathResult valueToPrint = ModelPathResolver.resolveModelPath(variables, accessPath);
+        return valueToPrint != null && valueToPrint.getValue() != null ? valueToPrint.getValue().toString() : null;
 
     }
 }

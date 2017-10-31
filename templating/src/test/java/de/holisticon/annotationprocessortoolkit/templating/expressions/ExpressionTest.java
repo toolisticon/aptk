@@ -1,11 +1,6 @@
-package de.holisticon.annotationprocessortoolkit.templating.expression;
+package de.holisticon.annotationprocessortoolkit.templating.expressions;
 
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Expression;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.UnaryOperationWrapperOperand;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;

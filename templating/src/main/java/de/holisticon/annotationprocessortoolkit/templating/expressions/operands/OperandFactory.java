@@ -21,7 +21,7 @@ public class OperandFactory {
      * Factory class for the creation of Operands.
      *
      * @param operandType      the detected operand type
-     * @param expressionString the operands string representation parsed from expression string
+     * @param expressionString the operands string representation parsed from expressions string
      * @param expression       Just used for OperandType EXPRESSION
      * @return
      */
@@ -35,15 +35,15 @@ public class OperandFactory {
 
         switch (operandType) {
             case BOOLEAN: {
-                operand = new BooleanOperand( expressionString);
+                operand = new BooleanOperand(expressionString);
                 break;
             }
             case LONG: {
-                operand = new LongOperand( expressionString);
+                operand = new LongOperand(expressionString);
                 break;
             }
             case DOUBLE: {
-                operand = new DoubleOperand( expressionString);
+                operand = new DoubleOperand(expressionString);
                 break;
             }
             case STRING: {
@@ -51,11 +51,15 @@ public class OperandFactory {
                 break;
             }
             case DYNAMIC_VALUE: {
-                operand = new DynamicOperand( expressionString);
+                operand = new DynamicOperand(expressionString);
                 break;
             }
             case EXPRESSION: {
-                operand = new ExpressionOperand( expressionString, expression);
+                operand = new ExpressionOperand(expressionString, expression);
+                break;
+            }
+            case NULL_VALUE: {
+                operand = new NullValueOperand(expressionString);
                 break;
             }
             default:

@@ -1,4 +1,4 @@
-package de.holisticon.annotationprocessortoolkit.templating.expression;
+package de.holisticon.annotationprocessortoolkit.templating.expressions;
 
 
 public class OperationTest {

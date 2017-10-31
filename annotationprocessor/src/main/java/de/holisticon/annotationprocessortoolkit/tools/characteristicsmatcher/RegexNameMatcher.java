@@ -4,7 +4,7 @@ import javax.lang.model.element.Element;
 import java.util.regex.Pattern;
 
 /**
- * Class for checking for find matching elements by name and regular expression.
+ * Class for checking for find matching elements by name and regular expressions.
  */
 public class RegexNameMatcher implements GenericMatcher<String> {
 

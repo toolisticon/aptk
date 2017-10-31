@@ -44,7 +44,7 @@ public class Expression {
 
         }
 
-        // goto binary expression by execution order (execution order is from left to right)
+        // goto binary expressions by execution order (execution order is from left to right)
         for (OperationType binaryOperationType : OperationType.getOperationsByOperationTypeMode(OperationTypeMode.BINARY)) {
 
             boolean foundOperation = true;
@@ -84,7 +84,7 @@ public class Expression {
             OperationType operationtype = newOperationTypes.get(operationIndex);
 
 
-            // do operation and update expression
+            // do operation and update expressions
             newOperands.remove(operationIndex + 1);
             newOperands.set(operationIndex, operationtype.doOperation(operand1, operand2));
             newOperationTypes.remove(operationIndex);

@@ -2,14 +2,14 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions.operands
 
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
 
 /**
  * Boolean based operand.
+ * Uses Boolean.valueOf to determine value of passed expression string.
  */
 public class BooleanOperand extends Operand<Boolean> {
 
-    public BooleanOperand( String expressionString) {
+    public BooleanOperand(String expressionString) {
         super(OperandType.BOOLEAN, expressionString);
 
     }

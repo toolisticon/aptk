@@ -1,14 +1,16 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions;
 
+import de.holisticon.annotationprocessortoolkit.templating.ModelPathResolver;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Parser to paarse an expression String.
+ * Parser to paarse an expressions String.
  */
 public class ExpressionParser {
 
@@ -31,8 +33,14 @@ public class ExpressionParser {
         }
     }
 
+    public static Expression parseExpression(String expressionString, Map<String, Object> model) {
 
-    public static Expression parseExpression(String expressionString) {
+        ModelPathResolver.modelMapThreadLocal.set(model);
+        return parseExpression(expressionString);
+
+    }
+
+    protected static Expression parseExpression(String expressionString) {
 
         return parseExpressionRecursively(expressionString, false).getExpression();
 
@@ -68,7 +76,7 @@ public class ExpressionParser {
             List<OperationType> unaryOperationTypesToBeApplied = new ArrayList<OperationType>();
 
             boolean found = true;
-            while(found) {
+            while (found) {
                 // next iteration
                 found = false;
 
@@ -87,8 +95,6 @@ public class ExpressionParser {
 
                 }
             }
-
-
 
 
             // check if brace is opened => do subexpression
@@ -150,7 +156,7 @@ public class ExpressionParser {
     /**
      * Gets the next operation type.
      *
-     * @param expressionString the expression string
+     * @param expressionString the expressions string
      * @param index            the current processing index
      * @return
      */

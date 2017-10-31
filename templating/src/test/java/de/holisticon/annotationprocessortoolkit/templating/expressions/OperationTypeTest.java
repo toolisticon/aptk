@@ -1,7 +1,5 @@
-package de.holisticon.annotationprocessortoolkit.templating.expression;
+package de.holisticon.annotationprocessortoolkit.templating.expressions;
 
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
