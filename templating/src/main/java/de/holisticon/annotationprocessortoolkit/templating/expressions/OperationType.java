@@ -3,6 +3,7 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -500,7 +501,7 @@ public enum OperationType {
             }
         }
 
-        result.sort(new Comparator<OperationType>() {
+        Collections.sort(result, new Comparator<OperationType>() {
             @Override
             public int compare(OperationType o1, OperationType o2) {
 
