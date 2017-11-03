@@ -166,7 +166,7 @@ public enum OperationType {
                 Double operand1Value = convertToDouble(operand1);
                 Double operand2Value = convertToDouble(operand2);
 
-                return OperandFactory.createOperationResult(Double.class, operand1Value <= operand2Value);
+                return OperandFactory.createOperationResult(Boolean.class, operand1Value <= operand2Value);
 
             } else {
 
@@ -174,7 +174,7 @@ public enum OperationType {
                 Long operand1Value = convertToLong(operand1);
                 Long operand2Value = convertToLong(operand2);
 
-                return OperandFactory.createOperationResult(Long.class, operand1Value <= operand2Value);
+                return OperandFactory.createOperationResult(Boolean.class, operand1Value <= operand2Value);
 
             }
 
@@ -201,7 +201,7 @@ public enum OperationType {
                 Double operand1Value = convertToDouble(operand1);
                 Double operand2Value = convertToDouble(operand2);
 
-                return OperandFactory.createOperationResult(Double.class, operand1Value >= operand2Value);
+                return OperandFactory.createOperationResult(Boolean.class, operand1Value >= operand2Value);
 
             } else {
 
@@ -209,7 +209,7 @@ public enum OperationType {
                 Long operand1Value = convertToLong(operand1);
                 Long operand2Value = convertToLong(operand2);
 
-                return OperandFactory.createOperationResult(Long.class, operand1Value >= operand2Value);
+                return OperandFactory.createOperationResult(Boolean.class, operand1Value >= operand2Value);
 
             }
 
@@ -237,7 +237,7 @@ public enum OperationType {
                 Double operand1Value = convertToDouble(operand1);
                 Double operand2Value = convertToDouble(operand2);
 
-                return OperandFactory.createOperationResult(Double.class, operand1Value < operand2Value);
+                return OperandFactory.createOperationResult(Boolean.class, operand1Value < operand2Value);
 
             } else {
 
@@ -245,7 +245,7 @@ public enum OperationType {
                 Long operand1Value = convertToLong(operand1);
                 Long operand2Value = convertToLong(operand2);
 
-                return OperandFactory.createOperationResult(Long.class, operand1Value < operand2Value);
+                return OperandFactory.createOperationResult(Boolean.class, operand1Value < operand2Value);
 
             }
 
@@ -272,7 +272,7 @@ public enum OperationType {
                 Double operand1Value = convertToDouble(operand1);
                 Double operand2Value = convertToDouble(operand2);
 
-                return OperandFactory.createOperationResult(Double.class, operand1Value > operand2Value);
+                return OperandFactory.createOperationResult(Boolean.class, operand1Value > operand2Value);
 
             } else {
 
@@ -280,7 +280,7 @@ public enum OperationType {
                 Long operand1Value = convertToLong(operand1);
                 Long operand2Value = convertToLong(operand2);
 
-                return OperandFactory.createOperationResult(Long.class, operand1Value > operand2Value);
+                return OperandFactory.createOperationResult(Boolean.class, operand1Value > operand2Value);
 
             }
 
