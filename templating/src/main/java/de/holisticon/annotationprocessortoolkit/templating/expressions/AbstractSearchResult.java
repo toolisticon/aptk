@@ -1,9 +1,9 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions;
 
 /**
- * Created by tobiasstamann on 30.09.17.
+ * Abstract search result for parsing of expressions.
  */
-public class AbstractSearchResult <T>{
+public abstract class AbstractSearchResult <T>{
 
 
     private final int startIndex;

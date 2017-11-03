@@ -11,6 +11,13 @@ import org.junit.Test;
 public class StringOperandTest {
 
     @Test
+    public void test_getOperandsJavaType() {
+
+        MatcherAssert.assertThat(new StringOperand("'test'").getOperandsJavaType(), Matchers.equalTo((Class) String.class));
+
+    }
+
+    @Test
     public void testStringWithoutEscapes() {
 
         MatcherAssert.assertThat(new StringOperand("'ABC DEF'").value(), Matchers.is("ABC DEF"));

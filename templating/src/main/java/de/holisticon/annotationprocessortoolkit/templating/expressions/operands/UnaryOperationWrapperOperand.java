@@ -1,8 +1,6 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operations.OperationType;
 
 /**
  * Created by tobiasstamann on 26.10.17.
@@ -15,13 +13,12 @@ public class UnaryOperationWrapperOperand extends Operand<Object> {
     private Operand resultOperand = null;
 
     public UnaryOperationWrapperOperand(Operand operand, OperationType unaryOperationType) {
-        super(OperandType.OPERATION_RESULT, null);
+        super();
 
         this.operand = operand;
         this.unaryOperationType = unaryOperationType;
 
     }
-
 
 
     @Override
@@ -42,6 +39,11 @@ public class UnaryOperationWrapperOperand extends Operand<Object> {
         }
 
         return resultOperand.value();
+    }
+
+    @Override
+    public OperandType getOperandType() {
+        return OperandType.OPERATION_RESULT;
     }
 
     private void calculateResultOperand() {

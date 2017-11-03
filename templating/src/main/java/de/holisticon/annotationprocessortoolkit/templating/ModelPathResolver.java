@@ -59,7 +59,7 @@ public class ModelPathResolver {
      * Resolves path on the model.
      *
      * @param model the model
-     * @param path the path to resolve
+     * @param path  the path to resolve
      * @return
      */
     public static ResolvedModelPathResult resolveModelPath(Map<String, Object> model, String path) {
@@ -87,6 +87,11 @@ public class ModelPathResolver {
                 }
 
                 currentNode = ((Map) currentNode).get(currentPathToken);
+
+                // Now use values type
+                if (currentNode != null) {
+                    currentNodeType = currentNode.getClass();
+                }
 
             } else {
 

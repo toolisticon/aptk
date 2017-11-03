@@ -1,15 +1,12 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
-
 /**
  * String based operand.
  */
-public class LongOperand extends Operand<Long> {
+public class LongOperand extends ParsedOperand<Long> {
 
     public LongOperand(String expressionString) {
-        super(OperandType.LONG, expressionString);
+        super(expressionString);
 
     }
 
@@ -23,4 +20,8 @@ public class LongOperand extends Operand<Long> {
         return Long.valueOf(getExpressionString());
     }
 
+    @Override
+    public OperandType getOperandType() {
+        return OperandType.LONG;
+    }
 }

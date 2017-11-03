@@ -1,11 +1,13 @@
-package de.holisticon.annotationprocessortoolkit.templating.expressions;
+package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.Operand;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit test for {@link de.holisticon.annotationprocessortoolkit.templating.expressions.Operand}.
+ * Unit test for {@link Operand}.
  */
 public class OperandTest {
 

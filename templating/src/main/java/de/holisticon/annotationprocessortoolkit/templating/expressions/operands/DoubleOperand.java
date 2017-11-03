@@ -1,19 +1,15 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType;
-
 
 /**
  * Floating point based operand.
  *
  * Uses Double.valueOf to get value from expression.
  */
-public class DoubleOperand extends Operand<Double> {
+public class DoubleOperand extends ParsedOperand<Double> {
 
     public DoubleOperand( String expressionString) {
-        super(OperandType.DOUBLE, expressionString);
+        super( expressionString);
 
     }
 
@@ -27,4 +23,8 @@ public class DoubleOperand extends Operand<Double> {
         return Double.valueOf(getExpressionString());
     }
 
+    @Override
+    public OperandType getOperandType() {
+        return OperandType.DOUBLE;
+    }
 }

@@ -1,19 +1,17 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
 import de.holisticon.annotationprocessortoolkit.templating.ModelPathResolver;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
 
 
 /**
  * Dynamic operand queried from models.
  */
-public class DynamicOperand extends Operand<Object> {
+public class DynamicOperand extends ParsedOperand<Object> {
 
     private Object value;
 
     public DynamicOperand(String expressionString) {
-        super(OperandType.DYNAMIC_VALUE, expressionString);
+        super( expressionString);
 
     }
 
@@ -33,4 +31,8 @@ public class DynamicOperand extends Operand<Object> {
 
     }
 
+    @Override
+    public OperandType getOperandType() {
+        return OperandType.DYNAMIC_VALUE;
+    }
 }

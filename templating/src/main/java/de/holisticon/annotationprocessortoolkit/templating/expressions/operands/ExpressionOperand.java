@@ -1,20 +1,18 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
 import de.holisticon.annotationprocessortoolkit.templating.expressions.Expression;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
 
 /**
  * Expression Based Operand.
  */
-public class ExpressionOperand extends Operand<Object> {
+public class ExpressionOperand extends ParsedOperand<Object> {
 
     private final Expression expression;
 
     private Operand calculatedExpressionOperand;
 
     public ExpressionOperand( String expressionString, Expression expression) {
-        super(OperandType.EXPRESSION, expressionString);
+        super( expressionString);
 
         this.expression = expression;
     }
@@ -31,6 +29,11 @@ public class ExpressionOperand extends Operand<Object> {
     @Override
     public Object value() {
         return calculateExpression().value();
+    }
+
+    @Override
+    public OperandType getOperandType() {
+        return OperandType.EXPRESSION;
     }
 
     private Operand calculateExpression() {

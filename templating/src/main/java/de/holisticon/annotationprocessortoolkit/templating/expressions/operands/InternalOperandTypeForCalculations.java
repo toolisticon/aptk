@@ -1,4 +1,4 @@
-package de.holisticon.annotationprocessortoolkit.templating.expressions;
+package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
 import java.util.Arrays;
 import java.util.HashSet;

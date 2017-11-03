@@ -1,6 +1,10 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions;
 
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.ExpressionOperand;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.Operand;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandType;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operations.OperationType;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operations.OperationTypeMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;

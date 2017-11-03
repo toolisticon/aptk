@@ -9,22 +9,31 @@ import org.junit.Test;
  */
 public class BooleanOperandTest {
 
-    @Test
-    public void test_createBooleanOperand(){
+    @Test(expected = IllegalArgumentException.class)
+    public void test_passedNullValue() {
+        new BooleanOperand(null).value();
+    }
 
-        MatcherAssert.assertThat((Boolean)new BooleanOperand("true").value(), Matchers.is(true));
-        MatcherAssert.assertThat((Boolean)new BooleanOperand("false").value(), Matchers.is(false));
+
+    @Test
+    public void test_getOperandsJavaType() {
+
+        MatcherAssert.assertThat(new BooleanOperand("true").getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
 
     }
 
     @Test
-    public void test_passedNullValue(){
-        MatcherAssert.assertThat((Boolean)new BooleanOperand(null).value(), Matchers.is(false));
+    public void test_createBooleanOperand() {
+
+        MatcherAssert.assertThat((Boolean) new BooleanOperand("true").value(), Matchers.is(true));
+        MatcherAssert.assertThat((Boolean) new BooleanOperand("false").value(), Matchers.is(false));
+
     }
 
+
     @Test
-    public void test_nonBooleanValue(){
-        MatcherAssert.assertThat((Boolean)new BooleanOperand("XYZ").value(), Matchers.is(false));
+    public void test_nonBooleanValue() {
+        MatcherAssert.assertThat((Boolean) new BooleanOperand("XYZ").value(), Matchers.is(false));
     }
 
 }

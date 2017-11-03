@@ -1,5 +1,6 @@
-package de.holisticon.annotationprocessortoolkit.templating.expressions;
+package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -7,7 +8,7 @@ import org.junit.Test;
 import java.util.regex.Matcher;
 
 /**
- * Unit test for {@link de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType}.
+ * Unit test for {@link OperandType}.
  */
 public class OperandTypeTest {
 

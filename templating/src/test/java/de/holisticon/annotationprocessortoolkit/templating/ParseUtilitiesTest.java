@@ -2,7 +2,6 @@ package de.holisticon.annotationprocessortoolkit.templating;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -26,8 +25,6 @@ public class ParseUtilitiesTest {
         MatcherAssert.assertThat(ParseUtilities.readResourceToString("/ReadResourceToStringTest.txt"), Matchers.is(EXPECTED_RESULT));
 
     }
-
-
 
 
     public static class ParseStringTestPojo {
@@ -103,7 +100,6 @@ public class ParseUtilitiesTest {
     }
 
     @Test
-    @Ignore
     public void parseString_ComplexTemplateWithAllControlBlocks() throws Exception {
 
 

@@ -1,12 +1,14 @@
-package de.holisticon.annotationprocessortoolkit.templating.expressions;
+package de.holisticon.annotationprocessortoolkit.templating.expressions.operations;
 
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.NullValueOperand;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link de.holisticon.annotationprocessortoolkit.templating.expressions.OperationType}.
+ * Unit tests for {@link OperationType}.
  */
 public class OperationTypeTest {
 
@@ -111,6 +113,30 @@ public class OperationTypeTest {
 
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void and_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.AND.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void and_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.AND.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void and_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.AND.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
+
+    }
+
+
     // --------------------------------------------------------
     // -- OR
     // --------------------------------------------------------
@@ -209,6 +235,30 @@ public class OperationTypeTest {
     public void or_doOperation_withValidOperands_bothOperandsAreNull_Test() {
 
         OperationType.OR.doOperation(null, null).value();
+
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void or_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.OR.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void or_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.OR.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void or_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.OR.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
 
     }
 
@@ -388,6 +438,30 @@ public class OperationTypeTest {
     }
 
 
+    @Test
+    public void equal_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, new NullValueOperand("null")).value(), Matchers.is(false));
+
+    }
+
+    @Test
+    public void equal_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.EQUAL.doOperation(new NullValueOperand("null"), operand1).value();
+        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(new NullValueOperand("null"), operand1).value(), Matchers.is(false));
+
+    }
+
+    @Test
+    public void equal_doOperation_withTwoNullValuedOperand_Test() {
+
+        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value(), Matchers.is(true));
+
+    }
+
     // --------------------------------------------------------
     // -- NOT EQUAL
     // --------------------------------------------------------
@@ -561,6 +635,30 @@ public class OperationTypeTest {
     public void notEqual_doOperation_withValidOperands_bothOperandsAreNull_Test() {
 
         OperationType.NOT_EQUAL.doOperation(null, null).value();
+
+    }
+
+    @Test
+    public void notEqual_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, new NullValueOperand("null")).value(), Matchers.is(true));
+
+    }
+
+    @Test
+    public void notEqual_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.EQUAL.doOperation(new NullValueOperand("null"), operand1).value();
+        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(new NullValueOperand("null"), operand1).value(), Matchers.is(true));
+
+    }
+
+    @Test
+    public void notEqual_doOperation_withTwoNullValuedOperand_Test() {
+
+        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value(), Matchers.is(false));
 
     }
 
@@ -748,6 +846,29 @@ public class OperationTypeTest {
 
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void lessOrEqual_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void lessOrEqual_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.LESS_OR_EQUAL_THAN.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void lessOrEqual_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.LESS_OR_EQUAL_THAN.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
+
+    }
+
     // --------------------------------------------------------
     // -- LESS_OR_EQUAL
     // --------------------------------------------------------
@@ -929,6 +1050,29 @@ public class OperationTypeTest {
     public void greaterOrEqual_doOperation_withValidOperands_bothOperandsAreNull_Test() {
 
         OperationType.GREATER_OR_EQUAL_THAN.doOperation(null, null).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void greaterOrEqual_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void greaterOrEqual_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.GREATER_OR_EQUAL_THAN.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void greaterOrEqual_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.GREATER_OR_EQUAL_THAN.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
 
     }
 
@@ -1116,6 +1260,30 @@ public class OperationTypeTest {
 
     }
 
+
+    @Test(expected = IllegalArgumentException.class)
+    public void lessThan_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.LESS_THAN.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void lessThan_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.LESS_THAN.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void lessThan_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.LESS_THAN.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
+
+    }
+
     // --------------------------------------------------------
     // -- GREATER_THAN
     // --------------------------------------------------------
@@ -1249,6 +1417,29 @@ public class OperationTypeTest {
 
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void greaterThan_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.GREATER_THAN.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void greaterThan_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.GREATER_THAN.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void greaterThan_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.GREATER_THAN.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
+
+    }
+
     // --------------------------------------------------------
     // -- MULTIPLY
     // --------------------------------------------------------
@@ -1360,6 +1551,30 @@ public class OperationTypeTest {
         OperationType.MULTIPLICATION.doOperation(null, null).value();
 
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void multiplication_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.MULTIPLICATION.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void multiplication_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.MULTIPLICATION.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void multiplication_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.MULTIPLICATION.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
+
+    }
+
 
     // --------------------------------------------------------
     // -- DIVIDE
@@ -1473,6 +1688,30 @@ public class OperationTypeTest {
 
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void division_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.DIVISION.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void division_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.DIVISION.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void division_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.DIVISION.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
+
+    }
+
+
     // --------------------------------------------------------
     // -- ADD
     // --------------------------------------------------------
@@ -1584,6 +1823,32 @@ public class OperationTypeTest {
         OperationType.ADDITION.doOperation(null, null).value();
 
     }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addition_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.ADDITION.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addition_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.ADDITION.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addition_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.ADDITION.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
+
+    }
+
+
     // --------------------------------------------------------
     // -- SUBTRACT
     // --------------------------------------------------------
@@ -1694,6 +1959,30 @@ public class OperationTypeTest {
     public void subtraction_doOperation_withValidOperands_bothOperandsAreNull_Test() {
 
         OperationType.SUBTRACTION.doOperation(null, null).value();
+
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void subtraction_doOperation_withOneNullValuedOperand1_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.SUBTRACTION.doOperation(operand1, new NullValueOperand("null")).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void subtraction_doOperation_withOneNullValuedOperand2_Test() {
+
+        Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
+        OperationType.SUBTRACTION.doOperation(new NullValueOperand("null"), operand1).value();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void subtraction_doOperation_withTwoNullValuedOperand_Test() {
+
+        OperationType.SUBTRACTION.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
 
     }
 

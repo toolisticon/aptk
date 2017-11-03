@@ -1,9 +1,16 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions;
 
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.ExpressionOperand;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.Operand;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandType;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operations.OperationType;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operations.OperationTypeSearchResult;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ExpressionParserTest {
@@ -71,6 +78,7 @@ public class ExpressionParserTest {
 
         MatcherAssert.assertThat((Boolean) ExpressionParser.parseExpression("'' + (40 * (2+3)) == '200' || false && true").evaluateExpression().value(), Matchers.is(true));
 
+
     }
 
     @Test
@@ -136,6 +144,143 @@ public class ExpressionParserTest {
         MatcherAssert.assertThat(((Operand) (expression3.getOperands()[0])).getOperandType(), Matchers.is(OperandType.BOOLEAN));
         MatcherAssert.assertThat(expression3.getOperationTypes()[0], Matchers.is(OperationType.AND));
         MatcherAssert.assertThat(((Operand) (expression3.getOperands()[1])).getOperandType(), Matchers.is(OperandType.BOOLEAN));
+
+
+    }
+
+    @Test
+    public void evaluateExpression_withModel_equalWithTwoDynamicNullValues() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", null);
+        model.put("value2", null);
+
+        Expression expression = ExpressionParser.parseExpression("value1 == value2", model);
+
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+
+    }
+
+    @Test
+    public void evaluateExpression_withModel_equalOneDynamicNullValue1() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", 5L);
+        model.put("value2", null);
+
+        Expression expression = ExpressionParser.parseExpression("value1 == value2", model);
+
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(false));
+
+
+    }
+
+    @Test
+    public void evaluateExpression_withModel_equalOneDynamicNullValue2() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", null);
+        model.put("value2", 5L);
+
+        Expression expression = ExpressionParser.parseExpression("value1 == value2", model);
+
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(false));
+
+
+    }
+
+
+    @Test
+    public void evaluateExpression_withModel_equalOperands() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", 5L);
+        model.put("value2", 5L);
+
+        Expression expression = ExpressionParser.parseExpression("value1 == value2", model);
+
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+
+    }
+
+    @Test
+    public void evaluateExpression_withModel_equalOperandsWithDifferentTypes() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", 5L);
+        model.put("value2", 5);
+
+        Expression expression = ExpressionParser.parseExpression("value1 == value2", model);
+
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+
+    }
+
+    @Test
+    public void evaluateExpression_withModel_notEqualOperands() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", 5L);
+        model.put("value2", 6L);
+
+        Expression expression = ExpressionParser.parseExpression("value1 == value2", model);
+
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(false));
+
+
+    }
+
+    @Test
+    public void evaluateExpression_withModel_moreComplexMixedExpression() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", 5L);
+        model.put("value2", 6L);
+
+        Expression expression = ExpressionParser.parseExpression("(value1 == 5) && (value2 == 6.0)", model);
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+        expression = ExpressionParser.parseExpression("(value1 == 5) && (value2 == 6.0)", model);
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+
+    }
+
+
+    @Test
+    public void evaluateExpression_withModel_evenMoreComplexMixedExpression() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", 5L);
+        model.put("value2", 6L);
+
+        model.put("value3", null);
+        Expression expression = ExpressionParser.parseExpression("(value1 == 5) || value3 != null && (value2 == 6.0) ", model);
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+    }
+
+    @Test
+    public void evaluateExpression_withModel_testVariationOfWhitespaces() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", 5L);
+        model.put("value2", 6L);
+        model.put("value3", null);
+        Expression expression = ExpressionParser.parseExpression("    (value1==5 +6 -2*3)  ||value3 !=null      && (    value2 *3 ==18.0  ) ", model);
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
 
 
     }

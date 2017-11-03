@@ -1,16 +1,13 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
-
 /**
  * Operand that represents a null value.
  * Internal Java Type is null.
  */
-public class NullValueOperand extends Operand<Object> {
+public class NullValueOperand extends ParsedOperand<Object> {
 
     public NullValueOperand(String expressionString) {
-        super(OperandType.NULL_VALUE, expressionString);
+        super(expressionString);
 
     }
 
@@ -24,4 +21,11 @@ public class NullValueOperand extends Operand<Object> {
     public Object value() {
         return null;
     }
+
+    @Override
+    public OperandType getOperandType() {
+        return OperandType.NULL_VALUE;
+    }
+
+
 }

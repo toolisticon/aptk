@@ -14,6 +14,12 @@ import java.util.Map;
  */
 public class DynamicOperandTest {
 
+    @Test(expected = IllegalArgumentException.class)
+    public void test_passedNullValue() {
+        new DynamicOperand(null).value();
+    }
+
+
     @Test
     public void testResolveModelValue() {
 
@@ -87,7 +93,6 @@ public class DynamicOperandTest {
 
         MatcherAssert.assertThat((Integer) new DynamicOperand("test.testClass1.value").value(), Matchers.is(5));
         MatcherAssert.assertThat((Integer) new DynamicOperand("test.getTestClass1.getValue").value(), Matchers.is(5));
-
 
 
     }

@@ -1,27 +1,18 @@
-package de.holisticon.annotationprocessortoolkit.templating.expressions;
+package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
 
 public abstract class Operand<T> {
 
-    private final OperandType operandType;
-    private final String expressionString;
 
 
-    public Operand(OperandType operandType, String expressionString) {
+    public Operand() {
 
-        this.operandType = operandType;
-        this.expressionString = expressionString;
 
     }
 
 
-    public String getExpressionString() {
-        return expressionString;
-    }
 
-    public OperandType getOperandType() {
-        return operandType;
-    }
+    public abstract OperandType getOperandType();
 
 
     /**

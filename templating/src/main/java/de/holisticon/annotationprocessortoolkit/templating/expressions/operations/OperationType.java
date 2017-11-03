@@ -1,5 +1,7 @@
-package de.holisticon.annotationprocessortoolkit.templating.expressions;
+package de.holisticon.annotationprocessortoolkit.templating.expressions.operations;
 
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.InternalOperandTypeForCalculations;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.Operand;
 import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.OperandFactory;
 
 import java.util.ArrayList;
@@ -95,7 +97,9 @@ public enum OperationType {
             }
 
 
-            if (!operand1.getOperandsJavaType().equals(operand2.getOperandsJavaType()) && !internalOperandTypeForCalculations1.equals(internalOperandTypeForCalculations2)) {
+            if (operand1.getOperandsJavaType() != null && operand2.getOperandsJavaType() != null
+                    && !operand1.getOperandsJavaType().equals(operand2.getOperandsJavaType())
+                    && !internalOperandTypeForCalculations1.equals(internalOperandTypeForCalculations2)) {
                 throw new IllegalArgumentException("Incompatible operand types in '==' operation");
             }
 

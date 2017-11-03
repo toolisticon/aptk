@@ -1,19 +1,16 @@
 package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
-import de.holisticon.annotationprocessortoolkit.templating.expressions.Operand;
-import de.holisticon.annotationprocessortoolkit.templating.expressions.OperandType;
-
 import java.util.regex.Matcher;
 
 /**
  * String based operand.
  */
-public class StringOperand extends Operand<String> {
+public class StringOperand extends ParsedOperand<String> {
 
     private final String internalValue;
 
     public StringOperand(String expressionString) {
-        super(OperandType.STRING, expressionString);
+        super(expressionString);
 
 
         Matcher matcher = getOperandType().getOperandPattern().matcher(expressionString);
@@ -47,5 +44,9 @@ public class StringOperand extends Operand<String> {
         return internalValue;
     }
 
+    @Override
+    public OperandType getOperandType() {
+        return OperandType.STRING;
+    }
 
 }

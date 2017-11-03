@@ -1,4 +1,4 @@
-package de.holisticon.annotationprocessortoolkit.templating.expressions;
+package de.holisticon.annotationprocessortoolkit.templating.expressions.operands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ public enum OperandType {
     LONG("([-]?\\d+)"),
     STRING("['](.*?)(?<!(?:[\\\\]{2}){0,500}[\\\\])[']"),
     BOOLEAN("((?:true)|(?:false))"),
-    DYNAMIC_VALUE("\\w+(?:[.]\\w+)*"),
     NULL_VALUE("null"),
+    DYNAMIC_VALUE("\\w+(?:[.]\\w+)*"),
     OPERATION_RESULT(null),
     EXPRESSION(null);
 
