@@ -1,10 +1,25 @@
 abc
-!<for name: model.loopValues>value : $<name.value>
-!<if xyz>
+value : 1
+8j
 abc
 def
-!<static>
-!<if>
-!</static>
-!</if>
-!</for>
+
+!<if asds>
+
+
+value : 2
+8j
+abc
+def
+
+!<if asds>
+
+
+value : 3
+8j
+abc
+def
+
+!<if asds>
+
+

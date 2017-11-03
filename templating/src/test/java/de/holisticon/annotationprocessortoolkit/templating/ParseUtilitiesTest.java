@@ -2,7 +2,6 @@ package de.holisticon.annotationprocessortoolkit.templating;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -101,7 +100,7 @@ public class ParseUtilitiesTest {
     }
 
     @Test
-    @Ignore
+
     public void parseString_ComplexTemplateWithAllControlBlocks() throws Exception {
 
 
@@ -119,6 +118,7 @@ public class ParseUtilitiesTest {
 
         model.put("loopValues", loopValues);
         values.put("model", model);
+        values.put("xyz", true);
 
 
         MatcherAssert.assertThat(ParseUtilities.parseString(TEMPLATE_STRING).getContent(values), Matchers.is(EXPECTED_RESULT));

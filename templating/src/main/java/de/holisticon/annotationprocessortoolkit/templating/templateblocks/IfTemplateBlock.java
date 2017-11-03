@@ -1,5 +1,9 @@
 package de.holisticon.annotationprocessortoolkit.templating.templateblocks;
 
+import de.holisticon.annotationprocessortoolkit.templating.expressions.Expression;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.ExpressionParser;
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.Operand;
+
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,8 +50,15 @@ public class IfTemplateBlock implements TemplateBlock {
     @Override
     public String getContent(Map<String, Object> outerVariables) {
 
+        Expression expression = ExpressionParser.parseExpression(accessPath, outerVariables);
+        Operand result = expression.evaluateExpression();
+        if (result.value() != null && result.getOperandsJavaType().equals(Boolean.class) ) {
 
-        return binder.getContent(outerVariables).toString();
+
+            return binder.getContent(outerVariables).toString();
+        } else {
+            return "";
+        }
 
     }
 

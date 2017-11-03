@@ -21,6 +21,6 @@ public class StaticTemplateBlock implements TemplateBlock {
 
     @Override
     public String getContent(Map<String, Object> variables) {
-        return null;
+        return content;
     }
 }
