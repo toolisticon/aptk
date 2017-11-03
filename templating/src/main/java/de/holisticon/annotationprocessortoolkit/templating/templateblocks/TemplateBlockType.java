@@ -33,13 +33,13 @@ public enum TemplateBlockType {
         this.hasAttributes = hasAttributes != null ? hasAttributes : false;
 
         if (!isControlBlock) {
-            blockDetectionPattern = Pattern.compile("[$]<\\s*((?:\\w|.)*?)\\s*>");
+            blockDetectionPattern = Pattern.compile("[$][{]\\s*((?:\\w|.)*?)\\s*[}]");
         } else {
 
             if (hasAttributes) {
-                blockDetectionPattern = Pattern.compile("[!][<]" + controlBlockCommand + "\\s+(.*?)\\s*>");
+                blockDetectionPattern = Pattern.compile("[!][{]" + controlBlockCommand + "\\s+(.*?)\\s*[}]");
             } else {
-                blockDetectionPattern = Pattern.compile("[!][<]" + controlBlockCommand + "\\s*>");
+                blockDetectionPattern = Pattern.compile("[!][{]" + controlBlockCommand + "\\s*[}]");
             }
 
         }
@@ -239,7 +239,7 @@ public enum TemplateBlockType {
      * @return the detection pattern for a end control block tag, otherwise null
      */
     public Pattern getEndControlBlockPattern() {
-        return isControlBlock ? Pattern.compile("[!][<][/]" + controlBlockCommand + "\\s*>") : null;
+        return isControlBlock ? Pattern.compile("[!][{][/]" + controlBlockCommand + "\\s*[}]") : null;
     }
 
     public boolean isControlBlock() {

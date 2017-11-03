@@ -2,6 +2,8 @@ package de.holisticon.annotationprocessortoolkit.templating.expressions.operands
 
 import de.holisticon.annotationprocessortoolkit.templating.ModelPathResolver;
 import de.holisticon.annotationprocessortoolkit.templating.exceptions.InvalidPathException;
+import de.holisticon.annotationprocessortoolkit.templating.testclasses.TestClass1;
+import de.holisticon.annotationprocessortoolkit.templating.testclasses.TestClass2;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -59,23 +61,6 @@ public class DynamicOperandTest {
 
     }
 
-    public static class TestClass1 {
-
-        private final int value = 5;
-
-        public int getValue() {
-            return value;
-        }
-    }
-
-    public static class TestClass2 {
-
-        private final TestClass1 testClass1 = new TestClass1();
-
-        public TestClass1 getTestClass1() {
-            return testClass1;
-        }
-    }
 
     @Test
     public void test_complexPaths() {

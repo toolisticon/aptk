@@ -1,3 +1,3 @@
 abc
-!<for name: model.loopValues>value : $<name.value>
-!</for>
+!{for name: model.loopValues}value : ${name.value}
+!{/for}

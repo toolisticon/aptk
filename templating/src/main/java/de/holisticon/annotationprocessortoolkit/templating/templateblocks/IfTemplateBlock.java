@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class IfTemplateBlock implements TemplateBlock {
 
-    private final static Pattern ATTRIBUTE_PATTERN = Pattern.compile("\\s*(.+?)\\s*");
+    private final static Pattern ATTRIBUTE_PATTERN = Pattern.compile("(.+)");
 
 
     private final String accessPath;
@@ -52,7 +52,7 @@ public class IfTemplateBlock implements TemplateBlock {
 
         Expression expression = ExpressionParser.parseExpression(accessPath, outerVariables);
         Operand result = expression.evaluateExpression();
-        if (result.value() != null && result.getOperandsJavaType().equals(Boolean.class) ) {
+        if (result.value() != null && result.getOperandsJavaType().equals(Boolean.class) && (Boolean) result.value()) {
 
 
             return binder.getContent(outerVariables).toString();

@@ -56,7 +56,7 @@ public class ParseUtilities {
     }
 
 
-    public static final Pattern DYNAMIC_TEXT_BLOCK_REGEX = Pattern.compile("[$]<\\s*((?:\\w|.)*?)\\s*>");
+    public static final Pattern DYNAMIC_TEXT_BLOCK_REGEX = Pattern.compile("[$][{]\\s*((?:\\w|.)*?)\\s*[}]");
 
 
     public static TemplateBlockBinder parseString(String templateString) {

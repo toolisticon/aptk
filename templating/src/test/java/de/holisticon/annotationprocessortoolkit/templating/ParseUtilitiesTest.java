@@ -1,5 +1,7 @@
 package de.holisticon.annotationprocessortoolkit.templating;
 
+import de.holisticon.annotationprocessortoolkit.templating.expressions.operands.DynamicOperandTest;
+import de.holisticon.annotationprocessortoolkit.templating.testclasses.TestClass2;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -100,7 +102,6 @@ public class ParseUtilitiesTest {
     }
 
     @Test
-
     public void parseString_ComplexTemplateWithAllControlBlocks() throws Exception {
 
 
@@ -125,5 +126,41 @@ public class ParseUtilitiesTest {
 
     }
 
+
+    @Test
+    public void parseString_templateWithDifferentIfStatements_Test() throws Exception {
+
+
+        final String TEMPLATE_STRING = ParseUtilities.readResourceToString("/TestTemplateWithDifferentIfStatments.tpl");
+        final String EXPECTED_RESULT = ParseUtilities.readResourceToString("/TestTemplateWithDifferentIfStatements.expectedResult");
+
+        Map<String, Object> values = new HashMap<String, Object>();
+        values.put("xyz", true);
+
+
+        MatcherAssert.assertThat(ParseUtilities.parseString(TEMPLATE_STRING).getContent(values), Matchers.is(EXPECTED_RESULT));
+
+    }
+
+
+
+
+
+    @Test
+    public void parseString_templateWithDifferentVariableTextBlocks_Test() throws Exception {
+
+
+        final String TEMPLATE_STRING = ParseUtilities.readResourceToString("/TestTemplateWithDifferentVariableTextBlocks.tpl");
+        final String EXPECTED_RESULT = ParseUtilities.readResourceToString("/TestTemplateWithDifferentVariableTextBlocks.expectedResult");
+
+
+        Map<String, Object> values = new HashMap<String, Object>();
+        values.put("test", new TestClass2());
+
+
+
+        MatcherAssert.assertThat(ParseUtilities.parseString(TEMPLATE_STRING).getContent(values), Matchers.is(EXPECTED_RESULT));
+
+    }
 
 }
