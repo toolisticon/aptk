@@ -264,12 +264,29 @@ public class ExpressionParserTest {
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("value1", 5L);
         model.put("value2", 6L);
-
         model.put("value3", null);
+
         Expression expression = ExpressionParser.parseExpression("(value1 == 5) || value3 != null && (value2 == 6.0) ", model);
         MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
 
     }
+
+
+    @Test
+    public void evaluateExpression_withModel_evenMoreComplexMixedExpressionWithStringConcatenation() {
+
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("value1", 5L);
+        model.put("value2", 6L);
+        model.put("value3", null);
+        model.put("value4", "Text");
+
+        Expression expression = ExpressionParser.parseExpression("(value1 == 5) || value3 != null && (value2 == 6.0 ) && value4 + '1' == 'Text1'", model);
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+    }
+
 
     @Test
     public void evaluateExpression_withModel_testVariationOfWhitespaces() {
@@ -284,5 +301,62 @@ public class ExpressionParserTest {
 
 
     }
+
+
+    // ------------------------------------------------------------------------------------------------------
+    // -- Test handling of whitespaces
+    // ------------------------------------------------------------------------------------------------------
+
+
+    @Test
+    public void evaluateExpression_testLeadingWhitespaces() {
+
+        Expression expression = ExpressionParser.parseExpression("    5==5");
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+    }
+
+
+    @Test
+    public void evaluateExpression_testTrailingWhitespaces() {
+
+        Expression expression = ExpressionParser.parseExpression("5==5     ");
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+    }
+
+    @Test
+    public void evaluateExpression_testLeadingWhitespacesInBraces() {
+
+        Expression expression = ExpressionParser.parseExpression("(    5==5)");
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+    }
+
+
+    @Test
+    public void evaluateExpression_testTrailingWhitespacesInBraces() {
+
+        Expression expression = ExpressionParser.parseExpression("(5==5     )");
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+    }
+
+    @Test
+    public void evaluateExpression_testInbetweenWhitespaces1() {
+
+        Expression expression = ExpressionParser.parseExpression("5==      5");
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+    }
+
+    @Test
+    public void evaluateExpression_testInbetweenWhitespaces2() {
+
+        Expression expression = ExpressionParser.parseExpression("5        ==5");
+        MatcherAssert.assertThat((Boolean) expression.evaluateExpression().value(), Matchers.is(true));
+
+    }
+
 
 }

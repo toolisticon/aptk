@@ -11,17 +11,15 @@ public enum OperandType {
     STRING("['](.*?)(?<!(?:[\\\\]{2}){0,500}[\\\\])[']"),
     BOOLEAN("((?:true)|(?:false))"),
     NULL_VALUE("null"),
-    DYNAMIC_VALUE("\\w+(?:[.]\\w+)*"),
+    DYNAMIC_VALUE("(\\w+(?:[.]\\w+)*)"),
     OPERATION_RESULT(null),
     EXPRESSION(null);
 
 
     private final String regExpr;
-    private final Pattern operandPattern;
 
     private OperandType(String regExpr) {
-        this.regExpr = regExpr;
-        this.operandPattern = regExpr != null ? Pattern.compile(regExpr) : null;
+        this.regExpr = "[ ]*" + regExpr + "[ ]*";
     }
 
     public Pattern getOperandPattern() {
@@ -36,7 +34,7 @@ public enum OperandType {
 
         for (OperandType operandType : values()) {
 
-            if (operandType.operandPattern.matcher(operandString).matches()) {
+            if (operandType.getOperandPattern().matcher(operandString).matches()) {
                 return operandType;
             }
 
