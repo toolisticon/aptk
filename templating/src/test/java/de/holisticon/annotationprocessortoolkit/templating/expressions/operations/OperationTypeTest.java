@@ -23,7 +23,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, true);
 
-        MatcherAssert.assertThat((Boolean) OperationType.AND.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.AND.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
+
 
     }
 
@@ -33,7 +36,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, false);
 
-        MatcherAssert.assertThat((Boolean) OperationType.AND.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.AND.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -43,7 +48,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, false);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, true);
 
-        MatcherAssert.assertThat((Boolean) OperationType.AND.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.AND.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -53,7 +60,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, false);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, false);
 
-        MatcherAssert.assertThat((Boolean) OperationType.AND.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.AND.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -63,7 +72,7 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, null);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, false);
 
-        OperationType.AND.doOperation(operand1, operand2).value();
+        OperationType.AND.doOperation(operand1, operand2);
 
     }
 
@@ -73,8 +82,7 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, null);
 
-        OperationType.AND.doOperation(operand1, operand2).value();
-
+        OperationType.AND.doOperation(operand1, operand2);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -83,7 +91,7 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, null);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, null);
 
-        OperationType.AND.doOperation(operand1, operand2).value();
+        OperationType.AND.doOperation(operand1, operand2);
 
     }
 
@@ -148,7 +156,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, true);
 
-        MatcherAssert.assertThat((Boolean) OperationType.OR.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.OR.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -158,7 +168,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, false);
 
-        MatcherAssert.assertThat((Boolean) OperationType.OR.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.OR.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -168,7 +180,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, false);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, true);
 
-        MatcherAssert.assertThat((Boolean) OperationType.OR.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.OR.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -178,7 +192,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, false);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, false);
 
-        MatcherAssert.assertThat((Boolean) OperationType.OR.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.OR.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -273,7 +289,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, true);
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.EQUAL.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -283,7 +301,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, false);
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.EQUAL.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
 
     }
@@ -294,7 +314,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, false);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, true);
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.EQUAL.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
 
     }
@@ -315,7 +337,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 6L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.EQUAL.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -325,7 +349,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.EQUAL.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -335,7 +361,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.EQUAL.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -345,7 +373,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 6);
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.EQUAL.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -355,7 +385,9 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 5.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.EQUAL.doOperation(operand1, operand2);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -365,7 +397,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 6.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -442,7 +477,10 @@ public class OperationTypeTest {
     public void equal_doOperation_withOneNullValuedOperand1_Test() {
 
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(operand1, new NullValueOperand("null")).value(), Matchers.is(false));
+
+        Operand result = OperationType.EQUAL.doOperation(operand1, new NullValueOperand("null"));
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -450,15 +488,19 @@ public class OperationTypeTest {
     public void equal_doOperation_withOneNullValuedOperand2_Test() {
 
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
-        OperationType.EQUAL.doOperation(new NullValueOperand("null"), operand1).value();
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(new NullValueOperand("null"), operand1).value(), Matchers.is(false));
+
+        Operand result = OperationType.EQUAL.doOperation(new NullValueOperand("null"), operand1);
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
     @Test
     public void equal_doOperation_withTwoNullValuedOperand_Test() {
 
-        MatcherAssert.assertThat((Boolean) OperationType.EQUAL.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value(), Matchers.is(true));
+        Operand result = OperationType.EQUAL.doOperation(new NullValueOperand("null"), new NullValueOperand("null"));
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -473,7 +515,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, true);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -483,7 +528,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, false);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
 
     }
@@ -494,7 +542,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, false);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, true);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
 
     }
@@ -505,7 +556,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, false);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, false);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -515,7 +569,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 6L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -525,7 +582,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -535,7 +595,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -545,7 +608,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 6);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -555,7 +621,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 5.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -565,7 +634,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 6.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -575,7 +647,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
 
     }
@@ -587,7 +662,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, null);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, false);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -597,7 +675,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, null);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -607,7 +688,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, null);
         Operand operand2 = OperandFactory.createOperationResult(Boolean.class, null);
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
 
     }
@@ -642,7 +726,12 @@ public class OperationTypeTest {
     public void notEqual_doOperation_withOneNullValuedOperand1_Test() {
 
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(operand1, new NullValueOperand("null")).value(), Matchers.is(true));
+
+
+        Operand result = OperationType.NOT_EQUAL.doOperation(operand1, new NullValueOperand("null"));
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -650,15 +739,21 @@ public class OperationTypeTest {
     public void notEqual_doOperation_withOneNullValuedOperand2_Test() {
 
         Operand operand1 = OperandFactory.createOperationResult(Boolean.class, true);
-        OperationType.EQUAL.doOperation(new NullValueOperand("null"), operand1).value();
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(new NullValueOperand("null"), operand1).value(), Matchers.is(true));
+
+        Operand result = OperationType.NOT_EQUAL.doOperation(new NullValueOperand("null"), operand1);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
     @Test
     public void notEqual_doOperation_withTwoNullValuedOperand_Test() {
 
-        MatcherAssert.assertThat((Boolean) OperationType.NOT_EQUAL.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value(), Matchers.is(false));
+        Operand result = OperationType.NOT_EQUAL.doOperation(new NullValueOperand("null"), new NullValueOperand("null"));
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -694,7 +789,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -704,7 +802,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 6L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -714,7 +815,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -724,7 +828,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -734,7 +841,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -744,7 +854,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 6);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -754,7 +867,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 5.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -764,7 +880,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 6.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -774,7 +893,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 6.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 5.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -784,7 +906,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -901,7 +1026,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -911,7 +1039,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 6L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -921,7 +1052,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -931,7 +1065,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -941,7 +1078,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -951,7 +1091,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 6);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -961,7 +1104,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 5.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -971,7 +1117,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 6.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.GREATER_OR_EQUAL_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1108,7 +1257,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1118,7 +1270,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 6L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -1128,7 +1283,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1138,7 +1296,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1148,7 +1309,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1158,7 +1322,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 6);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -1168,7 +1335,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 5.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1178,7 +1348,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 6.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -1188,7 +1361,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 6.0);
         Operand operand2 = OperandFactory.createOperationResult(Float.class, 5.0f);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1198,7 +1374,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Double.class, 5.0);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.LESS_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.LESS_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1316,7 +1495,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.GREATER_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -1326,7 +1508,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 6L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.GREATER_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1336,7 +1521,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.GREATER_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1346,7 +1534,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 5L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_THAN.doOperation(operand1, operand2).value(), Matchers.is(false));
+        Operand result = OperationType.GREATER_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(false));
 
     }
 
@@ -1356,7 +1547,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Boolean) OperationType.GREATER_THAN.doOperation(operand1, operand2).value(), Matchers.is(true));
+        Operand result = OperationType.GREATER_THAN.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Boolean.class));
+        MatcherAssert.assertThat((Boolean) result.value(), Matchers.is(true));
 
     }
 
@@ -1471,7 +1665,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Long) OperationType.MULTIPLICATION.doOperation(operand1, operand2).value(), Matchers.is(30L));
+        Operand result = OperationType.MULTIPLICATION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Long.class));
+        MatcherAssert.assertThat((Long) result.value(), Matchers.is(30L));
 
     }
 
@@ -1481,7 +1678,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 6L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Long) OperationType.MULTIPLICATION.doOperation(operand1, operand2).value(), Matchers.is(30L));
+        Operand result = OperationType.MULTIPLICATION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Long.class));
+        MatcherAssert.assertThat((Long) result.value(), Matchers.is(30L));
 
     }
 
@@ -1491,7 +1691,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Float.class, 6f);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Double) OperationType.MULTIPLICATION.doOperation(operand1, operand2).value(), Matchers.is(30.0));
+        Operand result = OperationType.MULTIPLICATION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Double.class));
+        MatcherAssert.assertThat((Double) result.value(), Matchers.is(30.0));
 
     }
 
@@ -1607,7 +1810,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 30L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Long) OperationType.DIVISION.doOperation(operand1, operand2).value(), Matchers.is(6L));
+        Operand result = OperationType.DIVISION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Long.class));
+        MatcherAssert.assertThat((Long) result.value(), Matchers.is(6L));
 
     }
 
@@ -1617,7 +1823,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 30L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Long) OperationType.DIVISION.doOperation(operand1, operand2).value(), Matchers.is(6L));
+        Operand result = OperationType.DIVISION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Long.class));
+        MatcherAssert.assertThat((Long) result.value(), Matchers.is(6L));
 
     }
 
@@ -1627,7 +1836,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Float.class, 30.0f);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Double) OperationType.DIVISION.doOperation(operand1, operand2).value(), Matchers.is(6.0));
+        Operand result = OperationType.DIVISION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Double.class));
+        MatcherAssert.assertThat((Double) result.value(), Matchers.is(6.0));
 
     }
 
@@ -1732,7 +1944,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(String.class, "test");
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((String) OperationType.ADDITION.doOperation(operand1, operand2).value(), Matchers.is("test5"));
+        Operand result = OperationType.ADDITION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) String.class));
+        MatcherAssert.assertThat((String) result.value(), Matchers.is("test5"));
 
 
     }
@@ -1743,7 +1958,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 30L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Long) OperationType.ADDITION.doOperation(operand1, operand2).value(), Matchers.is(35L));
+        Operand result = OperationType.ADDITION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Long.class));
+        MatcherAssert.assertThat((Long) result.value(), Matchers.is(35L));
 
     }
 
@@ -1753,7 +1971,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 30L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Long) OperationType.ADDITION.doOperation(operand1, operand2).value(), Matchers.is(35L));
+        Operand result = OperationType.ADDITION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Long.class));
+        MatcherAssert.assertThat((Long) result.value(), Matchers.is(35L));
 
     }
 
@@ -1763,7 +1984,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Float.class, 30.0f);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Double) OperationType.ADDITION.doOperation(operand1, operand2).value(), Matchers.is(35.0));
+        Operand result = OperationType.ADDITION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Double.class));
+        MatcherAssert.assertThat((Double) result.value(), Matchers.is(35.0));
 
     }
 
@@ -1881,7 +2105,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 30L);
         Operand operand2 = OperandFactory.createOperationResult(Long.class, 5L);
 
-        MatcherAssert.assertThat((Long) OperationType.SUBTRACTION.doOperation(operand1, operand2).value(), Matchers.is(25L));
+        Operand result = OperationType.SUBTRACTION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Long.class));
+        MatcherAssert.assertThat((Long) result.value(), Matchers.is(25L));
 
     }
 
@@ -1891,7 +2118,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Long.class, 30L);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Long) OperationType.SUBTRACTION.doOperation(operand1, operand2).value(), Matchers.is(25L));
+        Operand result = OperationType.SUBTRACTION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Long.class));
+        MatcherAssert.assertThat((Long) result.value(), Matchers.is(25L));
 
     }
 
@@ -1901,7 +2131,10 @@ public class OperationTypeTest {
         Operand operand1 = OperandFactory.createOperationResult(Float.class, 30.0f);
         Operand operand2 = OperandFactory.createOperationResult(Integer.class, 5);
 
-        MatcherAssert.assertThat((Double) OperationType.SUBTRACTION.doOperation(operand1, operand2).value(), Matchers.is(25.0));
+        Operand result = OperationType.SUBTRACTION.doOperation(operand1, operand2);
+
+        MatcherAssert.assertThat(result.getOperandsJavaType(), Matchers.equalTo((Class) Double.class));
+        MatcherAssert.assertThat((Double) result.value(), Matchers.is(25.0));
 
     }
 

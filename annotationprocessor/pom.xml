@@ -44,11 +44,10 @@
 
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
                 <configuration>
                     <verbose>true</verbose>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>${java.compile.source.version}</source>
+                    <target>${java.compile.target.version}</target>
                     <proc>none</proc>
                 </configuration>
             </plugin>
