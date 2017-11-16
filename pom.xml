@@ -18,6 +18,9 @@
         <module>example</module>
         <module>templating</module>
 
+        <!-- CREATE A NO DEPENDENCY ARTIFACT -->
+        <module>annotationprocessor_nodep</module>
+
         <!-- test scope module -->
         <module>testhelper</module>
 
