@@ -41,7 +41,9 @@ The following static operand types are supported.
 
 Dynamic operands are read from the model.
 It's possible to define a getter and a field name chain to access a value.
+
 Fieldnames and getter method names must be separated by a '.' to define an access path to the dynamic value.
+
 The following getter method prefixes are supported: *get*, *is*, *has*
 
     // example
@@ -58,8 +60,8 @@ Expressions are evaluated according to the following operation precedence from l
 - +, - : addition and subtraction
 - &gt;, &gt;=, &lt;, &lt;= : decimal comparison operands
 - ==, != : Equality check operands
-- &amp;&amp; : Boolean and operation
-- || : Boolean or operation
+- &amp;&amp; : Boolean AND operation
+- &#124;&#124; : Boolean OR operation
 
 
 ### Examples for expressions
@@ -165,4 +167,5 @@ Example:
         getMessager().error(element, "An error occurred during code generation", filePath);
     }
 
-    Please take a lookat our example projects in github.
+
+Please take a lookat our example projects in github.
