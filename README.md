@@ -43,7 +43,7 @@ This can be done by adding the following to your annotation processors pom.xml:
          <dependency>
              <groupId>de.holisticon.annotationprocessortoolkit</groupId>
              <artifactId>annotationprocessor</artifactId>
-             <version>0.3.0</version>
+             <version>0.6.0</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
@@ -91,6 +91,7 @@ This can be done by adding the following to your annotation processors pom.xml:
 Then your annotation processor needs to extends the de.holisticon.annotationprocessor.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
 
 Please check our example provided in the github.
+
 
 # Contributing
 
