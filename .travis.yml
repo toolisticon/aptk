@@ -12,7 +12,7 @@ jdk:
 install: mvn install -DskipTests=true -q
 script: 
 - mvn verify -B -q
-- mvn cobertura:cobertura
+- mvn -Danimal.sniffer.skip=true cobertura:cobertura
 
 after_success: 
 - bash <(curl -s https://codecov.io/bash)
