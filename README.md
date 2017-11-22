@@ -2,7 +2,7 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent)
 [![Build Status](https://api.travis-ci.org/holisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/holisticon/annotation-processor-toolkit)
-[![Coverage Status](https://coveralls.io/repos/github/holisticon/annotation-processor-toolkit/badge.svg?branch=master)](https://coveralls.io/github/holisticon/annotation-processor-toolkit?branch=master)
+[![codecov](https://codecov.io/gh/holisticon/annotation-processor-toolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/holisticon/annotation-processor-toolkit)
 
 Please check detailed documentation at the projects [github page](https://holisticon.github.io/annotation-processor-toolkit/)
 
