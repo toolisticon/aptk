@@ -12,6 +12,4 @@ jdk:
 install: mvn install -DskipTests=true -q
 script: mvn verify -B -q
 after_success: ! '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_REPO_SLUG == "holisticon/annotation-processor-toolkit"
-    && $TRAVIS_PULL_REQUEST == "false" ]] && { curl https://raw.githubusercontent.com/holisticon/travis-configuration/master/settings.xml --location
- -  --create-dirs -o target/travis/settings.xml; } && { mvn cobertura:cobertura org.eluder.coveralls:coveralls-maven-plugin:report deploy -q --settings target/travis/settings.xml
- -  -Dgpg.skip=true; }' 
+    && $TRAVIS_PULL_REQUEST == "false" ]] && { curl https://raw.githubusercontent.com/holisticon/travis-configuration/master/settings.xml --location --create-dirs -o target/travis/settings.xml; } && { mvn cobertura:cobertura } && {bash <(curl -s https://codecov.io/bash)}' 
