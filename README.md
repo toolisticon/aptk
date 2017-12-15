@@ -93,6 +93,10 @@ Then your annotation processor needs to extends the de.holisticon.annotationproc
 
 Please check our example provided in the github.
 
+# Projects using this toolkit library
+
+- [SPIAP](https://github.com/toolisticon/SPI-Annotation-Processor) : An annotation processor that helps you to generate SPI configuration files and service locator classes
+
 
 # Contributing
 
