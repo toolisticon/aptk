@@ -32,6 +32,9 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
                         "Test valid usage",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
                                 .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
+                                .addMessageValidator()
+                                    .setInfoChecks("Start processing")
+                                .finishMessageValidator()
                                 .compilationShouldSucceed()
                                 .build()
                 },

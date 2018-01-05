@@ -79,10 +79,17 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
                     .processedWith(this.getWrappedProcessor()).compilesWithoutError();
 
             // check for created files
-
             if (annotationProcessorCommonTestConfiguration.getExpectedGeneratedJavaFileObjects() != null) {
                 for (JavaFileObject fileObject : annotationProcessorCommonTestConfiguration.getExpectedGeneratedJavaFileObjects()) {
                     compileTester = compileTester.and().generatesFiles(fileObject);
+                }
+            }
+
+
+            // check for info messages (notes)
+            if (messageValidationTest != null && messageValidationTest.getInfos() != null) {
+                for (String infos : messageValidationTest.getInfos()) {
+                    compileTester.withNoteContaining(infos);
                 }
             }
 
@@ -94,7 +101,7 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
             }
 
 
-            // check if test was executed
+            // check if test was executed at all
             compileTester.withNoteContaining(TEST_EXECUTION_MESSAGE);
 
         } else {
@@ -106,6 +113,20 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
                 MatcherAssert.assertThat("Compiling should have failed", !annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed());
             }
 
+            // check for info messages (notes)
+            if (messageValidationTest != null && messageValidationTest.getInfos() != null) {
+                for (String infos : messageValidationTest.getInfos()) {
+                    compileTester.withNoteContaining(infos);
+                }
+            }
+
+            // check for warnings
+            if (messageValidationTest != null) {
+                for (String warning : messageValidationTest.getWarnings()) {
+                    compileTester.withWarningContaining(warning);
+                }
+            }
+
             // check for errors
             if (messageValidationTest != null && messageValidationTest.getErrors() != null) {
                 for (String error : messageValidationTest.getErrors()) {
@@ -113,7 +134,7 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
                 }
             }
 
-            // check if test was executed
+            // check if test was executed at all
             compileTester.withNoteContaining(TEST_EXECUTION_MESSAGE);
         }
 

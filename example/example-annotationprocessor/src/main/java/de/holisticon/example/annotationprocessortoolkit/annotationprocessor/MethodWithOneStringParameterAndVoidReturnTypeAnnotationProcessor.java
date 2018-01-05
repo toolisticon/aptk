@@ -39,6 +39,8 @@ public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor ex
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
+        getMessager().info(null, "Start processing");
+
         for (Element element : roundEnv.getElementsAnnotatedWith(
                 MethodWithOneStringParameterAndVoidReturnTypeAnnotation.class)) {
 
