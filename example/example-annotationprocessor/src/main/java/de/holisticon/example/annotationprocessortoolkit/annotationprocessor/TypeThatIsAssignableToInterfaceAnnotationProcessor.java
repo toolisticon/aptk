@@ -4,7 +4,9 @@ import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
 import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
 import de.holisticon.example.annotationprocessortoolkit.annotations.SomeInterface;
 import de.holisticon.example.annotationprocessortoolkit.annotations.TypeThatIsAssignableToInterfaceAnnotation;
+import io.toolisticon.spiap.api.Service;
 
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
@@ -15,6 +17,7 @@ import java.util.Set;
  * Test annotation processor which demonstrates the usage of the annotation processor toolkit.
  */
 @SupportedAnnotationTypes("de.holisticon.example.annotationprocessortoolkit.annotations.TypeThatIsAssignableToInterfaceAnnotation")
+@Service(Processor.class)
 public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends AbstractAnnotationProcessor {
 
     // Overriding the getSupportedAnnotationTypes instead of using the SupportedAnnotationTypes annotation

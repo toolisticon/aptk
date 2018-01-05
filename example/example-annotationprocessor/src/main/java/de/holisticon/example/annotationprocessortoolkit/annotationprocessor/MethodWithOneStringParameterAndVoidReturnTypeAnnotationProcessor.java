@@ -6,7 +6,9 @@ import de.holisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import de.holisticon.annotationprocessortoolkit.validators.FluentExecutableElementValidator;
 import de.holisticon.annotationprocessortoolkit.validators.FluentModifierElementValidator;
 import de.holisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
+import io.toolisticon.spiap.api.Service;
 
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
@@ -21,6 +23,7 @@ import java.util.Set;
  */
 @SupportedAnnotationTypes(
         "de.holisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation")
+@Service(Processor.class)
 public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor extends AbstractAnnotationProcessor {
 
 

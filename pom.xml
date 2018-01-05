@@ -85,6 +85,8 @@
 
         <java.version>1.8.0</java.version>
 
+        <spiap.version>0.3.0</spiap.version>
+
         <!-- versions of test dependencies -->
         <junit.version>4.12</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -523,6 +525,19 @@
                 <artifactId>testhelper</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.spiap</groupId>
+                <artifactId>spiap-api</artifactId>
+                <version>${spiap.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.toolisticon.spiap</groupId>
+                <artifactId>spiap-processor</artifactId>
+                <version>${spiap.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>

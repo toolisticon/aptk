@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>example-annotationprocessor</artifactId>
@@ -32,6 +33,16 @@
             <groupId>de.holisticon.annotationprocessortoolkit</groupId>
             <artifactId>testhelper</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.spiap</groupId>
+            <artifactId>spiap-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.spiap</groupId>
+            <artifactId>spiap-processor</artifactId>
         </dependency>
 
     </dependencies>
@@ -86,8 +97,31 @@
                     <verbose>true</verbose>
                     <source>${java.compile.source.version}</source>
                     <target>${java.compile.target.version}</target>
-                    <proc>none</proc>
                 </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <executions>
+                    <execution>
+                        <id>add-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>target/generated-sources/annotations</directory>
+                                    <targetPath/>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
