@@ -1,13 +1,7 @@
-package de.holisticon.annotationprocessor;
+package io.toolisticon.annotationprocessor;
 
-import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation1;
-import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation2;
-import de.holisticon.annotationprocessortoolkit.generators.FileObjectUtilsTestAnnotation;
-import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import io.toolisticon.annotationprocessortoolkit.generators.FileObjectUtilsTestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 
 /**
  * Test class for annotation processor tools.

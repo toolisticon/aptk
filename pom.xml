@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.holisticon.annotationprocessortoolkit</groupId>
-    <artifactId>annotationprocessor-toolkit-parent</artifactId>
+    <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+    <artifactId>annotationprocessortoolkit-parent</artifactId>
     <version>0.6.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>annotationprocessor-toolkit-parent</name>
+    <name>annotationprocessortoolkit-parent</name>
     <description>Please refer to https://github.com/holisticon/annotation-processor-toolkit</description>
     <url>https://github.com/holisticon/annotation-processor-toolkit</url>
 
@@ -138,7 +138,7 @@
                                         <exclude>*</exclude>
                                     </excludes>
                                     <includes>
-                                        <include>de.holisticon.annotationprocessortoolkit:*</include>
+                                        <include>io.toolisticon.annotationprocessortoolkit:*</include>
                                         <include>com.sun:tools:*</include>
                                         <include>*:*:*:*:test:*</include>
                                         <include>*:*:*:*:provided:*</include>
@@ -310,7 +310,7 @@
                     <extensions>true</extensions>
                     <configuration>
                         <instructions>
-                            <Export-Package>de.holisticon.annotationprocessortoolkit</Export-Package>
+                            <Export-Package>io.toolisticon.annotationprocessortoolkit</Export-Package>
                         </instructions>
                     </configuration>
                     <version>2.5.3</version>
@@ -422,7 +422,7 @@
                         <configuration>
                             <reportOutputDirectory>${project.basedir}/docs/assets/javadoc</reportOutputDirectory>
                             <destDir>${project.version}</destDir>
-                            <excludePackageNames>de.holisticon.example.*</excludePackageNames>
+                            <excludePackageNames>io.toolisticon.example.*</excludePackageNames>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -508,20 +508,20 @@
 
             <!-- internal -->
             <dependency>
-                <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
                 <artifactId>annotationprocessor</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
                 <artifactId>templating</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
 
             <dependency>
-                <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
                 <artifactId>testhelper</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>

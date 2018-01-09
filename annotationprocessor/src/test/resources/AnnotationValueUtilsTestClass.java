@@ -1,7 +1,7 @@
-package de.holisticon.annotationprocessor;
+package io.toolisticon.annotationprocessor;
 
-import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
-import de.holisticon.annotationprocessortoolkit.tools.annotationvalueutilstestclasses.AnnotationValueTestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.tools.annotationvalueutilstestclasses.AnnotationValueTestAnnotation;
 
 import javax.tools.StandardLocation;
 

@@ -1,6 +1,6 @@
-package de.holisticon.example.annotationprocessortoolkit;
+package io.toolisticon.example.annotationprocessortoolkit;
 
-import de.holisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
+import io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
 
 public class ValidUsageTest {
 

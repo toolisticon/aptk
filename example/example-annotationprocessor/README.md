@@ -26,7 +26,7 @@ Doing this manually has a drawback - you can't use annotation processor in your 
 You can circumvent this by using a tool like [SPIAP](https://github.com/toolisticon/SPI-Annotation-Processor) or [google's auto service](https://github.com/google/auto/tree/master/service) which does create the services file via an annotation processor for you.
 
 Your annotation processor classes must extend the *javax.annotation.processing.AbstractProcessor* class to enable java to use it.
-Alternatively - if you wan't to use this toolkit you must extend the *de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor* class.
+Alternatively - if you wan't to use this toolkit you must extend the *AbstractAnnotationProcessor* class.
 
 ### How to tell Java which annotations will be processed by the annotation processor
 There are multiple ways to define which annotations have to be implement.

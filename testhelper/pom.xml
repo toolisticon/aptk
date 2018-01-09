@@ -5,13 +5,12 @@
     <packaging>bundle</packaging>
 
     <parent>
-        <groupId>de.holisticon.annotationprocessortoolkit</groupId>
-        <artifactId>annotationprocessor-toolkit-parent</artifactId>
+        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+        <artifactId>annotationprocessortoolkit-parent</artifactId>
         <version>0.6.4-SNAPSHOT</version>
     </parent>
 
     <name>testhelper</name>
-    <description>Please refer to https://github.com/holisticon/annotation-processotool-kit</description>
 
 
     <dependencies>
@@ -52,7 +51,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>de.holisticon.example.annotationprocessortoolkit.testhelper</Export-Package>
+                        <Export-Package>io.toolisticon.annotationprocessortoolkit.testhelper</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>
@@ -79,7 +78,7 @@
                                         <exclude>*</exclude>
                                     </excludes>
                                     <includes>
-                                        <include>de.holisticon.annotationprocessortoolkit:*</include>
+                                        <include>io.toolisticon.annotationprocessortoolkit:*</include>
                                         <include>com.google.testing.compile:compile-testing</include>
                                         <include>com.sun:tools:*</include>
                                         <include>*:*:*:*:test:*</include>

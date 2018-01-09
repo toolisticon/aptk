@@ -1,9 +1,9 @@
-package de.holisticon.annotationprocessor;
+package io.toolisticon.annotationprocessor;
 
-import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
-import de.holisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassArrayAttributeAnnotation;
-import de.holisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassAttributeAnnotation;
-import de.holisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.DefaultValueAnnotation;
+import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassArrayAttributeAnnotation;
+import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassAttributeAnnotation;
+import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.DefaultValueAnnotation;
 
 /**
  * Test class for annotation processor tools.

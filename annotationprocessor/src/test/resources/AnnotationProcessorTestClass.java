@@ -1,8 +1,8 @@
-package de.holisticon.annotationprocessor;
+package io.toolisticon.annotationprocessor;
 
-import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation1;
-import de.holisticon.annotationprocessortoolkit.FilterTestAnnotation2;
-import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation1;
+import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation2;
+import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 
 import java.util.Comparator;
 import java.util.List;

@@ -157,7 +157,7 @@ Example:
     model.put("value1", "test");
     model.put("value2", true);
 
-    String filePath = "de.holisticon.somePackage.TargetClass";
+    String filePath = "io.toolisticon.somePackage.TargetClass";
 
     try {
         SimpleJavaWriter javaWriter = getFileObjectUtils().createSourceFile(filePath, element);

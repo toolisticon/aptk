@@ -24,17 +24,17 @@ You need to add the following dependencies to your Maven configuration, if you w
 
      <!-- Needed for developing your annotation processors -->
      <dependency>
-         <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+         <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
          <artifactId>annotationprocessor</artifactId>
-         <version>0.4.0</version>
+         <version>0.7.0</version>
          <scope>compile</compile>
      </dependency>
 
     <!-- optional, but recommended for testing your annotation processor -->
     <dependency>
-        <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
         <artifactId>annotationprocessor</artifactId>
-        <version>0.4.0</version>
+        <version>0.7.0</version>
         <scope>test</scope>
     </dependency>
 
@@ -96,9 +96,9 @@ In Maven, this can be done by using the shade plugin:
                          <!-- need to relocate used 3rd party dependencies and their transitive dependencies -->
                          <relocations>
                              <relocation>
-                                 <pattern>de.holisticon.annotationprocessortoolkit</pattern>
+                                 <pattern>io.toolisticon.annotationprocessortoolkit</pattern>
                                  <shadedPattern>
-                                     your.projects.base.package._3rdparty.de.holisticon.annotationprocessortoolkit
+                                     your.projects.base.package._3rdparty.io.toolisticon.annotationprocessortoolkit
                                  </shadedPattern>
                              </relocation>
                          </relocations>
@@ -128,14 +128,14 @@ So you just need to do two things to create an annotation processor.
 ## Create the annotation processor Class
 
 Usually your annotation processor class would have to extend the _javax.annotation.processing.AbstractProcessor_ class provided by the JDK.
-To enable the annotation processor toolkit support use the _de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_ instead.
+To enable the annotation processor toolkit support use the _io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_ instead.
 
 ```java
-package de.holisticon.example.annotationprocessortoolkit.annotationprocessor;
+package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
-import de.holisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
-import de.holisticon.annotationprocessortoolkit.tools.ElementUtils;
-import de.holisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
+import io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
+import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -146,7 +146,7 @@ import java.util.Set;
 /**
  * Test annotation processor which demonstrates the usage of the annotation processor toolkit.
  */
-@SupportedAnnotationTypes({"de.holisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation"})
+@SupportedAnnotationTypes({"io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation"})
 public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor extends AbstractAnnotationProcessor {
 
 
@@ -180,7 +180,7 @@ It can either be done by annotation or by overwriting the _getSupportedAnnotatio
 
 Supported annotations can be defined by adding the _SupportedAnnotationTypes_ annotation to your annotation processor class:
 
-    @SupportedAnnotationTypes({"de.holisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation"})
+    @SupportedAnnotationTypes({"io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation"})
     public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor extends AbstractAnnotationProcessor {
 
 This is quite elegant but has some drawbacks:

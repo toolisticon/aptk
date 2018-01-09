@@ -5,24 +5,23 @@
     <packaging>bundle</packaging>
 
     <parent>
-        <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
         <artifactId>example-parent</artifactId>
         <version>0.6.4-SNAPSHOT</version>
     </parent>
 
     <name>example-usecase</name>
-    <description>Please refer to https://github.com/holisticon/annotation-processotool-kit</description>
 
 
     <dependencies>
 
         <dependency>
-            <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
             <artifactId>example-annotations</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
             <artifactId>example-annotationprocessor</artifactId>
             <scope>provided</scope>
         </dependency>

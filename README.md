@@ -1,10 +1,10 @@
 # Annotation-Processor-Toolkit
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.holisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent)
-[![Build Status](https://api.travis-ci.org/holisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/holisticon/annotation-processor-toolkit)
-[![codecov](https://codecov.io/gh/holisticon/annotation-processor-toolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/holisticon/annotation-processor-toolkit)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessor-toolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessortoolkit-parent)
+[![Build Status](https://api.travis-ci.org/toolisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/toolisticon/annotation-processor-toolkit)
+[![codecov](https://codecov.io/gh/toolisticon/annotation-processor-toolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/toolisticon/annotation-processor-toolkit)
 
-Please check detailed documentation at the projects [github page](https://holisticon.github.io/annotation-processor-toolkit/)
+Please check detailed documentation at the projects [github page](https://toolisticon.github.io/annotation-processor-toolkit/)
 
 # Why you should use this project?
 
@@ -42,7 +42,7 @@ This can be done by adding the following to your annotation processors pom.xml:
      <dependencies>
 
          <dependency>
-             <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+             <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
              <artifactId>annotationprocessor</artifactId>
              <version>0.6.0</version>
          </dependency>
@@ -75,9 +75,9 @@ This can be done by adding the following to your annotation processors pom.xml:
                              <!-- need to relocate used 3rd party dependencies and their transitive dependencies -->
                              <relocations>
                                  <relocation>
-                                     <pattern>de.holisticon.annotationprocessortoolkit</pattern>
+                                     <pattern>io.toolisticon.annotationprocessortoolkit</pattern>
                                      <shadedPattern>
-                                         your.projects.base.package._3rdparty.de.holisticon.annotationprocessortoolkit
+                                         your.projects.base.package._3rdparty.io.toolisticon.annotationprocessortoolkit
                                      </shadedPattern>
                                  </relocation>
                              </relocations>
@@ -89,7 +89,7 @@ This can be done by adding the following to your annotation processors pom.xml:
          </plugins>
      </build>
 
-Then your annotation processor needs to extends the de.holisticon.annotationprocessor.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
+Then your annotation processor needs to extends the io.toolisticon.annotationprocessor.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
 
 Please check our example provided in the github.
 

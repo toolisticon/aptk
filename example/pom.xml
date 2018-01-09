@@ -5,8 +5,8 @@
     <packaging>pom</packaging>
 
     <parent>
-        <groupId>de.holisticon.annotationprocessortoolkit</groupId>
-        <artifactId>annotationprocessor-toolkit-parent</artifactId>
+        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+        <artifactId>annotationprocessortoolkit-parent</artifactId>
         <version>0.6.4-SNAPSHOT</version>
     </parent>
 
@@ -24,20 +24,20 @@
         <dependencies>
 
             <dependency>
-                <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
                 <artifactId>example-annotations</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
                 <artifactId>example-annotationprocessor</artifactId>
                 <version>${project.version}</version>
                 <scope>provided</scope>
             </dependency>
 
             <dependency>
-                <groupId>de.holisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
                 <artifactId>testhelper</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
@@ -96,7 +96,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>de.holisticon.example.annotationprocessortoolkit</Export-Package>
+                        <Export-Package>io.toolisticon.example.annotationprocessortoolkit</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>
