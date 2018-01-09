@@ -7,10 +7,11 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 
 /**
- * Created by tobiasstamann on 17.12.17.
+ * Utility class which helps to handle different {@link AnnotationValue} related tasks.
  */
 public class AnnotationValueUtils {
     /**

@@ -3,11 +3,13 @@ package de.holisticon.annotationprocessor;
 import de.holisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 import de.holisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassArrayAttributeAnnotation;
 import de.holisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassAttributeAnnotation;
+import de.holisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.DefaultValueAnnotation;
 
 /**
  * Test class for annotation processor tools.
  */
 @TestAnnotation
+@DefaultValueAnnotation(mandatoryValue = 10L)
 public class AnnotationClassAttributeTestClass {
 
     @ClassAttributeAnnotation()

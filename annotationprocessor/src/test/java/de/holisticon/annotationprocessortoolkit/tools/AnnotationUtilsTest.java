@@ -2,12 +2,14 @@ package de.holisticon.annotationprocessortoolkit.tools;
 
 import com.google.testing.compile.JavaFileObjects;
 import de.holisticon.annotationprocessortoolkit.filter.FluentElementFilter;
+import de.holisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import de.holisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import de.holisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import de.holisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassArrayAttributeAnnotation;
 import de.holisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassAttributeAnnotation;
+import de.holisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.DefaultValueAnnotation;
 import de.holisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -15,6 +17,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -256,6 +260,117 @@ public class AnnotationUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
 
+                        // --------------------------------------------
+                        // -- getAnnotationValueOfAttribute
+                        // --------------------------------------------
+
+                        {
+                                "AnnotationUtils test - getAnnotationValueOfAttribute - get implicitly set annotation value must return null",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, DefaultValueAnnotation.class);
+
+                                                              AnnotationValue value = AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror);
+
+                                                              // shouldn't find nonexisting
+                                                              MatcherAssert.assertThat(value, Matchers.nullValue());
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        // --------------------------------------------
+                        // -- getAnnotationValueOfAttributeWithDefaults
+                        // --------------------------------------------
+
+                        {
+                                "AnnotationUtils test - getAnnotationValueOfAttributeWithDefaults - get implicitly set annotation value (default value)",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, DefaultValueAnnotation.class);
+
+                                                              AnnotationValue value = AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(new FrameworkToolWrapper(processingEnv), annotationMirror);
+
+                                                              // shouldn't find nonexisting
+                                                              MatcherAssert.assertThat((Long) value.getValue(), Matchers.is(5L));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        // --------------------------------------------
+                        // -- getMandatoryAttributeValueNames
+                        // --------------------------------------------
+
+                        {
+                                "AnnotationUtils test - getMandatoryAttributeValueNames - get mandatory attribute value names",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, DefaultValueAnnotation.class);
+
+                                                              String[] names = AnnotationUtils.getMandatoryAttributeValueNames(new FrameworkToolWrapper(processingEnv), annotationMirror);
+
+                                                              // shouldn't find nonexisting
+                                                              MatcherAssert.assertThat(Arrays.asList(names), Matchers.contains("mandatoryValue"));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        // --------------------------------------------
+                        // -- getOptionalAttributeValueNames
+                        // --------------------------------------------
+
+                        {
+                                "AnnotationUtils test - getOptionalAttributeValueNames - get optional attribute value names",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, DefaultValueAnnotation.class);
+
+                                                              String[] names = AnnotationUtils.getOptionalAttributeValueNames(new FrameworkToolWrapper(processingEnv), annotationMirror);
+
+                                                              // shouldn't find nonexisting
+                                                              MatcherAssert.assertThat(Arrays.asList(names), Matchers.contains("value"));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
 
                 }
 
