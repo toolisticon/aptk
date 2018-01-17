@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.validators;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 
@@ -15,8 +14,8 @@ import java.util.List;
  */
 public class FluentExecutableElementValidator extends AbstractFluentElementValidator<FluentExecutableElementValidator, ExecutableElement> {
 
-    public FluentExecutableElementValidator(FrameworkToolWrapper frameworkToolWrapper, ExecutableElement methodElement) {
-        super(frameworkToolWrapper, methodElement);
+    public FluentExecutableElementValidator(ExecutableElement methodElement) {
+        super(methodElement);
     }
 
     public FluentExecutableElementValidator(FluentExecutableElementValidator previousFluentExecutableElementValidator, boolean currentValidationResult) {
@@ -282,11 +281,9 @@ public class FluentExecutableElementValidator extends AbstractFluentElementValid
     }
 
 
-    public static FluentExecutableElementValidator createFluentExecutableElementValidator(FrameworkToolWrapper frameworkToolWrapper, ExecutableElement executableElement) {
-        return new FluentExecutableElementValidator(frameworkToolWrapper, executableElement);
+    public static FluentExecutableElementValidator createFluentExecutableElementValidator( ExecutableElement executableElement) {
+        return new FluentExecutableElementValidator(executableElement);
     }
 
-    public static FluentExecutableElementValidator createFluentExecutableElementValidator(ProcessingEnvironment processingEnvironment, ExecutableElement executableElement) {
-        return new FluentExecutableElementValidator(new FrameworkToolWrapper(processingEnvironment), executableElement);
-    }
+
 }

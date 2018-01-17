@@ -1,7 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.validators;
 
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validators;
 
 import javax.lang.model.element.Element;
@@ -17,8 +16,8 @@ import javax.lang.model.element.Modifier;
 public abstract class AbstractFluentElementValidator<T extends AbstractFluentElementValidator, E extends Element> extends AbstractFluentValidator<T, E> {
 
 
-    public AbstractFluentElementValidator(FrameworkToolWrapper frameworkToolWrapper, E element) {
-        super(frameworkToolWrapper, element);
+    public AbstractFluentElementValidator(E element) {
+        super(element);
     }
 
     public AbstractFluentElementValidator(AbstractFluentElementValidator previousFluentExecutableElementValidator, boolean currentValidationResult) {
@@ -38,7 +37,7 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
         boolean nextResult = getValidationResult();
 
         if (modifiers != null) {
-            if (!Validators.getModifierValidator().getValidator().hasAllOf(getElement(), modifiers)) {
+            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasAllOf(getElement(), modifiers)) {
                 getMessagerUtils().printMessage(
                         getElement(), getMessageLevel(),
                         getCustomOrDefaultMessage("Element must have the following modifiers ${0}", getModifierString(modifiers))
@@ -60,7 +59,7 @@ public abstract class AbstractFluentElementValidator<T extends AbstractFluentEle
         boolean nextResult = getValidationResult();
 
         if (modifiers != null) {
-            if (!Validators.getModifierValidator().getValidator().hasNoneOf(getElement(), modifiers)) {
+            if (!Validators.MODIFIER_VALIDATOR.getValidator().hasNoneOf(getElement(), modifiers)) {
                 getMessagerUtils().printMessage(
                         getElement(),
                         getMessageLevel(),

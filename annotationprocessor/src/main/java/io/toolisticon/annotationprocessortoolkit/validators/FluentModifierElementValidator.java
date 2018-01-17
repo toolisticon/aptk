@@ -1,8 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.validators;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
-
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 
 /**
@@ -11,9 +8,9 @@ import javax.lang.model.element.Element;
 public class FluentModifierElementValidator extends AbstractFluentElementValidator<FluentModifierElementValidator, Element> {
 
 
-    public FluentModifierElementValidator(FrameworkToolWrapper frameworkToolWrapper, Element elementToValidate) {
+    public FluentModifierElementValidator(Element elementToValidate) {
 
-        super(frameworkToolWrapper, elementToValidate);
+        super(elementToValidate);
 
     }
 
@@ -28,12 +25,9 @@ public class FluentModifierElementValidator extends AbstractFluentElementValidat
         return new FluentModifierElementValidator(this, nextResult);
     }
 
-    public static FluentModifierElementValidator createFluentModifierElementValidator(FrameworkToolWrapper frameworkToolWrapper, Element executableElement) {
-        return new FluentModifierElementValidator(frameworkToolWrapper, executableElement);
+    public static FluentModifierElementValidator createFluentModifierElementValidator(Element executableElement) {
+        return new FluentModifierElementValidator(executableElement);
     }
 
-    public static FluentModifierElementValidator createFluentModifierElementValidator(ProcessingEnvironment processingEnvironment, Element executableElement) {
-        return new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnvironment), executableElement);
-    }
 
 }

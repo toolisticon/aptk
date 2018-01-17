@@ -2,7 +2,6 @@ package io.toolisticon.annotationprocessortoolkit;
 
 import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
@@ -49,12 +48,12 @@ public class FluentTypeElementValidatorTest extends AbstractAnnotationProcessorU
                                                           protected void testCase(TypeElement element) {
 
 
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).getValidationResult(), Matchers.is(true));
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), element).hasModifiers(Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), element).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(element).hasModifiers(Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(element).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
 
                                                           }
@@ -72,8 +71,8 @@ public class FluentTypeElementValidatorTest extends AbstractAnnotationProcessorU
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), element).isAssignableTo(Object.class).getValidationResult(), Matchers.is(true));
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), element).isAssignableTo(String.class).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(element).isAssignableTo(Object.class).getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(element).isAssignableTo(String.class).getValidationResult(), Matchers.is(false));
 
                                                           }
                                                       }
@@ -90,23 +89,23 @@ public class FluentTypeElementValidatorTest extends AbstractAnnotationProcessorU
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), element).hasNoArgConstructor().getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(element).hasNoArgConstructor().getValidationResult(), Matchers.is(true));
 
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(
                                                                       ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "EmbeddedClass"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.CLASS)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CLASS)
                                                                       .getResult();
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               TypeElement _2ndTestElement = ElementUtils.CastElement.castToTypeElement(elements.get(0));
 
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), _2ndTestElement).hasNoArgConstructor().getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(_2ndTestElement).hasNoArgConstructor().getValidationResult(), Matchers.is(true));
 
                                                               elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "EmbeddedClassWithNoNoargConstructor"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.CLASS).getResult();
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CLASS).getResult();
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               TypeElement _3rdTestElement = ElementUtils.CastElement.castToTypeElement(elements.get(0));
 
-                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnv), _3rdTestElement).hasNoArgConstructor().getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentTypeElementValidator(_3rdTestElement).hasNoArgConstructor().getValidationResult(), Matchers.is(false));
 
 
                                                           }

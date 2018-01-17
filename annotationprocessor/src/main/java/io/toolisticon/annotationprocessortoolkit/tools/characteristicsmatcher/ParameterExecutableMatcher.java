@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 
@@ -12,8 +11,8 @@ import javax.lang.model.element.ExecutableElement;
  */
 public class ParameterExecutableMatcher extends GenericMatcherWithToolsSupport<Class[]> {
 
-    public ParameterExecutableMatcher(FrameworkToolWrapper tools) {
-        super(tools);
+    public ParameterExecutableMatcher() {
+        super();
     }
 
     /**
@@ -42,7 +41,7 @@ public class ParameterExecutableMatcher extends GenericMatcherWithToolsSupport<C
 
         for (int i = 0; i < executableElement.getParameters().size(); i++) {
             if (!executableElement.getParameters().get(i).asType().equals(
-                    TypeUtils.getTypeUtils(getFrameworkTools()).doTypeRetrieval().getTypeMirror(toCheckFor[i]))
+                    TypeUtils.getTypeUtils().doTypeRetrieval().getTypeMirror(toCheckFor[i]))
                     ) {
                 return false;
             }

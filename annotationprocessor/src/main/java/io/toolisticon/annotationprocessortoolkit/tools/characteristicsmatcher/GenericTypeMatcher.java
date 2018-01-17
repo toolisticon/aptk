@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericType;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeParameter;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
@@ -12,8 +11,8 @@ import javax.lang.model.element.Element;
  */
 public class GenericTypeMatcher extends GenericMatcherWithToolsSupport<GenericType> {
 
-    public GenericTypeMatcher(FrameworkToolWrapper tools) {
-        super(tools);
+    public GenericTypeMatcher() {
+        super();
     }
 
     /**

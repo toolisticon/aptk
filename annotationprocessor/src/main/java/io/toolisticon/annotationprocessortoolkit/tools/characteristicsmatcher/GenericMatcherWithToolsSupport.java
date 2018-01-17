@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 
 /**
@@ -9,28 +8,14 @@ import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
  */
 public abstract class GenericMatcherWithToolsSupport<T> implements GenericMatcher<T> {
 
-    private final FrameworkToolWrapper frameworkTools;
-    private final TypeUtils typeUtils;
 
     /**
-     * Constructor that allows passing in of {@link FrameworkToolWrapper} that wraps utility classes offered by {@link ProcessEnvironment}.
-     *
-     * @param frameworkTools the wrapped utility classes offered by {@link ProcessEnvironment}
+     * Constructor.
      */
-    public GenericMatcherWithToolsSupport(FrameworkToolWrapper frameworkTools) {
+    public GenericMatcherWithToolsSupport() {
         super();
-        this.frameworkTools = frameworkTools;
-        this.typeUtils = TypeUtils.getTypeUtils(frameworkTools);
     }
 
-    /**
-     * Getter the wrapper for the utility classes offered by {@link ProcessEnvironment}.
-     *
-     * @return
-     */
-    protected FrameworkToolWrapper getFrameworkTools() {
-        return frameworkTools;
-    }
 
     /**
      * Provides access to {@link TypeUtils}.
@@ -38,7 +23,7 @@ public abstract class GenericMatcherWithToolsSupport<T> implements GenericMatche
      * @return a TypeUtils instance
      */
     protected TypeUtils getTypeUtils() {
-        return typeUtils;
+        return TypeUtils.getTypeUtils();
     }
 
 }

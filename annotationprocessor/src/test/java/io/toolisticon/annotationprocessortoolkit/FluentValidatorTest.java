@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.validators.AbstractFluentValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -19,9 +18,9 @@ import javax.tools.Diagnostic;
 public class FluentValidatorTest {
 
     private static class TestFluentValidator<T extends Element> extends AbstractFluentValidator<TestFluentValidator<T>, T> {
-        public TestFluentValidator(FrameworkToolWrapper frameworkToolWrapper, T elementToValidate) {
+        public TestFluentValidator(T elementToValidate) {
 
-            super(frameworkToolWrapper, elementToValidate);
+            super(elementToValidate);
 
         }
 
@@ -60,7 +59,6 @@ public class FluentValidatorTest {
         }
     }
 
-    FrameworkToolWrapper frameworkToolWrapper;
     ProcessingEnvironment processingEnvironment;
     Messager messager;
 
@@ -79,10 +77,10 @@ public class FluentValidatorTest {
         processingEnvironment = Mockito.mock(ProcessingEnvironment.class);
         Mockito.when(processingEnvironment.getMessager()).thenReturn(messager);
 
+        ToolingProvider.setTooling(processingEnvironment);
 
-        frameworkToolWrapper = new FrameworkToolWrapper(processingEnvironment);
 
-        unit = new TestFluentValidator<Element>(frameworkToolWrapper, element);
+        unit = new TestFluentValidator<Element>(element);
     }
 
     @Test

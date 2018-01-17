@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
@@ -48,7 +47,7 @@ public class TypeElementCharacteristicMatcherTest extends AbstractAnnotationProc
                                                               MatcherAssert.assertThat("Precondition: dound method has to be of type ExecutableElement", result.get(0) instanceof VariableElement);
 
 
-                                                              MatcherAssert.assertThat("Should have found matching type", Matchers.getRawTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(result.get(0), String.class));
+                                                              MatcherAssert.assertThat("Should have found matching type", Matchers.RAW_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(result.get(0), String.class));
 
                                                           }
                                                       }
@@ -70,7 +69,7 @@ public class TypeElementCharacteristicMatcherTest extends AbstractAnnotationProc
                                                               MatcherAssert.assertThat("Precondition: dound method has to be of type ExecutableElement", result.get(0) instanceof VariableElement);
 
 
-                                                              MatcherAssert.assertThat("Should not have found matching type", !Matchers.getRawTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(result.get(0), Boolean.class));
+                                                              MatcherAssert.assertThat("Should not have found matching type", !Matchers.RAW_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(result.get(0), Boolean.class));
 
                                                           }
                                                       }

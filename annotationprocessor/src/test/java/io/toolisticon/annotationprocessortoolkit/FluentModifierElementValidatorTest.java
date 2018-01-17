@@ -2,15 +2,14 @@ package io.toolisticon.annotationprocessortoolkit;
 
 import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
-import io.toolisticon.annotationprocessortoolkit.validators.FluentModifierElementValidator;
 import io.toolisticon.annotationprocessortoolkit.validators.FluentExecutableElementValidator;
+import io.toolisticon.annotationprocessortoolkit.validators.FluentModifierElementValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -52,13 +51,13 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
 
                                                 // do preparations
                                                 List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                                        .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                        .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                         .getResult();
                                                 MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                 ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                 // check for existence of parameters
-                                                MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
+                                                MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
 
 
                                             }
@@ -77,18 +76,18 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
 
                                                               // check for nonexistence
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasModifiers(Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasModifiers(Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).getValidationResult(), Matchers.is(false));
 
 
                                                           }
@@ -108,17 +107,17 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD).getResult();
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD).getResult();
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // Do the same on TypeElement
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).getValidationResult(), Matchers.is(true));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasModifiers(Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasModifiers(Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
 
                                                           }
@@ -137,28 +136,28 @@ public class FluentModifierElementValidatorTest extends AbstractAnnotationProces
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // check for existence of parameters
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
 
                                                               // check for nonexistence
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasModifiers(Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasModifiers(Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), testElement).hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(testElement).hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).getValidationResult(), Matchers.is(false));
 
                                                               // Do the same on TypeElement
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).getValidationResult(), Matchers.is(true));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasModifiers(Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC).hasNotModifiers(Modifier.FINAL, Modifier.ABSTRACT).getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasModifiers(Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(new FrameworkToolWrapper(processingEnv), element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasModifiers(Modifier.PUBLIC, Modifier.ABSTRACT).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(new FluentModifierElementValidator(element).hasNotModifiers(Modifier.ABSTRACT, Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
 
                                                           }

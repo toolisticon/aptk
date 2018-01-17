@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.validators;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -16,8 +15,8 @@ public class AbstractFluentValidatorTest {
 
     public static class UnitBaseClass extends AbstractFluentValidator<UnitBaseClass, Element> {
 
-        UnitBaseClass(FrameworkToolWrapper ftw) {
-            super(ftw, null);
+        UnitBaseClass() {
+            super(null);
         }
 
         @Override
@@ -37,7 +36,7 @@ public class AbstractFluentValidatorTest {
 
         ProcessingEnvironment processingEnvironmentMock = Mockito.mock(ProcessingEnvironment.class);
 
-        UnitBaseClass unit = new UnitBaseClass(new FrameworkToolWrapper(processingEnvironmentMock));
+        UnitBaseClass unit = new UnitBaseClass();
 
         MatcherAssert.assertThat(unit.setCustomMessage("ABC ${0} DEF ${1} HIJ ${0}").getMessage(null), Matchers.is("ABC ${0} DEF ${1} HIJ ${0}"));
         MatcherAssert.assertThat(unit.setCustomMessage("ABC ${0} DEF ${1} HIJ ${0}", "0").getMessage(null), Matchers.is("ABC 0 DEF ${1} HIJ 0"));

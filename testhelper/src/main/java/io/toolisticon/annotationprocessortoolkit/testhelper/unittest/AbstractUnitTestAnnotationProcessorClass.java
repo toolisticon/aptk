@@ -1,5 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper.unittest;
 
+import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
@@ -29,12 +31,18 @@ public abstract class AbstractUnitTestAnnotationProcessorClass extends AbstractP
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-        Set<? extends Element> set = roundEnv.getElementsAnnotatedWith(TestAnnotation.class);
+        try {
+            ToolingProvider.setTooling(processingEnv);
 
-        if (set.size() == 1) {
-            testCase((TypeElement) set.iterator().next());
+            Set<? extends Element> set = roundEnv.getElementsAnnotatedWith(TestAnnotation.class);
+
+            if (set.size() == 1) {
+                testCase((TypeElement) set.iterator().next());
+            }
+
+        } finally {
+            ToolingProvider.clearTooling();
         }
-
         return false;
     }
 

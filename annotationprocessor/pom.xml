@@ -17,6 +17,11 @@
 
         <dependency>
             <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
             <artifactId>templating</artifactId>
         </dependency>
 

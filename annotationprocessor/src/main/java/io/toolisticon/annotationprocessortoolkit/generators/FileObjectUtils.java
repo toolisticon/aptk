@@ -1,8 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit.generators;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 
-import javax.annotation.processing.ProcessingEnvironment;
+import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
+
 import javax.lang.model.element.Element;
 import javax.tools.StandardLocation;
 import java.io.IOException;
@@ -12,15 +12,11 @@ import java.io.IOException;
  */
 public class FileObjectUtils {
 
-    private final FrameworkToolWrapper frameworkToolWrapper;
 
     /**
      * Hidden constructor that prevents instantiation.
-     *
-     * @param frameworkToolWrapper the framework tool wrapper
      */
-    private FileObjectUtils(FrameworkToolWrapper frameworkToolWrapper) {
-        this.frameworkToolWrapper = frameworkToolWrapper;
+    private FileObjectUtils() {
     }
 
     /**
@@ -43,7 +39,7 @@ public class FileObjectUtils {
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
      */
     public SimpleResourceReader getResource(String fileName, String targetPackage, StandardLocation standardLocation) throws IOException {
-        return new SimpleResourceReader(frameworkToolWrapper.getFiler().getResource(standardLocation, targetPackage != null ? targetPackage : "", fileName));
+        return new SimpleResourceReader(ToolingProvider.getTooling().getFiler().getResource(standardLocation, targetPackage != null ? targetPackage : "", fileName));
     }
 
     /**
@@ -82,7 +78,7 @@ public class FileObjectUtils {
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
     public SimpleResourceWriter createResource(String fileName, String targetPackage, StandardLocation location, Element... originatingElements) throws IOException {
-        return new SimpleResourceWriter(frameworkToolWrapper.getFiler().createResource(location, targetPackage != null ? targetPackage : "", fileName, originatingElements));
+        return new SimpleResourceWriter(ToolingProvider.getTooling().getFiler().createResource(location, targetPackage != null ? targetPackage : "", fileName, originatingElements));
     }
 
     /**
@@ -99,31 +95,21 @@ public class FileObjectUtils {
 
 
     public SimpleJavaWriter createClassFile(String fileName, Element... originatingElements) throws IOException {
-        return new SimpleJavaWriter(frameworkToolWrapper.getFiler().createClassFile(fileName, originatingElements));
+        return new SimpleJavaWriter(ToolingProvider.getTooling().getFiler().createClassFile(fileName, originatingElements));
     }
 
     public SimpleJavaWriter createSourceFile(String fileName, Element... originatingElements) throws IOException {
-        return new SimpleJavaWriter(frameworkToolWrapper.getFiler().createSourceFile(fileName, originatingElements));
+        return new SimpleJavaWriter(ToolingProvider.getTooling().getFiler().createSourceFile(fileName, originatingElements));
     }
 
     /**
      * Gets an instance of this TypeUtils class.
      *
-     * @param frameworkToolWrapper the wrapper instance that provides the {@link javax.annotation.processing.ProcessingEnvironment} tools
      * @return the type utils instance
      */
-    public static FileObjectUtils getFileObjectUtils(FrameworkToolWrapper frameworkToolWrapper) {
-        return new FileObjectUtils(frameworkToolWrapper);
+    public static FileObjectUtils getFileObjectUtils() {
+        return new FileObjectUtils();
     }
 
-    /**
-     * Gets an instance of a TypeUtils class.
-     *
-     * @param processingEnvironment the processing environment to use
-     * @return the type utils instance
-     */
-    public static FileObjectUtils getTypeUtils(ProcessingEnvironment processingEnvironment) {
-        return new FileObjectUtils(new FrameworkToolWrapper(processingEnvironment));
-    }
 
 }

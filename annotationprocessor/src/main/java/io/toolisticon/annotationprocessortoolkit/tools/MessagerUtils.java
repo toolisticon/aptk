@@ -1,9 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 
 import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
@@ -12,12 +11,11 @@ import javax.tools.Diagnostic;
 /**
  * Utility class and wrapper for / of {@link Messager}.
  */
+
 public class MessagerUtils {
 
-    private final Messager messager;
 
-    public MessagerUtils(Messager messager) {
-        this.messager = messager;
+    public MessagerUtils() {
     }
 
     public void error(Element e, String message, Object... args) {
@@ -81,29 +79,26 @@ public class MessagerUtils {
     }
 
     public void printMessage(Element e, Diagnostic.Kind kind, String message, Object... args) {
-        messager.printMessage(kind, createMessage(message, args), e);
+        ToolingProvider.getTooling().getMessager().printMessage(kind, createMessage(message, args), e);
     }
 
     public void printMessage(Element e, AnnotationMirror a, Diagnostic.Kind kind, String message, Object... args) {
-        messager.printMessage(kind, createMessage(message, args), e, a);
+        ToolingProvider.getTooling().getMessager().printMessage(kind, createMessage(message, args), e, a);
     }
 
     public void printMessage(Element e, AnnotationMirror a, AnnotationValue v, Diagnostic.Kind kind, String message, Object... args) {
-        messager.printMessage(kind, createMessage(message, args), e, a, v);
+        ToolingProvider.getTooling().getMessager().printMessage(kind, createMessage(message, args), e, a, v);
     }
 
     public Messager getMessager() {
-        return messager;
+        return ToolingProvider.getTooling().getMessager();
     }
 
 
-    public static MessagerUtils getMessagerUtils(FrameworkToolWrapper frameworkToolWrapper) {
-        return new MessagerUtils(frameworkToolWrapper.getMessager());
+    public static MessagerUtils getMessagerUtils() {
+        return new MessagerUtils();
     }
 
-    public static MessagerUtils getMessagerUtils(ProcessingEnvironment processingEnvironment) {
-        return getMessagerUtils(new FrameworkToolWrapper(processingEnvironment));
-    }
 
     /**
      * Creates a message by using a custom templating mechanism.

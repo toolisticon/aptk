@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -45,7 +45,10 @@ public class MessagerUtilsTest {
 
         ProcessingEnvironment processingEnvironment = Mockito.mock(ProcessingEnvironment.class);
         Mockito.when(processingEnvironment.getMessager()).thenReturn(messager);
-        unit = MessagerUtils.getMessagerUtils(new FrameworkToolWrapper(processingEnvironment));
+
+        ToolingProvider.setTooling(processingEnvironment);
+
+        unit = MessagerUtils.getMessagerUtils();
 
     }
 

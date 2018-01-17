@@ -1,17 +1,16 @@
 package io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 
 import javax.lang.model.element.Element;
 
 /**
- * Created by tobiasstamann on 09.06.17.
+ * Matcher for raw types.
  */
 public class RawTypeMatcher extends GenericMatcherWithToolsSupport<Class> {
 
-    public RawTypeMatcher(FrameworkToolWrapper tools) {
-        super(tools);
+    public RawTypeMatcher() {
+        super();
     }
 
     /**
@@ -25,7 +24,7 @@ public class RawTypeMatcher extends GenericMatcherWithToolsSupport<Class> {
         }
 
         // cast to executable element for further checks
-        TypeUtils typeUtils = TypeUtils.getTypeUtils(getFrameworkTools());
+        TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
         return typeUtils.doTypeComparison().isErasedTypeEqual(element.asType(), typeUtils.doTypeRetrieval().getTypeMirror(toCheckFor));
 

@@ -53,22 +53,22 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // check null value
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).hasVoidReturnType().getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).hasVoidReturnType().getValidationResult(), Matchers.is(true));
 
                                                               // check non null value
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).hasNonVoidReturnType().getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).hasNonVoidReturnType().getValidationResult(), Matchers.is(false));
 
 
                                                               // check specific return type
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).hasReturnType(String.class).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).hasReturnType(String.class).getValidationResult(), Matchers.is(false));
 
 
-                                                              TypeUtils.getTypeUtils(processingEnv).doTypeRetrieval().getTypeElement(AbstractUnitTestAnnotationProcessorClass.class);
+                                                              TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(AbstractUnitTestAnnotationProcessorClass.class);
 
                                                           }
                                                       }
@@ -87,25 +87,25 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // check null value
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).hasVoidReturnType().getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).hasVoidReturnType().getValidationResult(), Matchers.is(false));
 
                                                               // check non null value
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).hasNonVoidReturnType().getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).hasNonVoidReturnType().getValidationResult(), Matchers.is(true));
 
                                                               // check specific return type
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).hasReturnType(String.class).getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).hasReturnType(String.class).getValidationResult(), Matchers.is(true));
 
                                                               // check for assignable supertype of return type
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).hasReturnType(Object.class).getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).hasReturnType(Object.class).getValidationResult(), Matchers.is(true));
 
                                                               // check specific return type
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).hasReturnType(Boolean.class).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).hasReturnType(Boolean.class).getValidationResult(), Matchers.is(false));
 
 
                                                           }
@@ -125,14 +125,14 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // check for method
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().getValidationResult(), Matchers.is(true));
 
                                                           }
                                                       }
@@ -155,7 +155,7 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
                                                               ExecutableElement constructorElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // check for method
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, constructorElement).isMethod().getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(constructorElement).isMethod().getValidationResult(), Matchers.is(false));
 
 
                                                           }
@@ -179,7 +179,7 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
                                                               ExecutableElement constructorElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // check for method
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, constructorElement).isConstructor().getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(constructorElement).isConstructor().getValidationResult(), Matchers.is(true));
 
 
                                                           }
@@ -199,14 +199,14 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // check for method
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isConstructor().getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isConstructor().getValidationResult(), Matchers.is(false));
 
 
                                                           }
@@ -226,14 +226,14 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // check for method
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasName("methodWithReturnTypeAndParameters").getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasName("methodWithReturnTypeAndParameters").getValidationResult(), Matchers.is(true));
 
 
                                                           }
@@ -253,7 +253,7 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
@@ -261,7 +261,7 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
 
                                                               // check if element name doesn't match
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasName("XXX").getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasName("XXX").getValidationResult(), Matchers.is(false));
 
 
                                                           }
@@ -281,17 +281,17 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // check for existence of parameters
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasParameters().getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasParameters().getValidationResult(), Matchers.is(true));
 
                                                               // check for existence of parameters
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasParameters(Boolean.class, String.class).getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasParameters(Boolean.class, String.class).getValidationResult(), Matchers.is(true));
 
 
                                                           }
@@ -311,17 +311,17 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
 
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
                                                               // check non matching parameter length
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasParameters(Boolean.class).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasParameters(Boolean.class).getValidationResult(), Matchers.is(false));
 
                                                               // check non matching parameter types
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasParameters(String.class, Boolean.class).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasParameters(String.class, Boolean.class).getValidationResult(), Matchers.is(false));
 
 
                                                           }
@@ -341,14 +341,14 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
 
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
                                                               // check non matching parameter length
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasParameters().getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasParameters().getValidationResult(), Matchers.is(true));
 
 
                                                           }
@@ -368,14 +368,14 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
 
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
                                                               // check non matching parameter length
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasParameters().getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasParameters().getValidationResult(), Matchers.is(false));
 
 
                                                           }
@@ -395,14 +395,14 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // check for existence of parameters
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PUBLIC).hasNotModifiers(Modifier.PROTECTED, Modifier.FINAL).getValidationResult(), Matchers.is(true));
 
                                                           }
                                                       }
@@ -421,17 +421,17 @@ public class FluentExecutableElementValidatorTest extends AbstractAnnotationProc
 
                                                               // do preparations
                                                               List<? extends Element> elements = FluentElementFilter.createFluentFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD).getResult();
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD).getResult();
 
                                                               MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                                                               ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
                                                               // check for nonexistence
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasModifiers(Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasModifiers(Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasNotModifiers(Modifier.PUBLIC).getValidationResult(), Matchers.is(false));
 
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
-                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(processingEnv, testElement).isMethod().hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasModifiers(Modifier.SYNCHRONIZED, Modifier.PROTECTED).getValidationResult(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentExecutableElementValidator.createFluentExecutableElementValidator(testElement).isMethod().hasNotModifiers(Modifier.PROTECTED, Modifier.SYNCHRONIZED).getValidationResult(), Matchers.is(false));
 
 
                                                           }

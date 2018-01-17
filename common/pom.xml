@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>testhelper</artifactId>
+    <artifactId>common</artifactId>
     <packaging>bundle</packaging>
 
     <parent>
@@ -11,15 +11,11 @@
         <version>0.7.1-SNAPSHOT</version>
     </parent>
 
-    <name>testhelper</name>
+    <name>common</name>
 
 
     <dependencies>
 
-        <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-            <artifactId>common</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.google.testing.compile</groupId>
@@ -56,7 +52,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>io.toolisticon.annotationprocessortoolkit.testhelper</Export-Package>
+                        <Export-Package>io.toolisticon.annotationprocessortoolkit</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>

@@ -1,6 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+
+
+import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -56,24 +58,22 @@ public final class AnnotationUtils {
     /**
      * Gets the AnnotationValue with default "value" key.
      *
-     * @param frameworkToolWrapper used to pass wrapped Elements needed to get the default values
      * @param annotationMirror     the annotation mirror to get the value from
      * @return the AnnotationValue,  or null if the AnnotationValue with passed key cannot be found
      */
-    public static AnnotationValue getAnnotationValueOfAttributeWithDefaults(FrameworkToolWrapper frameworkToolWrapper, AnnotationMirror annotationMirror) {
-        return getAnnotationValueOfAttributeWithDefaults(frameworkToolWrapper, annotationMirror, "value");
+    public static AnnotationValue getAnnotationValueOfAttributeWithDefaults( AnnotationMirror annotationMirror) {
+        return getAnnotationValueOfAttributeWithDefaults( annotationMirror, "value");
     }
 
     /**
      * Get all mandatory attribute value names
-     * @param frameworkToolWrapper used to pass wrapped Elements needed to get the default values
      * @param annotationMirror the annotation mirror to get the mandatory attribute names from
      * @return an array containing all mandatory attribute names
      */
-    public static String[] getMandatoryAttributeValueNames(FrameworkToolWrapper frameworkToolWrapper, AnnotationMirror annotationMirror) {
+    public static String[] getMandatoryAttributeValueNames( AnnotationMirror annotationMirror) {
 
         List<String> result = new ArrayList<String>();
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : frameworkToolWrapper.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ToolingProvider.getTooling().getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getDefaultValue() == null ) {
                 result.add(entry.getKey().getSimpleName().toString());
             }
@@ -84,14 +84,13 @@ public final class AnnotationUtils {
 
     /**
      * Get all optional attribute value names
-     * @param frameworkToolWrapper used to pass wrapped Elements needed to get the default values
      * @param annotationMirror the annotation mirror to get the mandatory attribute names from
      * @return an array containing all mandatory attribute names
      */
-    public static String[] getOptionalAttributeValueNames(FrameworkToolWrapper frameworkToolWrapper, AnnotationMirror annotationMirror) {
+    public static String[] getOptionalAttributeValueNames( AnnotationMirror annotationMirror) {
 
         List<String> result = new ArrayList<String>();
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : frameworkToolWrapper.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ToolingProvider.getTooling().getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getDefaultValue() != null ) {
                 result.add(entry.getKey().getSimpleName().toString());
             }
@@ -104,18 +103,38 @@ public final class AnnotationUtils {
      * Gets the AnnotationValue for the passed key.
      * Also implicitly set default values will be found.
      *
-     * @param frameworkToolWrapper used to pass wrapped Elements needed to get the default values
      * @param annotationMirror     the annotation mirror to get the value from
      * @param key                  the attribute key to search for
      * @return the AnnotationValue,  or null if the AnnotationValue with passed key cannot be found
      */
-    public static AnnotationValue getAnnotationValueOfAttributeWithDefaults(FrameworkToolWrapper frameworkToolWrapper, AnnotationMirror annotationMirror, String key) {
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : frameworkToolWrapper.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+    public static AnnotationValue getAnnotationValueOfAttributeWithDefaults( AnnotationMirror annotationMirror, String key) {
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ToolingProvider.getTooling().getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getSimpleName().toString().equals(key)) {
                 return entry.getValue();
             }
         }
         return null;
+    }
+
+
+    /**
+     * Gets the ExecutableElement of a annotation attribute for the passed key.
+     * This can be used to determine the type of an attribute.
+     * This is very useful if you want to generate code that uses the annotation.
+     *
+     * @param annotationMirror     the annotation mirror to get the value from
+     * @param key                  the attribute key to search for
+     * @return the AnnotationValue,  or null if the AnnotationValue with passed key cannot be found
+     */
+    public static ExecutableElement getExecutableElementForAnnotationAttributeName( AnnotationMirror annotationMirror, String key) {
+
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ToolingProvider.getTooling().getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+            if (entry.getKey().getSimpleName().toString().equals(key)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+
     }
 
     /**

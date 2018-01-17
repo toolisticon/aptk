@@ -49,7 +49,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           protected void testCase(TypeElement element) {
 
                                                               List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.FIELD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(results, Matchers.hasSize(8));
@@ -76,8 +76,8 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
-                                                                      .applyFilter(Filters.getModifierFilter()).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.FIELD)
+                                                                      .applyFilter(Filters.MODIFIER_FILTER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -99,7 +99,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           protected void testCase(TypeElement element) {
 
                                                               List<? extends Element> results = FluentElementFilter.createFluentFilter(null)
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.FIELD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.FIELD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(results, Matchers.hasSize(0));
@@ -121,7 +121,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           protected void testCase(TypeElement element) {
 
                                                               List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(null)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(null)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -143,7 +143,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           protected void testCase(TypeElement element) {
 
                                                               List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf()
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf()
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -167,7 +167,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           protected void testCase(TypeElement element) {
 
                                                               List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf(ElementKind.FIELD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).invert().filterByOneOf(ElementKind.FIELD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size() - 8));
@@ -195,7 +195,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           protected void testCase(TypeElement element) {
 
                                                               List<? extends Element> results = FluentElementFilter.createFluentFilter(null)
-                                                                      .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf(ElementKind.FIELD)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).invert().filterByOneOf(ElementKind.FIELD)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(results, Matchers.hasSize(0));
@@ -217,7 +217,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           protected void testCase(TypeElement element) {
 
                                                               List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf(null)
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).invert().filterByOneOf(null)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(results, Matchers.<Element>empty());
@@ -239,7 +239,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           protected void testCase(TypeElement element) {
 
                                                               List<? extends Element> results = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).invert().filterByOneOf()
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).invert().filterByOneOf()
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(results, Matchers.<Element>empty());
@@ -264,7 +264,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // one search attribute
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("publicStaticField")
+                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("publicStaticField")
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -288,7 +288,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // two search attributes
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("publicStaticField", "synchronizedMethod")
+                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("publicStaticField", "synchronizedMethod")
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(2));
@@ -312,7 +312,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // returns empty result
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("XXX")
+                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("XXX")
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -335,7 +335,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle no passed filter args correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf()
+                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf()
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -357,7 +357,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle nulls correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf(null)
+                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf(null)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -381,7 +381,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                               // null valued element list
                                                               List<? extends Element> result =
                                                                       FluentElementFilter.createFluentFilter(null)
-                                                                              .applyFilter(Filters.getNameFilter()).filterByOneOf(null)
+                                                                              .applyFilter(Filters.NAME_FILTER).filterByOneOf(null)
                                                                               .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -407,7 +407,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // one search attribute
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf("publicStaticField")
+                                                                      .applyFilter(Filters.NAME_FILTER).invert().filterByOneOf("publicStaticField")
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
@@ -434,7 +434,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // two search attributes
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf("publicStaticField", "synchronizedMethod")
+                                                                      .applyFilter(Filters.NAME_FILTER).invert().filterByOneOf("publicStaticField", "synchronizedMethod")
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 2));
@@ -459,7 +459,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // returns empty result
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf("XXX")
+                                                                      .applyFilter(Filters.NAME_FILTER).invert().filterByOneOf("XXX")
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -482,7 +482,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle no passed filter args correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf()
+                                                                      .applyFilter(Filters.NAME_FILTER).invert().filterByOneOf()
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.<Element>empty());
@@ -505,7 +505,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle nulls correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getNameFilter()).invert().filterByOneOf(null)
+                                                                      .applyFilter(Filters.NAME_FILTER).invert().filterByOneOf(null)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.<Element>empty());
@@ -529,7 +529,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                               // null valued element list
                                                               List<? extends Element> result =
                                                                       FluentElementFilter.createFluentFilter(null)
-                                                                              .applyFilter(Filters.getNameFilter()).invert().filterByOneOf(null)
+                                                                              .applyFilter(Filters.NAME_FILTER).invert().filterByOneOf(null)
                                                                               .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -553,7 +553,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // one search attribute
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf("publicSt.*Field")
+                                                                      .applyFilter(Filters.REGEX_NAME_FILTER).filterByOneOf("publicSt.*Field")
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -578,7 +578,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // two search attributes
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf("publicSt.*Field", "synchr.*Method")
+                                                                      .applyFilter(Filters.REGEX_NAME_FILTER).filterByOneOf("publicSt.*Field", "synchr.*Method")
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(2));
@@ -603,7 +603,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // returns empty result
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf("XXX")
+                                                                      .applyFilter(Filters.REGEX_NAME_FILTER).filterByOneOf("XXX")
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -626,7 +626,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle no passed filter args correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf()
+                                                                      .applyFilter(Filters.REGEX_NAME_FILTER).filterByOneOf()
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -649,7 +649,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle nulls correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf(null)
+                                                                      .applyFilter(Filters.REGEX_NAME_FILTER).filterByOneOf(null)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -673,7 +673,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle nulls correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(null)
-                                                                      .applyFilter(Filters.getRegexNameFilter()).filterByOneOf(null)
+                                                                      .applyFilter(Filters.REGEX_NAME_FILTER).filterByOneOf(null)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -698,7 +698,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // one search attribute
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(FilterTestAnnotation1.class)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByOneOf(FilterTestAnnotation1.class)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -723,7 +723,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // two search attributes
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -748,7 +748,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // returns empty result
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(TestAnnotation.class)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByOneOf(TestAnnotation.class)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -771,7 +771,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle no passed filter args correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf()
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByOneOf()
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -794,7 +794,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle nulls correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(null)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByOneOf(null)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -818,7 +818,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle nulls correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(null)
-                                                                      .applyFilter(Filters.getAnnotationFilter()).filterByOneOf(FilterTestAnnotation1.class)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByOneOf(FilterTestAnnotation1.class)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -845,7 +845,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // one search attribute
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf(FilterTestAnnotation1.class)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).invert().filterByOneOf(FilterTestAnnotation1.class)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
@@ -872,7 +872,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // two search attributes
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).invert().filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
@@ -900,7 +900,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // returns empty result
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByAllOf(FilterTestAnnotation1.class, TestAnnotation.class)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).invert().filterByAllOf(FilterTestAnnotation1.class, TestAnnotation.class)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -923,7 +923,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle no passed filter args correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf()
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).invert().filterByOneOf()
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.<Element>empty());
@@ -946,7 +946,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle nulls correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf(null)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).invert().filterByOneOf(null)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.<Element>empty());
@@ -970,7 +970,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // handle nulls correctly
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(null)
-                                                                      .applyFilter(Filters.getAnnotationFilter()).invert().filterByOneOf(FilterTestAnnotation1.class)
+                                                                      .applyFilter(Filters.ANNOTATION_FILTER).invert().filterByOneOf(FilterTestAnnotation1.class)
                                                                       .getResult();
 
                                                               MatcherAssert.assertThat(result, Matchers.hasSize(0));

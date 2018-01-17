@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.validators;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 
@@ -14,7 +14,6 @@ import javax.tools.Diagnostic;
  */
 public abstract class AbstractFluentValidator<T extends AbstractFluentValidator, E extends Element> {
 
-    private final FrameworkToolWrapper frameworkToolWrapper;
     private final MessagerUtils messagerUtils;
     private final TypeUtils typeUtils;
 
@@ -29,15 +28,14 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
     private Object[] customMessageParameter;
     private Diagnostic.Kind customMessageLevel;
 
-    protected AbstractFluentValidator(FrameworkToolWrapper frameworkToolWrapper, E element) {
+    protected AbstractFluentValidator( E element) {
 
         // set default message level to ERROR
         this.messageLevel = Diagnostic.Kind.ERROR;
 
         // config validator
-        this.frameworkToolWrapper = frameworkToolWrapper;
-        this.messagerUtils = MessagerUtils.getMessagerUtils(frameworkToolWrapper);
-        this.typeUtils = TypeUtils.getTypeUtils(frameworkToolWrapper);
+        this.messagerUtils = MessagerUtils.getMessagerUtils();
+        this.typeUtils = TypeUtils.getTypeUtils();
 
         // element and current validation result
         this.element = element;
@@ -57,7 +55,6 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
         this.messageLevel = previousFluentValidator != null ? previousFluentValidator.messageLevel : Diagnostic.Kind.ERROR;
 
         // config validator
-        this.frameworkToolWrapper = previousFluentValidator != null ? previousFluentValidator.frameworkToolWrapper : null;
         this.messagerUtils = previousFluentValidator != null ? previousFluentValidator.messagerUtils : null;
         this.typeUtils = previousFluentValidator != null ? previousFluentValidator.typeUtils : null;
 
@@ -84,15 +81,6 @@ public abstract class AbstractFluentValidator<T extends AbstractFluentValidator,
      */
     protected TypeUtils getTypeUtils() {
         return typeUtils;
-    }
-
-    /**
-     * Gets the FrameworkToolWrapper.
-     *
-     * @return the FrameworkToolWrapper
-     */
-    protected FrameworkToolWrapper getFrameworkToolWrapper() {
-        return frameworkToolWrapper;
     }
 
     /**

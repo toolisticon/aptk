@@ -7,7 +7,6 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 
 /**
@@ -456,6 +455,7 @@ public class AnnotationValueUtils {
 
     /**
      * Convenience method to get boolean value array from annotation value.
+     *
      * @param attributes
      * @return the boolean array containing the attributes's values, or null if passed attributes list is null
      */
@@ -479,6 +479,7 @@ public class AnnotationValueUtils {
 
     /**
      * Convenience method to get char value array from annotation value.
+     *
      * @param attributes
      * @return the char array containing the attributes's values, or null if passed attributes list is null
      */
@@ -502,6 +503,7 @@ public class AnnotationValueUtils {
 
     /**
      * Convenience method to get String value array from annotation value.
+     *
      * @param attributes
      * @return the String array containing the attributes's values, or null if passed attributes list is null
      */
@@ -525,6 +527,7 @@ public class AnnotationValueUtils {
 
     /**
      * Convenience method to get class value array from annotation value.
+     *
      * @param attributes
      * @return the class array containing the attributes's values, or null if passed attributes list is null
      */
@@ -549,6 +552,7 @@ public class AnnotationValueUtils {
 
     /**
      * Convenience method to get enum value array from annotation value.
+     *
      * @param attributes
      * @return the enum array containing the attributes's values, or null if passed attributes list is null
      */
@@ -572,6 +576,7 @@ public class AnnotationValueUtils {
 
     /**
      * Convenience method to get annotation value array from annotation value.
+     *
      * @param attributes
      * @return the annotation array containing the attributes's values, or null if passed attributes list is null
      */

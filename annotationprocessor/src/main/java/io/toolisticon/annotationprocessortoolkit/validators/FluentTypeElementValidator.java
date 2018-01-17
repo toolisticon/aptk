@@ -1,11 +1,9 @@
 package io.toolisticon.annotationprocessortoolkit.validators;
 
 import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
-import io.toolisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
@@ -18,9 +16,9 @@ import java.util.List;
 public class FluentTypeElementValidator extends AbstractFluentElementValidator<FluentTypeElementValidator, TypeElement> {
 
 
-    public FluentTypeElementValidator(FrameworkToolWrapper frameworkToolWrapper, TypeElement typeElement) {
+    public FluentTypeElementValidator(TypeElement typeElement) {
 
-        super(frameworkToolWrapper, typeElement);
+        super(typeElement);
 
     }
 
@@ -79,7 +77,7 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
         List<ExecutableElement> constructors =
                 ElementUtils.CastElement.castElementList(
                         FluentElementFilter.createFluentFilter(getElement().getEnclosedElements())
-                                .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.CONSTRUCTOR)
+                                .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.CONSTRUCTOR)
                                 .getResult()
                         , ExecutableElement.class);
 
@@ -112,12 +110,9 @@ public class FluentTypeElementValidator extends AbstractFluentElementValidator<F
     }
 
 
-    public static FluentTypeElementValidator createFluentTypeElementValidator(FrameworkToolWrapper frameworkToolWrapper, TypeElement executableElement) {
-        return new FluentTypeElementValidator(frameworkToolWrapper, executableElement);
+    public static FluentTypeElementValidator createFluentTypeElementValidator(TypeElement executableElement) {
+        return new FluentTypeElementValidator(executableElement);
     }
 
-    public static FluentTypeElementValidator createFluentTypeElementValidator(ProcessingEnvironment processingEnvironment, TypeElement executableElement) {
-        return new FluentTypeElementValidator(new FrameworkToolWrapper(processingEnvironment), executableElement);
-    }
 
 }

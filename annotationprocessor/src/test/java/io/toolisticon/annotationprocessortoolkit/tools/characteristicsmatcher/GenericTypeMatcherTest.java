@@ -1,7 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
 import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
@@ -50,7 +49,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
+                                                        TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                         GenericType genericTypeToConvert = typeUtils.doGenerics().createGenericType(Map.class,
                                                                 typeUtils.doGenerics().createWildcardWithExtendsBound(
@@ -69,7 +68,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                         );
 
 
-                                                        MatcherAssert.assertThat(Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().getStringRepresentationOfPassedCharacteristic(genericTypeToConvert), org.hamcrest.Matchers.is("java.util.Map<? extends java.lang.StringBuilder, java.util.Comparator<? super java.util.List<?>>>"));
+                                                        MatcherAssert.assertThat(Matchers.GENERIC_TYPE_MATCHER.getMatcher().getStringRepresentationOfPassedCharacteristic(genericTypeToConvert), org.hamcrest.Matchers.is("java.util.Map<? extends java.lang.StringBuilder, java.util.Comparator<? super java.util.List<?>>>"));
 
 
                                                     }
@@ -89,11 +88,11 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
+                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
-                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
 
                                                               ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -106,7 +105,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                                       )
                                                               );
 
-                                                              MatcherAssert.assertThat("Should compare successful", Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+                                                              MatcherAssert.assertThat("Should compare successful", Matchers.GENERIC_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
 
 
                                                           }
@@ -125,11 +124,11 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                           protected void testCase(TypeElement element) {
 
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
+                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
-                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
 
                                                               ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -143,7 +142,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
 
                                                               );
 
-                                                              MatcherAssert.assertThat("Should not compare successful", !Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+                                                              MatcherAssert.assertThat("Should not compare successful", !Matchers.GENERIC_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
 
 
                                                           }
@@ -162,12 +161,12 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
+                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
-                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
 
                                                               ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -190,7 +189,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                                       )
                                                               );
 
-                                                              MatcherAssert.assertThat("Should compare successful", Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+                                                              MatcherAssert.assertThat("Should compare successful", Matchers.GENERIC_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
 
                                                           }
                                                       }
@@ -208,11 +207,11 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils(processingEnv);
+                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
-                                                                      .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter").getResult();
+                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
 
                                                               ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -237,7 +236,7 @@ public class GenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                                       )
                                                               );
 
-                                                              MatcherAssert.assertThat("Should not compare successful", !Matchers.getGenericTypeMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+                                                              MatcherAssert.assertThat("Should not compare successful", !Matchers.GENERIC_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
 
 
                                                           }

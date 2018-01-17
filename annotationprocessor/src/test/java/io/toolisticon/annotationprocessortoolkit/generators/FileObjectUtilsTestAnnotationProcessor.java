@@ -20,14 +20,14 @@ public class FileObjectUtilsTestAnnotationProcessor extends AbstractAnnotationPr
 
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    public boolean processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
         try {
             for (Element element : roundEnv.getElementsAnnotatedWith(FileObjectUtilsTestAnnotation.class)) {
 
                 if (simpleResourceWriter == null) {
 
-                    simpleResourceWriter = FileObjectUtils.getTypeUtils(processingEnv).createResource("testOutput.txt");
+                    simpleResourceWriter = FileObjectUtils.getFileObjectUtils().createResource("testOutput.txt");
 
 
                 }

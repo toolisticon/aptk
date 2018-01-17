@@ -1,12 +1,11 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
+import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericType;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeKind;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeParameter;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
@@ -20,7 +19,6 @@ import javax.lang.model.util.Types;
  */
 public final class TypeUtils {
 
-    private final FrameworkToolWrapper frameworkToolWrapper;
 
     private final TypeRetrieval typeRetrieval = new TypeRetrieval();
     private final TypeComparison typeComparison = new TypeComparison();
@@ -31,11 +29,9 @@ public final class TypeUtils {
 
     /**
      * Hidden constructor.
-     *
-     * @param frameworkToolWrapper the wrapped tools of processing environment
      */
-    private TypeUtils(FrameworkToolWrapper frameworkToolWrapper) {
-        this.frameworkToolWrapper = frameworkToolWrapper;
+    private TypeUtils() {
+
     }
 
 
@@ -140,7 +136,24 @@ public final class TypeUtils {
                 return null;
             }
 
-            return frameworkToolWrapper.getElements().getTypeElement(fullQualifiedClassName);
+            return ToolingProvider.getTooling().getElements().getTypeElement(fullQualifiedClassName);
+
+        }
+
+
+        /**
+         * Gets a type element for a TypeMirror.
+         *
+         * @param typeMirror
+         * @return the type element for the passed full qualified class name or null if type element can't be found
+         */
+        public TypeElement getTypeElement(TypeMirror typeMirror) {
+
+            if (typeMirror == null) {
+                return null;
+            }
+
+            return getTypeElement(typeMirror.toString());
 
         }
 
@@ -166,7 +179,7 @@ public final class TypeUtils {
         public TypeElement getTypeElement(Class type) {
 
             TypeMirror typeMirror = getTypeMirror(type);
-            return typeMirror == null ? null : (TypeElement) frameworkToolWrapper.getTypes().asElement(typeMirror);
+            return typeMirror == null ? null : (TypeElement) ToolingProvider.getTooling().getTypes().asElement(typeMirror);
 
         }
 
@@ -184,14 +197,14 @@ public final class TypeUtils {
             }
 
             if (type.isArray()) {
-                return frameworkToolWrapper.getTypes().getArrayType(getTypeMirror(type.getComponentType()));
+                return ToolingProvider.getTooling().getTypes().getArrayType(getTypeMirror(type.getComponentType()));
             }
 
             if (type.isPrimitive()) {
                 return getPrimitiveTypeMirror(type);
             }
 
-            return frameworkToolWrapper.getElements().getTypeElement(type.getCanonicalName()).asType();
+            return ToolingProvider.getTooling().getElements().getTypeElement(type.getCanonicalName()).asType();
         }
 
         /**
@@ -246,7 +259,7 @@ public final class TypeUtils {
          * @return true if typeElement is assignable to type otherwise false.
          */
         public boolean isAssignableTo(TypeElement typeElement, Class type) {
-            return isAssignableTo(typeElement, frameworkToolWrapper.getElements().getTypeElement(type.getCanonicalName()).asType());
+            return isAssignableTo(typeElement, ToolingProvider.getTooling().getElements().getTypeElement(type.getCanonicalName()).asType());
         }
 
         /**
@@ -280,7 +293,7 @@ public final class TypeUtils {
          * @return true if typeMirror1 is assignable to typeMirror2 otherwise false.
          */
         public boolean isAssignableTo(TypeMirror typeMirror1, TypeMirror typeMirror2) {
-            return typeMirror1 != null && typeMirror2 != null && frameworkToolWrapper.getTypes().isAssignable(typeMirror1, typeMirror2);
+            return typeMirror1 != null && typeMirror2 != null && ToolingProvider.getTooling().getTypes().isAssignable(typeMirror1, typeMirror2);
         }
 
         /**
@@ -334,7 +347,7 @@ public final class TypeUtils {
          * @return true if all parameters are not null and TypeMirrors are equal, otherwise false
          */
         public boolean isTypeEqual(TypeElement typeElement, TypeMirror typeMirror) {
-            return typeElement != null && typeMirror != null && frameworkToolWrapper.getTypes().isSameType(typeElement.asType(), typeMirror);
+            return typeElement != null && typeMirror != null && ToolingProvider.getTooling().getTypes().isSameType(typeElement.asType(), typeMirror);
         }
 
         /**
@@ -413,6 +426,7 @@ public final class TypeUtils {
 
         /**
          * Checks if passed TypeMirror is an array.
+         *
          * @param typeMirror the TypeMirror to check
          * @return true if passed TypeMiroor is not null and of kind array.
          */
@@ -469,7 +483,7 @@ public final class TypeUtils {
         /**
          * Checks whether passed {@link TypeMirror} is a an array with passed component type.
          *
-         * @param typeMirror    the {@link TypeMirror} to check
+         * @param typeMirror  the {@link TypeMirror} to check
          * @param genericType the arrays generic component type to check for
          * @return true if passed type mirror is of kind array with component type, otherwise false
          */
@@ -520,7 +534,7 @@ public final class TypeUtils {
         /**
          * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
          *
-         * @param typeMirror    the {@link TypeMirror} to check
+         * @param typeMirror  the {@link TypeMirror} to check
          * @param genericType the arrays generic component type to check for
          * @return true if passed type mirror is of kind array with component type, otherwise false
          */
@@ -530,7 +544,6 @@ public final class TypeUtils {
                     && checkTypeKind.isArray(typeMirror)
                     && doTypeComparison().isAssignableTo(getArraysComponentType(typeMirror), genericType);
         }
-
 
 
     }
@@ -910,7 +923,7 @@ public final class TypeUtils {
      * @return
      */
     public Types getTypes() {
-        return frameworkToolWrapper.getTypes();
+        return ToolingProvider.getTooling().getTypes();
     }
 
     public TypeRetrieval doTypeRetrieval() {
@@ -936,20 +949,10 @@ public final class TypeUtils {
     /**
      * Gets an instance of this TypeUtils class.
      *
-     * @param frameworkToolWrapper the wrapper instance that provides the {@link javax.annotation.processing.ProcessingEnvironment} tools
      * @return the type utils instance
      */
-    public static TypeUtils getTypeUtils(FrameworkToolWrapper frameworkToolWrapper) {
-        return new TypeUtils(frameworkToolWrapper);
-    }
-
-    /**
-     * Gets an instance of a TypeUtils class.
-     * @param processingEnvironment the processing environment to use
-     * @return the type utils instance
-     */
-    public static TypeUtils getTypeUtils(ProcessingEnvironment processingEnvironment) {
-        return new TypeUtils(new FrameworkToolWrapper(processingEnvironment));
+    public static TypeUtils getTypeUtils() {
+        return new TypeUtils();
     }
 
 

@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
 
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.internal.Utilities;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
@@ -54,7 +53,7 @@ public class ParameterMatcherTest extends AbstractAnnotationProcessorUnitTest {
                                                               MatcherAssert.assertThat("Precondition: second parameter must be of type String but is " + executableElement.getParameters().get(1).asType().toString(), executableElement.getParameters().get(1).asType().toString().equals(String.class.getCanonicalName()));
 
 
-                                                              MatcherAssert.assertThat("Should have found matching parameters", Matchers.getParameterMatcher(new FrameworkToolWrapper(processingEnv)).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class)));
+                                                              MatcherAssert.assertThat("Should have found matching parameters", Matchers.PARAMETER_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class)));
 
                                                           }
                                                       }
@@ -77,10 +76,9 @@ public class ParameterMatcherTest extends AbstractAnnotationProcessorUnitTest {
                                                               ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
                                                               MatcherAssert.assertThat("Precondition: method must have 2 parameters", executableElement.getParameters().size() == 2);
 
-                                                              FrameworkToolWrapper frameworkToolWrapper = new FrameworkToolWrapper(processingEnv);
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.getParameterMatcher(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(String.class, Boolean.class)));
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.getParameterMatcher(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class)));
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.getParameterMatcher(frameworkToolWrapper).getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class, String.class)));
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.PARAMETER_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(String.class, Boolean.class)));
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.PARAMETER_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class)));
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", !Matchers.PARAMETER_TYPE_MATCHER.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class, String.class)));
 
                                                           }
                                                       }

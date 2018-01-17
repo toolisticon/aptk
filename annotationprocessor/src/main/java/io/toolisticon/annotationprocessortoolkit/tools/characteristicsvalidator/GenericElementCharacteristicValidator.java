@@ -12,6 +12,8 @@ import java.util.Set;
  */
 public class GenericElementCharacteristicValidator<T> implements InclusiveElementValidator<T> {
 
+    private ValidatorMesssageEnum failingValidationMessage;
+
     /**
      * The {@link Matcher} to be used with this validator.
      */
@@ -20,10 +22,12 @@ public class GenericElementCharacteristicValidator<T> implements InclusiveElemen
     /**
      * Constructor that allows passing in of the {@link Matcher} to be used by the validator.
      *
-     * @param matcher the matcher to be used
+     * @param matcher                  the matcher to be used
+     * @param failingValidationMessage the default message to output if validation fails
      */
-    public GenericElementCharacteristicValidator(Matcher<T> matcher) {
+    public GenericElementCharacteristicValidator(Matcher<T> matcher, ValidatorMesssageEnum failingValidationMessage) {
         this.matcher = matcher != null ? matcher.getMatcher() : null;
+        this.failingValidationMessage = failingValidationMessage;
     }
 
     /**
@@ -192,4 +196,14 @@ public class GenericElementCharacteristicValidator<T> implements InclusiveElemen
         return matcher;
     }
 
+    /**
+     * Gets the default message if validation fails.
+     * This string should only use two placeholder used for characteristics.
+     * The first defines the kind of check (all, at least one, one, none).
+     * The second defines the validation criteria.
+     * @return
+     */
+    public ValidatorMesssageEnum getFailingValidationMessage() {
+        return failingValidationMessage;
+    }
 }

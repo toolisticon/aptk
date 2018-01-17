@@ -2,7 +2,6 @@ package io.toolisticon.annotationprocessortoolkit;
 
 import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
 import io.toolisticon.annotationprocessortoolkit.generators.FileObjectUtils;
-import io.toolisticon.annotationprocessortoolkit.internal.FrameworkToolWrapper;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.validators.FluentExecutableElementValidator;
@@ -12,6 +11,7 @@ import io.toolisticon.annotationprocessortoolkit.validators.FluentTypeElementVal
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -28,53 +28,8 @@ import java.util.Set;
 public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
 
 
-    /**
-     * Creates fluent filter for Element Lists.
-     *
-     * @param elementListToFilter the element list to filter
-     * @param <E>
-     * @return The filtered list
-     */
-    public <E extends Element> FluentElementFilter<E> createFluentElementFilter(List<E> elementListToFilter) {
-        return FluentElementFilter.createFluentFilter(elementListToFilter);
-    }
-
-
-    /**
-     * Creates fluent validator for method Element.
-     *
-     * @param methodElement the ExecutableElement instance to validate
-     * @return FluentMethodValidator instance
-     */
-    public FluentExecutableElementValidator getFluentMethodValidator(ExecutableElement methodElement) {
-        return new FluentExecutableElementValidator(frameworkToolWrapper, methodElement);
-    }
-
-
-    /**
-     * Creates fluent validator for validating modifiers of elements.
-     *
-     * @param element the element instance to validate
-     * @return FluentTypeElementValidator instance
-     */
-    public FluentModifierElementValidator getFluentModifierElementValidator(Element element) {
-        return new FluentModifierElementValidator(frameworkToolWrapper, element);
-    }
-
-    /**
-     * Creates fluent validator for TypeElements.
-     *
-     * @param typeElement the TypeElement instance to validate
-     * @return FluentMethodValidator instance
-     */
-    public FluentTypeElementValidator getFluentTypeValidator(TypeElement typeElement) {
-        return new FluentTypeElementValidator(frameworkToolWrapper, typeElement);
-    }
-
-
     private Elements elementUtils;
     private Filer filer;
-    private FrameworkToolWrapper frameworkToolWrapper;
     private MessagerUtils messager;
     private TypeUtils typeUtils;
     private FileObjectUtils fileObjectUtils;
@@ -84,15 +39,31 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
 
-        frameworkToolWrapper = new FrameworkToolWrapper(processingEnv);
         // create local references
-        messager = new MessagerUtils(processingEnv.getMessager());
-        typeUtils = TypeUtils.getTypeUtils(frameworkToolWrapper);
+        messager = new MessagerUtils();
+        typeUtils = TypeUtils.getTypeUtils();
         filer = processingEnv.getFiler();
         elementUtils = processingEnv.getElementUtils();
-        fileObjectUtils = FileObjectUtils.getFileObjectUtils(frameworkToolWrapper);
+        fileObjectUtils = FileObjectUtils.getFileObjectUtils();
 
     }
+
+    @Override
+    public final boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+
+        try {
+
+            ToolingProvider.setTooling(processingEnv);
+            return processAnnotations(annotations, roundEnv);
+
+        } finally {
+            ToolingProvider.clearTooling();
+        }
+
+    }
+
+    public abstract boolean processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
+
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
@@ -118,14 +89,6 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
         return typeUtils;
     }
 
-    /**
-     * Gets the {@link FrameworkToolWrapper} that wraps all util provided by  {@link ProcessingEnvironment}.
-     *
-     * @return the TypeUtils
-     */
-    public FrameworkToolWrapper getFrameworkToolWrapper() {
-        return frameworkToolWrapper;
-    }
 
     /**
      * Gets the {@link Elements} provided by {@link ProcessingEnvironment}.
@@ -154,6 +117,49 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
         return fileObjectUtils;
     }
 
+
+    /**
+     * Creates fluent filter for Element Lists.
+     *
+     * @param elementListToFilter the element list to filter
+     * @param <E>
+     * @return The filtered list
+     */
+    public <E extends Element> FluentElementFilter<E> createFluentElementFilter(List<E> elementListToFilter) {
+        return FluentElementFilter.createFluentFilter(elementListToFilter);
+    }
+
+
+    /**
+     * Creates fluent validator for method Element.
+     *
+     * @param methodElement the ExecutableElement instance to validate
+     * @return FluentMethodValidator instance
+     */
+    public FluentExecutableElementValidator getFluentMethodValidator(ExecutableElement methodElement) {
+        return new FluentExecutableElementValidator(methodElement);
+    }
+
+
+    /**
+     * Creates fluent validator for validating modifiers of elements.
+     *
+     * @param element the element instance to validate
+     * @return FluentTypeElementValidator instance
+     */
+    public FluentModifierElementValidator getFluentModifierElementValidator(Element element) {
+        return new FluentModifierElementValidator(element);
+    }
+
+    /**
+     * Creates fluent validator for TypeElements.
+     *
+     * @param typeElement the TypeElement instance to validate
+     * @return FluentMethodValidator instance
+     */
+    public FluentTypeElementValidator getFluentTypeValidator(TypeElement typeElement) {
+        return new FluentTypeElementValidator(typeElement);
+    }
 
     /**
      * Helper function to statically provide supported annotations.

@@ -85,6 +85,7 @@ public final class FluentElementFilter<T extends Element> {
             return new FluentElementFilter<T>(filter.filterByCharacteristics(ValidatorKind.NONE_OF, invertFiltering, result, filteringCharacteristics));
         }
 
+
     }
 
 
@@ -108,7 +109,7 @@ public final class FluentElementFilter<T extends Element> {
      */
     public FluentElementFilter<TypeElement> filterAndCastToTypeElement() {
         return genericFilterAndCastToTypeElement(
-                new ApplyFilter<ElementKind>(Filters.getElementKindFilter())
+                new ApplyFilter<ElementKind>(Filters.ELEMENT_KIND_FILTER)
                         .filterByOneOf(ElementKind.CLASS).getResult()
                 , TypeElement.class
         );
