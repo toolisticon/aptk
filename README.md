@@ -44,7 +44,7 @@ This can be done by adding the following to your annotation processors pom.xml:
          <dependency>
              <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
              <artifactId>annotationprocessor</artifactId>
-             <version>0.6.0</version>
+             <version>0.8.0</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
