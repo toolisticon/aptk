@@ -2,12 +2,12 @@ package io.toolisticon.annotationprocessortoolkit.tools;
 
 
 import com.google.testing.compile.JavaFileObjects;
-import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
-import io.toolisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -872,9 +872,9 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                                                               TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
 
                                                               ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -909,9 +909,9 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                                                               TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
 
                                                               ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -947,9 +947,9 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                                                               TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
 
                                                               ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -995,9 +995,9 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                                                               TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("testGenericsOnParameter").getResult();
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
 
                                                               ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 

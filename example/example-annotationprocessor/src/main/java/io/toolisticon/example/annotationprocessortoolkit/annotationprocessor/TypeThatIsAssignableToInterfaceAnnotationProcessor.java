@@ -2,6 +2,8 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 import io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.example.annotationprocessortoolkit.annotations.SomeInterface;
 import io.toolisticon.example.annotationprocessortoolkit.annotations.TypeThatIsAssignableToInterfaceAnnotation;
 import io.toolisticon.spiap.api.Service;
@@ -36,9 +38,9 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends Abstract
 
 
             // validator already will print output so additional actions are not necessary
-            getFluentTypeValidator(ElementUtils.CastElement.castToTypeElement(element))
-                    .isAssignableTo(SomeInterface.class)
-                    .getValidationResult();
+            FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castToTypeElement(element))
+                    .applyValidator(CoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(SomeInterface.class)
+                    .validateAndIssueMessages();
 
         }
 

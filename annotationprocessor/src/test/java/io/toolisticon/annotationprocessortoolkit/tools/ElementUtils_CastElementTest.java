@@ -146,6 +146,49 @@ public class ElementUtils_CastElementTest {
 
     }
 
+    @Test
+    public void isPackageElement_testIfAllElementKindsWillBeDetectedCorrectly() {
+
+        Element element = Mockito.mock(Element.class);
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CONSTRUCTOR);
+        MatcherAssert.assertThat("Should be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.METHOD);
+        MatcherAssert.assertThat("Should be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.ENUM);
+        MatcherAssert.assertThat("Should not be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.INTERFACE);
+        MatcherAssert.assertThat("Should not be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PARAMETER);
+        MatcherAssert.assertThat("Should not be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.ENUM_CONSTANT);
+        MatcherAssert.assertThat("Should not be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.FIELD);
+        MatcherAssert.assertThat("Should not be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PACKAGE);
+        MatcherAssert.assertThat("Should not be detected as ExecutableElement", ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.STATIC_INIT);
+        MatcherAssert.assertThat("Should not be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.LOCAL_VARIABLE);
+        MatcherAssert.assertThat("Should not be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
+        MatcherAssert.assertThat("Should not be detected as ExecutableElement", !ElementUtils.CastElement.isPackageElement(element));
+
+        // test null safety
+        MatcherAssert.assertThat("Should return false for null valued parameter", !ElementUtils.CastElement.isPackageElement(null));
+
+    }
+
 
     // ---------------------------------------
     // castClass -----------------------------

@@ -3,6 +3,8 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -22,6 +24,11 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
     @Override
     protected MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor getAnnotationProcessor() {
         return new MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor();
+    }
+
+    @Before
+    public void init() {
+        CoreMatcherValidationMessages.setPrintMessageCodes(true);
     }
 
     @Parameterized.Parameters(name = "{index}: \"{0}\"")
@@ -44,7 +51,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
                                 .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
                                 .compilationShouldFail()
                                 .addMessageValidator()
-                                    .setErrorChecks("Method must have void return type")
+                                    .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
                                 .finishMessageValidator()
                                 .build()
                 },
@@ -54,7 +61,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
                                 .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
                                 .compilationShouldFail()
                                 .addMessageValidator()
-                                    .setErrorChecks("Method must have parameters of types [java.lang.String], but has parameters of types [java.lang.Object]")
+                                    .setErrorChecks(CoreMatcherValidationMessages.BY_PARAMETER_TYPE.getCode())
                                 .finishMessageValidator()
                                 .build()
                 },

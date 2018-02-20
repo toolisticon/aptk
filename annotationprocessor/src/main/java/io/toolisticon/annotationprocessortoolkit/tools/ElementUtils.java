@@ -1,8 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
 import io.toolisticon.annotationprocessortoolkit.internal.Utilities;
-import io.toolisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
-import io.toolisticon.annotationprocessortoolkit.tools.characteristicsvalidator.Validators;
+import io.toolisticon.annotationprocessortoolkit.tools.filter.Filters;
+import io.toolisticon.annotationprocessortoolkit.tools.validator.Validators;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -113,6 +113,26 @@ public final class ElementUtils {
         }
 
         /**
+         * Checks if passed Element instance is of kind package.
+         *
+         * @param e the element to check
+         * @return true if passed element is of kind package, otherwise false
+         */
+        public static boolean isPackage(Element e) {
+            return isOfKind(e, ElementKind.PACKAGE);
+        }
+
+        /**
+         * Checks if passed Element instance is of kind annotation.
+         *
+         * @param e the element to check
+         * @return true if passed element is of kind annotation, otherwise false
+         */
+        public static boolean isAnnotation(Element e) {
+            return isOfKind(e, ElementKind.ANNOTATION_TYPE);
+        }
+
+        /**
          * Checks if passed Element instance is of a specific kind.
          *
          * @param e    the element to check
@@ -133,7 +153,9 @@ public final class ElementUtils {
         // look up tables for the different kind of types
         private static final Set<ElementKind> TYPE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM);
         private static final Set<ElementKind> VARIABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PARAMETER, ElementKind.FIELD);
-        private static final Set<ElementKind> EXECUTABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD);
+        private static final Set<ElementKind> EXECUTABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD, ElementKind.ANNOTATION_TYPE);
+        private static final Set<ElementKind> PACKAGE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PACKAGE);
+
 
         /**
          * Hidden constructor.
@@ -172,6 +194,17 @@ public final class ElementUtils {
         public static boolean isExecutableElement(Element e) {
             return e != null && EXECUTABLE_ELEMENT_KIND_LUT.contains(e.getKind());
         }
+
+        /**
+         * Checks if passed element can be casted to PackageElement.
+         *
+         * @param e the element to check
+         * @return true if passed element can be cast to PackageElement, otherwise false
+         */
+        public static boolean isPackageElement(Element e) {
+            return e != null && PACKAGE_ELEMENT_KIND_LUT.contains(e.getKind());
+        }
+
 
         /**
          * Casts an element.
@@ -452,7 +485,7 @@ public final class ElementUtils {
          * @return true if passed element has modifier, otherwise false
          */
         private static boolean hasModifier(Element e, Modifier modifier) {
-            return Validators.MODIFIER_VALIDATOR.getValidator().hasAllOf(e, modifier);
+            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, modifier);
         }
 
     }
@@ -624,7 +657,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filters.NAME_FILTER.getFilter().filterByOneOf(element.getEnclosedElements(), name);
+            return Filters.NAME_FILTER.filterByOneOf(element.getEnclosedElements(), name);
 
         }
 
@@ -679,7 +712,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filters.ELEMENT_KIND_FILTER.getFilter().filterByOneOf(element.getEnclosedElements(), kind);
+            return Filters.ELEMENT_KIND_FILTER.filterByOneOf(element.getEnclosedElements(), kind);
 
         }
 
@@ -697,7 +730,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filters.ANNOTATION_FILTER.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
+            return Filters.ANNOTATION_FILTER.filterByAllOf(element.getEnclosedElements(), annotations);
 
         }
 
@@ -714,7 +747,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filters.ANNOTATION_FILTER.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
+            return Filters.ANNOTATION_FILTER.filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
 
         }
 

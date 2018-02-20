@@ -1,7 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
 import com.google.testing.compile.JavaFileObjects;
-import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
@@ -9,7 +8,8 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationP
 import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassArrayAttributeAnnotation;
 import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassAttributeAnnotation;
 import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.DefaultValueAnnotation;
-import io.toolisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -58,13 +58,13 @@ public class AnnotationUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByAllOf(ClassAttributeAnnotation.class)
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassAttributeAnnotation.class)
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
-                                                              Element testElement = FluentElementFilter.createFluentFilter(result)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("test_classAttribute_empty")
+                                                              Element testElement = FluentElementFilter.createFluentElementFilter(result)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classAttribute_empty")
                                                                       .getResult().get(0);
 
 
@@ -88,13 +88,13 @@ public class AnnotationUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByAllOf(ClassAttributeAnnotation.class)
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassAttributeAnnotation.class)
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
-                                                              Element testElement = FluentElementFilter.createFluentFilter(result)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("test_classAttribute_atDefaultValue")
+                                                              Element testElement = FluentElementFilter.createFluentElementFilter(result)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classAttribute_atDefaultValue")
                                                                       .getResult().get(0);
 
 
@@ -117,13 +117,13 @@ public class AnnotationUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByAllOf(ClassAttributeAnnotation.class)
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassAttributeAnnotation.class)
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
-                                                              Element testElement = FluentElementFilter.createFluentFilter(result)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("test_classAttribute_atNamedAttribute")
+                                                              Element testElement = FluentElementFilter.createFluentElementFilter(result)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classAttribute_atNamedAttribute")
                                                                       .getResult().get(0);
 
 
@@ -150,13 +150,13 @@ public class AnnotationUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByAllOf(ClassArrayAttributeAnnotation.class)
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
-                                                              Element testElement = FluentElementFilter.createFluentFilter(result)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("test_classArrayAttribute_empty")
+                                                              Element testElement = FluentElementFilter.createFluentElementFilter(result)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_empty")
                                                                       .getResult().get(0);
 
 
@@ -180,13 +180,13 @@ public class AnnotationUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByAllOf(ClassArrayAttributeAnnotation.class)
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
-                                                              Element testElement = FluentElementFilter.createFluentFilter(result)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("test_classArrayAttribute_atDefaultValue")
+                                                              Element testElement = FluentElementFilter.createFluentElementFilter(result)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_atDefaultValue")
                                                                       .getResult().get(0);
 
 
@@ -209,13 +209,13 @@ public class AnnotationUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByAllOf(ClassArrayAttributeAnnotation.class)
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
-                                                              Element testElement = FluentElementFilter.createFluentFilter(result)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("test_classArrayAttribute_atNamedAttribute")
+                                                              Element testElement = FluentElementFilter.createFluentElementFilter(result)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_atNamedAttribute")
                                                                       .getResult().get(0);
 
 
@@ -238,13 +238,13 @@ public class AnnotationUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-                                                                      .applyFilter(Filters.ANNOTATION_FILTER).filterByAllOf(ClassArrayAttributeAnnotation.class)
-                                                                      .applyFilter(Filters.ELEMENT_KIND_FILTER).filterByOneOf(ElementKind.METHOD)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                                                       .getResult();
 
-                                                              Element testElement = FluentElementFilter.createFluentFilter(result)
-                                                                      .applyFilter(Filters.NAME_FILTER).filterByOneOf("test_classArrayAttribute_atNamedAttribute_withUncompiledClass")
+                                                              Element testElement = FluentElementFilter.createFluentElementFilter(result)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_atNamedAttribute_withUncompiledClass")
                                                                       .getResult().get(0);
 
 

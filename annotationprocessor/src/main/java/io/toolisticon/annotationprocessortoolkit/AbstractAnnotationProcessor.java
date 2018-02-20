@@ -1,25 +1,18 @@
 package io.toolisticon.annotationprocessortoolkit;
 
-import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
 import io.toolisticon.annotationprocessortoolkit.generators.FileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
-import io.toolisticon.annotationprocessortoolkit.validators.FluentExecutableElementValidator;
-import io.toolisticon.annotationprocessortoolkit.validators.FluentModifierElementValidator;
-import io.toolisticon.annotationprocessortoolkit.validators.FluentTypeElementValidator;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -119,49 +112,6 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
 
 
     /**
-     * Creates fluent filter for Element Lists.
-     *
-     * @param elementListToFilter the element list to filter
-     * @param <E>
-     * @return The filtered list
-     */
-    public <E extends Element> FluentElementFilter<E> createFluentElementFilter(List<E> elementListToFilter) {
-        return FluentElementFilter.createFluentFilter(elementListToFilter);
-    }
-
-
-    /**
-     * Creates fluent validator for method Element.
-     *
-     * @param methodElement the ExecutableElement instance to validate
-     * @return FluentMethodValidator instance
-     */
-    public FluentExecutableElementValidator getFluentMethodValidator(ExecutableElement methodElement) {
-        return new FluentExecutableElementValidator(methodElement);
-    }
-
-
-    /**
-     * Creates fluent validator for validating modifiers of elements.
-     *
-     * @param element the element instance to validate
-     * @return FluentTypeElementValidator instance
-     */
-    public FluentModifierElementValidator getFluentModifierElementValidator(Element element) {
-        return new FluentModifierElementValidator(element);
-    }
-
-    /**
-     * Creates fluent validator for TypeElements.
-     *
-     * @param typeElement the TypeElement instance to validate
-     * @return FluentMethodValidator instance
-     */
-    public FluentTypeElementValidator getFluentTypeValidator(TypeElement typeElement) {
-        return new FluentTypeElementValidator(typeElement);
-    }
-
-    /**
      * Helper function to statically provide supported annotations.
      *
      * @param annotationTypes the annotation types to be added to the set
@@ -183,5 +133,15 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
         return result;
     }
 
+    /**
+     * This method can be used to wrap elements to an array.
+     *
+     * @param element
+     * @param <T>
+     * @return
+     */
+    public static <T> T[] wrapToArray(T... element) {
+        return element;
+    }
 
 }

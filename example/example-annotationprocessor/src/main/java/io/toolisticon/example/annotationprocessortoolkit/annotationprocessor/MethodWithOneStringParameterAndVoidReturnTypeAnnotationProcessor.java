@@ -2,6 +2,8 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 import io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
 import io.toolisticon.spiap.api.Service;
 
@@ -40,10 +42,11 @@ public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor ex
 
 
             // validator already will print output so additional actions are not necessary
-            getFluentMethodValidator(ElementUtils.CastElement.castMethod(element))
-                    .hasVoidReturnType()
-                    .hasParameters(String.class)
-                    .getValidationResult();
+            FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(element))
+                    .applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).apply()
+                    .applyValidator(CoreMatchers.BY_PARAMETER_TYPE).hasOneOf(wrapToArray(String.class))
+                    .validateAndIssueMessages();
+
 
 
         }
