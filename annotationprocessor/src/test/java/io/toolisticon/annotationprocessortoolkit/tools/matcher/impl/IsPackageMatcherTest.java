@@ -18,13 +18,15 @@ import javax.lang.model.element.TypeElement;
 import java.util.Arrays;
 import java.util.List;
 
+
+
 /**
- * Unit test for {@link IsPackageElementMatcher}.
+ * Unit test for {@link IsPackageMatcher}.
  */
 @RunWith(Parameterized.class)
-public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnitTest {
+public class IsPackageMatcherTest extends AbstractAnnotationProcessorUnitTest {
 
-    public IsPackageElementMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+    public IsPackageMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
         super(configuration);
     }
 
@@ -36,7 +38,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
 
 
                         {
-                                "check : matching PackageElement ",
+                                "check : matching package ",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(
@@ -47,9 +49,9 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
                                                         // find field
                                                         Element result = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(element, ElementKind.PACKAGE);
                                                         MatcherAssert.assertThat("Precondition: should have found one method", result != null);
-                                                        MatcherAssert.assertThat("Precondition: found method has to be of type PackageElement", result instanceof PackageElement);
+                                                        MatcherAssert.assertThat("Precondition: found method has to be of type package", result instanceof PackageElement);
 
-                                                        MatcherAssert.assertThat("Should return true for method : ", CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(result));
+                                                        MatcherAssert.assertThat("Should return true for method : ", CoreMatchers.IS_PACKAGE.getMatcher().check(result));
 
 
                                                     }
@@ -70,7 +72,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
                                                     protected void testCase(TypeElement element) {
 
 
-                                                        MatcherAssert.assertThat("Should return false for non PackageElement : ", !CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(element));
+                                                        MatcherAssert.assertThat("Should return false for non Package : ", !CoreMatchers.IS_PACKAGE.getMatcher().check(element));
 
 
                                                     }
@@ -91,7 +93,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
                                                     protected void testCase(TypeElement element) {
 
 
-                                                        MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(null));
+                                                        MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_PACKAGE.getMatcher().check(null));
 
 
                                                     }

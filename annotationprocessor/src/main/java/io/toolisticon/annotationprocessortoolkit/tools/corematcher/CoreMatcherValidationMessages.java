@@ -19,7 +19,17 @@ public enum CoreMatcherValidationMessages {
     IS_EXECUTABLE_ELEMENT("CM_IS_EXECTUABLE_ELEMENT", "Element must be ExecutableElement"),
     IS_TYPE_ELEMENT("CM_IS_TYPE_ELEMENT", "Element must be TypeElement"),
     IS_VARIABLE_ELEMENT("CM_IS_VARIABLE_ELEMENT", "Element must be VariableElement"),
-    IS_PACKAGE_ELEMENT("CM_IS_PACKAGE_ELEMENT", "Element must be PackageElement"),;
+    IS_PACKAGE_ELEMENT("CM_IS_PACKAGE_ELEMENT", "Element must be PackageElement"),
+
+    IS_CLASS("CM_IS_CLASS", "Element must represent a Class"),
+    IS_ENUM("CM_IS_ENUM", "Element must represent an enum"),
+    IS_INTERFACE("CM_IS_PACKAGE_ELEMENT", "Element must represent an interface"),
+    IS_METHOD("CM_IS_METHOD", "Element must represent a method"),
+    IS_CONSTRUCTOR("CM_IS_CONSTRUCTOR", "Element must represent a constructor"),
+    IS_ANNOTATION_TYPE("CM_IS_ANNOTATION_TYPE", "Element must represent an annotation type"),
+    IS_FIELD("CM_IS_PACKAGE_ELEMENT", "Element must represent a field"),
+    IS_PARAMETER("CM_IS_PACKAGE_ELEMENT", "Element must represent a parameter"),
+    IS_PACKAGE("CM_IS_PACKAGE_ELEMENT", "Element must represent a package"),;
 
 
     /**

@@ -11,9 +11,18 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterT
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByRawTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasVoidReturnTypeMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAnnotationTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAssignableToMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsClassMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsConstructorMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsEnumMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsExecutableElementMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsFieldMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsInterfaceMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsMethodMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsPackageElementMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsPackageMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsParameterMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsTypeElementMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsVariableElementMatcher;
 
@@ -125,4 +134,51 @@ public class CoreMatchers {
      * Matcher to check if passed element is a PackageElement.
      */
     public final static IsCoreMatcher<Element, PackageElement> IS_PACKAGE_ELEMENT = new IsCoreMatcher<Element, PackageElement>(new IsPackageElementMatcher<Element>(), CoreMatcherValidationMessages.IS_PACKAGE_ELEMENT);
+
+    /**
+     * Matcher to check if passed element represents a package.
+     */
+    public final static IsCoreMatcher<Element, PackageElement> IS_PACKAGE = new IsCoreMatcher<Element, PackageElement>(new IsPackageMatcher<Element>(), CoreMatcherValidationMessages.IS_PACKAGE);
+
+    /**
+     * Matcher to check if passed element represents a class.
+     */
+    public final static IsCoreMatcher<Element, TypeElement> IS_CLASS = new IsCoreMatcher<Element, TypeElement>(new IsClassMatcher<Element>(), CoreMatcherValidationMessages.IS_CLASS);
+
+    /**
+     * Matcher to check if passed element represents an enum.
+     */
+    public final static IsCoreMatcher<Element, TypeElement> IS_ENUM = new IsCoreMatcher<Element, TypeElement>(new IsEnumMatcher<Element>(), CoreMatcherValidationMessages.IS_ENUM);
+
+    /**
+     * Matcher to check if passed element represents an interface.
+     */
+    public final static IsCoreMatcher<Element, TypeElement> IS_INTERFACE = new IsCoreMatcher<Element, TypeElement>(new IsInterfaceMatcher<Element>(), CoreMatcherValidationMessages.IS_INTERFACE);
+
+    /**
+     * Matcher to check if passed element represents a method.
+     */
+    public final static IsCoreMatcher<Element, ExecutableElement> IS_METHOD = new IsCoreMatcher<Element, ExecutableElement>(new IsMethodMatcher<Element>(), CoreMatcherValidationMessages.IS_METHOD);
+
+    /**
+     * Matcher to check if passed element represents a constructor.
+     */
+    public final static IsCoreMatcher<Element, ExecutableElement> IS_CONSTRUCTOR = new IsCoreMatcher<Element, ExecutableElement>(new IsConstructorMatcher<Element>(), CoreMatcherValidationMessages.IS_CONSTRUCTOR);
+
+    /**
+     * Matcher to check if passed element represents an annotation type.
+     */
+    public final static IsCoreMatcher<Element, TypeElement> IS_ANNOTATION_TYPE = new IsCoreMatcher<Element, TypeElement>(new IsAnnotationTypeMatcher<Element>(), CoreMatcherValidationMessages.IS_ANNOTATION_TYPE);
+
+    /**
+     * Matcher to check if passed element represents a field.
+     */
+    public final static IsCoreMatcher<Element, VariableElement> IS_FIELD = new IsCoreMatcher<Element, VariableElement>(new IsFieldMatcher<Element>(), CoreMatcherValidationMessages.IS_FIELD);
+
+    /**
+     * Matcher to check if passed element represents a parameter.
+     */
+    public final static IsCoreMatcher<Element, VariableElement> IS_PARAMETER = new IsCoreMatcher<Element, VariableElement>(new IsParameterMatcher<Element>(), CoreMatcherValidationMessages.IS_PARAMETER);
+
+
 }

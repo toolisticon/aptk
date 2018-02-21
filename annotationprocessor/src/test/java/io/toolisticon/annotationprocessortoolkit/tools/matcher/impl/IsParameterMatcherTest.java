@@ -5,6 +5,7 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUni
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -12,20 +13,24 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
- * Unit test for {@link IsPackageElementMatcher}.
+ * Unit test for {@link IsParameterMatcher}.
  */
 @RunWith(Parameterized.class)
-public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnitTest {
+public class IsParameterMatcherTest extends AbstractAnnotationProcessorUnitTest {
 
-    public IsPackageElementMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+    public IsParameterMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
         super(configuration);
+    }
+
+    public void testMethod(String parameter) {
+
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
@@ -36,7 +41,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
 
 
                         {
-                                "check : matching PackageElement ",
+                                "check : matching parameter ",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(
@@ -44,12 +49,13 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        // find field
-                                                        Element result = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(element, ElementKind.PACKAGE);
-                                                        MatcherAssert.assertThat("Precondition: should have found one method", result != null);
-                                                        MatcherAssert.assertThat("Precondition: found method has to be of type PackageElement", result instanceof PackageElement);
+                                                        TypeElement typeElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(IsParameterMatcherTest.class);
+                                                        List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(typeElement, "testMethod");
+                                                        MatcherAssert.assertThat("Precondition: found test method", methods.size() == 1);
+                                                        ExecutableElement testMethod = (ExecutableElement) methods.get(0);
+                                                        MatcherAssert.assertThat("Precondition: found at least one parameter", ((ExecutableElement) methods.get(0)).getParameters().size() >= 1);
 
-                                                        MatcherAssert.assertThat("Should return true for method : ", CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(result));
+                                                        MatcherAssert.assertThat("Should return true for parameter : ", CoreMatchers.IS_PARAMETER.getMatcher().check(testMethod.getParameters().get(0)));
 
 
                                                     }
@@ -61,7 +67,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
 
                         },
                         {
-                                "check : mismatching PackageElement (class)",
+                                "check : mismatching parameter (class)",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(
@@ -70,7 +76,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
                                                     protected void testCase(TypeElement element) {
 
 
-                                                        MatcherAssert.assertThat("Should return false for non PackageElement : ", !CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(element));
+                                                        MatcherAssert.assertThat("Should return false for non parameter : ", !CoreMatchers.IS_PARAMETER.getMatcher().check(element));
 
 
                                                     }
@@ -91,7 +97,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
                                                     protected void testCase(TypeElement element) {
 
 
-                                                        MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(null));
+                                                        MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_PARAMETER.getMatcher().check(null));
 
 
                                                     }

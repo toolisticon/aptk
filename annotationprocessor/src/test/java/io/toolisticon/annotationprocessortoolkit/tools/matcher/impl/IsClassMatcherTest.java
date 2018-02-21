@@ -5,6 +5,7 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUni
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -13,19 +14,23 @@ import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
- * Unit test for {@link IsPackageElementMatcher}.
+ * Unit test for {@link IsClassMatcher}.
  */
 @RunWith(Parameterized.class)
-public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnitTest {
+public class IsClassMatcherTest extends AbstractAnnotationProcessorUnitTest {
 
-    public IsPackageElementMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+    public IsClassMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
         super(configuration);
+    }
+
+    public enum TestEnum{
+        TEST
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
@@ -36,7 +41,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
 
 
                         {
-                                "check : matching PackageElement ",
+                                "check : matching class ",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(
@@ -44,12 +49,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        // find field
-                                                        Element result = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(element, ElementKind.PACKAGE);
-                                                        MatcherAssert.assertThat("Precondition: should have found one method", result != null);
-                                                        MatcherAssert.assertThat("Precondition: found method has to be of type PackageElement", result instanceof PackageElement);
-
-                                                        MatcherAssert.assertThat("Should return true for method : ", CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(result));
+                                                        MatcherAssert.assertThat("Should return true for class : ", CoreMatchers.IS_CLASS.getMatcher().check(element));
 
 
                                                     }
@@ -61,7 +61,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
 
                         },
                         {
-                                "check : mismatching PackageElement (class)",
+                                "check : mismatching class (enum)",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(
@@ -70,7 +70,14 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
                                                     protected void testCase(TypeElement element) {
 
 
-                                                        MatcherAssert.assertThat("Should return false for non PackageElement : ", !CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(element));
+                                                        TypeElement typeElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(IsClassMatcherTest.class);
+                                                        List<? extends Element> enums = ElementUtils.AccessEnclosedElements.getEnclosedElementsOfKind(typeElement, ElementKind.ENUM);
+                                                        MatcherAssert.assertThat("Precondition: must have found a enum", enums.size() >= 1);
+
+
+                                                        MatcherAssert.assertThat("Should return false for enum : ", !CoreMatchers.IS_CLASS.getMatcher().check(enums.get(0)));
+
+
 
 
                                                     }
@@ -91,7 +98,7 @@ public class IsPackageElementMatcherTest extends AbstractAnnotationProcessorUnit
                                                     protected void testCase(TypeElement element) {
 
 
-                                                        MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(null));
+                                                        MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_CLASS.getMatcher().check(null));
 
 
                                                     }
