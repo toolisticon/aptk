@@ -14,7 +14,6 @@ import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,8 +46,8 @@ public class IsFieldMatcherTest extends AbstractAnnotationProcessorUnitTest {
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        TypeElement typeElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(IsFieldMatcherTest.class);
-                                                        List<? extends Element> fieldList = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(typeElement,"testField");
+                                                        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(IsFieldMatcherTest.class);
+                                                        List<? extends Element> fieldList = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(typeElement, "testField");
                                                         MatcherAssert.assertThat("Precondition: must have found a field", fieldList.size() >= 1);
 
 

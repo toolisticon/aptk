@@ -78,7 +78,7 @@ public class ByRawTypeMatcherTest extends AbstractAnnotationProcessorUnitTest {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement tmpElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(ByRawTypeMatcherTest.class);
+                                                              TypeElement tmpElement = TypeUtils.TypeRetrieval.getTypeElement(ByRawTypeMatcherTest.class);
                                                               MatcherAssert.assertThat("Should find match correctly", CoreMatchers.BY_RAW_TYPE.getMatcher().checkForMatchingCharacteristic(tmpElement, ByRawTypeMatcherTest.class));
 
                                                           }
@@ -95,7 +95,7 @@ public class ByRawTypeMatcherTest extends AbstractAnnotationProcessorUnitTest {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement tmpElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(String.class);
+                                                              TypeElement tmpElement = TypeUtils.TypeRetrieval.getTypeElement(String.class);
                                                               MatcherAssert.assertThat("Should find match correctly", !CoreMatchers.BY_RAW_TYPE.getMatcher().checkForMatchingCharacteristic(tmpElement, ByRawTypeMatcherTest.class));
 
                                                           }

@@ -24,7 +24,6 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     private Elements elementUtils;
     private Filer filer;
     private MessagerUtils messager;
-    private TypeUtils typeUtils;
     private FileObjectUtils fileObjectUtils;
 
 
@@ -34,7 +33,6 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
 
         // create local references
         messager = new MessagerUtils();
-        typeUtils = TypeUtils.getTypeUtils();
         filer = processingEnv.getFiler();
         elementUtils = processingEnv.getElementUtils();
         fileObjectUtils = FileObjectUtils.getFileObjectUtils();
@@ -73,14 +71,6 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
         return messager;
     }
 
-    /**
-     * Gets the {@link TypeUtils}.
-     *
-     * @return the TypeUtils
-     */
-    public TypeUtils getTypeUtils() {
-        return typeUtils;
-    }
 
 
     /**

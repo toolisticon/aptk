@@ -24,11 +24,10 @@ public class IsAssignableToMatcher implements CharacteristicsMatcher<Element, Cl
     @Override
     public boolean checkForMatchingCharacteristic(Element element, Class toCheckFor) {
         return element == null || toCheckFor == null ? false :
-                TypeUtils.getTypeUtils()
-                        .getTypes()
+                TypeUtils.getTypes()
                         .isAssignable(
                                 element.asType(),
-                                TypeUtils.getTypeUtils().doTypeRetrieval().getTypeMirror(toCheckFor.getCanonicalName())
+                                TypeUtils.TypeRetrieval.getTypeMirror(toCheckFor.getCanonicalName())
                         );
 
     }

@@ -29,7 +29,7 @@ public class IsClassMatcherTest extends AbstractAnnotationProcessorUnitTest {
         super(configuration);
     }
 
-    public enum TestEnum{
+    public enum TestEnum {
         TEST
     }
 
@@ -70,14 +70,12 @@ public class IsClassMatcherTest extends AbstractAnnotationProcessorUnitTest {
                                                     protected void testCase(TypeElement element) {
 
 
-                                                        TypeElement typeElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(IsClassMatcherTest.class);
+                                                        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(IsClassMatcherTest.class);
                                                         List<? extends Element> enums = ElementUtils.AccessEnclosedElements.getEnclosedElementsOfKind(typeElement, ElementKind.ENUM);
                                                         MatcherAssert.assertThat("Precondition: must have found a enum", enums.size() >= 1);
 
 
                                                         MatcherAssert.assertThat("Should return false for enum : ", !CoreMatchers.IS_CLASS.getMatcher().check(enums.get(0)));
-
-
 
 
                                                     }

@@ -41,7 +41,7 @@ public class ByParameterTypeMatcher implements CharacteristicsMatcher<Executable
 
         for (int i = 0; i < executableElement.getParameters().size(); i++) {
             if (!executableElement.getParameters().get(i).asType().equals(
-                    TypeUtils.getTypeUtils().doTypeRetrieval().getTypeMirror(toCheckFor[i]))
+                    TypeUtils.TypeRetrieval.getTypeMirror(toCheckFor[i]))
                     ) {
                 return false;
             }

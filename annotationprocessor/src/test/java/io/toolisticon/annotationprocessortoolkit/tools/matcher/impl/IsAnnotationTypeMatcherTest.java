@@ -43,7 +43,7 @@ public class IsAnnotationTypeMatcherTest extends AbstractAnnotationProcessorUnit
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        TypeElement typeElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(Override.class);
+                                                        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(Override.class);
 
 
                                                         MatcherAssert.assertThat("Should return true for annotation type : ", CoreMatchers.IS_ANNOTATION_TYPE.getMatcher().check(typeElement));

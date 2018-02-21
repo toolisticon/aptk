@@ -23,7 +23,7 @@ public class ByGenericTypeMatcher implements CharacteristicsMatcher<Element, Gen
     @Override
     public boolean checkForMatchingCharacteristic(Element element, GenericType toCheckFor) {
 
-        return (element != null && toCheckFor != null) && TypeUtils.getTypeUtils().doGenerics().genericTypeEquals(element.asType(), toCheckFor);
+        return (element != null && toCheckFor != null) && TypeUtils.Generics.genericTypeEquals(element.asType(), toCheckFor);
 
     }
 
@@ -48,7 +48,7 @@ public class ByGenericTypeMatcher implements CharacteristicsMatcher<Element, Gen
     private void createStringRepresentationRecursively(StringBuilder stringBuilder, GenericType toGetStringRepresentationFor) {
 
 
-        stringBuilder.append(TypeUtils.getTypeUtils().getTypes().erasure(toGetStringRepresentationFor.getRawType()).toString());
+        stringBuilder.append(TypeUtils.getTypes().erasure(toGetStringRepresentationFor.getRawType()).toString());
 
 
         // Check type parameters

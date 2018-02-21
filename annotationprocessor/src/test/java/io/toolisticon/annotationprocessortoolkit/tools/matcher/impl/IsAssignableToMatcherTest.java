@@ -42,7 +42,7 @@ public class IsAssignableToMatcherTest extends AbstractAnnotationProcessorUnitTe
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        MatcherAssert.assertThat("Should return true for matching assignable to case : ", CoreMatchers.IS_ASSIGNABLE_TO.getMatcher().checkForMatchingCharacteristic(TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(String.class), Object.class));
+                                                        MatcherAssert.assertThat("Should return true for matching assignable to case : ", CoreMatchers.IS_ASSIGNABLE_TO.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(String.class), Object.class));
 
 
                                                     }
@@ -63,7 +63,7 @@ public class IsAssignableToMatcherTest extends AbstractAnnotationProcessorUnitTe
                                                     protected void testCase(TypeElement element) {
 
 
-                                                        MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !CoreMatchers.IS_ASSIGNABLE_TO.getMatcher().checkForMatchingCharacteristic(TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(Object.class), String.class));
+                                                        MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !CoreMatchers.IS_ASSIGNABLE_TO.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(Object.class), String.class));
 
 
                                                     }

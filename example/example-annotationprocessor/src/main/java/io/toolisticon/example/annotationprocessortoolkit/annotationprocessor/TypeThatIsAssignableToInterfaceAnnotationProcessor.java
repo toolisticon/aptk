@@ -2,6 +2,7 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 import io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.example.annotationprocessortoolkit.annotations.SomeInterface;
@@ -49,11 +50,11 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessor extends Abstract
     }
 
     protected boolean isAssignableTo(Element element, String fqn) {
-        return getTypeUtils()
+        return TypeUtils
                 .getTypes()
                 .isAssignable(
                         element.asType(),
-                        getTypeUtils().doTypeRetrieval().getTypeMirror(fqn)
+                        TypeUtils.TypeRetrieval.getTypeMirror(fqn)
                 );
     }
 

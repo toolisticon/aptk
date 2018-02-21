@@ -49,7 +49,7 @@ public class IsVariableElementMatcherTest extends AbstractAnnotationProcessorUni
                                                     protected void testCase(TypeElement element) {
 
                                                         // find field
-                                                        List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsOfKind(TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(IsVariableElementMatcherTest.class), ElementKind.FIELD);
+                                                        List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsOfKind(TypeUtils.TypeRetrieval.getTypeElement(IsVariableElementMatcherTest.class), ElementKind.FIELD);
                                                         MatcherAssert.assertThat("Precondition: should have found one field", result.size() >= 1);
                                                         MatcherAssert.assertThat("Precondition: found method has to be of type VariableElement", result.get(0) instanceof VariableElement);
 

@@ -48,7 +48,7 @@ public class IsEnumMatcherTest extends AbstractAnnotationProcessorUnitTest {
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        TypeElement typeElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(IsEnumMatcherTest.class);
+                                                        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(IsEnumMatcherTest.class);
                                                         List<? extends Element> enumList = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(typeElement, "TestEnum");
                                                         MatcherAssert.assertThat("Precondition: must have found a enum", enumList.size() >= 1);
 

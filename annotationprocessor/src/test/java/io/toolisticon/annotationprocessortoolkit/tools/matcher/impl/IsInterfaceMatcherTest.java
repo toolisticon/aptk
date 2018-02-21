@@ -47,7 +47,7 @@ public class IsInterfaceMatcherTest extends AbstractAnnotationProcessorUnitTest 
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        TypeElement typeElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(Serializable.class);
+                                                        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(Serializable.class);
 
 
                                                         MatcherAssert.assertThat("Should return true for interface : ", CoreMatchers.IS_INTERFACE.getMatcher().check(typeElement));

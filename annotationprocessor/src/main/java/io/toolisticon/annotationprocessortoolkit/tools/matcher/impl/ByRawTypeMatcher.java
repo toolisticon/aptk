@@ -25,9 +25,8 @@ public class ByRawTypeMatcher implements CharacteristicsMatcher<TypeElement, Cla
         }
 
         // cast to executable element for further checks
-        TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-        return typeUtils.doTypeComparison().isErasedTypeEqual(element.asType(), typeUtils.doTypeRetrieval().getTypeMirror(toCheckFor));
+        return TypeUtils.TypeComparison.isErasedTypeEqual(element.asType(), TypeUtils.TypeRetrieval.getTypeMirror(toCheckFor));
 
     }
 

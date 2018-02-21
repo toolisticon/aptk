@@ -43,7 +43,7 @@ public class ByParameterTypeFqnMatcher implements CharacteristicsMatcher<Executa
 
         for (int i = 0; i < executableElement.getParameters().size(); i++) {
 
-            TypeMirror parameterTypeMirror = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeMirror(toCheckFor[i]);
+            TypeMirror parameterTypeMirror = TypeUtils.TypeRetrieval.getTypeMirror(toCheckFor[i]);
             if (parameterTypeMirror == null) {
                 return false;
             }

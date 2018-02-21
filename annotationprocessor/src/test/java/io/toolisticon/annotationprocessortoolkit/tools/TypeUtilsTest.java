@@ -45,16 +45,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                 new Object[][]{
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeElement : Get TypeElement for class",
+                                "TypeUtils.TypeRetrieval.getTypeElement : Get TypeElement for class",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              TypeElement typeElement = typeUtils.doTypeRetrieval().getTypeElement(AbstractUnitTestAnnotationProcessorClass.class);
+                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(AbstractUnitTestAnnotationProcessorClass.class);
 
                                                               MatcherAssert.assertThat(typeElement, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeElement.getSimpleName().toString(), Matchers.is(AbstractUnitTestAnnotationProcessorClass.class.getSimpleName()));
@@ -67,16 +66,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeElement : Get TypeElement for array class",
+                                "TypeUtils.TypeRetrieval.getTypeElement : Get TypeElement for array class",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              TypeElement typeElement = typeUtils.doTypeRetrieval().getTypeElement(String[].class);
+                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(String[].class);
 
                                                               MatcherAssert.assertThat("An array TypeMirror can't be converted into a TypeElement so result has to be null", typeElement, Matchers.nullValue());
 
@@ -88,16 +86,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeElement : Get TypeElement for primitive class",
+                                "TypeUtils.TypeRetrieval.getTypeElement : Get TypeElement for primitive class",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              TypeElement typeElement = typeUtils.doTypeRetrieval().getTypeElement(int.class);
+                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(int.class);
 
                                                               MatcherAssert.assertThat("A primitive TypeMirror can't be converted into a TypeElement so result has to be null", typeElement, Matchers.nullValue());
 
@@ -109,16 +106,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeMirror : Get TypeMirror for class",
+                                "TypeUtils.TypeRetrieval.getTypeMirror : Get TypeMirror for class",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getTypeMirror(AbstractUnitTestAnnotationProcessorClass.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(AbstractUnitTestAnnotationProcessorClass.class);
 
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.DECLARED));
@@ -132,20 +128,19 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeMirror : Get TypeMirror for array class",
+                                "TypeUtils.TypeRetrieval.getTypeMirror : Get TypeMirror for array class",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getTypeMirror(String[].class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
 
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
-                                                              MatcherAssert.assertThat(((ArrayType) typeMirror).getComponentType(), Matchers.is(typeUtils.doTypeRetrieval().getTypeMirror(String.class)));
+                                                              MatcherAssert.assertThat(((ArrayType) typeMirror).getComponentType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
 
 
                                                           }
@@ -156,16 +151,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeMirror : Test null safety",
+                                "TypeUtils.TypeRetrieval.getTypeMirror : Test null safety",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getTypeMirror((Class) null);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror((Class) null);
 
                                                               MatcherAssert.assertThat("Should return null for null valued input parameter", typeMirror, Matchers.nullValue());
 
@@ -178,16 +172,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeMirror : Get TypeMirror for atomic type",
+                                "TypeUtils.TypeRetrieval.getTypeMirror : Get TypeMirror for atomic type",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getTypeMirror(int.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(int.class);
 
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.INT));
@@ -201,17 +194,16 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for int",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for int",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               // int
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(int.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(int.class);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.INT));
                                                           }
@@ -222,17 +214,16 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for long",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for long",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               // long
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(long.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(long.class);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.LONG));
                                                           }
@@ -243,17 +234,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for short",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for short",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
                                                               // short
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(short.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(short.class);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.SHORT));
                                                           }
@@ -264,17 +253,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for boolean",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for boolean",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
                                                               // boolean
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(boolean.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(boolean.class);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.BOOLEAN));
                                                           }
@@ -285,17 +272,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for byte",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for byte",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
                                                               // byte
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(byte.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(byte.class);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.BYTE));
                                                           }
@@ -306,17 +291,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for float",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for float",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
                                                               // float
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(float.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(float.class);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.FLOAT));
                                                           }
@@ -327,17 +310,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for double",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for double",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
                                                               // double
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(double.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(double.class);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.DOUBLE));
                                                           }
@@ -348,17 +329,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for char",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for char",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
                                                               // char
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(char.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(char.class);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.CHAR));
                                                           }
@@ -369,17 +348,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for null value should return null",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for null value should return null",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               // null value
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(null);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(null);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.nullValue());
                                                           }
                                                       }
@@ -389,17 +366,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getPrimitiveTypeMirror : Get TypeMirror for non primitive type should return String",
+                                "TypeUtils.TypeRetrieval.getPrimitiveTypeMirror : Get TypeMirror for non primitive type should return String",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               // non primitive type value
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getPrimitiveTypeMirror(String.class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getPrimitiveTypeMirror(String.class);
                                                               MatcherAssert.assertThat(typeMirror, Matchers.nullValue());
                                                           }
                                                       }
@@ -409,20 +384,18 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeMirror : get TypeMirror of array",
+                                "TypeUtils.TypeRetrieval.getTypeMirror : get TypeMirror of array",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getTypeMirror(String[].class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
 
                                                               MatcherAssert.assertThat(typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat(typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
-                                                              MatcherAssert.assertThat(((ArrayType) typeMirror).getComponentType(), Matchers.is(typeUtils.doTypeRetrieval().getTypeMirror(String.class)));
+                                                              MatcherAssert.assertThat(((ArrayType) typeMirror).getComponentType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
 
 
                                                           }
@@ -433,16 +406,14 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypes : get encapsulated javax.lang.model.util.Types instance",
+                                "TypeUtils.TypeRetrieval.getTypes : get encapsulated javax.lang.model.util.Types instance",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat(typeUtils.getTypes(), Matchers.notNullValue());
+                                                              MatcherAssert.assertThat(TypeUtils.getTypes(), Matchers.notNullValue());
 
                                                           }
                                                       }
@@ -452,16 +423,14 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeElement() : test to get Element by class name",
+                                "TypeUtils.TypeRetrieval.getTypeElement() : test to get Element by class name",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat(typeUtils.doTypeRetrieval().getTypeElement("io.toolisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element));
+                                                              MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeElement("io.toolisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element));
 
 
                                                           }
@@ -472,16 +441,14 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeElement() : test behavior with non existing class name parameter",
+                                "TypeUtils.TypeRetrieval.getTypeElement() : test behavior with non existing class name parameter",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat(typeUtils.doTypeRetrieval().getTypeElement("io.toolisticon.annotationprocessor.AnnotationProcessorTestClassXXXX"), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeElement("io.toolisticon.annotationprocessor.AnnotationProcessorTestClassXXXX"), Matchers.nullValue());
 
 
                                                           }
@@ -490,16 +457,14 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                         .build()
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeElement() : test behavior with null valued class name parameter",
+                                "TypeUtils.TypeRetrieval.getTypeElement() : test behavior with null valued class name parameter",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat(typeUtils.doTypeRetrieval().getTypeElement((String) null),
+                                                               MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeElement((String) null),
                                                                       Matchers.nullValue());
 
 
@@ -511,16 +476,14 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeElement() : test to get TypeMirror by class name",
+                                "TypeUtils.TypeRetrieval.getTypeElement() : test to get TypeMirror by class name",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat(typeUtils.doTypeRetrieval().getTypeMirror("io.toolisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element.asType()));
+                                                              MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("io.toolisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element.asType()));
 
 
                                                           }
@@ -531,16 +494,14 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeMirror() : test to get TypeMirror by class name",
+                                "TypeUtils.TypeRetrieval.getTypeMirror() : test to get TypeMirror by class name",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat(typeUtils.doTypeRetrieval().getTypeMirror("io.toolisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element.asType()));
+                                                              MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("io.toolisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element.asType()));
 
 
                                                           }
@@ -551,16 +512,14 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeMirror() : test behavior with non existing class name parameter",
+                                "TypeUtils.TypeRetrieval.getTypeMirror() : test behavior with non existing class name parameter",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat(typeUtils.doTypeRetrieval().getTypeMirror("io.toolisticon.annotationprocessor.AnnotationProcessorTestClassXXXX"), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("io.toolisticon.annotationprocessor.AnnotationProcessorTestClassXXXX"), Matchers.nullValue());
 
 
                                                           }
@@ -569,16 +528,14 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                         .build()
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeMirror() : test behavior with null valued class name parameter",
+                                "TypeUtils.TypeRetrieval.getTypeMirror() : test behavior with null valued class name parameter",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat(typeUtils.doTypeRetrieval().getTypeMirror((String) null), Matchers.nullValue());
+                                                               MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror((String) null), Matchers.nullValue());
 
 
                                                           }
@@ -589,14 +546,12 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeRetrieval().getTypeElement() : test behavior with anonymous class type mirror - should return null because no TyoeElement exists",
+                                "TypeUtils.TypeRetrieval.getTypeElement() : test behavior with anonymous class type mirror - should return null because no TyoeElement exists",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               Comparable<Long> anonymousComparable = new Comparable<Long>() {
                                                                   @Override
@@ -605,7 +560,7 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                                   }
                                                               };
 
-                                                              MatcherAssert.assertThat(typeUtils.doTypeRetrieval().getTypeElement(anonymousComparable.getClass()), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeElement(anonymousComparable.getClass()), Matchers.nullValue());
 
 
                                                           }
@@ -616,21 +571,19 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doArrays().getArraysComponentType : Get component type of TypeMirror array ",
+                                "TypeUtils.Arrays.getArraysComponentType : Get component type of TypeMirror array ",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getTypeMirror(String[].class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
 
                                                               MatcherAssert.assertThat("PRECONDITION : typeMirror should not be null", typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat("PRECONDITION : typeMirror should be array", typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
 
-                                                              MatcherAssert.assertThat(typeUtils.doArrays().getArraysComponentType(typeMirror), Matchers.is(typeUtils.doTypeRetrieval().getTypeMirror(String.class)));
+                                                              MatcherAssert.assertThat(TypeUtils.Arrays.getArraysComponentType(typeMirror), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
 
 
                                                           }
@@ -641,22 +594,20 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doArrays().isArrayOfType : Should check if the TypeMirror has a specific component type correctly",
+                                "TypeUtils.Arrays.isArrayOfType : Should check if the TypeMirror has a specific component type correctly",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getTypeMirror(String[].class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
 
                                                               MatcherAssert.assertThat("PRECONDITION : typeMirror should not be null", typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat("PRECONDITION : typeMirror should be array", typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
 
-                                                              MatcherAssert.assertThat("Should detect matching component type correctly", typeUtils.doArrays().isArrayOfType(typeMirror, String.class));
-                                                              MatcherAssert.assertThat("Should detect non matching component type correctly", !typeUtils.doArrays().isArrayOfType(typeMirror, Boolean.class));
+                                                              MatcherAssert.assertThat("Should detect matching component type correctly", TypeUtils.Arrays.isArrayOfType(typeMirror, String.class));
+                                                              MatcherAssert.assertThat("Should detect non matching component type correctly", !TypeUtils.Arrays.isArrayOfType(typeMirror, Boolean.class));
 
                                                           }
                                                       }
@@ -667,22 +618,20 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
                         },
 
                         {
-                                "TypeUtils.doArrays().isArrayOfType : Should check if the TypeMirror has a specific component type correctly",
+                                "TypeUtils.Arrays.isArrayOfType : Should check if the TypeMirror has a specific component type correctly",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getTypeMirror(String[].class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
 
                                                               MatcherAssert.assertThat("PRECONDITION : typeMirror should not be null", typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat("PRECONDITION : typeMirror should be array", typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
 
-                                                              MatcherAssert.assertThat("Should detect matching component type correctly", typeUtils.doArrays().isArrayOfType(typeMirror, String.class.getCanonicalName()));
-                                                              MatcherAssert.assertThat("Should detect non matching component type correctly", !typeUtils.doArrays().isArrayOfType(typeMirror, Boolean.class.getCanonicalName()));
+                                                              MatcherAssert.assertThat("Should detect matching component type correctly", TypeUtils.Arrays.isArrayOfType(typeMirror, String.class.getCanonicalName()));
+                                                              MatcherAssert.assertThat("Should detect non matching component type correctly", !TypeUtils.Arrays.isArrayOfType(typeMirror, Boolean.class.getCanonicalName()));
 
                                                           }
                                                       }
@@ -692,22 +641,20 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doArrays().isArrayOfType : Should check if the TypeMirror has a specific component type correctly",
+                                "TypeUtils.Arrays.isArrayOfType : Should check if the TypeMirror has a specific component type correctly",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              TypeMirror typeMirror = typeUtils.doTypeRetrieval().getTypeMirror(String[].class);
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
 
                                                               MatcherAssert.assertThat("PRECONDITION : typeMirror should not be null", typeMirror, Matchers.notNullValue());
                                                               MatcherAssert.assertThat("PRECONDITION : typeMirror should be array", typeMirror.getKind(), Matchers.is(TypeKind.ARRAY));
 
-                                                              MatcherAssert.assertThat("Should detect matching component type correctly", typeUtils.doArrays().isArrayOfType(typeMirror, typeUtils.doTypeRetrieval().getTypeMirror(String.class)));
-                                                              MatcherAssert.assertThat("Should detect non matching component type correctly", !typeUtils.doArrays().isArrayOfType(typeMirror, typeUtils.doTypeRetrieval().getTypeMirror(Boolean.class)));
+                                                              MatcherAssert.assertThat("Should detect matching component type correctly", TypeUtils.Arrays.isArrayOfType(typeMirror, TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+                                                              MatcherAssert.assertThat("Should detect non matching component type correctly", !TypeUtils.Arrays.isArrayOfType(typeMirror, TypeUtils.TypeRetrieval.getTypeMirror(Boolean.class)));
 
                                                           }
                                                       }
@@ -717,18 +664,16 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doArrays().getArraysComponentType() : test if component type of TypeMirror of kind ARRAY is returned correctly",
+                                "TypeUtils.Arrays.getArraysComponentType() : test if component type of TypeMirror of kind ARRAY is returned correctly",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
+                                                              TypeMirror input = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
 
-                                                              TypeMirror input = typeUtils.doTypeRetrieval().getTypeMirror(String[].class);
-
-                                                              MatcherAssert.assertThat(typeUtils.doArrays().getArraysComponentType(input), Matchers.is(typeUtils.doTypeRetrieval().getTypeMirror(String.class)));
+                                                              MatcherAssert.assertThat(TypeUtils.Arrays.getArraysComponentType(input), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
 
                                                           }
                                                       }
@@ -738,17 +683,16 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeComparison().isAssignableTo : test isAssignableTo",
+                                "TypeUtils.TypeComparison.isAssignableTo : test isAssignableTo",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              MatcherAssert.assertThat("type element should be detected as assignable to Object", typeUtils.doTypeComparison().isAssignableTo(element, Object.class));
-                                                              MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !typeUtils.doTypeComparison().isAssignableTo(element, InputStream.class));
+                                                              MatcherAssert.assertThat("type element should be detected as assignable to Object", TypeUtils.TypeComparison.isAssignableTo(element, Object.class));
+                                                              MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !TypeUtils.TypeComparison.isAssignableTo(element, InputStream.class));
 
 
                                                           }
@@ -759,17 +703,16 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeComparison().isAssignableTo : test isAssignableTo",
+                                "TypeUtils.TypeComparison.isAssignableTo : test isAssignableTo",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
-                                                              MatcherAssert.assertThat("type element should be detected as assignable to Object", typeUtils.doTypeComparison().isAssignableTo(element, typeUtils.doTypeRetrieval().getTypeElement(Object.class)));
-                                                              MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !typeUtils.doTypeComparison().isAssignableTo(element, typeUtils.doTypeRetrieval().getTypeElement(InputStream.class)));
+                                                              MatcherAssert.assertThat("type element should be detected as assignable to Object", TypeUtils.TypeComparison.isAssignableTo(element, TypeUtils.TypeRetrieval.getTypeElement(Object.class)));
+                                                              MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !TypeUtils.TypeComparison.isAssignableTo(element, TypeUtils.TypeRetrieval.getTypeElement(InputStream.class)));
 
                                                           }
                                                       }
@@ -779,17 +722,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeComparison().isAssignableTo : test isAssignableTo",
+                                "TypeUtils.TypeComparison.isAssignableTo : test isAssignableTo",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat("type element should be detected as assignable to Object", typeUtils.doTypeComparison().isAssignableTo(element, typeUtils.doTypeRetrieval().getTypeMirror(Object.class)));
-                                                              MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !typeUtils.doTypeComparison().isAssignableTo(element, typeUtils.doTypeRetrieval().getTypeMirror(InputStream.class)));
+                                                              MatcherAssert.assertThat("type element should be detected as assignable to Object", TypeUtils.TypeComparison.isAssignableTo(element, TypeUtils.TypeRetrieval.getTypeMirror(Object.class)));
+                                                              MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !TypeUtils.TypeComparison.isAssignableTo(element, TypeUtils.TypeRetrieval.getTypeMirror(InputStream.class)));
 
                                                           }
                                                       }
@@ -798,20 +739,18 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeComparison().isTypeEqual(TypeElement,Class) : test if matching class is detected correctly",
+                                "TypeUtils.TypeComparison.isTypeEqual(TypeElement,Class) : test if matching class is detected correctly",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               Class<StringBuilder> type = StringBuilder.class;
-                                                              TypeElement elementForComparison = typeUtils.doTypeRetrieval().getTypeElement(type);
+                                                              TypeElement elementForComparison = TypeUtils.TypeRetrieval.getTypeElement(type);
 
 
-                                                              MatcherAssert.assertThat("Should have found match", typeUtils.doTypeComparison().isTypeEqual(elementForComparison, type));
+                                                              MatcherAssert.assertThat("Should have found match", TypeUtils.TypeComparison.isTypeEqual(elementForComparison, type));
 
                                                           }
                                                       }
@@ -820,20 +759,18 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doTypeComparison().isTypeEqual(TypeElement,Class) : test if non matching class is detected correctly",
+                                "TypeUtils.TypeComparison.isTypeEqual(TypeElement,Class) : test if non matching class is detected correctly",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               Class<StringBuilder> type = StringBuilder.class;
-                                                              TypeElement elementForComparison = typeUtils.doTypeRetrieval().getTypeElement(type);
+                                                              TypeElement elementForComparison = TypeUtils.TypeRetrieval.getTypeElement(type);
 
 
-                                                              MatcherAssert.assertThat("Should have found match", !typeUtils.doTypeComparison().isTypeEqual(elementForComparison, String.class));
+                                                              MatcherAssert.assertThat("Should have found match", !TypeUtils.TypeComparison.isTypeEqual(elementForComparison, String.class));
 
                                                           }
                                                       }
@@ -842,17 +779,15 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doCheckTypeKind().isVoid : test check for void type ",
+                                "TypeUtils.CheckTypeKind.isVoid : test check for void type ",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
-
-                                                              MatcherAssert.assertThat(typeUtils.doCheckTypeKind().isVoid(ElementUtils.CastElement.castMethod(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod").get(0)).getReturnType()), Matchers.is(true));
-                                                              MatcherAssert.assertThat(typeUtils.doCheckTypeKind().isVoid(element.asType()), Matchers.is(false));
+                                                              MatcherAssert.assertThat(TypeUtils.CheckTypeKind.isVoid(ElementUtils.CastElement.castMethod(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod").get(0)).getReturnType()), Matchers.is(true));
+                                                              MatcherAssert.assertThat(TypeUtils.CheckTypeKind.isVoid(element.asType()), Matchers.is(false));
 
 
                                                           }
@@ -863,14 +798,12 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doGenerics().genericTypeEquals : Should be able to compare generic type",
+                                "TypeUtils.Generics.genericTypeEquals : Should be able to compare generic type",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
                                                                       .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
@@ -880,13 +813,13 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
 
                                                               MatcherAssert.assertThat("Should be equal and therefore true",
-                                                                      typeUtils.doGenerics().genericTypeEquals(
+                                                                      TypeUtils.Generics.genericTypeEquals(
                                                                               method.getParameters().get(0).asType(),
-                                                                              typeUtils.doGenerics().createGenericType(Map.class,
-                                                                                      typeUtils.doGenerics().createGenericType(String.class),
-                                                                                      typeUtils.doGenerics().createGenericType(
+                                                                              TypeUtils.Generics.createGenericType(Map.class,
+                                                                                      TypeUtils.Generics.createGenericType(String.class),
+                                                                                      TypeUtils.Generics.createGenericType(
                                                                                               Comparator.class,
-                                                                                              typeUtils.doGenerics().createGenericType(Long.class)
+                                                                                              TypeUtils.Generics.createGenericType(Long.class)
                                                                                       )
                                                                               )
                                                                       )
@@ -900,14 +833,12 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doGenerics().genericTypeEquals : Should not be able to compare generic type",
+                                "TypeUtils.Generics.genericTypeEquals : Should not be able to compare generic type",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
                                                                       .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
@@ -917,13 +848,13 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
 
                                                               MatcherAssert.assertThat("Should be equal and therefore true",
-                                                                      !typeUtils.doGenerics().genericTypeEquals(
+                                                                      !TypeUtils.Generics.genericTypeEquals(
                                                                               method.getParameters().get(0).asType(),
-                                                                              typeUtils.doGenerics().createGenericType(Map.class,
-                                                                                      typeUtils.doGenerics().createGenericType(String.class),
-                                                                                      typeUtils.doGenerics().createGenericType(
+                                                                              TypeUtils.Generics.createGenericType(Map.class,
+                                                                                      TypeUtils.Generics.createGenericType(String.class),
+                                                                                      TypeUtils.Generics.createGenericType(
                                                                                               Comparator.class,
-                                                                                              typeUtils.doGenerics().createGenericType(Double.class)
+                                                                                              TypeUtils.Generics.createGenericType(Double.class)
                                                                                       )
                                                                               )
                                                                       )
@@ -938,14 +869,12 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
                         },
                         {
-                                "TypeUtils.doGenerics().genericTypeEquals : Should be able to compare generic type with wildcards",
+                                "TypeUtils.Generics.genericTypeEquals : Should be able to compare generic type with wildcards",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
                                                                       .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
@@ -957,18 +886,18 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                               //  Map<? extends StringBuilder, Comparator<? super List<?>>>
 
                                                               MatcherAssert.assertThat("Should be equal and therefore true",
-                                                                      typeUtils.doGenerics().genericTypeEquals(
+                                                                      TypeUtils.Generics.genericTypeEquals(
                                                                               method.getParameters().get(1).asType(),
-                                                                              typeUtils.doGenerics().createGenericType(Map.class,
-                                                                                      typeUtils.doGenerics().createWildcardWithExtendsBound(
-                                                                                              typeUtils.doGenerics().createGenericType(StringBuilder.class)
+                                                                              TypeUtils.Generics.createGenericType(Map.class,
+                                                                                      TypeUtils.Generics.createWildcardWithExtendsBound(
+                                                                                              TypeUtils.Generics.createGenericType(StringBuilder.class)
                                                                                       ),
-                                                                                      typeUtils.doGenerics().createGenericType(
+                                                                                      TypeUtils.Generics.createGenericType(
                                                                                               Comparator.class,
-                                                                                              typeUtils.doGenerics().createWildcardWithSuperBound(
-                                                                                                      typeUtils.doGenerics().createGenericType(
+                                                                                              TypeUtils.Generics.createWildcardWithSuperBound(
+                                                                                                      TypeUtils.Generics.createGenericType(
                                                                                                               List.class,
-                                                                                                              typeUtils.doGenerics().createPureWildcard()
+                                                                                                              TypeUtils.Generics.createPureWildcard()
                                                                                                       )
                                                                                               )
 
@@ -986,14 +915,12 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
                         },
 
                         {
-                                "TypeUtils.doGenerics().genericTypeEquals : Should not be able to compare generic type with wildcards",
+                                "TypeUtils.Generics.genericTypeEquals : Should not be able to compare generic type with wildcards",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
-                                                              TypeUtils typeUtils = TypeUtils.getTypeUtils();
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
                                                                       .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
@@ -1005,19 +932,19 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                               //  Map<? extends StringBuilder, Comparator<? super List<?>>>
 
                                                               MatcherAssert.assertThat("Should be equal and therefore true",
-                                                                      !typeUtils.doGenerics().genericTypeEquals(
+                                                                      !TypeUtils.Generics.genericTypeEquals(
                                                                               method.getParameters().get(1).asType(),
-                                                                              typeUtils.doGenerics().createGenericType(
+                                                                              TypeUtils.Generics.createGenericType(
                                                                                       Map.class,
-                                                                                      typeUtils.doGenerics().createWildcardWithExtendsBound(
-                                                                                              typeUtils.doGenerics().createGenericType(StringBuilder.class)
+                                                                                      TypeUtils.Generics.createWildcardWithExtendsBound(
+                                                                                              TypeUtils.Generics.createGenericType(StringBuilder.class)
                                                                                       ),
-                                                                                      typeUtils.doGenerics().createGenericType(
+                                                                                      TypeUtils.Generics.createGenericType(
                                                                                               Comparator.class,
-                                                                                              typeUtils.doGenerics().createWildcardWithSuperBound(
-                                                                                                      typeUtils.doGenerics().createGenericType(
+                                                                                              TypeUtils.Generics.createWildcardWithSuperBound(
+                                                                                                      TypeUtils.Generics.createGenericType(
                                                                                                               List.class,
-                                                                                                              typeUtils.doGenerics().createWildcardWithExtendsBound(typeUtils.doGenerics().createGenericType(String.class))
+                                                                                                              TypeUtils.Generics.createWildcardWithExtendsBound(TypeUtils.Generics.createGenericType(String.class))
                                                                                                       )
                                                                                               )
 

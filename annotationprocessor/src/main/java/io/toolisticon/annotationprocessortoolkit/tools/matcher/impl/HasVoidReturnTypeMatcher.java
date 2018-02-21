@@ -12,7 +12,7 @@ public class HasVoidReturnTypeMatcher implements ImplicitMatcher<ExecutableEleme
 
     @Override
     public boolean check(ExecutableElement element) {
-        return element != null ? TypeUtils.getTypeUtils().doCheckTypeKind().isVoid(element.getReturnType()) : false;
+        return element != null ? TypeUtils.CheckTypeKind.isVoid(element.getReturnType()) : false;
     }
 
 }

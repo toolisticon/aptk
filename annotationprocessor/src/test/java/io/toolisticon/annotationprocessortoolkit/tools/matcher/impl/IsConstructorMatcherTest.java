@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 
 
-
 /**
  * Unit test for {@link IsConstructorMatcher}.
  */
@@ -50,7 +49,7 @@ public class IsConstructorMatcherTest extends AbstractAnnotationProcessorUnitTes
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        TypeElement typeElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(IsConstructorMatcherTest.class);
+                                                        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(IsConstructorMatcherTest.class);
                                                         List<? extends Element> constructors = ElementUtils.AccessEnclosedElements.getEnclosedElementsOfKind(typeElement, ElementKind.CONSTRUCTOR);
                                                         MatcherAssert.assertThat("Precondition: must have found a enum", constructors.size() >= 1);
 

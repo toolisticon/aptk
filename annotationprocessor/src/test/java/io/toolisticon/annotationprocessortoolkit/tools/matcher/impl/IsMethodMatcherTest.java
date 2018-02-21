@@ -51,7 +51,7 @@ public class IsMethodMatcherTest extends AbstractAnnotationProcessorUnitTest {
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        TypeElement typeElement = TypeUtils.getTypeUtils().doTypeRetrieval().getTypeElement(IsParameterMatcherTest.class);
+                                                        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(IsParameterMatcherTest.class);
                                                         List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(typeElement, "testMethod");
                                                         MatcherAssert.assertThat("Precondition: found test method", methods.size() == 1);
 
