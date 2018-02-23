@@ -39,14 +39,17 @@ public class FluentValidatorMessage {
     }
 
 
+    /**
+     * Issues stored compiler message.
+     */
     public void issueMessage() {
 
         if (annotationMirror != null && annotationValue != null) {
-            MessagerUtils.getMessagerUtils().printMessage(element,annotationMirror,annotationValue,kind,message,args);
+            MessagerUtils.getMessagerUtils().printMessage(element, annotationMirror, annotationValue, kind, message, args);
         } else if (annotationMirror != null) {
-            MessagerUtils.getMessagerUtils().printMessage(element,annotationMirror,kind,message,args);
+            MessagerUtils.getMessagerUtils().printMessage(element, annotationMirror, kind, message, args);
         } else {
-            MessagerUtils.getMessagerUtils().printMessage(element,kind,message,args);
+            MessagerUtils.getMessagerUtils().printMessage(element, kind, message, args);
         }
 
     }

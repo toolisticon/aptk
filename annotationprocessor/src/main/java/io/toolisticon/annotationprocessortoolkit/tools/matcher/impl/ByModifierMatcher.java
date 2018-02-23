@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.CharacteristicsMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
@@ -8,7 +8,7 @@ import javax.lang.model.element.Modifier;
 /**
  * Class for matching {@link Modifier}.
  */
-public class ByModifierMatcher implements CharacteristicsMatcher<Element, Modifier> {
+public class ByModifierMatcher implements CriteriaMatcher<Element, Modifier> {
 
     /**
      * {@inheritDoc}

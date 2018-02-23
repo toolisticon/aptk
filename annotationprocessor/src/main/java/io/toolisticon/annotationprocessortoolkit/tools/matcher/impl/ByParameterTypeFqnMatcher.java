@@ -2,7 +2,7 @@ package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.CharacteristicsMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
@@ -11,7 +11,7 @@ import javax.lang.model.type.TypeMirror;
 /**
  * Matcher to check Parameters of ExecutableElement.
  */
-public class ByParameterTypeFqnMatcher implements CharacteristicsMatcher<ExecutableElement, String[]> {
+public class ByParameterTypeFqnMatcher implements CriteriaMatcher<ExecutableElement, String[]> {
 
     public ByParameterTypeFqnMatcher() {
         super();

@@ -54,7 +54,7 @@ public class CoreMatchers {
     /**
      * Matcher to check if an Element has a specific name.
      */
-    public final static ExclusiveCharacteristicElementBasedCoreMatcher<String> BY_NAME = new ExclusiveCharacteristicElementBasedCoreMatcher<String>(new ByNameMatcher(), CoreMatcherValidationMessages.BY_NAME);
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<String> BY_NAME = new ExclusiveCriteriaElementBasedCoreMatcher<String>(new ByNameMatcher(), CoreMatcherValidationMessages.BY_NAME);
 
     /**
      * Matcher to check if an Element name matches a specific regular expression.
@@ -70,7 +70,7 @@ public class CoreMatchers {
     /**
      * Matcher to check if an Element is of a specific ElementKind.
      */
-    public final static ExclusiveCharacteristicElementBasedCoreMatcher<ElementKind> BY_ELEMENT_KIND = new ExclusiveCharacteristicElementBasedCoreMatcher<ElementKind>(new ByElementKindMatcher(), CoreMatcherValidationMessages.BY_ELEMENT_KIND);
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<ElementKind> BY_ELEMENT_KIND = new ExclusiveCriteriaElementBasedCoreMatcher<ElementKind>(new ByElementKindMatcher(), CoreMatcherValidationMessages.BY_ELEMENT_KIND);
 
     /**
      * Matcher to check if an Element has a specific Modifier.
@@ -81,28 +81,28 @@ public class CoreMatchers {
     /**
      * Matcher to check if an TypeElement matches a specific generic type.
      */
-    public final static ExclusiveCharacteristicElementBasedCoreMatcher<GenericType> BY_GENERIC_TYPE = new ExclusiveCharacteristicElementBasedCoreMatcher<GenericType>(new ByGenericTypeMatcher(), CoreMatcherValidationMessages.BY_GENERIC_TYPE);
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<GenericType> BY_GENERIC_TYPE = new ExclusiveCriteriaElementBasedCoreMatcher<GenericType>(new ByGenericTypeMatcher(), CoreMatcherValidationMessages.BY_GENERIC_TYPE);
 
     /**
      * Matcher to check if an TypeElement matches a specific generic type.
      */
-    public final static ExclusiveCharacteristicCoreMatcher<TypeElement, Class> BY_RAW_TYPE = new ExclusiveCharacteristicCoreMatcher<TypeElement, Class>(new ByRawTypeMatcher(), CoreMatcherValidationMessages.BY_RAW_TYPE);
+    public final static ExclusiveCriteriaCoreMatcher<TypeElement, Class> BY_RAW_TYPE = new ExclusiveCriteriaCoreMatcher<TypeElement, Class>(new ByRawTypeMatcher(), CoreMatcherValidationMessages.BY_RAW_TYPE);
 
 
     /**
      * Matcher to check if an ExecutableElement has specific parameter types
      */
-    public final static ExclusiveCharacteristicCoreMatcher<ExecutableElement, String[]> BY_PARAMETER_TYPE_FQN = new ExclusiveCharacteristicCoreMatcher<ExecutableElement, String[]>(new ByParameterTypeFqnMatcher(), CoreMatcherValidationMessages.BY_PARAMETER_TYPE_FQN);
+    public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, String[]> BY_PARAMETER_TYPE_FQN = new ExclusiveCriteriaCoreMatcher<ExecutableElement, String[]>(new ByParameterTypeFqnMatcher(), CoreMatcherValidationMessages.BY_PARAMETER_TYPE_FQN);
 
     /**
      * Matcher to check if an ExecutableElement has specific parameter types
      */
-    public final static ExclusiveCharacteristicCoreMatcher<ExecutableElement, Class[]> BY_PARAMETER_TYPE = new ExclusiveCharacteristicCoreMatcher<ExecutableElement, Class[]>(new ByParameterTypeMatcher(), CoreMatcherValidationMessages.BY_PARAMETER_TYPE);
+    public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, Class[]> BY_PARAMETER_TYPE = new ExclusiveCriteriaCoreMatcher<ExecutableElement, Class[]>(new ByParameterTypeMatcher(), CoreMatcherValidationMessages.BY_PARAMETER_TYPE);
 
     /**
      * Matcher to check if an Element is assignable to a specific type
      */
-    public final static ExclusiveCharacteristicElementBasedCoreMatcher<Class> IS_ASSIGNABLE_TO = new ExclusiveCharacteristicElementBasedCoreMatcher<Class>(new IsAssignableToMatcher(), CoreMatcherValidationMessages.IS_ASSIGNABLE_TO);
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<Class> IS_ASSIGNABLE_TO = new ExclusiveCriteriaElementBasedCoreMatcher<Class>(new IsAssignableToMatcher(), CoreMatcherValidationMessages.IS_ASSIGNABLE_TO);
 
 
     // ---------------------------------------------------------------------------------

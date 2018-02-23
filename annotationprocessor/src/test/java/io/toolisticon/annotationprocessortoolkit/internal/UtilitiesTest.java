@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.internal;
 
+import io.toolisticon.annotationprocessortoolkit.tools.Utilities;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;

@@ -5,7 +5,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.ImplicitMatcher;
 import javax.lang.model.element.Element;
 
 /**
- * Validator to check implicit characteristics.
+ * Validator to check implicit criteria.
  */
 public class ImplicitValidator<E extends Element, MATCHER extends ImplicitMatcher<E>> extends AbstractBaseValidator {
 

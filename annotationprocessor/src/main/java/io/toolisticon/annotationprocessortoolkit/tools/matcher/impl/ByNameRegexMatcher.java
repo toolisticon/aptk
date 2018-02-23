@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.CharacteristicsMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
 import javax.lang.model.element.Element;
 import java.util.regex.Pattern;
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * Class for checking for find matching elements by name and regular expressions.
  */
-public class ByNameRegexMatcher implements CharacteristicsMatcher<Element, String> {
+public class ByNameRegexMatcher implements CriteriaMatcher<Element, String> {
 
     /**
      * {@inheritDoc}

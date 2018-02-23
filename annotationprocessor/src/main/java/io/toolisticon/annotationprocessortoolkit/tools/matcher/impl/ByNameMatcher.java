@@ -1,13 +1,13 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.CharacteristicsMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
 import javax.lang.model.element.Element;
 
 /**
  * Class for checking for find matching elements by name.
  */
-public class ByNameMatcher implements CharacteristicsMatcher<Element, String> {
+public class ByNameMatcher implements CriteriaMatcher<Element, String> {
 
     /**
      * {@inheritDoc}

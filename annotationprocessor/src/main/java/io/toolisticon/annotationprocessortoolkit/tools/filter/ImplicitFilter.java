@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Implicit filter based on Implicit validator.
+ * @param <ELEMENT>   The Element type the filter can be applied to
+ * @param <VALIDATOR> The validator type to use
  */
 public class ImplicitFilter<ELEMENT extends Element, VALIDATOR extends ImplicitValidator<ELEMENT, ImplicitMatcher<ELEMENT>>> {
 
@@ -20,6 +22,7 @@ public class ImplicitFilter<ELEMENT extends Element, VALIDATOR extends ImplicitV
 
     /**
      * Filters list of elements by the implicit criteria.
+     *
      * @param toFilter the element list to filter
      * @return the filtered list or an empty list if either validator or element list are null
      */
@@ -29,7 +32,8 @@ public class ImplicitFilter<ELEMENT extends Element, VALIDATOR extends ImplicitV
 
     /**
      * Filters list of elements by the implicit criteria. Allows to do an inverted filtering.
-     * @param toFilter the element list to filter
+     *
+     * @param toFilter     the element list to filter
      * @param invertFilter do invert filtering or not
      * @return the filtered list or an empty list if either validator or element list are null
      */
@@ -41,7 +45,7 @@ public class ImplicitFilter<ELEMENT extends Element, VALIDATOR extends ImplicitV
 
             for (ELEMENT element : toFilter) {
 
-                if ((!invertFilter && validator.validate(element)) || (invertFilter && !validator.validate(element)) ){
+                if ((!invertFilter && validator.validate(element)) || (invertFilter && !validator.validate(element))) {
                     result.add(element);
                 }
 

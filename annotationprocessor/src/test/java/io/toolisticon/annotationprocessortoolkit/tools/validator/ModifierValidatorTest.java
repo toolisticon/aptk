@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.validator;
 
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.CharacteristicsMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByModifierMatcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should have found all annotation and return true", unit.hasAllOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
     }
@@ -47,7 +47,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should have not found FilterTestAnnotation2 and return false", !unit.hasAllOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
 
@@ -65,7 +65,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
 
         MatcherAssert.assertThat("Should have not found any match and return false", !unit.hasAllOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
@@ -79,7 +79,7 @@ public class ModifierValidatorTest {
         ByModifierMatcher byModifierMatcher = Mockito.mock(ByModifierMatcher.class);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasAllOf(null, Modifier.FINAL, Modifier.PUBLIC));
 
 
@@ -97,7 +97,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasAllOf(element));
 
 
@@ -119,7 +119,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should have found all annotation and return true", unit.hasAtLeastOneOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
     }
@@ -135,7 +135,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(true);
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
 
         MatcherAssert.assertThat("Should have found TestAnnotation and return true", unit.hasAtLeastOneOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
@@ -153,7 +153,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
 
         MatcherAssert.assertThat("Should have not found any match and return false", !unit.hasAtLeastOneOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
@@ -167,7 +167,7 @@ public class ModifierValidatorTest {
         ByModifierMatcher byModifierMatcher = Mockito.mock(ByModifierMatcher.class);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasAtLeastOneOf(null, Modifier.FINAL, Modifier.PUBLIC));
 
 
@@ -183,7 +183,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasAtLeastOneOf(element));
         MatcherAssert.assertThat("Should always return true for single null valued characteristics", unit.hasAtLeastOneOf(element, null));
         MatcherAssert.assertThat("Should always return true for multiple nulll valued characteristics", unit.hasAtLeastOneOf(element, null, null));
@@ -208,7 +208,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should have found all annotation and return false since only one match is allowed", !unit.hasOneOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
     }
@@ -226,7 +226,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should have just found TestAnnotation and return true", unit.hasOneOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
 
@@ -244,7 +244,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should have not found any match and return false", !unit.hasOneOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
 
@@ -258,7 +258,7 @@ public class ModifierValidatorTest {
         ByModifierMatcher byModifierMatcher = Mockito.mock(ByModifierMatcher.class);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasOneOf(null, Modifier.FINAL, Modifier.PUBLIC));
 
 
@@ -276,7 +276,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasOneOf(element));
         MatcherAssert.assertThat("Should always return true for single null valued characteristics", unit.hasOneOf(element, null));
         MatcherAssert.assertThat("Should always return true for multiple nulll valued characteristics", unit.hasOneOf(element, null, null));
@@ -302,7 +302,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(true);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should have found all annotation and return false", !unit.hasNoneOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
     }
@@ -319,7 +319,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should have found TestAnnotation and return false", !unit.hasNoneOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
 
@@ -337,7 +337,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should have not found any match and return true", unit.hasNoneOf(element, Modifier.FINAL, Modifier.PUBLIC));
 
 
@@ -349,7 +349,7 @@ public class ModifierValidatorTest {
 
         ByModifierMatcher byModifierMatcher = Mockito.mock(ByModifierMatcher.class);
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasNoneOf(null, Modifier.FINAL, Modifier.PUBLIC));
 
 
@@ -366,7 +366,7 @@ public class ModifierValidatorTest {
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.FINAL)).thenReturn(false);
         Mockito.when(byModifierMatcher.checkForMatchingCharacteristic(element, Modifier.PUBLIC)).thenReturn(false);
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> unit = new InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>>(byModifierMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> unit = new InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>>(byModifierMatcher,"");
 
         MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasNoneOf(element));
 

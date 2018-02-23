@@ -1,15 +1,14 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericType;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.Matchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,7 +67,7 @@ public class ByGenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTes
                                                         );
 
 
-                                                        MatcherAssert.assertThat(Matchers.GENERIC_TYPE_MATCHER.getStringRepresentationOfPassedCharacteristic(genericTypeToConvert), org.hamcrest.Matchers.is("java.util.Map<? extends java.lang.StringBuilder, java.util.Comparator<? super java.util.List<?>>>"));
+                                                        MatcherAssert.assertThat(CoreMatchers.BY_GENERIC_TYPE.getMatcher().getStringRepresentationOfPassedCharacteristic(genericTypeToConvert), org.hamcrest.Matchers.is("java.util.Map<? extends java.lang.StringBuilder, java.util.Comparator<? super java.util.List<?>>>"));
 
 
                                                     }
@@ -105,7 +104,7 @@ public class ByGenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTes
                                                                       )
                                                               );
 
-                                                              MatcherAssert.assertThat("Should compare successful", Matchers.GENERIC_TYPE_MATCHER.checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+                                                              MatcherAssert.assertThat("Should compare successful", CoreMatchers.BY_GENERIC_TYPE.getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
 
 
                                                           }
@@ -122,7 +121,6 @@ public class ByGenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTes
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
 
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
@@ -142,7 +140,7 @@ public class ByGenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTes
 
                                                               );
 
-                                                              MatcherAssert.assertThat("Should not compare successful", !Matchers.GENERIC_TYPE_MATCHER.checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
+                                                              MatcherAssert.assertThat("Should not compare successful", !CoreMatchers.BY_GENERIC_TYPE.getMatcher().checkForMatchingCharacteristic(method.getParameters().get(0), genericType));
 
 
                                                           }
@@ -160,7 +158,6 @@ public class ByGenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTes
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
-
 
 
                                                               List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
@@ -188,7 +185,7 @@ public class ByGenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTes
                                                                       )
                                                               );
 
-                                                              MatcherAssert.assertThat("Should compare successful", Matchers.GENERIC_TYPE_MATCHER.checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+                                                              MatcherAssert.assertThat("Should compare successful", CoreMatchers.BY_GENERIC_TYPE.getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
 
                                                           }
                                                       }
@@ -235,7 +232,7 @@ public class ByGenericTypeMatcherTest extends AbstractAnnotationProcessorUnitTes
                                                                       )
                                                               );
 
-                                                              MatcherAssert.assertThat("Should not compare successful", !Matchers.GENERIC_TYPE_MATCHER.checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
+                                                              MatcherAssert.assertThat("Should not compare successful", !CoreMatchers.BY_GENERIC_TYPE.getMatcher().checkForMatchingCharacteristic(method.getParameters().get(1), genericType));
 
 
                                                           }

@@ -1,20 +1,20 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator;
 
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCharacteristicCoreMatcher;
-import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCharacteristicElementBasedCoreMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaCoreMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ImplicitCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ImplicitElementBasedCoreMatcher;
-import io.toolisticon.annotationprocessortoolkit.tools.corematcher.InclusiveCharacteristicCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.InclusiveCharacteristicElementBasedCoreMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.InclusiveCriteriaCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.impl.FluentValidatorState;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.CharacteristicsMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.ImplicitMatcher;
-import io.toolisticon.annotationprocessortoolkit.tools.validator.ExclusiveCharacteristicsElementValidator;
+import io.toolisticon.annotationprocessortoolkit.tools.validator.ExclusiveCriteriaElementValidator;
 import io.toolisticon.annotationprocessortoolkit.tools.validator.ImplicitValidator;
-import io.toolisticon.annotationprocessortoolkit.tools.validator.InclusiveCharacteristicsElementValidator;
+import io.toolisticon.annotationprocessortoolkit.tools.validator.InclusiveCriteriaElementValidator;
 
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
@@ -25,8 +25,15 @@ import javax.tools.Diagnostic;
 public class FluentElementValidator<ELEMENT extends Element> {
 
 
+    /**
+     * The element under validation.
+     */
     private ELEMENT element;
 
+    /**
+     * The validations state.
+     * Maybe passed over to other FluentElementValidator instance.
+     */
     private final FluentValidatorState fluentValidatorState;
 
     /**
@@ -171,9 +178,9 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public class ExclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT extends Element, CHARACTERISTIC> extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, ExclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT, CHARACTERISTIC>> {
 
-        private final ExclusiveCharacteristicsElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CharacteristicsMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator;
+        private final ExclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator;
 
-        private ExclusiveCharacteristicFluentValidator(ExclusiveCharacteristicsElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CharacteristicsMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator) {
+        private ExclusiveCharacteristicFluentValidator(ExclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator) {
             this.validator = validator;
         }
 
@@ -207,9 +214,9 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public class InclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT extends Element, CHARACTERISTIC> extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, InclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT, CHARACTERISTIC>> {
 
-        private final InclusiveCharacteristicsElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CharacteristicsMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator;
+        private final InclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator;
 
-        private InclusiveCharacteristicFluentValidator(InclusiveCharacteristicsElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CharacteristicsMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator) {
+        private InclusiveCharacteristicFluentValidator(InclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator) {
             this.validator = validator;
         }
 
@@ -273,7 +280,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
     }
 
     // apply inclusive characteristics validators
-    public <CHARACTERISTIC> InclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC> applyValidator(InclusiveCharacteristicCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
+    public <CHARACTERISTIC> InclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC> applyValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
         return new InclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC>(coreMatcher.getValidator());
     }
 
@@ -282,20 +289,20 @@ public class FluentElementValidator<ELEMENT extends Element> {
     }
 
     // apply exclusive characteristics validators
-    public <CHARACTERISTIC> ExclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC> applyValidator(ExclusiveCharacteristicCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
+    public <CHARACTERISTIC> ExclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC> applyValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
         return new ExclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC>(coreMatcher.getValidator());
     }
 
-    public <CHARACTERISTIC> ExclusiveCharacteristicFluentValidator<Element, CHARACTERISTIC> applyValidator(ExclusiveCharacteristicElementBasedCoreMatcher<CHARACTERISTIC> coreMatcher) {
+    public <CHARACTERISTIC> ExclusiveCharacteristicFluentValidator<Element, CHARACTERISTIC> applyValidator(ExclusiveCriteriaElementBasedCoreMatcher<CHARACTERISTIC> coreMatcher) {
         return new ExclusiveCharacteristicFluentValidator<Element, CHARACTERISTIC>(coreMatcher.getValidator());
     }
 
     // apply is validators
-    public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsCoreMatcher<ELEMENT,TARGET_ELEMENT> coreMatcher) {
+    public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
         return new IsFluentValidator<ELEMENT, TARGET_ELEMENT>(coreMatcher.getValidator()).apply();
     }
 
-    public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsElementBasedCoreMatcher< TARGET_ELEMENT> coreMatcher) {
+    public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
         return new IsFluentValidator<Element, TARGET_ELEMENT>(coreMatcher.getValidator()).apply();
     }
 

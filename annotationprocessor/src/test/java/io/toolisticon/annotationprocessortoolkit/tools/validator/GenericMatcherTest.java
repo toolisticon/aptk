@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools.validator;
 
 /**
- * Unit test of {@link InclusiveCharacteristicsElementValidator}.
+ * Unit test of {@link InclusiveCriteriaElementValidator}.
  */
 public class GenericMatcherTest {
 
@@ -10,7 +10,7 @@ public class GenericMatcherTest {
     @Test
     public void testHasOf_OneOf() {
 
-        InclusiveCharacteristicsElementValidator<Element, Modifier, CharacteristicsMatcher<Element, Modifier>> spy = Mockito.spy(Validators.MODIFIER_VALIDATOR);
+        InclusiveCriteriaElementValidator<Element, Modifier, CriteriaMatcher<Element, Modifier>> spy = Mockito.spy(Validators.MODIFIER_VALIDATOR);
 
         Element element = Mockito.mock(Element.class);
         spy.hasOf(ValidatorKind.ONE_OF, element, Modifier.ABSTRACT);

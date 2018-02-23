@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.CharacteristicsMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
 import javax.lang.model.element.Element;
 import java.lang.annotation.Annotation;
@@ -8,7 +8,7 @@ import java.lang.annotation.Annotation;
 /**
  * Class for checking existence of one annotation on an element.
  */
-public class ByAnnotationMatcher implements CharacteristicsMatcher<Element, Class<? extends Annotation>> {
+public class ByAnnotationMatcher implements CriteriaMatcher<Element, Class<? extends Annotation>> {
 
     /**
      * {@inheritDoc}

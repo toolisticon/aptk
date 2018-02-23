@@ -4,14 +4,14 @@ import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericType;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeParameter;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.CharacteristicsMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
 import javax.lang.model.element.Element;
 
 /**
  * A matcher for generic types.
  */
-public class ByGenericTypeMatcher implements CharacteristicsMatcher<Element, GenericType> {
+public class ByGenericTypeMatcher implements CriteriaMatcher<Element, GenericType> {
 
     public ByGenericTypeMatcher() {
         super();

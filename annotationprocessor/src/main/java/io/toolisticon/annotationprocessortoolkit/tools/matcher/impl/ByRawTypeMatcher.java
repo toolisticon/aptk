@@ -1,14 +1,14 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.CharacteristicsMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
 import javax.lang.model.element.TypeElement;
 
 /**
  * Matcher for raw types.
  */
-public class ByRawTypeMatcher implements CharacteristicsMatcher<TypeElement, Class> {
+public class ByRawTypeMatcher implements CriteriaMatcher<TypeElement, Class> {
 
     public ByRawTypeMatcher() {
         super();

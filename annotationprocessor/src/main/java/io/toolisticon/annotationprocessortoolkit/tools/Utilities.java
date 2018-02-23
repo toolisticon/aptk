@@ -1,4 +1,4 @@
-package io.toolisticon.annotationprocessortoolkit.internal;
+package io.toolisticon.annotationprocessortoolkit.tools;
 
 import java.util.ArrayList;
 import java.util.Arrays;

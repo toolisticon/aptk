@@ -5,6 +5,7 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationPr
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -50,12 +51,12 @@ public class InclusiveCharacteristicElementFilterTest extends AbstractAnnotation
                                                     @Override
                                                     protected void testCase(TypeElement element) {
 
-                                                        List<Element> filteredList = Filters.MODIFIER_FILTER.filterByAllOf((List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED);
+                                                        List<Element> filteredList = CoreMatchers.BY_MODIFIER.getFilter().filterByAllOf((List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED);
                                                         MatcherAssert.assertThat("Must have exactly one element'", filteredList, Matchers.hasSize(1));
                                                         MatcherAssert.assertThat("Must find one element with name 'synchronizedMethod'", filteredList.get(0).getSimpleName().toString(), Matchers.is("synchronizedMethod"));
 
                                                         // shouldn't find anything
-                                                        filteredList = Filters.MODIFIER_FILTER.filterByAllOf((List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
+                                                        filteredList = CoreMatchers.BY_MODIFIER.getFilter().filterByAllOf((List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
                                                         MatcherAssert.assertThat("Must have noelement'", filteredList, Matchers.<Element>empty());
 
 

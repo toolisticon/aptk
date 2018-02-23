@@ -1,8 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import io.toolisticon.annotationprocessortoolkit.internal.Utilities;
-import io.toolisticon.annotationprocessortoolkit.tools.filter.Filters;
-import io.toolisticon.annotationprocessortoolkit.tools.validator.Validators;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -485,7 +483,7 @@ public final class ElementUtils {
          * @return true if passed element has modifier, otherwise false
          */
         private static boolean hasModifier(Element e, Modifier modifier) {
-            return Validators.MODIFIER_VALIDATOR.hasAllOf(e, modifier);
+            return CoreMatchers.BY_MODIFIER.getValidator().hasAllOf(e, modifier);
         }
 
     }
@@ -657,7 +655,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filters.NAME_FILTER.filterByOneOf(element.getEnclosedElements(), name);
+            return CoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), name);
 
         }
 
@@ -712,7 +710,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filters.ELEMENT_KIND_FILTER.filterByOneOf(element.getEnclosedElements(), kind);
+            return CoreMatchers.BY_ELEMENT_KIND.getFilter().filterByOneOf(element.getEnclosedElements(), kind);
 
         }
 
@@ -730,7 +728,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filters.ANNOTATION_FILTER.filterByAllOf(element.getEnclosedElements(), annotations);
+            return CoreMatchers.BY_ANNOTATION.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
 
         }
 
@@ -747,7 +745,7 @@ public final class ElementUtils {
                 return new ArrayList<Element>();
             }
 
-            return Filters.ANNOTATION_FILTER.filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
+            return CoreMatchers.BY_ANNOTATION.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
 
         }
 

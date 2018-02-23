@@ -4,6 +4,9 @@ import javax.tools.JavaFileObject;
 import java.io.IOException;
 
 
+/**
+ * A Simple java writer.
+ */
 public class SimpleJavaWriter extends AbstractSimpleWriter<JavaFileObject> {
 
 

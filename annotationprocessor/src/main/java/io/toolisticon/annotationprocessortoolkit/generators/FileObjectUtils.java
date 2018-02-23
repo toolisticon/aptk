@@ -94,10 +94,24 @@ public class FileObjectUtils {
     }
 
 
+    /**
+     * Creates a class file writer.
+     * @param fileName the filename to use
+     * @param originatingElements the element which originates the creation of the class file
+     * @return a SimpleJavaWriter that can be used to write java classes
+     * @throws IOException is thrown if writer can't be created
+     */
     public SimpleJavaWriter createClassFile(String fileName, Element... originatingElements) throws IOException {
         return new SimpleJavaWriter(ToolingProvider.getTooling().getFiler().createClassFile(fileName, originatingElements));
     }
 
+    /**
+     * Creates a source file writer.
+     * @param fileName the filename to use
+     * @param originatingElements the element which originates the creation of the source file
+     * @return a SimpleJavaWriter that can be used to write java source code
+     * @throws IOException is thrown if writer can't be created
+     */
     public SimpleJavaWriter createSourceFile(String fileName, Element... originatingElements) throws IOException {
         return new SimpleJavaWriter(ToolingProvider.getTooling().getFiler().createSourceFile(fileName, originatingElements));
     }
