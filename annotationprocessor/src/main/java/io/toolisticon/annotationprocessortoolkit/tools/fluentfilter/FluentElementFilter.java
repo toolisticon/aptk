@@ -160,7 +160,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @param coreMatcher the implicit core matcher to use
      * @return the FluentElementFilter instance
      */
-    public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyFilter(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
+    public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> is(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
 
         elements = coreMatcher.getFilter().filter(elements);
         return new FluentElementFilter<TARGET_ELEMENT>((List<TARGET_ELEMENT>) elements);
@@ -173,7 +173,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @param coreMatcher the implicit core matcher to use
      * @return the FluentElementFilter instance
      */
-    public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
+    public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> isNot(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
 
         elements = coreMatcher.getFilter().filter(elements, true);
         return FluentElementFilter.this;
@@ -187,7 +187,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @param coreMatcher the implicit core matcher to use
      * @return the FluentElementFilter instance
      */
-    public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
+    public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> is(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
 
         elements = (List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements);
         return new FluentElementFilter<TARGET_ELEMENT>((List<TARGET_ELEMENT>) elements);
@@ -200,7 +200,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @param coreMatcher the implicit core matcher to use
      * @return the FluentElementFilter instance
      */
-    public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
+    public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> isNot(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
 
         elements = (List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true);
         return FluentElementFilter.this;

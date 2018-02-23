@@ -43,7 +43,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor ex
 
             // validator already will print output so additional actions are not necessary
             FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(element))
-                    .applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).apply()
+                    .applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
                     .applyValidator(CoreMatchers.BY_PARAMETER_TYPE).hasOneOf(wrapToArray(String.class))
                     .validateAndIssueMessages();
 

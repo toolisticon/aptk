@@ -1,6 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator;
 
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ImplicitCoreMatcher;
@@ -17,12 +18,259 @@ import io.toolisticon.annotationprocessortoolkit.tools.validator.ImplicitValidat
 import io.toolisticon.annotationprocessortoolkit.tools.validator.InclusiveCriteriaElementValidator;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import javax.tools.Diagnostic;
 
 /**
  * Fluent element validator.
  */
 public class FluentElementValidator<ELEMENT extends Element> {
+
+    /**
+     * Apply validator interface.
+     */
+    public class PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT extends Element> {
+
+        /**
+         * Set warning scope for next validation.
+         *
+         * @return the fluent validator instance
+         */
+        public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> warning() {
+            return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.warning();
+        }
+
+        /**
+         * Set note scope for next validation.
+         *
+         * @return the fluent validator instance
+         */
+        public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> note() {
+            return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.note();
+        }
+
+        /**
+         * Set warning scope for next validation.
+         *
+         * @param customMessage the custom message to use.
+         * @return the fluent validator instance
+         */
+        public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(String customMessage) {
+            return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.setCustomMessage(customMessage);
+        }
+
+
+        /**
+         * Applies is validator.
+         * Changes generic type of fluent validator.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
+
+            return FluentElementValidator.this.is(coreMatcher);
+
+        }
+
+        /**
+         * Applies inverted is filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <TARGET_ELEMENT extends Element> FluentElementValidator<ELEMENT> isNot(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
+
+            return FluentElementValidator.this.isNot(coreMatcher);
+
+        }
+
+        /**
+         * Applies is element based filter.
+         * Changes generic type of fluent filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
+
+            return FluentElementValidator.this.is(coreMatcher);
+
+
+        }
+
+        /**
+         * Applies inverted implicit element based filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <TARGET_ELEMENT extends Element> FluentElementValidator<ELEMENT> isNot(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
+
+            return FluentElementValidator.this.isNot(coreMatcher);
+
+        }
+
+        // -----------------------------------------------
+        // -- IMPLICIT FILTERS
+        // -----------------------------------------------
+
+        /**
+         * Applies implicit filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public FluentElementValidator<ELEMENT> applyValidator(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
+
+            return FluentElementValidator.this.applyValidator(coreMatcher);
+
+        }
+
+        /**
+         * Applies inverted implicit filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public FluentElementValidator<ELEMENT> applyInvertedValidator(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
+
+            return FluentElementValidator.this.applyInvertedValidator(coreMatcher);
+
+        }
+
+        /**
+         * Applies implicit element based filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public FluentElementValidator<ELEMENT> applyValidator(ImplicitElementBasedCoreMatcher coreMatcher) {
+
+            return FluentElementValidator.this.applyValidator(coreMatcher);
+
+        }
+
+        /**
+         * Applies inverted implicit element based filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public FluentElementValidator<ELEMENT> applyInvertedVaidator(ImplicitElementBasedCoreMatcher coreMatcher) {
+
+            return FluentElementValidator.this.applyInvertedValidator(coreMatcher);
+
+        }
+
+        // -----------------------------------------------
+        // -- INCLUSIVE CRITERIA FILTERS
+        // -----------------------------------------------
+
+        /**
+         * Applies inclusive criteria filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
+
+            return FluentElementValidator.this.applyValidator(coreMatcher);
+
+        }
+
+        /**
+         * Applies inverted inclusive criteria filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
+
+            return FluentElementValidator.this.applyInvertedValidator(coreMatcher);
+
+        }
+
+        /**
+         * Applies inclusive criteria element based filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
+
+            return FluentElementValidator.this.applyValidator(coreMatcher);
+
+
+        }
+
+        /**
+         * Applies inverted inclusive element based criteria filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
+
+            return FluentElementValidator.this.applyInvertedValidator(coreMatcher);
+
+        }
+
+        // -----------------------------------------------
+        // -- EXPLICIT FILTERS
+        // -----------------------------------------------
+
+        /**
+         * Applies exclusive criteria filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
+
+            return FluentElementValidator.this.applyValidator(coreMatcher);
+
+        }
+
+        /**
+         * Applies inverted exclusive criteria filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
+
+            return FluentElementValidator.this.applyInvertedValidator(coreMatcher);
+
+        }
+
+        /**
+         * Applies exclusive criteria element based filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
+
+            return FluentElementValidator.this.applyValidator(coreMatcher);
+
+
+        }
+
+
+        /**
+         * Applies inverted exclusive element based criteria filter.
+         *
+         * @param coreMatcher the implicit core matcher to use
+         * @return the FluentElementValidator instance
+         */
+        public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
+
+            return FluentElementValidator.this.applyInvertedValidator(coreMatcher);
+
+        }
+
+    }
 
 
     /**
@@ -36,6 +284,35 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     private final FluentValidatorState fluentValidatorState;
 
+    private NextValidationContext nextValidationContext = new NextValidationContext();
+
+    private class NextValidationContext {
+
+        private String customMessage;
+        private Diagnostic.Kind messageScope = Diagnostic.Kind.ERROR;
+
+        private void reset() {
+            customMessage = null;
+            messageScope = Diagnostic.Kind.ERROR;
+        }
+
+        public String getCustomMessage() {
+            return customMessage;
+        }
+
+        public void setCustomMessage(String customMessage) {
+            this.customMessage = customMessage;
+        }
+
+        public Diagnostic.Kind getMessageScope() {
+            return messageScope;
+        }
+
+        public void setMessageScope(Diagnostic.Kind messageScope) {
+            this.messageScope = messageScope;
+        }
+    }
+
     /**
      * The base class for all validators.
      *
@@ -44,42 +321,17 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public abstract class AbstractFluentValidatorBase<VALIDATOR_ELEMENT extends Element, VALIDATOR extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, VALIDATOR>> {
 
-        private Diagnostic.Kind messageScope = Diagnostic.Kind.ERROR;
-        private String message = null;
-        private boolean invert = false;
 
+        private boolean inverted = false;
 
-        public VALIDATOR not() {
-
-            invert = true;
-            return self();
-
-        }
-
-        public VALIDATOR warn() {
-
-            messageScope = Diagnostic.Kind.MANDATORY_WARNING;
-            return self();
-
-        }
-
-        public VALIDATOR message(String messsage) {
-
-            this.message = messsage;
-            return self();
-
+        public AbstractFluentValidatorBase(final boolean inverted) {
+            this.inverted = inverted;
         }
 
         protected abstract VALIDATOR self();
 
         protected boolean isInverted() {
-            return invert;
-        }
-
-        private String getMessage() {
-
-            return message;
-
+            return inverted;
         }
 
 
@@ -90,14 +342,17 @@ public class FluentElementValidator<ELEMENT extends Element> {
          */
         protected void setValidationResult(boolean validationResult, String defaultMessage, Object... messsageParameter) {
 
-            if ((!validationResult && !invert) || (validationResult && invert)) {
+            if ((!validationResult && !inverted) || (validationResult && inverted)) {
                 fluentValidatorState.setAsFailedValidation();
 
-                if (message != null) {
-                    MessagerUtils.getMessagerUtils().printMessage(element, messageScope, message);
+                if (nextValidationContext.getCustomMessage() != null) {
+                    MessagerUtils.getMessagerUtils().printMessage(element, nextValidationContext.getMessageScope(), nextValidationContext.getCustomMessage());
                 } else {
-                    MessagerUtils.getMessagerUtils().printMessage(element, messageScope, defaultMessage, messsageParameter);
+                    MessagerUtils.getMessagerUtils().printMessage(element, nextValidationContext.getMessageScope(), defaultMessage, messsageParameter);
                 }
+
+                // rest validation context for next validation
+                nextValidationContext.reset();
 
             }
 
@@ -116,7 +371,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
         private final ImplicitValidator<VALIDATOR_ELEMENT, ImplicitMatcher<VALIDATOR_ELEMENT>> validator;
 
-        private ImplicitFluentValidator(ImplicitValidator<VALIDATOR_ELEMENT, ImplicitMatcher<VALIDATOR_ELEMENT>> validator) {
+        private ImplicitFluentValidator(ImplicitValidator<VALIDATOR_ELEMENT, ImplicitMatcher<VALIDATOR_ELEMENT>> validator, boolean inverted) {
+            super(inverted);
             this.validator = validator;
         }
 
@@ -144,7 +400,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
         private final ImplicitValidator<VALIDATOR_ELEMENT, ImplicitMatcher<VALIDATOR_ELEMENT>> validator;
 
-        private IsFluentValidator(ImplicitValidator<VALIDATOR_ELEMENT, ImplicitMatcher<VALIDATOR_ELEMENT>> validator) {
+        private IsFluentValidator(ImplicitValidator<VALIDATOR_ELEMENT, ImplicitMatcher<VALIDATOR_ELEMENT>> validator, boolean inverted) {
+            super(inverted);
             this.validator = validator;
         }
 
@@ -169,6 +426,40 @@ public class FluentElementValidator<ELEMENT extends Element> {
         }
     }
 
+    /**
+     * Validator step for inverted is validators.
+     *
+     * @param <VALIDATOR_ELEMENT>
+     */
+    public class InvertedIsFluentValidator<VALIDATOR_ELEMENT extends Element, TARGET_ELEMENT extends Element> extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, InvertedIsFluentValidator<VALIDATOR_ELEMENT, TARGET_ELEMENT>> {
+
+        private final ImplicitValidator<VALIDATOR_ELEMENT, ImplicitMatcher<VALIDATOR_ELEMENT>> validator;
+
+        private InvertedIsFluentValidator(ImplicitValidator<VALIDATOR_ELEMENT, ImplicitMatcher<VALIDATOR_ELEMENT>> validator, boolean inverted) {
+            super(inverted);
+            this.validator = validator;
+        }
+
+        public FluentElementValidator<ELEMENT> apply() {
+
+
+            boolean validationResult = false;
+
+            // just validate if element != null
+            if (element != null) {
+                validationResult = validator.validate((VALIDATOR_ELEMENT) element);
+                setValidationResult(validationResult, validator.getMessage());
+            }
+
+            return FluentElementValidator.this;
+
+        }
+
+        @Override
+        protected InvertedIsFluentValidator<VALIDATOR_ELEMENT, TARGET_ELEMENT> self() {
+            return this;
+        }
+    }
 
     /**
      * Validator step for exlusive characteristics validators.
@@ -180,7 +471,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
         private final ExclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator;
 
-        private ExclusiveCharacteristicFluentValidator(ExclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator) {
+        private ExclusiveCharacteristicFluentValidator(ExclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator, boolean inverted) {
+            super(inverted);
             this.validator = validator;
         }
 
@@ -216,7 +508,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
         private final InclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator;
 
-        private InclusiveCharacteristicFluentValidator(InclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator) {
+        private InclusiveCharacteristicFluentValidator(InclusiveCriteriaElementValidator<VALIDATOR_ELEMENT, CHARACTERISTIC, CriteriaMatcher<VALIDATOR_ELEMENT, CHARACTERISTIC>> validator, boolean inverted) {
+            super(inverted);
             this.validator = validator;
         }
 
@@ -269,42 +562,237 @@ public class FluentElementValidator<ELEMENT extends Element> {
         this.fluentValidatorState = fluentValidatorState;
     }
 
+    // -----------------------------------------------
+    // -- IS VALIDATOR
+    // -----------------------------------------------
 
-    // apply implicit validators
-    public ImplicitFluentValidator<ELEMENT> applyValidator(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
-        return new ImplicitFluentValidator<ELEMENT>(coreMatcher.getValidator());
-    }
-
-    public ImplicitFluentValidator<Element> applyValidator(ImplicitElementBasedCoreMatcher coreMatcher) {
-        return new ImplicitFluentValidator<Element>(coreMatcher.getValidator());
-    }
-
-    // apply inclusive characteristics validators
-    public <CHARACTERISTIC> InclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC> applyValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
-        return new InclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC>(coreMatcher.getValidator());
-    }
-
-    public <CHARACTERISTIC> InclusiveCharacteristicFluentValidator<Element, CHARACTERISTIC> applyValidator(InclusiveCharacteristicElementBasedCoreMatcher<CHARACTERISTIC> coreMatcher) {
-        return new InclusiveCharacteristicFluentValidator<Element, CHARACTERISTIC>(coreMatcher.getValidator());
-    }
-
-    // apply exclusive characteristics validators
-    public <CHARACTERISTIC> ExclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC> applyValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
-        return new ExclusiveCharacteristicFluentValidator<ELEMENT, CHARACTERISTIC>(coreMatcher.getValidator());
-    }
-
-    public <CHARACTERISTIC> ExclusiveCharacteristicFluentValidator<Element, CHARACTERISTIC> applyValidator(ExclusiveCriteriaElementBasedCoreMatcher<CHARACTERISTIC> coreMatcher) {
-        return new ExclusiveCharacteristicFluentValidator<Element, CHARACTERISTIC>(coreMatcher.getValidator());
-    }
-
-    // apply is validators
+    /**
+     * Applies is validator.
+     * Changes generic type of fluent validator.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
     public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
-        return new IsFluentValidator<ELEMENT, TARGET_ELEMENT>(coreMatcher.getValidator()).apply();
+
+        return new IsFluentValidator<ELEMENT, TARGET_ELEMENT>(coreMatcher.getValidator(), false).apply();
+
     }
 
-    public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
-        return new IsFluentValidator<Element, TARGET_ELEMENT>(coreMatcher.getValidator()).apply();
+    /**
+     * Applies inverted is filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <TARGET_ELEMENT extends Element> FluentElementValidator<ELEMENT> isNot(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
+
+        return new InvertedIsFluentValidator<ELEMENT, TARGET_ELEMENT>(coreMatcher.getValidator(), true).apply();
+
     }
+
+    /**
+     * Applies is element based filter.
+     * Changes generic type of fluent filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
+
+        return new IsFluentValidator<Element, TARGET_ELEMENT>(coreMatcher.getValidator(), false).apply();
+
+
+    }
+
+    /**
+     * Applies inverted implicit element based filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <TARGET_ELEMENT extends Element> FluentElementValidator<ELEMENT> isNot(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
+
+        return new InvertedIsFluentValidator<Element, TARGET_ELEMENT>(coreMatcher.getValidator(), true).apply();
+
+    }
+
+    // -----------------------------------------------
+    // -- IMPLICIT FILTERS
+    // -----------------------------------------------
+
+    /**
+     * Applies implicit filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public FluentElementValidator<ELEMENT> applyValidator(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
+
+        return new ImplicitFluentValidator<ELEMENT>(coreMatcher.getValidator(), false).apply();
+
+    }
+
+    /**
+     * Applies inverted implicit filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public FluentElementValidator<ELEMENT> applyInvertedValidator(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
+
+        return new ImplicitFluentValidator<ELEMENT>(coreMatcher.getValidator(), true).apply();
+
+    }
+
+    /**
+     * Applies implicit element based filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public FluentElementValidator<ELEMENT> applyValidator(ImplicitElementBasedCoreMatcher coreMatcher) {
+
+        return new ImplicitFluentValidator<Element>(coreMatcher.getValidator(), true).apply();
+
+    }
+
+    /**
+     * Applies inverted implicit element based filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public FluentElementValidator<ELEMENT> applyInvertedValidator(ImplicitElementBasedCoreMatcher coreMatcher) {
+
+        return new ImplicitFluentValidator<Element>(coreMatcher.getValidator(), true).apply();
+
+    }
+
+    // -----------------------------------------------
+    // -- INCLUSIVE CRITERIA FILTERS
+    // -----------------------------------------------
+
+    /**
+     * Applies inclusive criteria filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
+
+        return new InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA>(coreMatcher.getValidator(), false);
+
+    }
+
+    /**
+     * Applies inverted inclusive criteria filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
+
+        return new InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA>(coreMatcher.getValidator(), true);
+
+    }
+
+    /**
+     * Applies inclusive criteria element based filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
+
+        return new InclusiveCharacteristicFluentValidator<Element, CRITERIA>(coreMatcher.getValidator(), false);
+
+
+    }
+
+    /**
+     * Applies inverted inclusive element based criteria filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
+
+        return new InclusiveCharacteristicFluentValidator<Element, CRITERIA>(coreMatcher.getValidator(), true);
+
+    }
+
+    // -----------------------------------------------
+    // -- EXPLICIT FILTERS
+    // -----------------------------------------------
+
+    /**
+     * Applies exclusive criteria filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
+
+        return new ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA>(coreMatcher.getValidator(), false);
+
+    }
+
+    /**
+     * Applies inverted exclusive criteria filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
+
+        return new ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA>(coreMatcher.getValidator(), true);
+
+    }
+
+    /**
+     * Applies exclusive criteria element based filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
+
+        return new ExclusiveCharacteristicFluentValidator<Element, CRITERIA>(coreMatcher.getValidator(), false);
+    }
+
+    /**
+     * Applies inverted exclusive element based criteria filter.
+     *
+     * @param coreMatcher the implicit core matcher to use
+     * @return the FluentElementValidator instance
+     */
+    public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
+
+        return new ExclusiveCharacteristicFluentValidator<Element, CRITERIA>(coreMatcher.getValidator(), true);
+
+    }
+
+    // -------------------------------------------------------------
+    // -------------------------------------------------------------
+
+    public PrepareApplyValidator<ELEMENT> warning() {
+        this.nextValidationContext.setMessageScope(Diagnostic.Kind.WARNING);
+        return new PrepareApplyValidator<ELEMENT>();
+    }
+
+    public PrepareApplyValidator<ELEMENT> note() {
+        this.nextValidationContext.setMessageScope(Diagnostic.Kind.NOTE);
+        return new PrepareApplyValidator<ELEMENT>();
+    }
+
+    public PrepareApplyValidator<ELEMENT> setCustomMessage(String customMessage) {
+        this.nextValidationContext.setCustomMessage(customMessage);
+        return new PrepareApplyValidator<ELEMENT>();
+    }
+
+    // -------------------------------------------------------------
+    // -------------------------------------------------------------
 
 
     /**
@@ -333,6 +821,15 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
     public static <E extends Element> FluentElementValidator<E> createFluentElementValidator(E element) {
         return new FluentElementValidator<E>(element);
+    }
+
+
+    public static void main(String[] args) {
+        createFluentElementValidator(null)
+                .isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT)
+                .is(CoreMatchers.IS_TYPE_ELEMENT)
+                .warning().setCustomMessage("").applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.PUBLIC)
+                .validateAndIssueMessages();
     }
 
 
