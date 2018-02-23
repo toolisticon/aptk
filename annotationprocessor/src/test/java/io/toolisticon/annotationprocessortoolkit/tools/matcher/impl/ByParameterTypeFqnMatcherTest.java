@@ -19,13 +19,16 @@ import javax.lang.model.element.TypeElement;
 import java.util.Arrays;
 import java.util.List;
 
+
+
+
 /**
- * Unit test for {@link ByParameterTypeMatcher}.
+ * Unit test for {@link ByParameterTypeFqnMatcher}.
  */
 @RunWith(Parameterized.class)
-public class ByParameterTypeMatcherTest extends AbstractAnnotationProcessorUnitTest {
+public class ByParameterTypeFqnMatcherTest extends AbstractAnnotationProcessorUnitTest {
 
-    public ByParameterTypeMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+    public ByParameterTypeFqnMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
         super(configuration);
     }
 
@@ -55,7 +58,7 @@ public class ByParameterTypeMatcherTest extends AbstractAnnotationProcessorUnitT
                                                               MatcherAssert.assertThat("Precondition: second parameter must be of type String but is " + executableElement.getParameters().get(1).asType().toString(), executableElement.getParameters().get(1).asType().toString().equals(String.class.getCanonicalName()));
 
 
-                                                              MatcherAssert.assertThat("Should have found matching parameters", CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class)));
+                                                              MatcherAssert.assertThat("Should have found matching parameters", CoreMatchers.BY_PARAMETER_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class.getCanonicalName(), String.class.getCanonicalName())));
 
                                                           }
                                                       }
@@ -78,9 +81,9 @@ public class ByParameterTypeMatcherTest extends AbstractAnnotationProcessorUnitT
                                                               ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
                                                               MatcherAssert.assertThat("Precondition: method must have 2 parameters", executableElement.getParameters().size() == 2);
 
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(String.class, Boolean.class)));
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class)));
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class, String.class)));
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(String.class.getCanonicalName(), Boolean.class.getCanonicalName())));
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class.getCanonicalName())));
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class.getCanonicalName(), String.class.getCanonicalName(), String.class.getCanonicalName())));
 
                                                           }
                                                       }
@@ -105,9 +108,9 @@ public class ByParameterTypeMatcherTest extends AbstractAnnotationProcessorUnitT
                                                               ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
                                                               MatcherAssert.assertThat("Precondition: method must have 2 parameters", executableElement.getParameters().size() == 2);
 
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(null, Utilities.convertVarargsToArray(String.class, Boolean.class)));
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, null));
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(null, null));
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, Utilities.convertVarargsToArray(String.class.getCanonicalName(), Boolean.class.getCanonicalName())));
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, null));
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, null));
 
                                                           }
                                                       }
@@ -126,7 +129,7 @@ public class ByParameterTypeMatcherTest extends AbstractAnnotationProcessorUnitT
                                                           protected void testCase(TypeElement element) {
 
 
-                                                              MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.BY_PARAMETER_TYPE.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.BY_PARAMETER_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
 
                                                           }
                                                       }
@@ -144,7 +147,7 @@ public class ByParameterTypeMatcherTest extends AbstractAnnotationProcessorUnitT
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              MatcherAssert.assertThat("Should have created valid string representation", CoreMatchers.BY_PARAMETER_TYPE.getMatcher().getStringRepresentationOfPassedCharacteristic(Utilities.convertVarargsToArray(String.class, Boolean.class)), Matchers.is("[java.lang.String, java.lang.Boolean]"));
+                                                              MatcherAssert.assertThat("Should have created valid string representation", CoreMatchers.BY_PARAMETER_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(Utilities.convertVarargsToArray(String.class.getCanonicalName(), Boolean.class.getCanonicalName())), Matchers.is("[java.lang.String, java.lang.Boolean]"));
 
 
                                                           }

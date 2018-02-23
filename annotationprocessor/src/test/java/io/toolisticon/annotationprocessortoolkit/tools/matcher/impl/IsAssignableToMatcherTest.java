@@ -7,6 +7,7 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationP
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -91,6 +92,44 @@ public class IsAssignableToMatcherTest extends AbstractAnnotationProcessorUnitTe
                                                     }
 
                                                 }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "getStringRepresentationOfPassedCharacteristic null",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.IS_ASSIGNABLE_TO.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "getStringRepresentationOfPassedCharacteristic get String representation",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat("Should have created valid string representation", CoreMatchers.IS_ASSIGNABLE_TO.getMatcher().getStringRepresentationOfPassedCharacteristic(String.class), Matchers.is("java.lang.String"));
+
+
+                                                          }
+                                                      }
                                         )
                                         .build()
 

@@ -56,7 +56,22 @@ public class ByParameterTypeMatcher implements CriteriaMatcher<ExecutableElement
      */
     @Override
     public String getStringRepresentationOfPassedCharacteristic(Class[] toGetStringRepresentationFor) {
-        return toGetStringRepresentationFor != null ? "" : null;
+        if (toGetStringRepresentationFor != null) {
+            StringBuilder stringBuilder = new StringBuilder("[");
+            boolean isFirst = true;
+            for (Class element : toGetStringRepresentationFor) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    stringBuilder.append(", ");
+                }
+                stringBuilder.append(element.getCanonicalName());
+            }
+            stringBuilder.append("]");
+            return stringBuilder.toString();
+        } else {
+            return null;
+        }
     }
 
 }

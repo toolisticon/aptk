@@ -27,28 +27,21 @@ public class ByParameterTypeFqnMatcher implements CriteriaMatcher<ExecutableElem
             return false;
         }
 
-        // check if element is ExecutableElement
-        if (!ElementUtils.CastElement.isExecutableElement(element)) {
-            return false;
-        }
-
-        // cast to executable element for further checks
-        ExecutableElement executableElement = ElementUtils.CastElement.castToExecutableElement(element);
 
         // check if number of parameters is the same
-        if (executableElement.getParameters().size() != toCheckFor.length) {
+        if (element.getParameters().size() != toCheckFor.length) {
             return false;
         }
 
 
-        for (int i = 0; i < executableElement.getParameters().size(); i++) {
+        for (int i = 0; i < element.getParameters().size(); i++) {
 
             TypeMirror parameterTypeMirror = TypeUtils.TypeRetrieval.getTypeMirror(toCheckFor[i]);
             if (parameterTypeMirror == null) {
                 return false;
             }
 
-            if (!executableElement.getParameters().get(i).asType().equals(parameterTypeMirror)) {
+            if (!element.getParameters().get(i).asType().equals(parameterTypeMirror)) {
                 return false;
             }
         }
@@ -62,7 +55,24 @@ public class ByParameterTypeFqnMatcher implements CriteriaMatcher<ExecutableElem
      */
     @Override
     public String getStringRepresentationOfPassedCharacteristic(String[] toGetStringRepresentationFor) {
-        return toGetStringRepresentationFor != null ? "" : null;
+
+        if (toGetStringRepresentationFor != null) {
+            StringBuilder stringBuilder = new StringBuilder("[");
+            boolean isFirst = true;
+            for (String element : toGetStringRepresentationFor) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    stringBuilder.append(", ");
+                }
+                stringBuilder.append(element);
+            }
+            stringBuilder.append("]");
+            return stringBuilder.toString();
+        } else {
+            return null;
+        }
+
     }
 
 }
