@@ -76,7 +76,7 @@ public class AnnotationProcessorTestClass {
 
     }
 
-    @FilterTestAnnotation1
+    @FilterTestAnnotation1(value="YES")
     @FilterTestAnnotation2
     public synchronized void synchronizedMethod() {
 

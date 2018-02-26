@@ -1,13 +1,13 @@
-package io.toolisticon.annotationprocessortoolkit.tools;
+package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator;
 
 import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
-import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import java.util.List;
 
 
 /**
- * Unit test for {@link io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator}.
+ * Unit test for {@link FluentElementValidator}.
  */
 @RunWith(Parameterized.class)
 public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitTest {
@@ -1097,7 +1097,7 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod" );
+                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
                                                               MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
                                                               MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 

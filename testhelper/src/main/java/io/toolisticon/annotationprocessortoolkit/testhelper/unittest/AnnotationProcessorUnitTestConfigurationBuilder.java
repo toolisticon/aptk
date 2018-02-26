@@ -67,7 +67,7 @@ public final class AnnotationProcessorUnitTestConfigurationBuilder {
         private final BaseConfigurationBuilder baseConfigurationBuilder;
         private String[] warningChecks;
         private String[] errorChecks;
-        private String[] infoChecks;
+        private String[] noteChecks;
 
 
         MessageEvaluation(BaseConfigurationBuilder baseConfigurationBuilder) {
@@ -84,8 +84,8 @@ public final class AnnotationProcessorUnitTestConfigurationBuilder {
             return this;
         }
 
-        public MessageEvaluation setInfoChecks(String... infoChecksToSet) {
-            this.infoChecks = infoChecksToSet;
+        public MessageEvaluation setNoteChecks(String... noteChecksToSet) {
+            this.noteChecks = noteChecksToSet;
             return this;
         }
 
@@ -93,7 +93,7 @@ public final class AnnotationProcessorUnitTestConfigurationBuilder {
             baseConfigurationBuilder.testMessageValidator = new TestMessageValidator(
                     errorChecks != null ? errorChecks : new String[0],
                     warningChecks != null ? warningChecks : new String[0],
-                    infoChecks != null ? infoChecks : new String[0]
+                    noteChecks != null ? noteChecks : new String[0]
             );
             return baseConfigurationBuilder;
         }
