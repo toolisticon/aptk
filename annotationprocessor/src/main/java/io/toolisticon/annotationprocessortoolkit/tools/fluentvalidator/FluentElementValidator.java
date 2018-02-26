@@ -1,7 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator;
 
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ImplicitCoreMatcher;
@@ -19,7 +18,6 @@ import io.toolisticon.annotationprocessortoolkit.tools.validator.ImplicitValidat
 import io.toolisticon.annotationprocessortoolkit.tools.validator.InclusiveCriteriaElementValidator;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 import javax.tools.Diagnostic;
 
 /**
@@ -347,7 +345,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
                 fluentValidatorState.setAsFailedValidation();
 
                 if (nextValidationContext.getCustomMessage() != null) {
-                    MessagerUtils.getMessagerUtils().printMessage(element, nextValidationContext.getMessageScope(), "[" + defaultMessage.getCode() + ": ]" +nextValidationContext.getCustomMessage());
+                    MessagerUtils.getMessagerUtils().printMessage(element, nextValidationContext.getMessageScope(), "[" + defaultMessage.getCode() + ": ]" + nextValidationContext.getCustomMessage());
                 } else {
                     MessagerUtils.getMessagerUtils().printMessage(element, nextValidationContext.getMessageScope(), defaultMessage.getMessage(), messsageParameter);
                 }
@@ -414,7 +412,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
             // just validate if element != null
             if (element != null) {
                 validationResult = validator.validate((VALIDATOR_ELEMENT) element);
-                setValidationResult(validationResult, validator.getDefaultMessage());
+                setValidationResult(validationResult, validator.getDefaultMessage(), "");
             }
 
             return new FluentElementValidator<TARGET_ELEMENT>(validationResult ? (TARGET_ELEMENT) element : null, fluentValidatorState);
@@ -449,7 +447,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
             // just validate if element != null
             if (element != null) {
                 validationResult = validator.validate((VALIDATOR_ELEMENT) element);
-                setValidationResult(validationResult, validator.getDefaultMessage());
+                setValidationResult(validationResult, validator.getDefaultMessage(), "not");
             }
 
             return FluentElementValidator.this;
@@ -820,17 +818,15 @@ public class FluentElementValidator<ELEMENT extends Element> {
     }
 
 
+    /**
+     * Factory method to create a FluentElementValidator instance
+     *
+     * @param element the element to validate
+     * @param <E>     the ELEMENT type
+     * @return the FluentElementValidator instance
+     */
     public static <E extends Element> FluentElementValidator<E> createFluentElementValidator(E element) {
         return new FluentElementValidator<E>(element);
-    }
-
-
-    public static void main(String[] args) {
-        createFluentElementValidator(null)
-                .isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT)
-                .is(CoreMatchers.IS_TYPE_ELEMENT)
-                .warning().setCustomMessage("").applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.PUBLIC)
-                .validateAndIssueMessages();
     }
 
 

@@ -16,20 +16,20 @@ public enum CoreMatcherValidationMessages implements ValidationMessage{
     BY_RAW_TYPE("CM_BY_RAW_TYPE", "Element must ${0} have ${1} of the following raw types: ${2}"),
     IS_ASSIGNABLE_TO("CM_IS_ASSIGNABLE_TO", "Element must ${0} be assignable to ${1} of the following types: ${2}"),
     HAS_VOID_RETURN_TYPE("CM_HAS_VOID_RETURN_TYPE", "Element must ${0} have void return type"),
-    IS_EXECUTABLE_ELEMENT("CM_IS_EXECTUABLE_ELEMENT", "Element must be ExecutableElement"),
-    IS_TYPE_ELEMENT("CM_IS_TYPE_ELEMENT", "Element must be TypeElement"),
-    IS_VARIABLE_ELEMENT("CM_IS_VARIABLE_ELEMENT", "Element must be VariableElement"),
-    IS_PACKAGE_ELEMENT("CM_IS_PACKAGE_ELEMENT", "Element must be PackageElement"),
+    IS_EXECUTABLE_ELEMENT("CM_IS_EXECTUABLE_ELEMENT", "Element must ${0} be a ExecutableElement"),
+    IS_TYPE_ELEMENT("CM_IS_TYPE_ELEMENT", "Element must ${0} be a TypeElement"),
+    IS_VARIABLE_ELEMENT("CM_IS_VARIABLE_ELEMENT", "Element must ${0} be a VariableElement"),
+    IS_PACKAGE_ELEMENT("CM_IS_PACKAGE_ELEMENT", "Element must ${0} be a PackageElement"),
 
-    IS_CLASS("CM_IS_CLASS", "Element must represent a Class"),
-    IS_ENUM("CM_IS_ENUM", "Element must represent an enum"),
-    IS_INTERFACE("CM_IS_PACKAGE_ELEMENT", "Element must represent an interface"),
-    IS_METHOD("CM_IS_METHOD", "Element must represent a method"),
-    IS_CONSTRUCTOR("CM_IS_CONSTRUCTOR", "Element must represent a constructor"),
-    IS_ANNOTATION_TYPE("CM_IS_ANNOTATION_TYPE", "Element must represent an annotation type"),
-    IS_FIELD("CM_IS_PACKAGE_ELEMENT", "Element must represent a field"),
-    IS_PARAMETER("CM_IS_PACKAGE_ELEMENT", "Element must represent a parameter"),
-    IS_PACKAGE("CM_IS_PACKAGE_ELEMENT", "Element must represent a package"),;
+    IS_CLASS("CM_IS_CLASS", "Element must ${0} represent a Class"),
+    IS_ENUM("CM_IS_ENUM", "Element must ${0} represent an enum"),
+    IS_INTERFACE("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent an interface"),
+    IS_METHOD("CM_IS_METHOD", "Element must ${0} represent a method"),
+    IS_CONSTRUCTOR("CM_IS_CONSTRUCTOR", "Element must ${0} represent a constructor"),
+    IS_ANNOTATION_TYPE("CM_IS_ANNOTATION_TYPE", "Element must ${0} represent an annotation type"),
+    IS_FIELD("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a field"),
+    IS_PARAMETER("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a parameter"),
+    IS_PACKAGE("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a package"),;
 
 
     /**
