@@ -24,7 +24,7 @@ public class IsCoreMatcher<
      * @param matcher the implicit matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
-    public IsCoreMatcher(ImplicitMatcher<SOURCE_ELEMENT> matcher, CoreMatcherValidationMessages defaultValidatorMessage) {
+    public IsCoreMatcher(ImplicitMatcher<SOURCE_ELEMENT> matcher, ValidationMessage defaultValidatorMessage) {
         super(defaultValidatorMessage);
         this.matcher = matcher;
     }

@@ -1,19 +1,27 @@
 package io.toolisticon.annotationprocessortoolkit.tools.validator;
 
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
+
 /**
  * Base interface for validators.
  */
 public class AbstractBaseValidator {
 
-    private final String message;
+    private final ValidationMessage defaultMessage;
 
-    public AbstractBaseValidator(String message) {
-        this.message = message;
+
+    public AbstractBaseValidator(ValidationMessage defaultMessage) {
+        this.defaultMessage = defaultMessage;
     }
 
-    public String getMessage() {
-        return this.message;
+
+
+    public ValidationMessage getDefaultMessage() {
+        return this.defaultMessage;
     }
+
+
 
 
 }

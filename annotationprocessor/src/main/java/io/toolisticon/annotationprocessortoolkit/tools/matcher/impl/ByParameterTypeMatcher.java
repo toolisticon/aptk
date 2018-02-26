@@ -25,11 +25,6 @@ public class ByParameterTypeMatcher implements CriteriaMatcher<ExecutableElement
             return false;
         }
 
-        // check if element is ExecutableElement
-        if (!ElementUtils.CastElement.isExecutableElement(element)) {
-            return false;
-        }
-
         // cast to executable element for further checks
         ExecutableElement executableElement = ElementUtils.CastElement.castToExecutableElement(element);
 

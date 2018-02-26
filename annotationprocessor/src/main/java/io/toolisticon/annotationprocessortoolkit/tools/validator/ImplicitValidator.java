@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.validator;
 
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.ImplicitMatcher;
 
 import javax.lang.model.element.Element;
@@ -11,8 +12,8 @@ public class ImplicitValidator<E extends Element, MATCHER extends ImplicitMatche
 
     private final MATCHER matcher;
 
-    public ImplicitValidator(MATCHER matcher, String message) {
-        super(message);
+    public ImplicitValidator(MATCHER matcher, ValidationMessage defaultMessage) {
+        super(defaultMessage);
         this.matcher = matcher;
     }
 

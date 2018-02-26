@@ -5,14 +5,16 @@ package io.toolisticon.annotationprocessortoolkit.tools.corematcher;
  */
 public class AbstractBaseCoreMatcher {
 
-    private final CoreMatcherValidationMessages defaultValidatorMessage;
+    private final ValidationMessage defaultValidatorMessage;
 
-    protected AbstractBaseCoreMatcher(CoreMatcherValidationMessages defaultValidatorMessage) {
+    protected AbstractBaseCoreMatcher(ValidationMessage defaultValidatorMessage) {
         this.defaultValidatorMessage = defaultValidatorMessage;
     }
 
-    protected String getDefaultValidatorMessage() {
-        return this.defaultValidatorMessage.getMessage();
+    protected ValidationMessage getDefaultValidatorMessage() {
+        return this.defaultValidatorMessage;
     }
+
+
 
 }

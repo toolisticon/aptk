@@ -2,6 +2,7 @@ package io.toolisticon.annotationprocessortoolkit.tools.validator;
 
 import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation2;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.tools.DummyValidatorMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByAnnotationMatcher;
 import org.hamcrest.MatcherAssert;
@@ -33,7 +34,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(true);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
 
         MatcherAssert.assertThat("Should have found all annotation and return true", unit.hasAllOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
@@ -51,7 +52,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have not found FilterTestAnnotation2 and return false", !unit.hasAllOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -68,7 +69,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have not found any match and return false", !unit.hasAllOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -80,7 +81,7 @@ public class AnnotationValidatorTest {
 
         ByAnnotationMatcher byAnnotationMatcher = Mockito.mock(ByAnnotationMatcher.class);
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasAllOf(null, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -98,7 +99,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasAllOf(element));
 
 
@@ -121,7 +122,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(true);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have found all annotation and return true", unit.hasAtLeastOneOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
     }
@@ -138,7 +139,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have found TestAnnotation and return true", unit.hasAtLeastOneOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -156,7 +157,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have not found any match and return false", !unit.hasAtLeastOneOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -168,7 +169,7 @@ public class AnnotationValidatorTest {
 
         ByAnnotationMatcher byAnnotationMatcher = Mockito.mock(ByAnnotationMatcher.class);
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasAtLeastOneOf(null, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -186,7 +187,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasAtLeastOneOf(element));
         MatcherAssert.assertThat("Should always return true for single null valued characteristics", unit.hasAtLeastOneOf(element, null));
         MatcherAssert.assertThat("Should always return true for multiple nulll valued characteristics", unit.hasAtLeastOneOf(element, null, null));
@@ -211,7 +212,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(true);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have found all annotation and return false since only one match is allowed", !unit.hasOneOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
     }
@@ -228,7 +229,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have just found TestAnnotation and return true", unit.hasOneOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -246,7 +247,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have not found any match and return false", !unit.hasOneOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -258,7 +259,7 @@ public class AnnotationValidatorTest {
 
         ByAnnotationMatcher byAnnotationMatcher = Mockito.mock(ByAnnotationMatcher.class);
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasOneOf(null, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -276,7 +277,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasOneOf(element));
         MatcherAssert.assertThat("Should always return true for single null valued characteristics", unit.hasOneOf(element, null));
         MatcherAssert.assertThat("Should always return true for multiple nulll valued characteristics", unit.hasOneOf(element, null, null));
@@ -301,7 +302,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(true);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have found all annotation and return false", !unit.hasNoneOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
     }
@@ -318,7 +319,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have found TestAnnotation and return false", !unit.hasNoneOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -336,7 +337,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should have not found any match and return true", unit.hasNoneOf(element, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -348,7 +349,7 @@ public class AnnotationValidatorTest {
 
         ByAnnotationMatcher byAnnotationMatcher = Mockito.mock(ByAnnotationMatcher.class);
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should always return null for null valued element", !unit.hasNoneOf(null, TestAnnotation.class, FilterTestAnnotation2.class));
 
 
@@ -366,7 +367,7 @@ public class AnnotationValidatorTest {
         Mockito.when(byAnnotationMatcher.checkForMatchingCharacteristic(element, FilterTestAnnotation2.class)).thenReturn(false);
 
 
-        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher,"");
+        InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>> unit = new InclusiveCriteriaElementValidator<Element, Class<? extends Annotation>, CriteriaMatcher<Element, Class<? extends Annotation>>>(byAnnotationMatcher, DummyValidatorMessage.DUMMY_MESSAGE);
         MatcherAssert.assertThat("Should always return true for non existing characteristics", unit.hasNoneOf(element));
 
 

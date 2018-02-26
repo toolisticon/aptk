@@ -3,7 +3,7 @@ package io.toolisticon.annotationprocessortoolkit.tools.corematcher;
 /**
  * Core Matcher failing validation default messages
  */
-public enum CoreMatcherValidationMessages {
+public enum CoreMatcherValidationMessages implements ValidationMessage{
 
     BY_NAME("CM_BY_NAME", "Elements name must ${0} match ${1} of the following names: ${2}"),
     BY_NAME_REGEX("CM_BY_NAME_REGEX", "Elements name must ${0} match ${1} of the following regular expressions ${2}"),

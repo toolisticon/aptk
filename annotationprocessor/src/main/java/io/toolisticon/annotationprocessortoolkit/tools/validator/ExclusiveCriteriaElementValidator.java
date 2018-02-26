@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.validator;
 
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.validator.impl.CriteriaElementValidatorImpl;
 
@@ -13,7 +14,7 @@ public class ExclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
     private final MATCHER matcher;
 
 
-    public ExclusiveCriteriaElementValidator(MATCHER matcher, String message) {
+    public ExclusiveCriteriaElementValidator(MATCHER matcher, ValidationMessage message) {
         super(message);
         this.matcher = matcher;
     }

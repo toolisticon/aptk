@@ -1,4 +1,4 @@
-package io.toolisticon.annotationprocessortoolkit.fluentfilter;
+package io.toolisticon.annotationprocessortoolkit.tools;
 
 import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation1;
