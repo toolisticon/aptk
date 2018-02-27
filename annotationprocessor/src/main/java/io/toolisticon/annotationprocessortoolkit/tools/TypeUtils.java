@@ -423,7 +423,7 @@ public final class TypeUtils {
          * @return true if passed TypeMiroor is not null and of kind array.
          */
         public static boolean isArray(TypeMirror typeMirror) {
-            return typeMirror == null && typeMirror.getKind().equals(TypeKind.ARRAY);
+            return typeMirror != null && typeMirror.getKind().equals(TypeKind.ARRAY);
         }
 
         /**
@@ -433,7 +433,7 @@ public final class TypeUtils {
          * @return returns the component TypeMirror of the passed array TypeMirror, returns null if passed TypeMirror isn't an array or null
          */
         public static TypeMirror getArraysComponentType(TypeMirror typeMirror) {
-            return typeMirror != null && CheckTypeKind.isArray(typeMirror) ? ((ArrayType) typeMirror).getComponentType() : null;
+            return (typeMirror != null && CheckTypeKind.isArray(typeMirror)) ? ((ArrayType) typeMirror).getComponentType() : null;
         }
 
         /**
@@ -485,57 +485,7 @@ public final class TypeUtils {
                     && CheckTypeKind.isArray(typeMirror)
                     && TypeComparison.isTypeEqual(getArraysComponentType(typeMirror), genericType);
         }
-
-
-        /**
-         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
-         *
-         * @param typeMirror the {@link TypeMirror} to check
-         * @param type       the component type to check for
-         * @return true if passed type mirror is of kind array with component type, otherwise false
-         */
-        public static boolean isArrayAssignableTo(TypeMirror typeMirror, Class type) {
-            return type != null && isArrayAssignableTo(typeMirror, TypeRetrieval.getTypeMirror(type));
-        }
-
-        /**
-         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
-         *
-         * @param typeMirror             the {@link TypeMirror} to check
-         * @param fullQualifiedClassName the component type to check for
-         * @return true if passed type mirror is of kind array with component type, otherwise false
-         */
-        public static boolean isArrayAssignableTo(TypeMirror typeMirror, String fullQualifiedClassName) {
-            return fullQualifiedClassName != null && isArrayAssignableTo(typeMirror, TypeRetrieval.getTypeMirror(fullQualifiedClassName));
-        }
-
-        /**
-         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
-         *
-         * @param typeMirror    the {@link TypeMirror} to check
-         * @param componentType the arrays component type to check for
-         * @return true if passed type mirror is of kind array with component type, otherwise false
-         */
-        public static boolean isArrayAssignableTo(TypeMirror typeMirror, TypeMirror componentType) {
-            return typeMirror != null
-                    && componentType != null
-                    && CheckTypeKind.isArray(typeMirror)
-                    && TypeComparison.isAssignableTo(getArraysComponentType(typeMirror), componentType);
-        }
-
-        /**
-         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
-         *
-         * @param typeMirror  the {@link TypeMirror} to check
-         * @param genericType the arrays generic component type to check for
-         * @return true if passed type mirror is of kind array with component type, otherwise false
-         */
-        public static boolean isArrayAssignableTo(TypeMirror typeMirror, GenericType genericType) {
-            return typeMirror != null
-                    && genericType != null
-                    && CheckTypeKind.isArray(typeMirror)
-                    && TypeComparison.isAssignableTo(getArraysComponentType(typeMirror), genericType);
-        }
+        
 
 
     }
