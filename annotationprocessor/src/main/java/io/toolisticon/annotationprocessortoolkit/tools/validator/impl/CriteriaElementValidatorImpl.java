@@ -18,19 +18,27 @@ public class CriteriaElementValidatorImpl {
         HAS_ALL_OF;
     }
 
+    public static CriteriaElementValidatorImpl INSTANCE = new CriteriaElementValidatorImpl();
+
+    protected CriteriaElementValidatorImpl() {
+
+    }
+
+
     /**
-     * Function to programatically call the different validator kinds.
+     * Function to programmatically call the different validator kinds.
+     * Null valued criteria values won't be used for validation.
      *
-     * @param validatorKind    The validator kind to use
-     * @param matcher          The matcher to use
-     * @param element          The element to be validated
-     * @param criteriaToCheck  the criteria to check
+     * @param validatorKind   The validator kind to use
+     * @param matcher         The matcher to use
+     * @param element         The element to be validated
+     * @param criteriaToCheck the criteria to check
      * @param <ELEMENT>       The Element type
      * @param <CRITERIA>      The criteria type
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches the passed criteria related to the passed validator kind, otherwise false.
      */
-    public static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean validateByValidatorKind(ValidatorKind validatorKind, MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+    public <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean validateByValidatorKind(ValidatorKind validatorKind, MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
 
         if (validatorKind == null) {
             return false;
@@ -54,16 +62,18 @@ public class CriteriaElementValidatorImpl {
 
     /**
      * Validator to check if passed Element matches exactly one of the passed criteria.
+     * Null valued criteria values won't be used for validation.
      *
-     * @param matcher          The matcher to use
-     * @param element          The element to be validated
-     * @param criteriaToCheck  the criteria to check
+     * @param matcher         The matcher to use
+     * @param element         The element to be validated
+     * @param criteriaToCheck the criteria to check
      * @param <ELEMENT>       The Element type
      * @param <CRITERIA>      The criteria type
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches exactly one of the passed criteria, otherwise false.
      */
-    public static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasOneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+    public  <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasOneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+
         if (element == null || matcher == null) {
             return false;
         }
@@ -95,18 +105,20 @@ public class CriteriaElementValidatorImpl {
 
     /**
      * Validator to check if passed Element matches none of the passed criteria.
+     * Null valued criteria values won't be used for validation.
      *
-     * @param matcher          The matcher to use
-     * @param element          The element to be validated
-     * @param criteriaToCheck  the criteria to check
+     * @param matcher         The matcher to use
+     * @param element         The element to be validated
+     * @param criteriaToCheck the criteria to check
      * @param <ELEMENT>       The Element type
      * @param <CRITERIA>      The criteria type
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches none of the passed criteria, otherwise false.
      */
 
-    public static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasNoneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
-        if (element == null) {
+    public  <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasNoneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+
+        if (element == null || matcher == null) {
             return false;
         }
 
@@ -135,19 +147,20 @@ public class CriteriaElementValidatorImpl {
 
     /**
      * Validator to check if passed Element matches all of the passed criteria.
+     * Null valued criteria values won't be used for validation.
      *
-     * @param matcher          The matcher to use
-     * @param element          The element to be validated
-     * @param criteriaToCheck  the criteria to check
+     * @param matcher         The matcher to use
+     * @param element         The element to be validated
+     * @param criteriaToCheck the criteria to check
      * @param <ELEMENT>       The Element type
      * @param <CRITERIA>      The criteria type
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches all of the passed criteria, otherwise false.
      */
 
-    public static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasAllOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+    public  <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasAllOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
 
-        if (element == null) {
+        if (element == null || matcher == null) {
             return false;
         }
 
@@ -176,18 +189,20 @@ public class CriteriaElementValidatorImpl {
 
     /**
      * Validator to check if passed Element matches at least one of the passed criteria.
+     * Null valued criteria values won't be used for validation.
      *
-     * @param matcher          The matcher to use
-     * @param element          The element to be validated
-     * @param criteriaToCheck  the criteria to check
+     * @param matcher         The matcher to use
+     * @param element         The element to be validated
+     * @param criteriaToCheck the criteria to check
      * @param <ELEMENT>       The Element type
      * @param <CRITERIA>      The criteria type
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches at least one of the passed criteria, otherwise false.
      */
 
-    public static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasAtLeastOneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
-        if (element == null) {
+    public  <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasAtLeastOneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+
+        if (element == null || matcher == null) {
             return false;
         }
 

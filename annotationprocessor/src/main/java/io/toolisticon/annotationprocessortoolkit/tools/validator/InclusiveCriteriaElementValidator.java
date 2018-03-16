@@ -27,7 +27,7 @@ public class InclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      */
     public boolean hasOneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
-        return CriteriaElementValidatorImpl.hasOneOf(matcher, element, criteriaToCheck);
+        return CriteriaElementValidatorImpl.INSTANCE.hasOneOf(matcher, element, criteriaToCheck);
 
     }
 
@@ -40,7 +40,7 @@ public class InclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      */
     public boolean hasNoneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
-        return CriteriaElementValidatorImpl.hasNoneOf(matcher, element, criteriaToCheck);
+        return CriteriaElementValidatorImpl.INSTANCE.hasNoneOf(matcher, element, criteriaToCheck);
 
     }
 
@@ -53,7 +53,7 @@ public class InclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      */
     public boolean hasAllOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
-        return CriteriaElementValidatorImpl.hasAllOf(matcher, element, criteriaToCheck);
+        return CriteriaElementValidatorImpl.INSTANCE.hasAllOf(matcher, element, criteriaToCheck);
 
     }
 
@@ -66,7 +66,7 @@ public class InclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      */
     public boolean hasAtLeastOneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
-        return CriteriaElementValidatorImpl.hasAtLeastOneOf(matcher, element, criteriaToCheck);
+        return CriteriaElementValidatorImpl.INSTANCE.hasAtLeastOneOf(matcher, element, criteriaToCheck);
 
     }
 

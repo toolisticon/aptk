@@ -52,7 +52,7 @@ public class CriteriaElementFilterImpl {
 
         for (ELEMENT element : elements) {
 
-            boolean validatorResult = CriteriaElementValidatorImpl.validateByValidatorKind(validatorKind, matcher, element, criteriaToCheck);
+            boolean validatorResult = CriteriaElementValidatorImpl.INSTANCE.validateByValidatorKind(validatorKind, matcher, element, criteriaToCheck);
             if ((!invert && validatorResult) || (invert && !validatorResult)) {
                 result.add(element);
             }
