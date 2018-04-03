@@ -625,7 +625,7 @@ public enum OperationType {
         if (Float.class.equals(operand.getOperandsJavaType()) || float.class.equals(operand.getOperandsJavaType())) {
             return ((Float) operand.value()).doubleValue();
         }
-        if (Double.class.equals(operand.getOperandsJavaType()) || Double.class.equals(operand.getOperandsJavaType())) {
+        if (Double.class.equals(operand.getOperandsJavaType()) || double.class.equals(operand.getOperandsJavaType())) {
             return (Double) operand.value();
         }
 
@@ -656,7 +656,7 @@ public enum OperationType {
         if (Integer.class.equals(operand.getOperandsJavaType()) || int.class.equals(operand.getOperandsJavaType())) {
             return ((Integer) operand.value()).longValue();
         }
-        if (Long.class.equals(operand.getOperandsJavaType()) || Long.class.equals(operand.getOperandsJavaType())) {
+        if (Long.class.equals(operand.getOperandsJavaType()) || long.class.equals(operand.getOperandsJavaType())) {
             return (Long) operand.value();
         }
 

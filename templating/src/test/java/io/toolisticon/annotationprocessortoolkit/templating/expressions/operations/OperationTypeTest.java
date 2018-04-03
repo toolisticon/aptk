@@ -6,6 +6,7 @@ import io.toolisticon.annotationprocessortoolkit.templating.expressions.operands
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * Unit tests for {@link OperationType}.
@@ -2216,6 +2217,102 @@ public class OperationTypeTest {
     public void subtraction_doOperation_withTwoNullValuedOperand_Test() {
 
         OperationType.SUBTRACTION.doOperation(new NullValueOperand("null"), new NullValueOperand("null")).value();
+
+    }
+
+    // --------------------------------------------------------
+    // -- COMMON UTILITY FUNCTIONS TESTS
+    // --------------------------------------------------------
+
+
+    @Test
+    public void convertToLong_nullSafety() {
+
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(null), Matchers.nullValue());
+
+        Operand operand = Mockito.mock(Operand.class);
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(null);
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.nullValue());
+
+    }
+
+    @Test
+    public void convertToLong_incompatibleJavaType_shouldReturnNull() {
+
+        // Non numeric type
+        Operand operand = Mockito.mock(Operand.class);
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(String.class);
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.nullValue());
+
+        // floating point type
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(Double.class);
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.nullValue());
+
+    }
+
+    @Test
+    public void convertToLong_usingShortValue() {
+
+        // short
+        Operand operand = Mockito.mock(Operand.class);
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(short.class);
+        Mockito.when(operand.value()).thenReturn(Short.parseShort("1"));
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.is(1L));
+
+
+        // Short
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(Short.class);
+        Mockito.when(operand.value()).thenReturn(Short.valueOf(Short.parseShort("1")));
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.is(1L));
+
+
+    }
+
+    @Test
+    public void convertToLong_usingIntegerValue() {
+
+        // short
+        Operand operand = Mockito.mock(Operand.class);
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(int.class);
+        Mockito.when(operand.value()).thenReturn(Integer.parseInt("1"));
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.is(1L));
+
+
+        // Short
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(int.class);
+        Mockito.when(operand.value()).thenReturn(Integer.valueOf(Integer.parseInt("1")));
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.is(1L));
+
+
+    }
+
+    @Test
+    public void convertToLong_usingLongValue() {
+
+        // short
+        Operand operand = Mockito.mock(Operand.class);
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(long.class);
+        Mockito.when(operand.value()).thenReturn(Long.parseLong("1"));
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.is(1L));
+
+
+        // Short
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(Long.class);
+        Mockito.when(operand.value()).thenReturn(Long.valueOf(Long.parseLong("1")));
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.is(1L));
+
+
+    }
+
+
+    @Test
+    public void convertToDouble_nullSafety() {
+
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(null), Matchers.nullValue());
+
+        Operand operand = Mockito.mock(Operand.class);
+        Mockito.when(operand.getOperandsJavaType()).thenReturn(null);
+        MatcherAssert.assertThat(OperationType.SUBTRACTION.convertToLong(operand), Matchers.nullValue());
 
     }
 
