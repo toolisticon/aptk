@@ -19,7 +19,7 @@ public enum OperandType {
     private final String regExpr;
 
     private OperandType(String regExpr) {
-        this.regExpr = "[ ]*" + regExpr + "[ ]*";
+        this.regExpr = regExpr != null ? "[ ]*" + regExpr + "[ ]*" : null;
     }
 
     public Pattern getOperandPattern() {
@@ -34,7 +34,7 @@ public enum OperandType {
 
         for (OperandType operandType : values()) {
 
-            if (operandType.getOperandPattern().matcher(operandString).matches()) {
+            if (operandType.getOperandPattern() != null && operandType.getOperandPattern().matcher(operandString).matches()) {
                 return operandType;
             }
 

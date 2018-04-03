@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.templating.expressions.operands;
 
+import io.toolisticon.annotationprocessortoolkit.templating.expressions.operations.OperationType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -50,6 +51,20 @@ public class OperandTypeTest {
         MatcherAssert.assertThat(matcher.groupCount(), Matchers.is(1));
         MatcherAssert.assertThat(matcher.group(1), Matchers.is("DEF\\\\\\\\\\\\\\' GHIJ \\\\\\'KLM"));
 
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testString_nonMatchingOperandString() {
+
+        OperandType.getOperandType("'ABC");
+    }
+
+    @Test
+    public void testString_getOperandPattern() {
+
+        MatcherAssert.assertThat(OperandType.STRING.getOperandPattern(), Matchers.notNullValue());
+        MatcherAssert.assertThat(OperandType.OPERATION_RESULT.getOperandPattern(), Matchers.nullValue());
 
     }
 
