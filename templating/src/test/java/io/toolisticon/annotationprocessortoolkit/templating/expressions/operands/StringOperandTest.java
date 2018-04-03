@@ -37,6 +37,16 @@ public class StringOperandTest {
     }
 
     @Test
+    public void testNonMatchingStringPattern() {
+
+        // This is more or less a theoretical case
+        MatcherAssert.assertThat(new StringOperand("'ABC").value(), Matchers.nullValue());
+        MatcherAssert.assertThat(new StringOperand("ABC'").value(), Matchers.nullValue());
+        MatcherAssert.assertThat(new StringOperand("ABC").value(), Matchers.nullValue());
+
+    }
+
+    @Test
     @Ignore
     public void testStringWithEscapedEscapeChars() {
         MatcherAssert.assertThat(new StringOperand("'ABC\\\\ DEF'").value(), Matchers.is("ABC\\ DEF"));

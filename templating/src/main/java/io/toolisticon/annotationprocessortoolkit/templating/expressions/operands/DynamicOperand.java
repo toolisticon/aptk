@@ -11,7 +11,7 @@ public class DynamicOperand extends ParsedOperand<Object> {
     private Object value;
 
     public DynamicOperand(String expressionString) {
-        super( expressionString);
+        super(expressionString);
 
     }
 
@@ -19,7 +19,9 @@ public class DynamicOperand extends ParsedOperand<Object> {
     public Class<Object> getOperandsJavaType() {
 
         ModelPathResolver.ResolvedModelPathResult result = ModelPathResolver.resolveModelPath(ModelPathResolver.modelMapThreadLocal.get(), getExpressionString());
-        return result != null ? result.getType() : null;
+
+        // result cannot be null
+        return result.getType();
 
     }
 
@@ -27,7 +29,9 @@ public class DynamicOperand extends ParsedOperand<Object> {
     public Object value() {
 
         ModelPathResolver.ResolvedModelPathResult result = ModelPathResolver.resolveModelPath(ModelPathResolver.modelMapThreadLocal.get(), getExpressionString());
-        return result != null ? result.getValue() : null;
+
+        // result cannot be null
+        return result.getValue();
 
     }
 

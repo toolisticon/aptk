@@ -1,9 +1,10 @@
 package io.toolisticon.annotationprocessortoolkit.templating.expressions.operands;
 
 import io.toolisticon.annotationprocessortoolkit.templating.expressions.operations.OperationType;
+import io.toolisticon.annotationprocessortoolkit.templating.expressions.operations.OperationTypeMode;
 
 /**
- * Created by tobiasstamann on 26.10.17.
+ * A wrapper for unary operations.
  */
 public class UnaryOperationWrapperOperand extends Operand<Object> {
 
@@ -14,6 +15,13 @@ public class UnaryOperationWrapperOperand extends Operand<Object> {
 
     public UnaryOperationWrapperOperand(Operand operand, OperationType unaryOperationType) {
         super();
+
+        if (unaryOperationType == null) {
+            throw new IllegalArgumentException("unaryOperationType must not be null");
+        }
+        if (unaryOperationType.getOperationTypeMode() != OperationTypeMode.UNARY) {
+            throw new IllegalArgumentException("unaryOperationType must be a unary operation type");
+        }
 
         this.operand = operand;
         this.unaryOperationType = unaryOperationType;
