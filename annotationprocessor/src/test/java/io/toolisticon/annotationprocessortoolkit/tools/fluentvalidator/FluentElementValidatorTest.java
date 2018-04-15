@@ -1250,6 +1250,58 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
                         },
                         {
+                                "validate INVERTED Implicit Element based validator",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("SUCCESS", false)).validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("FAILURE", true)).validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Implicit validator",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "SUCCESS", false)).validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "FAILURE", true)).validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
                                 "validate Inclusive Characteristics Element based validator - none of",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldFail()
@@ -1302,6 +1354,68 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
                         },
                         {
+                                "validate INVERTED Inclusive Characteristics Element based validator - none of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Inclusive Characteristics validator - none of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
                                 "validate Inclusive Characteristics Element based validator - one of",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldFail()
@@ -1342,6 +1456,68 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
                                                               FluentElementValidator.createFluentElementValidator(element)
                                                                       .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Inclusive Characteristics Element based validator - one of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Inclusive Characteristics validator - one of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
 
                                                           }
                                                       }
@@ -1416,6 +1592,68 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
                         },
                         {
+                                "validate INVERTED Inclusive Characteristics Element based validator -  at least one of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasAtLeastOneOf("XX", "YY").justValidate()
+                                                                      , Matchers.equalTo(false));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Inclusive Characteristics validator - at least one of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS!", false, true)).hasAtLeastOneOf("XX", "YY").justValidate()
+                                                                      , Matchers.equalTo(false));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
                                 "validate Inclusive Characteristics Element based validator - all of",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldFail()
@@ -1456,6 +1694,69 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
                                                               FluentElementValidator.createFluentElementValidator(element)
                                                                       .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Inclusive Characteristics Element based validator - all of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Inclusive Characteristics validator - all of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
 
                                                           }
                                                       }
@@ -1520,6 +1821,68 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
                         },
                         {
+                                "validate INVERTED Exclusive Characteristics Element based validator - none of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Exclusive Characteristics validator - none of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
                                 "validate Exclusive Characteristics Element based validator - one of",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldFail()
@@ -1547,6 +1910,68 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
                         },
                         {
                                 "validate Exclusive Characteristics validator - one of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, false)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Exclusive Characteristics Element based validator - one of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, false)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate INVERTED Exclusive Characteristics validator - one of",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldFail()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {

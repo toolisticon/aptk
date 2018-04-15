@@ -10,6 +10,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.corematcher.InclusiveCrit
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.impl.FluentValidatorMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.impl.FluentValidatorState;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.ImplicitMatcher;
@@ -166,7 +167,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * @param coreMatcher the implicit core matcher to use
          * @return the FluentElementValidator instance
          */
-        public FluentElementValidator<ELEMENT> applyInvertedVaidator(ImplicitElementBasedCoreMatcher coreMatcher) {
+        public FluentElementValidator<ELEMENT> applyInvertedValidator(ImplicitElementBasedCoreMatcher coreMatcher) {
 
             return FluentElementValidator.this.applyInvertedValidator(coreMatcher);
 
@@ -337,7 +338,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
             this.inverted = inverted;
         }
 
-        protected abstract VALIDATOR self();
+
 
         protected boolean isInverted() {
             return inverted;
@@ -355,9 +356,9 @@ public class FluentElementValidator<ELEMENT extends Element> {
                 fluentValidatorState.setAsFailedValidation();
 
                 if (nextValidationContext.getCustomMessage() != null) {
-                    MessagerUtils.getMessagerUtils().printMessage(element, nextValidationContext.getMessageScope(), "[" + defaultMessage.getCode() + ": ]" + nextValidationContext.getCustomMessage());
+                    fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), "[" + defaultMessage.getCode() + ": ]" + nextValidationContext.getCustomMessage()));
                 } else {
-                    MessagerUtils.getMessagerUtils().printMessage(element, nextValidationContext.getMessageScope(), defaultMessage.getMessage(), messsageParameter);
+                    fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), defaultMessage.getMessage(), messsageParameter));
                 }
 
                 // rest validation context for next validation
@@ -394,10 +395,6 @@ public class FluentElementValidator<ELEMENT extends Element> {
             return FluentElementValidator.this;
         }
 
-        @Override
-        protected ImplicitFluentValidator<VALIDATOR_ELEMENT> self() {
-            return this;
-        }
     }
 
     /**
@@ -429,10 +426,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
         }
 
-        @Override
-        protected IsFluentValidator<VALIDATOR_ELEMENT, TARGET_ELEMENT> self() {
-            return this;
-        }
+
     }
 
     /**
@@ -464,10 +458,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
         }
 
-        @Override
-        protected InvertedIsFluentValidator<VALIDATOR_ELEMENT, TARGET_ELEMENT> self() {
-            return this;
-        }
+
     }
 
     /**
@@ -499,11 +490,6 @@ public class FluentElementValidator<ELEMENT extends Element> {
                 setValidationResult(validator.hasNoneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", params);
             }
             return FluentElementValidator.this;
-        }
-
-        @Override
-        protected ExclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT, CHARACTERISTIC> self() {
-            return this;
         }
     }
 
@@ -554,10 +540,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
             return FluentElementValidator.this;
         }
 
-        @Override
-        protected InclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT, CHARACTERISTIC> self() {
-            return this;
-        }
+
     }
 
 
