@@ -24,7 +24,7 @@ public class InclusiveCharacteristicElementBasedCoreMatcher<
      * @param matcher the criteria matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
-    public InclusiveCharacteristicElementBasedCoreMatcher(CriteriaMatcher<Element, CHARACTERISTIC> matcher, CoreMatcherValidationMessages defaultValidatorMessage) {
+    public InclusiveCharacteristicElementBasedCoreMatcher(CriteriaMatcher<Element, CHARACTERISTIC> matcher, ValidationMessage defaultValidatorMessage) {
         super(defaultValidatorMessage);
         this.matcher = matcher;
     }

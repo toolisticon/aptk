@@ -22,7 +22,7 @@ public class ImplicitElementBasedCoreMatcher extends AbstractBaseCoreMatcher{
      * @param matcher the implicit matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
-    public ImplicitElementBasedCoreMatcher(ImplicitMatcher<Element> matcher, CoreMatcherValidationMessages defaultValidatorMessage) {
+    public ImplicitElementBasedCoreMatcher(ImplicitMatcher<Element> matcher, ValidationMessage defaultValidatorMessage) {
         super(defaultValidatorMessage);
         this.matcher = matcher;
     }

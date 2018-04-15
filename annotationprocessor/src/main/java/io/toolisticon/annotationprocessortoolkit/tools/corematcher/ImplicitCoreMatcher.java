@@ -24,7 +24,7 @@ public class ImplicitCoreMatcher<
      * @param matcher the implicit matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
-    public ImplicitCoreMatcher(ImplicitMatcher<ELEMENT> matcher, CoreMatcherValidationMessages defaultValidatorMessage) {
+    public ImplicitCoreMatcher(ImplicitMatcher<ELEMENT> matcher, ValidationMessage defaultValidatorMessage) {
         super(defaultValidatorMessage);
         this.matcher = matcher;
     }

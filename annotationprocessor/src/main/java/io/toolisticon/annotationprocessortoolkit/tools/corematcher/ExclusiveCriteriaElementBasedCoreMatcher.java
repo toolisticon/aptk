@@ -24,7 +24,7 @@ public class ExclusiveCriteriaElementBasedCoreMatcher<
      * @param matcher the criteria matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
-    public ExclusiveCriteriaElementBasedCoreMatcher(CriteriaMatcher<Element, CRITERIA> matcher, CoreMatcherValidationMessages defaultValidatorMessage) {
+    public ExclusiveCriteriaElementBasedCoreMatcher(CriteriaMatcher<Element, CRITERIA> matcher, ValidationMessage defaultValidatorMessage) {
         super(defaultValidatorMessage);
         this.matcher = matcher;
     }

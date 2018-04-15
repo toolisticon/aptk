@@ -21,7 +21,7 @@ public class IsElementBasedCoreMatcher<TARGET_ELEMENT extends Element> extends A
      * @param matcher the implicit matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
-    public IsElementBasedCoreMatcher(ImplicitMatcher<Element> matcher, CoreMatcherValidationMessages defaultValidatorMessage) {
+    public IsElementBasedCoreMatcher(ImplicitMatcher<Element> matcher, ValidationMessage defaultValidatorMessage) {
         super(defaultValidatorMessage);
         this.matcher = matcher;
     }

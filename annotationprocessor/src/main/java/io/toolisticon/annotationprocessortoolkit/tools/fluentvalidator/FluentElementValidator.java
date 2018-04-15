@@ -31,6 +31,16 @@ public class FluentElementValidator<ELEMENT extends Element> {
     public class PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT extends Element> {
 
         /**
+         * Set error scope for next validation.
+         *
+         * @return the fluent validator instance
+         */
+        public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> error() {
+            return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.error();
+        }
+
+
+        /**
          * Set warning scope for next validation.
          *
          * @return the fluent validator instance
@@ -652,7 +662,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public FluentElementValidator<ELEMENT> applyValidator(ImplicitElementBasedCoreMatcher coreMatcher) {
 
-        return new ImplicitFluentValidator<Element>(coreMatcher.getValidator(), true).apply();
+        return new ImplicitFluentValidator<Element>(coreMatcher.getValidator(), false).apply();
 
     }
 
@@ -774,6 +784,11 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
     // -------------------------------------------------------------
     // -------------------------------------------------------------
+
+    public PrepareApplyValidator<ELEMENT> error() {
+        this.nextValidationContext.setMessageScope(Diagnostic.Kind.ERROR);
+        return new PrepareApplyValidator<ELEMENT>();
+    }
 
     public PrepareApplyValidator<ELEMENT> warning() {
         this.nextValidationContext.setMessageScope(Diagnostic.Kind.WARNING);
