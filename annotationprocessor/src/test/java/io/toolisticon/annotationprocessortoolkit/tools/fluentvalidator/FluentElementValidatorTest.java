@@ -1468,6 +1468,110 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
                         },
                         {
+                                "validate Exclusive Characteristics Element based validator - none of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate Exclusive Characteristics validator - none of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate Exclusive Characteristics Element based validator - one of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "validate Exclusive Characteristics validator - one of",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element)
+                                                                              .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                                                      , Matchers.equalTo(true));
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
                                 "validate IS Element based validator",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldFail()
