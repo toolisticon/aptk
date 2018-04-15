@@ -81,6 +81,50 @@ public class ImplicitFilterTest {
 
     }
 
+
+    @Test
+    public void testImplicitFilter_inverted_allMatching() {
+
+        ImplicitFilter<Element, ImplicitValidator<Element, ImplicitMatcher<Element>>> unit =
+                new ImplicitFilter<Element, ImplicitValidator<Element, ImplicitMatcher<Element>>>(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("XXX", false).getValidator());
+
+
+        List<Element> result = unit.filter(list, true);
+
+        MatcherAssert.assertThat(result, Matchers.contains(element1, element2, element3));
+
+
+    }
+
+
+    @Test
+    public void testImplicitFilter_inverted_oneNotMatching() {
+
+        ImplicitFilter<Element, ImplicitValidator<Element, ImplicitMatcher<Element>>> unit =
+                new ImplicitFilter<Element, ImplicitValidator<Element, ImplicitMatcher<Element>>>(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("XXX", true, false, true).getValidator());
+
+
+        List<Element> result = unit.filter(list, true);
+
+        MatcherAssert.assertThat(result, Matchers.contains(element2));
+
+
+    }
+
+    @Test
+    public void testImplicitFilter_inverted_allNotMatching() {
+
+        ImplicitFilter<Element, ImplicitValidator<Element, ImplicitMatcher<Element>>> unit =
+                new ImplicitFilter<Element, ImplicitValidator<Element, ImplicitMatcher<Element>>>(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("XXX", false).getValidator());
+
+
+        List<Element> result = unit.filter(list, true);
+
+        MatcherAssert.assertThat(result, Matchers.contains(element1, element2, element3));
+
+
+    }
+
     @Test
     public void testImplicitFilter_nullSafety_nullValuedValidator() {
 
