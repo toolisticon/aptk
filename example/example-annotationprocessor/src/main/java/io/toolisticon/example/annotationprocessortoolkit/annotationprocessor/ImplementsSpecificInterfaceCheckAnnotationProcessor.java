@@ -2,9 +2,11 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 import io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
-import io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
+import io.toolisticon.example.annotationprocessortoolkit.annotations.ImplementsSpecificInterfaceCheckAnnotation;
+import io.toolisticon.example.annotationprocessortoolkit.annotations.SpecificInterface;
 import io.toolisticon.spiap.api.Service;
 
 import javax.annotation.processing.Processor;
@@ -17,16 +19,14 @@ import java.util.Set;
 /**
  * Test annotation processor which demonstrates the usage of the annotation processor toolkit.
  */
-@SupportedAnnotationTypes(
-        "io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation")
+@SupportedAnnotationTypes("io.toolisticon.example.annotationprocessortoolkit.annotations.ImplementsSpecificInterfaceCheckAnnotation")
 @Service(Processor.class)
-public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor extends AbstractAnnotationProcessor {
-
+public class ImplementsSpecificInterfaceCheckAnnotationProcessor extends AbstractAnnotationProcessor {
 
     // Overriding the getSupportedAnnotationTypes instead of using the SupportedAnnotationTypes annotation
     // might be an option this is especially useful if you have inheritance
     // private final static Set<String> SUPPORTED_ANNOTATION_TYPES =
-    //      createSupportedAnnotationSet(MethodWithOneStringParameterAndVoidReturnTypeAnnotation.class);
+    //     createSupportedAnnotationSet(ImplementsSpecificInterfaceCheckAnnotation.class);
     // @Override
     // public Set<String> getSupportedAnnotationTypes() {
     //    return SUPPORTED_ANNOTATION_TYPES;
@@ -35,24 +35,27 @@ public class MethodWithOneStringParameterAndVoidReturnTypeAnnotationProcessor ex
     @Override
     public boolean processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-        getMessager().info(null, "Start processing");
-
-        for (Element element : roundEnv.getElementsAnnotatedWith(
-                MethodWithOneStringParameterAndVoidReturnTypeAnnotation.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(ImplementsSpecificInterfaceCheckAnnotation.class)) {
 
 
             // validator already will print output so additional actions are not necessary
-            FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(element))
-                    .applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                    .applyValidator(CoreMatchers.BY_PARAMETER_TYPE).hasOneOf(wrapToArray(String.class))
+            FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castToTypeElement(element))
+                    .applyValidator(CoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(SpecificInterface.class)
                     .validateAndIssueMessages();
-
-
 
         }
 
 
         return false;
+    }
+
+    protected boolean isAssignableTo(Element element, String fqn) {
+        return TypeUtils
+                .getTypes()
+                .isAssignable(
+                        element.asType(),
+                        TypeUtils.TypeRetrieval.getTypeMirror(fqn)
+                );
     }
 
 

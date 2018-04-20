@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Test annotation for annotating classes that must implement a the {@link SomeInterface} interface.
+ * Test annotation for annotating classes that must implement a the {@link SpecificInterface} interface.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface TypeThatIsAssignableToInterfaceAnnotation {
+public @interface ImplementsSpecificInterfaceCheckAnnotation {
 }

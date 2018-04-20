@@ -12,18 +12,19 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Integration test for {@link ImplementsSpecificInterfaceCheckAnnotationProcessor}.
+ */
 @RunWith(Parameterized.class)
-public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorIntegrationTest<MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor> {
+public class ImplementsSpecificInterfaceCheckAnnotationProcessorTest extends AbstractAnnotationProcessorIntegrationTest<ImplementsSpecificInterfaceCheckAnnotationProcessor> {
 
-
-    public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
+    public ImplementsSpecificInterfaceCheckAnnotationProcessorTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
         super(annotationProcessorIntegrationTestConfiguration);
     }
 
     @Override
-    protected MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor getAnnotationProcessor() {
-        return new MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor();
+    protected ImplementsSpecificInterfaceCheckAnnotationProcessor getAnnotationProcessor() {
+        return new ImplementsSpecificInterfaceCheckAnnotationProcessor();
     }
 
     @Before
@@ -36,32 +37,26 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
 
         return Arrays.asList(new Object[][]{
                 {
-                        "Test valid usage",
+                        "Test valid usage : implements",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
-                                .addMessageValidator()
-                                    .setInfoChecks("Start processing")
-                                .finishMessageValidator()
+                                .setSourceFileToCompile("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTest.java")
                                 .compilationShouldSucceed()
                                 .build()
                 },
                 {
-                        "Test invalid usage : non void return type",
+                        "Test invalid usage : extends ",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
-                                .compilationShouldFail()
-                                .addMessageValidator()
-                                    .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
-                                .finishMessageValidator()
+                                .setSourceFileToCompile("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTestExtendsCase.java")
+                                .compilationShouldSucceed()
                                 .build()
                 },
                 {
                         "Test invalid usage : non String parameter",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
+                                .setSourceFileToCompile("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/InvalidUsageTest.java")
                                 .compilationShouldFail()
                                 .addMessageValidator()
-                                    .setErrorChecks(CoreMatcherValidationMessages.BY_PARAMETER_TYPE.getCode())
+                                .setErrorChecks(CoreMatcherValidationMessages.IS_ASSIGNABLE_TO.getCode())
                                 .finishMessageValidator()
                                 .build()
                 },

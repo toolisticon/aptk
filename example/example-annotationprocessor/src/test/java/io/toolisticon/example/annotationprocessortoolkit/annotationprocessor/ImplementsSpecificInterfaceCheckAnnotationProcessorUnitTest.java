@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest extends AbstractAnnotationProcessorUnitTest {
+public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest extends AbstractAnnotationProcessorUnitTest {
 
-    public TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest(String description, AnnotationProcessorUnitTestConfiguration configuration) {
+    public ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest(String description, AnnotationProcessorUnitTestConfiguration configuration) {
         super(configuration);
     }
 
@@ -32,7 +32,7 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest extends 
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
+                                        ImplementsSpecificInterfaceCheckAnnotationProcessor unit = new ImplementsSpecificInterfaceCheckAnnotationProcessor();
                                         unit.init(this.processingEnv);
 
                                         MatcherAssert.assertThat("Should be assignable to Object", unit.isAssignableTo(element, Object.class.getCanonicalName()));
@@ -49,7 +49,7 @@ public class TypeThatIsAssignableToInterfaceAnnotationProcessorUnitTest extends 
                                     @Override
                                     protected void testCase(TypeElement element) {
 
-                                        TypeThatIsAssignableToInterfaceAnnotationProcessor unit = new TypeThatIsAssignableToInterfaceAnnotationProcessor();
+                                        ImplementsSpecificInterfaceCheckAnnotationProcessor unit = new ImplementsSpecificInterfaceCheckAnnotationProcessor();
                                         unit.init(this.processingEnv);
 
                                         MatcherAssert.assertThat("Should not be assignable to String", !unit.isAssignableTo(element, String.class.getCanonicalName()));

@@ -1,6 +1,6 @@
 package io.toolisticon.example.annotationprocessortoolkit.annotations;
 
 
-public interface SomeInterface {
+public interface SpecificInterface {
     String testMethod();
 }
