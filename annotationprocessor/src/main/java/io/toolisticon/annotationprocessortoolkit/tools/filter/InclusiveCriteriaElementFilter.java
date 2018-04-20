@@ -14,11 +14,11 @@ import java.util.List;
  * @param <CRITERIA>  The criteria type
  * @param <VALIDATOR> The validator type to use
  */
-public class InclusiveCharacteristicsElementFilter<ELEMENT extends Element, CRITERIA, VALIDATOR extends InclusiveCriteriaElementValidator<ELEMENT, CRITERIA, CriteriaMatcher<ELEMENT, CRITERIA>>> {
+public class InclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, VALIDATOR extends InclusiveCriteriaElementValidator<ELEMENT, CRITERIA, CriteriaMatcher<ELEMENT, CRITERIA>>> {
 
     private final VALIDATOR validator;
 
-    public InclusiveCharacteristicsElementFilter(VALIDATOR validator) {
+    public InclusiveCriteriaElementFilter(VALIDATOR validator) {
         this.validator = validator;
     }
 

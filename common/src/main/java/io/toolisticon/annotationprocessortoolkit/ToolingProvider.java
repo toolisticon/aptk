@@ -15,18 +15,27 @@ public class ToolingProvider {
     private static ThreadLocal<ToolingProvider> tooling = new ThreadLocal<ToolingProvider>();
 
     public static ToolingProvider getTooling() {
-        return tooling.get();
+
+        ToolingProvider toolingProvider = tooling.get();
+
+        if (toolingProvider == null || !toolingProvider.isInitialitzed) {
+            throw new IllegalStateException("ToolingProvider is not initialized. Must call setTooling first.");
+        }
+
+        return toolingProvider;
     }
 
     public static void setTooling(ProcessingEnvironment processingEnvironment) {
+
         tooling.set(new ToolingProvider(processingEnvironment));
+
     }
 
     public static void clearTooling() {
         tooling.remove();
     }
 
-
+    private boolean isInitialitzed = false;
     private final Elements elements;
     private final Filer filer;
     private final Messager messager;
@@ -38,6 +47,13 @@ public class ToolingProvider {
      * @param processingEnv the processing environment to uses
      */
     public ToolingProvider(ProcessingEnvironment processingEnv) {
+
+        if (processingEnv == null) {
+            throw new IllegalArgumentException("Passed ProcessingEnvironment must not be null");
+        }
+
+        isInitialitzed = true;
+
         // create local references
         messager = processingEnv.getMessager();
         types = processingEnv.getTypeUtils();

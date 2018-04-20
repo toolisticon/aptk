@@ -9,7 +9,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.corematcher.InclusiveCrit
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.filter.ExclusiveCriteriaElementFilter;
-import io.toolisticon.annotationprocessortoolkit.tools.filter.InclusiveCharacteristicsElementFilter;
+import io.toolisticon.annotationprocessortoolkit.tools.filter.InclusiveCriteriaElementFilter;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.validator.ExclusiveCriteriaElementValidator;
 import io.toolisticon.annotationprocessortoolkit.tools.validator.InclusiveCriteriaElementValidator;
@@ -91,9 +91,9 @@ public class FluentElementFilter<ELEMENT extends Element> {
     public class InclusiveCriteriaFluentFilter<FILTER_ELEMENT extends Element, CHARACTERISTIC> {
 
         private final boolean inverted;
-        private final InclusiveCharacteristicsElementFilter<FILTER_ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<FILTER_ELEMENT, CHARACTERISTIC, CriteriaMatcher<FILTER_ELEMENT, CHARACTERISTIC>>> filter;
+        private final InclusiveCriteriaElementFilter<FILTER_ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<FILTER_ELEMENT, CHARACTERISTIC, CriteriaMatcher<FILTER_ELEMENT, CHARACTERISTIC>>> filter;
 
-        private InclusiveCriteriaFluentFilter(InclusiveCharacteristicsElementFilter<FILTER_ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<FILTER_ELEMENT, CHARACTERISTIC, CriteriaMatcher<FILTER_ELEMENT, CHARACTERISTIC>>> filter, boolean inverted) {
+        private InclusiveCriteriaFluentFilter(InclusiveCriteriaElementFilter<FILTER_ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<FILTER_ELEMENT, CHARACTERISTIC, CriteriaMatcher<FILTER_ELEMENT, CHARACTERISTIC>>> filter, boolean inverted) {
             this.filter = filter;
             this.inverted = inverted;
         }

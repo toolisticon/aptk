@@ -20,13 +20,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * unit test for {@link io.toolisticon.annotationprocessortoolkit.tools.filter.InclusiveCharacteristicsElementFilter}.
+ * unit test for {@link InclusiveCriteriaElementFilter}.
  */
 @RunWith(Parameterized.class)
-public class InclusiveCharacteristicElementFilterTest extends AbstractAnnotationProcessorUnitTest {
+public class InclusiveCriteriaElementFilterTest extends AbstractAnnotationProcessorUnitTest {
 
 
-    public InclusiveCharacteristicElementFilterTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
+    public InclusiveCriteriaElementFilterTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
         super(configuration);
     }
 

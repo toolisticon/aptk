@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.corematcher;
 
-import io.toolisticon.annotationprocessortoolkit.tools.filter.InclusiveCharacteristicsElementFilter;
+import io.toolisticon.annotationprocessortoolkit.tools.filter.InclusiveCriteriaElementFilter;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.validator.InclusiveCriteriaElementValidator;
 
@@ -51,8 +51,8 @@ public class InclusiveCriteriaCoreMatcher<
      * Gets the filter for the wrapped criteria matcher.
      * @return the criteria filter instance
      */
-    public InclusiveCharacteristicsElementFilter<ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<ELEMENT, CHARACTERISTIC, CriteriaMatcher<ELEMENT, CHARACTERISTIC>>> getFilter() {
-        return new InclusiveCharacteristicsElementFilter<ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<ELEMENT, CHARACTERISTIC, CriteriaMatcher<ELEMENT, CHARACTERISTIC>>>(getValidator());
+    public InclusiveCriteriaElementFilter<ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<ELEMENT, CHARACTERISTIC, CriteriaMatcher<ELEMENT, CHARACTERISTIC>>> getFilter() {
+        return new InclusiveCriteriaElementFilter<ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<ELEMENT, CHARACTERISTIC, CriteriaMatcher<ELEMENT, CHARACTERISTIC>>>(getValidator());
     }
 
 
