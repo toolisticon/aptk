@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
         <artifactId>example-parent</artifactId>
-        <version>0.9.0</version>
+        <version>0.9.1-SNAPSHOT</version>
     </parent>
 
     <name>example-annotationprocessor</name>
