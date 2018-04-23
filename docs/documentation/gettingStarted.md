@@ -20,23 +20,26 @@ This page explains what needs to be configured in your Maven configuration to en
 You need to add the following dependencies to your Maven configuration, if you want to develop and test your annotation processors :
 
 ```xml
+
  <dependencies>
 
      <!-- Needed for developing your annotation processors -->
      <dependency>
          <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
          <artifactId>annotationprocessor</artifactId>
-         <version>0.7.0</version>
+         <version>0.9.0</version>
          <scope>compile</compile>
      </dependency>
 
-    <!-- optional, but recommended for testing your annotation processor -->
+    <!-- recommended for testing your annotation processor -->
     <dependency>
-        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-        <artifactId>annotationprocessor</artifactId>
-        <version>0.7.0</version>
+        <groupId>com.google.testing.compile</groupId>
+        <artifactId>compile-testing</artifactId>
+        <!-- use version 0.9 if you need java 6 compatibility - later versions are based on java 8 -->
+        <version>0.10</version>
         <scope>test</scope>
     </dependency>
+
 
  </dependencies>
 ```
