@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator;
 
-import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.command.Command;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ImplicitCoreMatcher;
@@ -337,7 +337,6 @@ public class FluentElementValidator<ELEMENT extends Element> {
         public AbstractFluentValidatorBase(final boolean inverted) {
             this.inverted = inverted;
         }
-
 
 
         protected boolean isInverted() {
@@ -815,6 +814,24 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
     }
 
+    /**
+     * Executes passed command if validation was successful, issues messages afterwards.
+     * @param command
+     */
+    public void executeCommandAndIssueMessages(Command<ELEMENT> command) {
+        executeCommand(command);
+        fluentValidatorState.issueMessages();
+    }
+
+    /**
+     * Executes passed command if validation was successful.
+     * @param command
+     */
+    public void executeCommand(Command<ELEMENT> command) {
+        if (command != null && fluentValidatorState.getValidationResult()) {
+            command.execute(element);
+        }
+    }
 
     /**
      * Factory method to create a FluentElementValidator instance

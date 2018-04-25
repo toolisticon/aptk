@@ -1,12 +1,14 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator;
 
 import com.google.testing.compile.JavaFileObjects;
+import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TestCoreMatcherFactory;
+import io.toolisticon.annotationprocessortoolkit.tools.command.Command;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import org.hamcrest.MatcherAssert;
@@ -19,6 +21,7 @@ import org.junit.runners.Parameterized;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.util.Arrays;
 import java.util.List;
@@ -2044,7 +2047,84 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
 
                         },
+                        {
+                                "execute command - if validation succeeds",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
 
+
+                                                              FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true))
+                                                                      .executeCommand(
+                                                                              new Command<TypeElement>() {
+                                                                                  @Override
+                                                                                  public void execute(TypeElement element) {
+                                                                                      ToolingProvider.getTooling().getMessager().printMessage(Diagnostic.Kind.NOTE, "EXECUTED COMMAND");
+                                                                                  }
+                                                                              });
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setNoteChecks("EXECUTED COMMAND")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "don't execute command but trigger validation message - if validation fails",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                                                      .executeCommand(
+                                                                              new Command<TypeElement>() {
+                                                                                  @Override
+                                                                                  public void execute(TypeElement element) {
+                                                                                      ToolingProvider.getTooling().getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
+                                                                                  }
+                                                                              });
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "don't execute command - if validation fails",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                                                      .executeCommandAndIssueMessages(
+                                                                              new Command<TypeElement>() {
+                                                                                  @Override
+                                                                                  public void execute(TypeElement element) {
+                                                                                      ToolingProvider.getTooling().getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
+                                                                                  }
+                                                                              });
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
 
                 }
 
