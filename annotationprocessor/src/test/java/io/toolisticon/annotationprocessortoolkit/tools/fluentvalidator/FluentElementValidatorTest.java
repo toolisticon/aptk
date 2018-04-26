@@ -11,6 +11,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.TestCoreMatcherFactory;
 import io.toolisticon.annotationprocessortoolkit.tools.command.Command;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -2120,6 +2121,72 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
                                         )
                                         .addMessageValidator()
                                         .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "custom message - with ValidationMessage class and Messageargs",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().setCustomMessage(
+                                                                      new ValidationMessage() {
+                                                                          @Override
+                                                                          public String getCode() {
+                                                                              return "XXX";
+                                                                          }
+
+                                                                          @Override
+                                                                          public String getMessage() {
+                                                                              return "ERROR ${0} ${0} ${1}!";
+                                                                          }
+                                                                      }, "YES", "AGAIN"
+                                                              ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                                                      .validateAndIssueMessages();
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("ERROR YES YES AGAIN!")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "custom message - with ValidationMessage class without MessageArgs",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              FluentElementValidator.createFluentElementValidator(element)
+                                                                      .error().setCustomMessage(
+                                                                      new ValidationMessage() {
+                                                                          @Override
+                                                                          public String getCode() {
+                                                                              return "XXX";
+                                                                          }
+
+                                                                          @Override
+                                                                          public String getMessage() {
+                                                                              return "ERROR!";
+                                                                          }
+                                                                      }
+                                                              ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                                                      .validateAndIssueMessages();
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("ERROR!")
                                         .finishMessageValidator()
                                         .build()
 

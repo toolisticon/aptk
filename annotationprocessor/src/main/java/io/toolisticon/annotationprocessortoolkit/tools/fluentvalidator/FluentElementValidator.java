@@ -60,7 +60,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
         }
 
         /**
-         * Set warning scope for next validation.
+         * Set custom message .
          *
          * @param customMessage the custom message to use.
          * @return the fluent validator instance
@@ -69,6 +69,15 @@ public class FluentElementValidator<ELEMENT extends Element> {
             return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.setCustomMessage(customMessage);
         }
 
+        /**
+         * Set custom message.
+         * @param customMessage
+         * @param messagArgs
+         * @return
+         */
+        public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(ValidationMessage customMessage, Object... messagArgs) {
+            return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.setCustomMessage(customMessage,messagArgs);
+        }
 
         /**
          * Applies is validator.
@@ -298,20 +307,41 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
     private class NextValidationContext {
 
-        private String customMessage;
+        private ValidationMessage customMessage;
         private Diagnostic.Kind messageScope = Diagnostic.Kind.ERROR;
+        private Object[] messageArgs;
 
         private void reset() {
             customMessage = null;
             messageScope = Diagnostic.Kind.ERROR;
         }
 
-        public String getCustomMessage() {
+        public ValidationMessage getCustomMessage() {
             return customMessage;
         }
 
-        public void setCustomMessage(String customMessage) {
+        public void setCustomMessage(final String customMessage) {
+            this.customMessage = new ValidationMessage() {
+                @Override
+                public String getCode() {
+                    return null;
+                }
+
+                @Override
+                public String getMessage() {
+                    return customMessage;
+                }
+            };
+        }
+
+        public void setCustomMessage(ValidationMessage customMessage, Object... messageArgs) {
             this.customMessage = customMessage;
+            this.messageArgs = messageArgs;
+
+        }
+
+        public Object[] getMessageArgs() {
+            return messageArgs;
         }
 
         public Diagnostic.Kind getMessageScope() {
@@ -355,7 +385,19 @@ public class FluentElementValidator<ELEMENT extends Element> {
                 fluentValidatorState.setAsFailedValidation();
 
                 if (nextValidationContext.getCustomMessage() != null) {
-                    fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), "[" + defaultMessage.getCode() + ": ]" + nextValidationContext.getCustomMessage()));
+                    if (nextValidationContext.getCustomMessage().getCode() == null) {
+                        fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), "[" + defaultMessage.getCode() + ": ]" + nextValidationContext.getCustomMessage().getMessage()));
+                    } else {
+
+                        if (nextValidationContext.getMessageArgs() != null) {
+                            fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), nextValidationContext.getCustomMessage().getMessage(), nextValidationContext.getMessageArgs()));
+                        } else {
+                            fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), nextValidationContext.getCustomMessage().getMessage()));
+                        }
+
+
+                    }
+
                 } else {
                     fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), defaultMessage.getMessage(), messsageParameter));
                 }
@@ -787,6 +829,11 @@ public class FluentElementValidator<ELEMENT extends Element> {
         return new PrepareApplyValidator<ELEMENT>();
     }
 
+    public PrepareApplyValidator<ELEMENT> setCustomMessage(ValidationMessage customMessage, Object... messagArgs) {
+        this.nextValidationContext.setCustomMessage(customMessage, messagArgs);
+        return new PrepareApplyValidator<ELEMENT>();
+    }
+
     // -------------------------------------------------------------
     // -------------------------------------------------------------
 
@@ -816,6 +863,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
     /**
      * Executes passed command if validation was successful, issues messages afterwards.
+     *
      * @param command
      */
     public void executeCommandAndIssueMessages(Command<ELEMENT> command) {
@@ -825,6 +873,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
     /**
      * Executes passed command if validation was successful.
+     *
      * @param command
      */
     public void executeCommand(Command<ELEMENT> command) {
