@@ -2,6 +2,7 @@ package io.toolisticon.annotationprocessortoolkit.templating.templateblocks;
 
 import io.toolisticon.annotationprocessortoolkit.templating.ModelPathResolver;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,9 +74,9 @@ public class ForTemplateBlock implements TemplateBlock {
 
                 }
 
-            } else if (values instanceof List) {
+            } else if (values instanceof Collection) {
 
-                for (Object value : (List) values) {
+                for (Object value : (Collection) values) {
 
                     // now update variables
                     variables.put(loopVariableName, value);
