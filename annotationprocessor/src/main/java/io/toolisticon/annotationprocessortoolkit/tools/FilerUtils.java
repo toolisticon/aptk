@@ -24,23 +24,23 @@ public final class FilerUtils {
     /**
      * Gets a SimpleResourceReader for reading a resource file.
      *
-     * @param fileName      the file name of the resource to be opened
      * @param targetPackage the target package
+     * @param fileName      the file name of the resource to be opened
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
      */
     public static SimpleResourceReader getResource(String fileName, String targetPackage) throws IOException {
-        return getResource(fileName, targetPackage, StandardLocation.SOURCE_OUTPUT);
+        return getResource(StandardLocation.SOURCE_OUTPUT, targetPackage, fileName);
     }
 
     /**
      * Gets a SimpleResourceReader for reading a resource file.
      *
-     * @param fileName         the file name of the resource to be opened
-     * @param targetPackage    the target package
      * @param standardLocation the location to read the resource from
+     * @param targetPackage    the target package
+     * @param fileName         the file name of the resource to be opened
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
      */
-    public static SimpleResourceReader getResource(String fileName, String targetPackage, StandardLocation standardLocation) throws IOException {
+    public static SimpleResourceReader getResource(StandardLocation standardLocation, String targetPackage, String fileName) throws IOException {
         return new SimpleResourceReader(ProcessingEnvironmentUtils.getFiler().getResource(standardLocation, targetPackage != null ? targetPackage : "", fileName));
     }
 
@@ -51,35 +51,35 @@ public final class FilerUtils {
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
      */
     public static SimpleResourceReader getResource(String fileName) throws IOException {
-        return getResource(fileName, "");
+        return getResource("", fileName);
     }
 
     /**
      * Creates a resource file resident in CLASS_OUTPUT in root package with give name.
      *
-     * @param fileName            the file name to use
      * @param targetPackage       the target package to use
+     * @param fileName            the file name to use
      * @param originatingElements the originating elements responsible for resource file creation.
      * @return SimpleResourceWriter if it hasn't been created before.
      * @throws IOException
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
-    public static SimpleResourceWriter createResource(String fileName, String targetPackage, Element... originatingElements) throws IOException {
-        return createResource(fileName, targetPackage, StandardLocation.CLASS_OUTPUT);
+    public static SimpleResourceWriter createResource(String targetPackage, String fileName, Element... originatingElements) throws IOException {
+        return createResource(StandardLocation.CLASS_OUTPUT, targetPackage, fileName);
     }
 
     /**
      * Creates a resource file resident in CLASS_OUTPUT in root package with give name.
      *
-     * @param fileName            the file name to use
-     * @param targetPackage       the target package to use
      * @param location            the location to write the file to.
+     * @param targetPackage       the target package to use
+     * @param fileName            the file name to use
      * @param originatingElements the originating elements responsible for resource file creation.
      * @return SimpleResourceWriter if it hasn't been created before.
      * @throws IOException
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
-    public static SimpleResourceWriter createResource(String fileName, String targetPackage, StandardLocation location, Element... originatingElements) throws IOException {
+    public static SimpleResourceWriter createResource(StandardLocation location, String targetPackage, String fileName, Element... originatingElements) throws IOException {
         return new SimpleResourceWriter(ProcessingEnvironmentUtils.getFiler().createResource(location, targetPackage != null ? targetPackage : "", fileName, originatingElements));
     }
 
@@ -92,7 +92,7 @@ public final class FilerUtils {
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
     public static SimpleResourceWriter createResource(String fileName) throws IOException {
-        return createResource(fileName, "");
+        return createResource("",fileName);
     }
 
 
