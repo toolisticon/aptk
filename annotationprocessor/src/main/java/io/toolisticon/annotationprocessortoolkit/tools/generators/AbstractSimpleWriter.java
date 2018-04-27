@@ -1,4 +1,4 @@
-package io.toolisticon.annotationprocessortoolkit.generators;
+package io.toolisticon.annotationprocessortoolkit.tools.generators;
 
 import io.toolisticon.annotationprocessortoolkit.templating.TemplateProcessor;
 
@@ -9,8 +9,6 @@ import java.util.Map;
 
 /**
  * Abstract base class for writers of java code and resources.
- *
-
  */
 public class AbstractSimpleWriter<T extends FileObject> {
 
@@ -25,8 +23,9 @@ public class AbstractSimpleWriter<T extends FileObject> {
 
     /**
      * Appends string content to the writer.
+     *
      * @param content the content to append
-     * @throws IOException  is thrown if content can't be written
+     * @throws IOException is thrown if content can't be written
      */
     public void append(String content) throws IOException {
         foWriter.append(content);
@@ -35,6 +34,7 @@ public class AbstractSimpleWriter<T extends FileObject> {
 
     /**
      * Write char array content to the writer.
+     *
      * @param buffer the buffer to append
      * @throws IOException is thrown if buffer can't be written
      */
@@ -45,11 +45,12 @@ public class AbstractSimpleWriter<T extends FileObject> {
 
     /**
      * Write a template based content.
+     *
      * @param templateFileName the template resource file to use
-     * @param values the values to be used with template
+     * @param values           the values to be used with template
      * @throws IOException is thrown if content can't be written
      */
-    public void writeTemplate( String templateFileName, Map<String, Object> values) throws IOException {
+    public void writeTemplate(String templateFileName, Map<String, Object> values) throws IOException {
         String processedTemplate = TemplateProcessor.processTemplateResourceFile(templateFileName, values);
 
         if (processedTemplate != null) {
@@ -60,11 +61,12 @@ public class AbstractSimpleWriter<T extends FileObject> {
 
     /**
      * Write a template based content.
+     *
      * @param templateString the template string to use
-     * @param values the values to be used with template
+     * @param values         the values to be used with template
      * @throws IOException is thrown if content can't be written
      */
-    public void writeTemplateString( String templateString, Map<String, Object> values) throws IOException {
+    public void writeTemplateString(String templateString, Map<String, Object> values) throws IOException {
         String processedTemplate = TemplateProcessor.processTemplate(templateString, values);
 
         if (processedTemplate != null) {
@@ -75,6 +77,7 @@ public class AbstractSimpleWriter<T extends FileObject> {
 
     /**
      * Write string based content to the writer.
+     *
      * @param content the content to write
      * @throws IOException is thrown if content can't be written
      */
@@ -85,6 +88,7 @@ public class AbstractSimpleWriter<T extends FileObject> {
 
     /**
      * Closes encapsulated writer.
+     *
      * @throws IOException is thrown if writer can't be closed
      */
     public void close() throws IOException {

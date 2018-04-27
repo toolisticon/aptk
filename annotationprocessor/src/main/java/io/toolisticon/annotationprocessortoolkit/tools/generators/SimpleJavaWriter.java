@@ -1,4 +1,4 @@
-package io.toolisticon.annotationprocessortoolkit.generators;
+package io.toolisticon.annotationprocessortoolkit.tools.generators;
 
 import javax.tools.JavaFileObject;
 import java.io.IOException;

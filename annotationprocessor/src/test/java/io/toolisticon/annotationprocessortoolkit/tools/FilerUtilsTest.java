@@ -1,9 +1,10 @@
-package io.toolisticon.annotationprocessortoolkit.generators;
+package io.toolisticon.annotationprocessortoolkit.tools;
 
 import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
+import io.toolisticon.annotationprocessortoolkit.tools.generators.FileObjectUtilsTestAnnotationProcessor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -12,10 +13,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class FileObjectUtilsTest extends AbstractAnnotationProcessorIntegrationTest<FileObjectUtilsTestAnnotationProcessor> {
+public class FilerUtilsTest extends AbstractAnnotationProcessorIntegrationTest<FileObjectUtilsTestAnnotationProcessor> {
 
 
-    public FileObjectUtilsTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
+    public FilerUtilsTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
         super(annotationProcessorIntegrationTestConfiguration);
     }
 
@@ -31,7 +32,7 @@ public class FileObjectUtilsTest extends AbstractAnnotationProcessorIntegrationT
                 {
                         "Test valid usage",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/generators/FileObjectUtilsTestClass.java")
+                                .setSourceFileToCompile("testcases/generators/FilerUtilsTestClass.java")
                                 .compilationShouldSucceed()
                                 .resourceShouldMatch(JavaFileObjects.forResource("testcases/generators/expectedResult.txt"))
                                 .build()

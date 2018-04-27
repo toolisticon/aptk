@@ -1,4 +1,4 @@
-package io.toolisticon.annotationprocessortoolkit.generators;
+package io.toolisticon.annotationprocessortoolkit.tools.generators;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;

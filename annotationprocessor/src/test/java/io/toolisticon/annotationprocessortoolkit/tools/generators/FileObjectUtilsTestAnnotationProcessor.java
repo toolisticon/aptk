@@ -1,8 +1,8 @@
-package io.toolisticon.annotationprocessortoolkit.generators;
+package io.toolisticon.annotationprocessortoolkit.tools.generators;
 
 import io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
+import io.toolisticon.annotationprocessortoolkit.tools.FilerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.ProcessingEnvironmentUtils;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -11,11 +11,11 @@ import javax.lang.model.element.TypeElement;
 import java.util.Set;
 
 /**
- * Test annotation processor for testing {@link FileObjectUtils}.
+ * Test annotation processor for testing {@link FilerUtils}.
  */
 
 @SupportedAnnotationTypes(
-        "io.toolisticon.annotationprocessortoolkit.generators.FileObjectUtilsTestAnnotation")
+        "io.toolisticon.annotationprocessortoolkit.tools.generators.FileObjectUtilsTestAnnotation")
 public class FileObjectUtilsTestAnnotationProcessor extends AbstractAnnotationProcessor {
 
     private SimpleResourceWriter simpleResourceWriter = null;
@@ -29,7 +29,7 @@ public class FileObjectUtilsTestAnnotationProcessor extends AbstractAnnotationPr
 
                 if (simpleResourceWriter == null) {
 
-                    simpleResourceWriter = FileObjectUtils.createResource("testOutput.txt");
+                    simpleResourceWriter = FilerUtils.createResource("testOutput.txt");
 
                 }
 

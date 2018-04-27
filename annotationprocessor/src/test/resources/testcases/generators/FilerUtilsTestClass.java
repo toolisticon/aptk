@@ -1,13 +1,13 @@
 package io.toolisticon.annotationprocessor;
 
-import io.toolisticon.annotationprocessortoolkit.generators.FileObjectUtilsTestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.tools.generators.FileObjectUtilsTestAnnotation;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 
 /**
  * Test class for annotation processor tools.
  */
 @TestAnnotation
-public class FileObjectUtilsTestClass {
+public class FilerUtilsTestClass {
 
 
     @FileObjectUtilsTestAnnotation

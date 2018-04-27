@@ -1,4 +1,4 @@
-package io.toolisticon.annotationprocessortoolkit.generators;
+package io.toolisticon.annotationprocessortoolkit.tools.generators;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

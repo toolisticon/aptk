@@ -1,8 +1,9 @@
-package io.toolisticon.annotationprocessortoolkit.generators;
+package io.toolisticon.annotationprocessortoolkit.tools;
 
 
-import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
-import io.toolisticon.annotationprocessortoolkit.tools.ProcessingEnvironmentUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.generators.SimpleJavaWriter;
+import io.toolisticon.annotationprocessortoolkit.tools.generators.SimpleResourceReader;
+import io.toolisticon.annotationprocessortoolkit.tools.generators.SimpleResourceWriter;
 
 import javax.lang.model.element.Element;
 import javax.tools.StandardLocation;
@@ -11,13 +12,13 @@ import java.io.IOException;
 /**
  * Utility class for handling {@link javax.tools.FileObject}.
  */
-public final class FileObjectUtils {
+public final class FilerUtils {
 
 
     /**
      * Hidden constructor that prevents instantiation.
      */
-    private FileObjectUtils() {
+    private FilerUtils() {
     }
 
     /**
@@ -97,7 +98,8 @@ public final class FileObjectUtils {
 
     /**
      * Creates a class file writer.
-     * @param fileName the filename to use
+     *
+     * @param fileName            the filename to use
      * @param originatingElements the element which originates the creation of the class file
      * @return a SimpleJavaWriter that can be used to write java classes
      * @throws IOException is thrown if writer can't be created
@@ -108,7 +110,8 @@ public final class FileObjectUtils {
 
     /**
      * Creates a source file writer.
-     * @param fileName the filename to use
+     *
+     * @param fileName            the filename to use
      * @param originatingElements the element which originates the creation of the source file
      * @return a SimpleJavaWriter that can be used to write java source code
      * @throws IOException is thrown if writer can't be created
@@ -116,8 +119,6 @@ public final class FileObjectUtils {
     public static SimpleJavaWriter createSourceFile(String fileName, Element... originatingElements) throws IOException {
         return new SimpleJavaWriter(ProcessingEnvironmentUtils.getFiler().createSourceFile(fileName, originatingElements));
     }
-
-
 
 
 }
