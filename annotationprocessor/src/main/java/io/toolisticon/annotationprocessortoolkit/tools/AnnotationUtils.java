@@ -73,7 +73,7 @@ public final class AnnotationUtils {
     public static String[] getMandatoryAttributeValueNames( AnnotationMirror annotationMirror) {
 
         List<String> result = new ArrayList<String>();
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ToolingProvider.getTooling().getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getDefaultValue() == null ) {
                 result.add(entry.getKey().getSimpleName().toString());
             }
@@ -90,7 +90,7 @@ public final class AnnotationUtils {
     public static String[] getOptionalAttributeValueNames( AnnotationMirror annotationMirror) {
 
         List<String> result = new ArrayList<String>();
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ToolingProvider.getTooling().getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getDefaultValue() != null ) {
                 result.add(entry.getKey().getSimpleName().toString());
             }
@@ -108,7 +108,7 @@ public final class AnnotationUtils {
      * @return the AnnotationValue,  or null if the AnnotationValue with passed key cannot be found
      */
     public static AnnotationValue getAnnotationValueOfAttributeWithDefaults( AnnotationMirror annotationMirror, String key) {
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ToolingProvider.getTooling().getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getSimpleName().toString().equals(key)) {
                 return entry.getValue();
             }
@@ -128,7 +128,7 @@ public final class AnnotationUtils {
      */
     public static ExecutableElement getExecutableElementForAnnotationAttributeName( AnnotationMirror annotationMirror, String key) {
 
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ToolingProvider.getTooling().getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getSimpleName().toString().equals(key)) {
                 return entry.getKey();
             }

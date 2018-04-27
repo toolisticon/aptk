@@ -12,86 +12,86 @@ import javax.tools.Diagnostic;
  * Utility class and wrapper for / of {@link Messager}.
  */
 
-public class MessagerUtils {
+public final class MessagerUtils {
 
 
-    public MessagerUtils() {
+    private MessagerUtils() {
     }
 
-    public void error(Element e, String message, Object... args) {
-        this.printMessage(e, Diagnostic.Kind.ERROR, message, args);
+    public static void error(Element e, String message, Object... args) {
+        printMessage(e, Diagnostic.Kind.ERROR, message, args);
     }
 
-    public void warning(Element e, String message, Object... args) {
-        this.printMessage(e, Diagnostic.Kind.WARNING, message, args);
+    public static void warning(Element e, String message, Object... args) {
+        printMessage(e, Diagnostic.Kind.WARNING, message, args);
     }
 
-    public void mandatoryWarning(Element e, String message, Object... args) {
-        this.printMessage(e, Diagnostic.Kind.MANDATORY_WARNING, message, args);
+    public static void mandatoryWarning(Element e, String message, Object... args) {
+        printMessage(e, Diagnostic.Kind.MANDATORY_WARNING, message, args);
     }
 
-    public void info(Element e, String message, Object... args) {
-        this.printMessage(e, Diagnostic.Kind.NOTE, message, args);
+    public static void info(Element e, String message, Object... args) {
+        printMessage(e, Diagnostic.Kind.NOTE, message, args);
     }
 
-    public void other(Element e, String message, Object... args) {
-        this.printMessage(e, Diagnostic.Kind.OTHER, message, args);
+    public static void other(Element e, String message, Object... args) {
+        printMessage(e, Diagnostic.Kind.OTHER, message, args);
     }
 
-    public void error(Element e, AnnotationMirror a, String message, Object... args) {
-        this.printMessage(e, a, Diagnostic.Kind.ERROR, message, args);
+    public static void error(Element e, AnnotationMirror a, String message, Object... args) {
+        printMessage(e, a, Diagnostic.Kind.ERROR, message, args);
     }
 
-    public void warning(Element e, AnnotationMirror a, String message, Object... args) {
-        this.printMessage(e, a, Diagnostic.Kind.WARNING, message, args);
+    public static void warning(Element e, AnnotationMirror a, String message, Object... args) {
+        printMessage(e, a, Diagnostic.Kind.WARNING, message, args);
     }
 
-    public void mandatoryWarning(Element e, AnnotationMirror a, String message, Object... args) {
-        this.printMessage(e, a, Diagnostic.Kind.MANDATORY_WARNING, message, args);
+    public static void mandatoryWarning(Element e, AnnotationMirror a, String message, Object... args) {
+        printMessage(e, a, Diagnostic.Kind.MANDATORY_WARNING, message, args);
     }
 
-    public void info(Element e, AnnotationMirror a, String message, Object... args) {
-        this.printMessage(e, a, Diagnostic.Kind.NOTE, message, args);
+    public static void info(Element e, AnnotationMirror a, String message, Object... args) {
+        printMessage(e, a, Diagnostic.Kind.NOTE, message, args);
     }
 
-    public void other(Element e, AnnotationMirror a, String message, Object... args) {
-        this.printMessage(e, a, Diagnostic.Kind.OTHER, message, args);
+    public static void other(Element e, AnnotationMirror a, String message, Object... args) {
+        printMessage(e, a, Diagnostic.Kind.OTHER, message, args);
     }
 
-    public void error(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
-        this.printMessage(e, a, v, Diagnostic.Kind.ERROR, message, args);
+    public static void error(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
+        printMessage(e, a, v, Diagnostic.Kind.ERROR, message, args);
     }
 
-    public void warning(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
-        this.printMessage(e, a, v, Diagnostic.Kind.WARNING, message, args);
+    public static void warning(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
+        printMessage(e, a, v, Diagnostic.Kind.WARNING, message, args);
     }
 
-    public void mandatoryWarning(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
-        this.printMessage(e, a, v, Diagnostic.Kind.MANDATORY_WARNING, message, args);
+    public static void mandatoryWarning(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
+        printMessage(e, a, v, Diagnostic.Kind.MANDATORY_WARNING, message, args);
     }
 
-    public void info(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
-        this.printMessage(e, a, v, Diagnostic.Kind.NOTE, message, args);
+    public static void info(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
+        printMessage(e, a, v, Diagnostic.Kind.NOTE, message, args);
     }
 
-    public void other(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
-        this.printMessage(e, a, v, Diagnostic.Kind.OTHER, message, args);
+    public static void other(Element e, AnnotationMirror a, AnnotationValue v, String message, Object... args) {
+        printMessage(e, a, v, Diagnostic.Kind.OTHER, message, args);
     }
 
-    public void printMessage(Element e, Diagnostic.Kind kind, String message, Object... args) {
-        ToolingProvider.getTooling().getMessager().printMessage(kind, createMessage(message, args), e);
+    public static void printMessage(Element e, Diagnostic.Kind kind, String message, Object... args) {
+        ProcessingEnvironmentUtils.getMessager().printMessage(kind, createMessage(message, args), e);
     }
 
-    public void printMessage(Element e, AnnotationMirror a, Diagnostic.Kind kind, String message, Object... args) {
-        ToolingProvider.getTooling().getMessager().printMessage(kind, createMessage(message, args), e, a);
+    public static void printMessage(Element e, AnnotationMirror a, Diagnostic.Kind kind, String message, Object... args) {
+        ProcessingEnvironmentUtils.getMessager().printMessage(kind, createMessage(message, args), e, a);
     }
 
-    public void printMessage(Element e, AnnotationMirror a, AnnotationValue v, Diagnostic.Kind kind, String message, Object... args) {
-        ToolingProvider.getTooling().getMessager().printMessage(kind, createMessage(message, args), e, a, v);
+    public static void printMessage(Element e, AnnotationMirror a, AnnotationValue v, Diagnostic.Kind kind, String message, Object... args) {
+        ProcessingEnvironmentUtils.getMessager().printMessage(kind, createMessage(message, args), e, a, v);
     }
 
-    public Messager getMessager() {
-        return ToolingProvider.getTooling().getMessager();
+    public static Messager getMessager() {
+        return ProcessingEnvironmentUtils.getMessager();
     }
 
 

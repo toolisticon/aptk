@@ -59,6 +59,21 @@ public class AbstractSimpleWriter<T extends FileObject> {
     }
 
     /**
+     * Write a template based content.
+     * @param templateString the template string to use
+     * @param values the values to be used with template
+     * @throws IOException is thrown if content can't be written
+     */
+    public void writeTemplateString( String templateString, Map<String, Object> values) throws IOException {
+        String processedTemplate = TemplateProcessor.processTemplate(templateString, values);
+
+        if (processedTemplate != null) {
+            append(processedTemplate);
+        }
+
+    }
+
+    /**
      * Write string based content to the writer.
      * @param content the content to write
      * @throws IOException is thrown if content can't be written

@@ -1,16 +1,16 @@
 package io.toolisticon.annotationprocessortoolkit;
 
-import io.toolisticon.annotationprocessortoolkit.generators.FileObjectUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.ProcessingEnvironmentUtils;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
+import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,21 +21,10 @@ import java.util.Set;
 public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
 
 
-    private Elements elementUtils;
-    private Filer filer;
-    private MessagerUtils messager;
-    private FileObjectUtils fileObjectUtils;
-
-
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
 
-        // create local references
-        messager = new MessagerUtils();
-        filer = processingEnv.getFiler();
-        elementUtils = processingEnv.getElementUtils();
-        fileObjectUtils = FileObjectUtils.getFileObjectUtils();
 
     }
 
@@ -63,43 +52,40 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
 
 
     /**
-     * Gets the {@link MessagerUtils}.
-     *
-     * @return the MessagerUtils
-     */
-    public MessagerUtils getMessager() {
-        return messager;
-    }
-
-
-
-    /**
      * Gets the {@link Elements} provided by {@link ProcessingEnvironment}.
      *
-     * @return the Elements utils
+     * @return the Elements utility class instance
      */
     public Elements getElements() {
-        return elementUtils;
+        return ProcessingEnvironmentUtils.getElements();
     }
 
     /**
      * Gets the {@link Filer} provided by {@link ProcessingEnvironment}.
      *
-     * @return theFiler urils
+     * @return the Filer utility class instance
      */
     public Filer getFiler() {
-        return filer;
+        return ProcessingEnvironmentUtils.getFiler();
     }
 
     /**
-     * Gets the {@link FileObjectUtils}.
+     * Gets the {@link Types} provided by {@link ProcessingEnvironment}.
      *
-     * @return the FileObjectUtils.
+     * @return the Types utility class instance
      */
-    public FileObjectUtils getFileObjectUtils() {
-        return fileObjectUtils;
+    public Types getTypes() {
+        return ProcessingEnvironmentUtils.getTypes();
     }
 
+    /**
+     * Gets the {@link Messager} provided by {@link ProcessingEnvironment}.
+     *
+     * @return the Messager utility class instance
+     */
+    public Messager getMessager() {
+        return ProcessingEnvironmentUtils.getMessager();
+    }
 
     /**
      * Helper function to statically provide supported annotations.

@@ -128,7 +128,7 @@ public final class TypeUtils {
                 return null;
             }
 
-            return ToolingProvider.getTooling().getElements().getTypeElement(fullQualifiedClassName);
+            return ProcessingEnvironmentUtils.getElements().getTypeElement(fullQualifiedClassName);
 
         }
 
@@ -171,7 +171,7 @@ public final class TypeUtils {
         public static TypeElement getTypeElement(Class type) {
 
             TypeMirror typeMirror = getTypeMirror(type);
-            return typeMirror == null ? null : (TypeElement) ToolingProvider.getTooling().getTypes().asElement(typeMirror);
+            return typeMirror == null ? null : (TypeElement) ProcessingEnvironmentUtils.getTypes().asElement(typeMirror);
 
         }
 
@@ -189,14 +189,14 @@ public final class TypeUtils {
             }
 
             if (type.isArray()) {
-                return ToolingProvider.getTooling().getTypes().getArrayType(getTypeMirror(type.getComponentType()));
+                return ProcessingEnvironmentUtils.getTypes().getArrayType(getTypeMirror(type.getComponentType()));
             }
 
             if (type.isPrimitive()) {
                 return getPrimitiveTypeMirror(type);
             }
 
-            return ToolingProvider.getTooling().getElements().getTypeElement(type.getCanonicalName()).asType();
+            return ProcessingEnvironmentUtils.getElements().getTypeElement(type.getCanonicalName()).asType();
         }
 
         /**
@@ -251,7 +251,7 @@ public final class TypeUtils {
          * @return true if typeElement is assignable to type otherwise false.
          */
         public static boolean isAssignableTo(TypeElement typeElement, Class type) {
-            return isAssignableTo(typeElement, ToolingProvider.getTooling().getElements().getTypeElement(type.getCanonicalName()).asType());
+            return isAssignableTo(typeElement, ProcessingEnvironmentUtils.getElements().getTypeElement(type.getCanonicalName()).asType());
         }
 
         /**
@@ -285,7 +285,7 @@ public final class TypeUtils {
          * @return true if typeMirror1 is assignable to typeMirror2 otherwise false.
          */
         public static boolean isAssignableTo(TypeMirror typeMirror1, TypeMirror typeMirror2) {
-            return typeMirror1 != null && typeMirror2 != null && ToolingProvider.getTooling().getTypes().isAssignable(typeMirror1, typeMirror2);
+            return typeMirror1 != null && typeMirror2 != null && ProcessingEnvironmentUtils.getTypes().isAssignable(typeMirror1, typeMirror2);
         }
 
         /**
@@ -339,7 +339,7 @@ public final class TypeUtils {
          * @return true if all parameters are not null and TypeMirrors are equal, otherwise false
          */
         public static boolean isTypeEqual(TypeElement typeElement, TypeMirror typeMirror) {
-            return typeElement != null && typeMirror != null && ToolingProvider.getTooling().getTypes().isSameType(typeElement.asType(), typeMirror);
+            return typeElement != null && typeMirror != null && ProcessingEnvironmentUtils.getTypes().isSameType(typeElement.asType(), typeMirror);
         }
 
         /**
@@ -918,7 +918,7 @@ public final class TypeUtils {
      * @return
      */
     public static Types getTypes() {
-        return ToolingProvider.getTooling().getTypes();
+        return ProcessingEnvironmentUtils.getTypes();
     }
 
 

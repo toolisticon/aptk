@@ -88,6 +88,20 @@ public class SimpleResourceWriterTest {
     }
 
     @Test
+    public void testWrite_templateString() throws IOException {
+
+        final String TEMPLATE = "AB${value}EF";
+        Map<String,Object> model = new HashMap<String,Object>();
+        model.put("value","CD");
+
+        unit.writeTemplateString(TEMPLATE,model);
+        MatcherAssert.assertThat(stringWriter.getBuffer().toString(), Matchers.is("ABCDEF"));
+        Mockito.verify(stringWriter, Mockito.times(1)).flush();
+
+
+    }
+
+    @Test
     public void testClose() throws IOException {
 
         unit.write("ABC");

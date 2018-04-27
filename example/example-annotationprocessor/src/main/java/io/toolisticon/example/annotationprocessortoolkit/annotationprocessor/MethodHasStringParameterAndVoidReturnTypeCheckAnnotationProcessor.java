@@ -2,10 +2,12 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 import io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
 import io.toolisticon.spiap.api.Service;
+import sun.misc.MessageUtils;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -35,7 +37,7 @@ public class MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor e
     @Override
     public boolean processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-        getMessager().info(null, "Start processing");
+        MessagerUtils.info(null, "Start processing");
 
         for (Element element : roundEnv.getElementsAnnotatedWith(
                 MethodWithOneStringParameterAndVoidReturnTypeAnnotation.class)) {

@@ -9,14 +9,19 @@ import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.Templ
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.VariableTextTemplateBlock;
 
 import java.io.ByteArrayOutputStream;
+import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class ParseUtilities {
 
+    /**
+     * Result class to store a parsing result.
+     */
     public static class ParserResult {
 
         private final int beginIndex;
@@ -44,6 +49,9 @@ public class ParseUtilities {
     }
 
 
+    /**
+     * Enum that defines type of the next block
+     */
     private enum NextBlockType {
         NONE,
         FOR,
@@ -127,6 +135,11 @@ public class ParseUtilities {
     }
 
 
+    /**
+     * Get dynamic text block.
+     * @param templateString the template string to parse
+     * @return the ParseResult
+     */
     protected static ParserResult getNextDynamicText(String templateString) {
 
         if (templateString == null) {
@@ -144,11 +157,14 @@ public class ParseUtilities {
         return null;
     }
 
-    protected Integer getNextControlBlock(String templateString) {
-        return null;
-    }
 
-    public static String readResourceToString(String resourcefileName) throws Exception {
+    /**
+     * Reads a resource file into a String
+     * @param resourcefileName
+     * @return the content of the resource file as a String
+     * @throws IOException
+     */
+    public static String readResourceToString(String resourcefileName) throws IOException{
 
         InputStream inputStream = ParseUtilities.class.getResourceAsStream(resourcefileName);
         if (inputStream != null) {
@@ -160,6 +176,14 @@ public class ParseUtilities {
 
     }
 
+    /**
+     * Reads a String from an InputStream.
+     * CLoses the stream
+     *
+     * @param stream the inputStream to use
+     * @return The String read from the inputStreams
+     * @throws IOException
+     */
     public static String readFromInputStream(InputStream stream) throws IOException {
 
         byte[] buffer = new byte[10000];
@@ -177,7 +201,6 @@ public class ParseUtilities {
 
         return new String(os.toByteArray());
     }
-
 
 
 

@@ -1,6 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit.generators;
 
 import io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
+import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.ProcessingEnvironmentUtils;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -27,18 +29,17 @@ public class FileObjectUtilsTestAnnotationProcessor extends AbstractAnnotationPr
 
                 if (simpleResourceWriter == null) {
 
-                    simpleResourceWriter = FileObjectUtils.getFileObjectUtils().createResource("testOutput.txt");
-
+                    simpleResourceWriter = FileObjectUtils.createResource("testOutput.txt");
 
                 }
 
-
                 simpleResourceWriter.append(element.getSimpleName().toString() + "\n");
-
 
             }
         } catch (Exception e) {
-            getMessager().error(null, "Wasn't able to use SimpleResourceWriter without error");
+
+            MessagerUtils.error(null, "Wasn't able to use SimpleResourceWriter without error");
+
         } finally {
             try {
                 simpleResourceWriter.close();

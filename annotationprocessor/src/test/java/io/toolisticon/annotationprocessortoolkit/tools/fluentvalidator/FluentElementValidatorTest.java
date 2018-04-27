@@ -7,6 +7,7 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUni
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.ProcessingEnvironmentUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TestCoreMatcherFactory;
 import io.toolisticon.annotationprocessortoolkit.tools.command.Command;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
@@ -2062,7 +2063,7 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
                                                                               new Command<TypeElement>() {
                                                                                   @Override
                                                                                   public void execute(TypeElement element) {
-                                                                                      ToolingProvider.getTooling().getMessager().printMessage(Diagnostic.Kind.NOTE, "EXECUTED COMMAND");
+                                                                                      ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.NOTE, "EXECUTED COMMAND");
                                                                                   }
                                                                               });
 
@@ -2090,7 +2091,7 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
                                                                               new Command<TypeElement>() {
                                                                                   @Override
                                                                                   public void execute(TypeElement element) {
-                                                                                      ToolingProvider.getTooling().getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
+                                                                                      ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
                                                                                   }
                                                                               });
                                                           }
@@ -2113,7 +2114,7 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
                                                                               new Command<TypeElement>() {
                                                                                   @Override
                                                                                   public void execute(TypeElement element) {
-                                                                                      ToolingProvider.getTooling().getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
+                                                                                      ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
                                                                                   }
                                                                               });
                                                           }

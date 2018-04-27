@@ -2,6 +2,7 @@ package io.toolisticon.annotationprocessortoolkit.generators;
 
 
 import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
+import io.toolisticon.annotationprocessortoolkit.tools.ProcessingEnvironmentUtils;
 
 import javax.lang.model.element.Element;
 import javax.tools.StandardLocation;
@@ -10,7 +11,7 @@ import java.io.IOException;
 /**
  * Utility class for handling {@link javax.tools.FileObject}.
  */
-public class FileObjectUtils {
+public final class FileObjectUtils {
 
 
     /**
@@ -26,7 +27,7 @@ public class FileObjectUtils {
      * @param targetPackage the target package
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
      */
-    public SimpleResourceReader getResource(String fileName, String targetPackage) throws IOException {
+    public static SimpleResourceReader getResource(String fileName, String targetPackage) throws IOException {
         return getResource(fileName, targetPackage, StandardLocation.SOURCE_OUTPUT);
     }
 
@@ -38,8 +39,8 @@ public class FileObjectUtils {
      * @param standardLocation the location to read the resource from
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
      */
-    public SimpleResourceReader getResource(String fileName, String targetPackage, StandardLocation standardLocation) throws IOException {
-        return new SimpleResourceReader(ToolingProvider.getTooling().getFiler().getResource(standardLocation, targetPackage != null ? targetPackage : "", fileName));
+    public static SimpleResourceReader getResource(String fileName, String targetPackage, StandardLocation standardLocation) throws IOException {
+        return new SimpleResourceReader(ProcessingEnvironmentUtils.getFiler().getResource(standardLocation, targetPackage != null ? targetPackage : "", fileName));
     }
 
     /**
@@ -48,7 +49,7 @@ public class FileObjectUtils {
      * @param fileName the file name of the resource to be opened
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
      */
-    public SimpleResourceReader getResource(String fileName) throws IOException {
+    public static SimpleResourceReader getResource(String fileName) throws IOException {
         return getResource(fileName, "");
     }
 
@@ -62,7 +63,7 @@ public class FileObjectUtils {
      * @throws IOException
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
-    public SimpleResourceWriter createResource(String fileName, String targetPackage, Element... originatingElements) throws IOException {
+    public static SimpleResourceWriter createResource(String fileName, String targetPackage, Element... originatingElements) throws IOException {
         return createResource(fileName, targetPackage, StandardLocation.CLASS_OUTPUT);
     }
 
@@ -77,8 +78,8 @@ public class FileObjectUtils {
      * @throws IOException
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
-    public SimpleResourceWriter createResource(String fileName, String targetPackage, StandardLocation location, Element... originatingElements) throws IOException {
-        return new SimpleResourceWriter(ToolingProvider.getTooling().getFiler().createResource(location, targetPackage != null ? targetPackage : "", fileName, originatingElements));
+    public static SimpleResourceWriter createResource(String fileName, String targetPackage, StandardLocation location, Element... originatingElements) throws IOException {
+        return new SimpleResourceWriter(ProcessingEnvironmentUtils.getFiler().createResource(location, targetPackage != null ? targetPackage : "", fileName, originatingElements));
     }
 
     /**
@@ -89,7 +90,7 @@ public class FileObjectUtils {
      * @throws IOException
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
-    public SimpleResourceWriter createResource(String fileName) throws IOException {
+    public static SimpleResourceWriter createResource(String fileName) throws IOException {
         return createResource(fileName, "");
     }
 
@@ -101,8 +102,8 @@ public class FileObjectUtils {
      * @return a SimpleJavaWriter that can be used to write java classes
      * @throws IOException is thrown if writer can't be created
      */
-    public SimpleJavaWriter createClassFile(String fileName, Element... originatingElements) throws IOException {
-        return new SimpleJavaWriter(ToolingProvider.getTooling().getFiler().createClassFile(fileName, originatingElements));
+    public static SimpleJavaWriter createClassFile(String fileName, Element... originatingElements) throws IOException {
+        return new SimpleJavaWriter(ProcessingEnvironmentUtils.getFiler().createClassFile(fileName, originatingElements));
     }
 
     /**
@@ -112,18 +113,11 @@ public class FileObjectUtils {
      * @return a SimpleJavaWriter that can be used to write java source code
      * @throws IOException is thrown if writer can't be created
      */
-    public SimpleJavaWriter createSourceFile(String fileName, Element... originatingElements) throws IOException {
-        return new SimpleJavaWriter(ToolingProvider.getTooling().getFiler().createSourceFile(fileName, originatingElements));
+    public static SimpleJavaWriter createSourceFile(String fileName, Element... originatingElements) throws IOException {
+        return new SimpleJavaWriter(ProcessingEnvironmentUtils.getFiler().createSourceFile(fileName, originatingElements));
     }
 
-    /**
-     * Gets an instance of this TypeUtils class.
-     *
-     * @return the type utils instance
-     */
-    public static FileObjectUtils getFileObjectUtils() {
-        return new FileObjectUtils();
-    }
+
 
 
 }
