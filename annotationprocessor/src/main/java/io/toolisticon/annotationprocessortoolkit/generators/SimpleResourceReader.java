@@ -63,6 +63,18 @@ public class SimpleResourceReader {
      * @throws IOException
      */
     public List<String> readAsLines() throws IOException {
+        return readAsLines(false);
+    }
+
+
+    /**
+     * Reads the whole resource into a list of lines.
+     *
+     * @param trimLines defines wether or not lines should be trimmed
+     * @return the content as a line by line array of the resource file starting from the current reader position
+     * @throws IOException
+     */
+    public List<String> readAsLines(boolean trimLines) throws IOException {
 
         List<String> result = new ArrayList<String>();
 
@@ -71,7 +83,7 @@ public class SimpleResourceReader {
             String line = foReader.readLine();
             while (line != null) {
 
-                result.add(line);
+                result.add(trimLines ? line.trim() : line);
 
                 // read next line
                 line = foReader.readLine();

@@ -65,7 +65,41 @@ public class SimpleResourceReaderTest {
 
         SimpleResourceReader unit = new SimpleResourceReader(fileObject);
 
-        MatcherAssert.assertThat(unit.readAsLines(), Matchers.contains("abc","def","hij"));
+        MatcherAssert.assertThat(unit.readAsLines(), Matchers.contains("abc", "def", "hij"));
+        Mockito.verify(stringReader, Mockito.times(1)).close();
+
+    }
+
+    @Test
+    public void testReadAsLines_withTrim() throws IOException {
+
+        final String RESOURCE_STRING = "abc \n  def\n  hij   ";
+
+        FileObject fileObject = Mockito.mock(FileObject.class);
+        StringReader stringReader = Mockito.spy(new StringReader(RESOURCE_STRING));
+        Mockito.when(fileObject.openReader(Mockito.anyBoolean())).thenReturn(stringReader);
+
+
+        SimpleResourceReader unit = new SimpleResourceReader(fileObject);
+
+        MatcherAssert.assertThat(unit.readAsLines(true), Matchers.contains("abc", "def", "hij"));
+        Mockito.verify(stringReader, Mockito.times(1)).close();
+
+    }
+
+    @Test
+    public void testReadAsLines_withoutTrim() throws IOException {
+
+        final String RESOURCE_STRING = "abc \n  def\n  hij  ";
+
+        FileObject fileObject = Mockito.mock(FileObject.class);
+        StringReader stringReader = Mockito.spy(new StringReader(RESOURCE_STRING));
+        Mockito.when(fileObject.openReader(Mockito.anyBoolean())).thenReturn(stringReader);
+
+
+        SimpleResourceReader unit = new SimpleResourceReader(fileObject);
+
+        MatcherAssert.assertThat(unit.readAsLines(false), Matchers.contains("abc ", "  def", "  hij  "));
         Mockito.verify(stringReader, Mockito.times(1)).close();
 
     }
@@ -84,9 +118,9 @@ public class SimpleResourceReaderTest {
 
         Properties result = unit.readAsProperties();
 
-        MatcherAssert.assertThat(result.get("a"), Matchers.equalTo((Object)"1"));
-        MatcherAssert.assertThat(result.get("b"), Matchers.equalTo((Object)"2"));
-        MatcherAssert.assertThat(result.get("c"), Matchers.equalTo((Object)"3"));
+        MatcherAssert.assertThat(result.get("a"), Matchers.equalTo((Object) "1"));
+        MatcherAssert.assertThat(result.get("b"), Matchers.equalTo((Object) "2"));
+        MatcherAssert.assertThat(result.get("c"), Matchers.equalTo((Object) "3"));
 
         Mockito.verify(stringReader, Mockito.times(1)).close();
 
