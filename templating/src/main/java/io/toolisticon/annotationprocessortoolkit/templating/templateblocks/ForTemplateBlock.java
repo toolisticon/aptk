@@ -1,6 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.templating.templateblocks;
 
 import io.toolisticon.annotationprocessortoolkit.templating.ModelPathResolver;
+import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidPathException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -84,6 +85,8 @@ public class ForTemplateBlock implements TemplateBlock {
 
                 }
 
+            } else {
+                throw new InvalidPathException("Unable to iterate over Type '" + values.getClass().getCanonicalName() + "' in FOR block. Just Arrays and Collections are supported !" );
             }
 
 
