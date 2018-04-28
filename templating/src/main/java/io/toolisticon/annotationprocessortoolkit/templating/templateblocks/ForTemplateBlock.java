@@ -1,11 +1,11 @@
 package io.toolisticon.annotationprocessortoolkit.templating.templateblocks;
 
 import io.toolisticon.annotationprocessortoolkit.templating.ModelPathResolver;
+import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidExpressionResult;
 import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidPathException;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -86,10 +86,12 @@ public class ForTemplateBlock implements TemplateBlock {
                 }
 
             } else {
-                throw new InvalidPathException("Unable to iterate over Type '" + values.getClass().getCanonicalName() + "' in FOR block. Just Arrays and Collections are supported !" );
+                throw new InvalidPathException("Unable to iterate over Type '" + values.getClass().getCanonicalName() + "' in FOR block. Just Arrays and Collections are supported !");
             }
 
 
+        } else {
+            throw new InvalidExpressionResult("For template accessPath '" + accessPath + "' must not evaluate to null value!");
         }
 
         return stringBuilder.toString();

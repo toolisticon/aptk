@@ -1,11 +1,11 @@
 package io.toolisticon.annotationprocessortoolkit.templating.templateblocks;
 
+import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidExpressionResult;
 import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidPathException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -84,6 +84,7 @@ public class ForTemplateBlockTest {
     }
 
 
+    @Test(expected = InvalidExpressionResult.class)
     public void test_getContent_nullValueInModel_mustReturnEmptyString() {
         ForTemplateBlock unit = new ForTemplateBlock(" abc : def ", "${abc}");
 
@@ -94,6 +95,7 @@ public class ForTemplateBlockTest {
 
     }
 
+    @Test
     public void test_getContent_arrayValueInModel() {
         ForTemplateBlock unit = new ForTemplateBlock(" abc : def ", "${abc}");
 
@@ -101,10 +103,14 @@ public class ForTemplateBlockTest {
         String[] value = {"A","B"};
         model.put("def", value);
 
+        // Must add template block
+        unit.getBinder().addTemplateBlock(new VariableTextTemplateBlock("abc"));
+
         MatcherAssert.assertThat(unit.getContent(model), Matchers.equalTo("AB"));
 
     }
 
+    @Test
     public void test_getContent_listValueInModel() {
         ForTemplateBlock unit = new ForTemplateBlock(" abc : def ", "${abc}");
 
@@ -112,16 +118,23 @@ public class ForTemplateBlockTest {
         List<String> value = Arrays.asList("A","B");
         model.put("def", value);
 
+        // Must add template block
+        unit.getBinder().addTemplateBlock(new VariableTextTemplateBlock("abc"));
+
         MatcherAssert.assertThat(unit.getContent(model), Matchers.equalTo("AB"));
 
     }
 
+    @Test
     public void test_getContent_setValueInModel() {
         ForTemplateBlock unit = new ForTemplateBlock(" abc : def ", "${abc}");
 
         Map<String, Object> model = new HashMap<String, Object>();
         Set<String> value = new HashSet<String>(Arrays.asList("A","B"));
         model.put("def", value);
+
+        // Must add template block
+        unit.getBinder().addTemplateBlock(new VariableTextTemplateBlock("abc"));
 
         MatcherAssert.assertThat(unit.getContent(model), Matchers.isOneOf("AB","BA"));
 

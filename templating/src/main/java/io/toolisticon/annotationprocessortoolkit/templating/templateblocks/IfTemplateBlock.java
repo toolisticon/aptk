@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.templating.templateblocks;
 
+import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidExpressionResult;
 import io.toolisticon.annotationprocessortoolkit.templating.expressions.Expression;
 import io.toolisticon.annotationprocessortoolkit.templating.expressions.ExpressionParser;
 import io.toolisticon.annotationprocessortoolkit.templating.expressions.operands.Operand;
@@ -52,9 +53,16 @@ public class IfTemplateBlock implements TemplateBlock {
 
         Expression expression = ExpressionParser.parseExpression(accessPath, outerVariables);
         Operand result = expression.evaluateExpression();
-        if (result.value() != null && result.getOperandsJavaType().equals(Boolean.class) && (Boolean) result.value()) {
 
+        if (result == null) {
+            throw new InvalidExpressionResult("If statements expression '" + accessPath + "' must not evaluate to null! ");
+        }
 
+        if (!Boolean.class.equals(result.getOperandsJavaType())) {
+            throw new InvalidExpressionResult("If statements expression '" + accessPath + "' must evaluate to Boolean" + (result.getOperandsJavaType() != null ? ", but is of type " + result.getOperandsJavaType().getCanonicalName() : ""));
+        }
+
+        if (result.value() != null && (Boolean) result.value()) {
             return binder.getContent(outerVariables).toString();
         } else {
             return "";
