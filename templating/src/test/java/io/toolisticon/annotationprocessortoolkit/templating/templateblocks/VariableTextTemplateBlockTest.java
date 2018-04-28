@@ -25,6 +25,20 @@ public class VariableTextTemplateBlockTest {
 
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void test_constructor_emptyValuedAccessPath() {
+
+        VariableTextTemplateBlock unit = new VariableTextTemplateBlock("");
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_constructor_emptyTrimmedValuedAccessPath() {
+
+        VariableTextTemplateBlock unit = new VariableTextTemplateBlock("    ");
+
+    }
+
     @Test
     public void test_constructor_ValidAccessPath() {
 
