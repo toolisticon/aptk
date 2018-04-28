@@ -15,6 +15,9 @@ public class VariableTextTemplateBlock implements TemplateBlock {
     private final String accessPath;
 
     public VariableTextTemplateBlock(String accessPath) {
+        if (accessPath == null || accessPath.trim().isEmpty()) {
+            throw new IllegalArgumentException("Passed accessPath must not be null or empty");
+        }
         this.accessPath = accessPath;
     }
 
@@ -31,8 +34,12 @@ public class VariableTextTemplateBlock implements TemplateBlock {
         Expression expression = ExpressionParser.parseExpression(accessPath, variables);
         Operand result = expression.evaluateExpression();
 
-        return result.value() != null  ? result.value().toString() : null;
+        return result.value() != null ? result.value().toString() : null;
 
+    }
+
+    protected String getAccessPath() {
+        return this.accessPath;
     }
 }
 
