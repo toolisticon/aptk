@@ -3,6 +3,7 @@ package io.toolisticon.annotationprocessortoolkit.testhelper.unittest;
 import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -19,6 +20,12 @@ public abstract class AbstractUnitTestAnnotationProcessorClass extends AbstractP
 
     static {
         SUPPORTED_ANNOTATION_TYPES.add(TestAnnotation.class.getCanonicalName());
+    }
+
+    @Override
+    public synchronized void init(ProcessingEnvironment processingEnv) {
+        super.init(processingEnv);
+        ToolingProvider.setTooling(processingEnv);
     }
 
     @Override

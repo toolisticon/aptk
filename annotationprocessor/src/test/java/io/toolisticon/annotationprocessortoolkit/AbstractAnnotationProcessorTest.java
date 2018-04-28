@@ -128,13 +128,35 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              MatcherAssert.assertThat("Should return null",AbstractAnnotationProcessor.wrapToArray((String) null)[0] == null);
+                                                              MatcherAssert.assertThat("Should return null", AbstractAnnotationProcessor.wrapToArray((String) null)[0] == null);
 
                                                               Class[] resultArray = AbstractAnnotationProcessor.wrapToArray(Override.class, null, TestAnnotation.class);
                                                               MatcherAssert.assertThat(Arrays.asList(resultArray), Matchers.hasSize(3));
                                                               MatcherAssert.assertThat(resultArray[0], Matchers.equalTo((Class) Override.class));
                                                               MatcherAssert.assertThat(resultArray[1], Matchers.nullValue());
                                                               MatcherAssert.assertThat(resultArray[2], Matchers.equalTo((Class) TestAnnotation.class));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "wrapToArray : test convenience access methods for filr, messager, types and elements",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.getElements(), Matchers.notNullValue());
+                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.getTypes(), Matchers.notNullValue());
+                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.getFiler(), Matchers.notNullValue());
+                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.getMessager(), Matchers.notNullValue());
+
 
                                                           }
                                                       }

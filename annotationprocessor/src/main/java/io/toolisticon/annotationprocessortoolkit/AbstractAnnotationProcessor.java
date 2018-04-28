@@ -56,7 +56,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      *
      * @return the Elements utility class instance
      */
-    public Elements getElements() {
+    public static Elements getElements() {
         return ProcessingEnvironmentUtils.getElements();
     }
 
@@ -65,7 +65,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      *
      * @return the Filer utility class instance
      */
-    public Filer getFiler() {
+    public static Filer getFiler() {
         return ProcessingEnvironmentUtils.getFiler();
     }
 
@@ -74,7 +74,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      *
      * @return the Types utility class instance
      */
-    public Types getTypes() {
+    public static Types getTypes() {
         return ProcessingEnvironmentUtils.getTypes();
     }
 
@@ -83,7 +83,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      *
      * @return the Messager utility class instance
      */
-    public Messager getMessager() {
+    public static Messager getMessager() {
         return ProcessingEnvironmentUtils.getMessager();
     }
 
