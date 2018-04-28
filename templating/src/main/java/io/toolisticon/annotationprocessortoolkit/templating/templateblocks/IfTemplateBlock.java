@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  */
 public class IfTemplateBlock implements TemplateBlock {
 
-    private final static Pattern ATTRIBUTE_PATTERN = Pattern.compile("(.+)");
 
 
     private final String accessPath;
@@ -29,12 +28,7 @@ public class IfTemplateBlock implements TemplateBlock {
             throw new IllegalArgumentException("if command has no attribute string.");
         }
 
-        Matcher matcher = ATTRIBUTE_PATTERN.matcher(attributeString);
-        if (!matcher.matches()) {
-            throw new IllegalArgumentException("if command has an invalid attribute string.");
-        }
-
-        this.accessPath = matcher.group(1);
+        this.accessPath = attributeString.trim();
         this.templateString = templateString;
 
 
@@ -54,15 +48,11 @@ public class IfTemplateBlock implements TemplateBlock {
         Expression expression = ExpressionParser.parseExpression(accessPath, outerVariables);
         Operand result = expression.evaluateExpression();
 
-        if (result == null) {
-            throw new InvalidExpressionResult("If statements expression '" + accessPath + "' must not evaluate to null! ");
-        }
-
         if (!Boolean.class.equals(result.getOperandsJavaType())) {
             throw new InvalidExpressionResult("If statements expression '" + accessPath + "' must evaluate to Boolean" + (result.getOperandsJavaType() != null ? ", but is of type " + result.getOperandsJavaType().getCanonicalName() : ""));
         }
 
-        if (result.value() != null && (Boolean) result.value()) {
+        if ((Boolean) result.value()) {
             return binder.getContent(outerVariables).toString();
         } else {
             return "";
