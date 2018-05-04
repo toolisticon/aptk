@@ -393,6 +393,46 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorUnitTest 
 
                         },
 
+                        {
+                                "TypeUtils.Generics.genericTypeEquals : test case 3 - mismatching type - Type parameter RAW type vs generic type",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("isAssignable_testCase1")
+                                                                      .getResult();
+
+                                                              ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(AbstractUnitTestAnnotationProcessorClass.class);
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(
+                                                                      Map.class,
+                                                                      TypeUtils.Generics.createGenericType(String.class),
+                                                                      TypeUtils.Generics.createGenericType(
+                                                                              Map.class
+                                                                      )
+                                                              );
+
+
+                                                              MatcherAssert.assertThat("Should detect mismatching types and return false", !TypeUtils.Generics.genericTypeEquals(method.getParameters().get(0).asType(), genericType));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
                         // #######################
 
 
