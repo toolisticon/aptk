@@ -93,6 +93,24 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                         null
                 },
                 {
+                        "Test compilation that succeeds with warning - check note/info message",
+                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                                .setSourceFileToCompile("TestClass.java")
+                                .compilationShouldSucceed()
+                                .addMessageValidator()
+                                .setInfoChecks("MURKS")
+                                .finishMessageValidator()
+                                .build(),
+
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+                                processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "MURKS", element);
+                            }
+                        },
+                        null
+                },
+                {
                         "Test compilation that throws error",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
                                 .setSourceFileToCompile("TestClass.java")
@@ -140,6 +158,30 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                         },
                         InvalidTestConfigurationException.class
                 },
+
+                {
+                        "Test failing compilation with and note, warning and error messages in MessageValidator",
+                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                                .setSourceFileToCompile("TestClass.java")
+                                .compilationShouldFail()
+                                .addMessageValidator()
+                                .setErrorChecks("MURKS_ERROR")
+                                .setWarningChecks("MURKS_WARNING")
+                                .setInfoChecks("MURKS_NOTE")
+                                .finishMessageValidator()
+                                .build(),
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+                                processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "MURKS_NOTE", element);
+                                processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "MURKS_WARNING", element);
+                                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "MURKS_ERROR", element);
+                            }
+                        },
+                        null
+                },
+
+                
 
 
         });

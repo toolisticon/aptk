@@ -10,6 +10,8 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import javax.tools.JavaFileObject;
+
 /**
  * Unit test for {@link AnnotationProcessorUnitTestConfigurationBuilder}.
  */
@@ -21,7 +23,7 @@ public class AnnotationProcessorUnitTestConfigurationBuilderTest {
         AnnotationProcessorUnitTestConfiguration configuration = AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig().build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.<TestValidator>emptyArray());
         MatcherAssert.assertThat(configuration.getProcessor(), Matchers.nullValue());
 
@@ -71,7 +73,7 @@ public class AnnotationProcessorUnitTestConfigurationBuilderTest {
                 .build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.<TestValidator>emptyArray());
         MatcherAssert.assertThat(configuration.getProcessor(), Matchers.is(processor));
 
@@ -88,7 +90,7 @@ public class AnnotationProcessorUnitTestConfigurationBuilderTest {
                 .build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.arrayWithSize(1));
         MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(0));
@@ -109,7 +111,7 @@ public class AnnotationProcessorUnitTestConfigurationBuilderTest {
                 .build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.arrayWithSize(1));
         MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(3));
@@ -131,7 +133,7 @@ public class AnnotationProcessorUnitTestConfigurationBuilderTest {
                 .build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.arrayWithSize(1));
         MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(0));
@@ -142,5 +144,9 @@ public class AnnotationProcessorUnitTestConfigurationBuilderTest {
 
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullValuedCompilingSholdSucceedParameter() {
+        new AnnotationProcessorUnitTestConfiguration(Mockito.mock(AbstractUnitTestAnnotationProcessorClass.class), null, new JavaFileObject[0]);
+    }
 
 }

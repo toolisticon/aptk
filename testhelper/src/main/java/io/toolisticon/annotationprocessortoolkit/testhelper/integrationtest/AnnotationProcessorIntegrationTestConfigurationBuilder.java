@@ -22,7 +22,7 @@ public final class AnnotationProcessorIntegrationTestConfigurationBuilder {
     public static class BaseConfigurationBuilder {
 
 
-        private Boolean shouldCompileSuccessfully;
+        private Boolean shouldCompileSuccessfully = true;
         private TestMessageValidator testMessageValidator;
         private String sourceFileToCompile;
         private JavaFileObject[] expectedGeneratedJavaFileObjects;
@@ -53,6 +53,7 @@ public final class AnnotationProcessorIntegrationTestConfigurationBuilder {
         }
 
         public AnnotationProcessorIntegrationTestConfiguration build() {
+
             if (testMessageValidator == null) {
                 return new AnnotationProcessorIntegrationTestConfiguration(
                         sourceFileToCompile,

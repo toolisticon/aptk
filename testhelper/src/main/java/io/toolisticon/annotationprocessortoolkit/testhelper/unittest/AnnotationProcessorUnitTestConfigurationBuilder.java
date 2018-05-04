@@ -21,7 +21,7 @@ public final class AnnotationProcessorUnitTestConfigurationBuilder {
 
     public static class BaseConfigurationBuilder {
 
-        private Boolean shouldCompileSuccessfully;
+        private Boolean shouldCompileSuccessfully = true;
         private JavaFileObject[] expectedGeneratedJavaFileObjects;
         private TestMessageValidator testMessageValidator;
         private AbstractUnitTestAnnotationProcessorClass processor;

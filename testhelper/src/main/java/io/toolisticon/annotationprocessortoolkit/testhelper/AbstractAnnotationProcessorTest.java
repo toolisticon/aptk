@@ -57,8 +57,7 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
                 TestValidatorType.MESSAGE_VALIDATOR);
 
         // check if error messages and shouldSucceed aren't set contradictionary
-        if (annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed() != null
-                && annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed().booleanValue()
+        if (annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed()
                 && messageValidationTest != null
                 && messageValidationTest.getErrors().length > 0) {
             throw new InvalidTestConfigurationException("Test configuration error : Compilation should succeed but also error messages !");
@@ -67,8 +66,7 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
 
         if (
                 (
-                        annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed() == null
-                                || annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed().booleanValue()
+                        annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed()
                 ) && (
                         messageValidationTest == null
                                 || messageValidationTest.getErrors().length == 0
@@ -109,7 +107,7 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
                     .that(testClassSource)
                     .processedWith(this.getWrappedProcessor()).failsToCompile();
 
-            if (annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed() != null) {
+            if (annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed()) {
                 MatcherAssert.assertThat("Compiling should have failed", !annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed());
             }
 

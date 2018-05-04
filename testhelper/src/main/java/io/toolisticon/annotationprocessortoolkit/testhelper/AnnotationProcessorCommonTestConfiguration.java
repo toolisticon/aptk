@@ -16,6 +16,11 @@ public class AnnotationProcessorCommonTestConfiguration {
     private final TestValidator[] testcases;
 
     public AnnotationProcessorCommonTestConfiguration(Boolean compilingShouldSucceed, JavaFileObject[] expectedGeneratedJavaFileObjects, TestValidator... testcases) {
+
+        if (compilingShouldSucceed == null) {
+            throw new IllegalArgumentException("Passed compilingShouldSucceed must not be null");
+        }
+
         this.compilingShouldSucceed = compilingShouldSucceed;
         this.expectedGeneratedJavaFileObjects = expectedGeneratedJavaFileObjects;
         this.testcases = testcases;
