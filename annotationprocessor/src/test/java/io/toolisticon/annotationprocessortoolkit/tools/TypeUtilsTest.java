@@ -24,6 +24,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -1640,6 +1641,120 @@ public class TypeUtilsTest extends AbstractAnnotationProcessorUnitTest {
                                                               MatcherAssert.assertThat("Should return false for null value", !TypeUtils.Arrays.isArrayOfType(typeMirror, (TypeMirror) null));
                                                               MatcherAssert.assertThat("Should return false for null value", !TypeUtils.Arrays.isArrayOfType((TypeMirror)null, typeMirror));
                                                               MatcherAssert.assertThat("Should return false for null value", !TypeUtils.Arrays.isArrayOfType((TypeMirror)null, (TypeMirror) null));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "TypeUtils.Arrays.isArrayAssignableTo(TypeMirror typeMirror, Class type) : detect assignable arrays type correctly",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
+
+                                                              MatcherAssert.assertThat("Should detect matching array type correctly", TypeUtils.Arrays.isArrayAssignableTo(typeMirror,Object.class));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "TypeUtils.Arrays.isArrayAssignableTo(TypeMirror typeMirror, String fullQualifiedClassName) : detect assignable arrays type correctly",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
+
+                                                              MatcherAssert.assertThat("Should detect matching array type correctly", TypeUtils.Arrays.isArrayAssignableTo(typeMirror,Object.class.getCanonicalName()));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "TypeUtils.Arrays.isArrayAssignableTo(TypeMirror typeMirror, TypeMirror componentType) : detect assignable arrays type correctly",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(String[].class);
+                                                              TypeMirror componentTypeMirror = TypeUtils.TypeRetrieval.getTypeMirror(Object.class);
+
+                                                              MatcherAssert.assertThat("Should detect matching array type correctly", TypeUtils.Arrays.isArrayAssignableTo(typeMirror,componentTypeMirror));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "TypeUtils.Arrays.isErasedArrayAssignableTo(TypeMirror typeMirror1, TypeMirror typeMirror2) : detect assignable arrays type correctly",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(List[].class);
+                                                              TypeMirror componentTypeMirror = TypeUtils.TypeRetrieval.getTypeMirror(Collection.class);
+
+                                                              MatcherAssert.assertThat("Should detect matching array type correctly", TypeUtils.Arrays.isErasedArrayAssignableTo(typeMirror,componentTypeMirror));
+
+
+                                                              // null safety
+                                                              MatcherAssert.assertThat("Should return false if first typeMirror is null", !TypeUtils.Arrays.isErasedArrayAssignableTo(null,componentTypeMirror));
+                                                              MatcherAssert.assertThat("Should return false if second typeMirror is null", !TypeUtils.Arrays.isErasedArrayAssignableTo(typeMirror,null));
+                                                              MatcherAssert.assertThat("Should return false if both typeMirror is null", !TypeUtils.Arrays.isErasedArrayAssignableTo(null,null));
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "TypeUtils.Arrays.isArrayAssignableTo(TypeMirror typeMirror, TypeMirror componentType) : check null safety and non array typeMirror",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              TypeMirror typeMirror = TypeUtils.TypeRetrieval.getTypeMirror(List[].class);
+                                                              TypeMirror componentTypeMirror = TypeUtils.TypeRetrieval.getTypeMirror(Collection.class);
+
+                                                              MatcherAssert.assertThat("Should return false if typeMirror is null", !TypeUtils.Arrays.isArrayAssignableTo(null,componentTypeMirror));
+                                                              MatcherAssert.assertThat("Should return false if componentType is null", !TypeUtils.Arrays.isArrayAssignableTo(typeMirror,(TypeMirror) null));
+                                                              MatcherAssert.assertThat("Should return false if both typeMirror and componentType are null", !TypeUtils.Arrays.isArrayAssignableTo(null,(TypeMirror) null));
+
+
+
+                                                              MatcherAssert.assertThat("Should return for non array typeMirror", !TypeUtils.Arrays.isArrayAssignableTo(TypeUtils.TypeRetrieval.getTypeMirror(List.class),componentTypeMirror));
 
                                                           }
                                                       }

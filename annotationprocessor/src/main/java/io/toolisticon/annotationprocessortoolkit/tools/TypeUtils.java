@@ -539,6 +539,23 @@ public final class TypeUtils {
                     && TypeComparison.isAssignableTo(getArraysComponentType(typeMirror), genericType);
         }
 
+        /**
+         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         * Does type erasure on both passed typeMirrors.
+         *
+         * @param typeMirror1 the {@link TypeMirror} to check
+         * @param typeMirror2 the arrays generic component type to check for
+         * @return true if passed type mirror is of kind array with component type, otherwise false
+         */
+        public static boolean isErasedArrayAssignableTo(TypeMirror typeMirror1, TypeMirror typeMirror2) {
+            return (typeMirror1 != null
+                    && typeMirror2 != null)
+                    && TypeComparison.isAssignableTo(
+                    getTypes().erasure(getArraysComponentType(typeMirror1)),
+                    getTypes().erasure(typeMirror2));
+
+        }
+
 
     }
 
