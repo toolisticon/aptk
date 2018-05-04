@@ -181,7 +181,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                         null
                 },
 
-                
+
 
 
         });

@@ -18,7 +18,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
         AnnotationProcessorIntegrationTestConfiguration configuration = AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig().build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.<TestValidator>emptyArray());
         MatcherAssert.assertThat(configuration.getSource(), Matchers.nullValue());
 
@@ -66,7 +66,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
                 .build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.<TestValidator>emptyArray());
         MatcherAssert.assertThat(configuration.getSource(), Matchers.is("XXX"));
 
@@ -83,7 +83,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
                 .build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.arrayWithSize(1));
         MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(0));
@@ -105,7 +105,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
                 .build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.arrayWithSize(1));
         MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(3));
@@ -128,7 +128,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
                 .build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.arrayWithSize(1));
         MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(0));
@@ -151,7 +151,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
                 .build();
 
         MatcherAssert.assertThat(configuration, Matchers.notNullValue());
-        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.nullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
         MatcherAssert.assertThat(configuration.getTestcases(), Matchers.arrayWithSize(1));
         MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(0));
