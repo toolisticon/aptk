@@ -1,11 +1,13 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
 import com.google.testing.compile.JavaFileObjects;
+import com.sun.tools.javac.code.Attribute;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.annotationvalueutilstestclasses.AnnotationValueTestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -13,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -913,6 +916,7 @@ public class AnnotationValueUtilsTest extends AbstractAnnotationProcessorUnitTes
                                                               MatcherAssert.assertThat(Arrays.asList(AnnotationValueUtils.convertAndCastAttributeValueListToArray(AnnotationValueUtils.getArrayValue(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "stringArrayValue")), String.class)), Matchers.contains("1", "2"));
                                                               MatcherAssert.assertThat(Arrays.asList(AnnotationValueUtils.convertAndCastAttributeValueListToArray(AnnotationValueUtils.getArrayValue(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "charArrayValue")), Character.class)), Matchers.contains('1', '2'));
 
+
                                                               TypeMirror[] typeMirrors = AnnotationValueUtils.convertAndCastAttributeValueListToArray(AnnotationValueUtils.getArrayValue(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "classArrayValue")), TypeMirror.class);
                                                               MatcherAssert.assertThat(typeMirrors.length, Matchers.is(2));
                                                               MatcherAssert.assertThat(typeMirrors[0].toString(), Matchers.is(Long.class.getCanonicalName()));
@@ -928,6 +932,34 @@ public class AnnotationValueUtilsTest extends AbstractAnnotationProcessorUnitTes
                                                               AnnotationMirror[] annotationMirrors = AnnotationValueUtils.convertAndCastAttributeValueListToArray(AnnotationValueUtils.getArrayValue(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "annotationArrayValue")), AnnotationMirror.class);
                                                               MatcherAssert.assertThat(annotationMirrors.length, Matchers.is(1));
                                                               MatcherAssert.assertThat(annotationMirrors[0].toString(), Matchers.is("@" + Deprecated.class.getCanonicalName()));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "AnnotationValueUtils test - convertAndCastAttributeValueListToArray - test null safety",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, AnnotationValueTestAnnotation.class);
+
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.convertAndCastAttributeValueListToArray(null, String.class), Matchers.nullValue());
+
+                                                              boolean exceptionThrown = false;
+                                                              try {
+                                                                  MatcherAssert.assertThat(AnnotationValueUtils.convertAndCastAttributeValueListToArray(AnnotationValueUtils.getArrayValue(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "longArrayValue")), null), Matchers.nullValue());
+                                                              } catch (IllegalArgumentException e) {
+                                                                  exceptionThrown = true;
+                                                              }
+                                                              MatcherAssert.assertThat("Expected that IllegalArgumentException is thrown if passed type is null", exceptionThrown);
+
 
                                                           }
                                                       }
@@ -955,11 +987,11 @@ public class AnnotationValueUtilsTest extends AbstractAnnotationProcessorUnitTes
                                                               MatcherAssert.assertThat(Arrays.asList(AnnotationValueUtils.getStringValueArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "stringArrayValue"))), Matchers.contains("1", "2"));
                                                               MatcherAssert.assertThat(Arrays.asList(AnnotationValueUtils.getCharValueArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "charArrayValue"))), Matchers.contains('1', '2'));
 
+
                                                               TypeMirror[] typeMirrors = AnnotationValueUtils.getTypeAttributeValueArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "classArrayValue"));
                                                               MatcherAssert.assertThat(typeMirrors.length, Matchers.is(2));
                                                               MatcherAssert.assertThat(typeMirrors[0].toString(), Matchers.is(Long.class.getCanonicalName()));
                                                               MatcherAssert.assertThat(typeMirrors[1].toString(), Matchers.is(Integer.class.getCanonicalName()));
-
 
                                                               VariableElement[] enums = AnnotationValueUtils.getEnumValueArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "enumArrayValue"));
                                                               MatcherAssert.assertThat(enums.length, Matchers.is(2));
@@ -970,6 +1002,46 @@ public class AnnotationValueUtilsTest extends AbstractAnnotationProcessorUnitTes
                                                               AnnotationMirror[] annotationMirrors = AnnotationValueUtils.getAnnotationValueArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "annotationArrayValue"));
                                                               MatcherAssert.assertThat(annotationMirrors.length, Matchers.is(1));
                                                               MatcherAssert.assertThat(annotationMirrors[0].toString(), Matchers.is("@" + Deprecated.class.getCanonicalName()));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "AnnotationValueUtils test - getArrayValue via convenience methods - test null safety",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              // test null safety
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getLongValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getIntegerValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getBooleanValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getFloatValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getDoubleValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getStringValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getCharValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getEnumValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getAnnotationValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+
+
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getLongValueArray((AnnotationValue) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getIntegerValueArray((AnnotationValue) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getBooleanValueArray((AnnotationValue) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getFloatValueArray((AnnotationValue) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getDoubleValueArray((AnnotationValue) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getStringValueArray((AnnotationValue) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getCharValueArray((AnnotationValue) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getEnumValueArray((AnnotationValue) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getAnnotationValue((AnnotationValue) null), Matchers.nullValue());
+
 
                                                           }
                                                       }

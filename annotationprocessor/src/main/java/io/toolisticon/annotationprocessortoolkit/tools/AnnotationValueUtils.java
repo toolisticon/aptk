@@ -334,6 +334,10 @@ public class AnnotationValueUtils {
      */
     public static <T> T[] convertAndCastAttributeValueListToArray(List<Attribute> annotatedValues, Class<T> type) {
 
+        if (type == null) {
+            throw new IllegalArgumentException("passed type must not be null!");
+        }
+
         if (annotatedValues == null) {
             return null;
         }
@@ -513,30 +517,6 @@ public class AnnotationValueUtils {
         }
 
         return convertAndCastAttributeValueListToArray(attributes, String.class);
-    }
-
-    /**
-     * Convenience method to get class value array from annotation value.
-     *
-     * @param annotationValue the annotation value
-     * @return the class array containing the annotationValue's values, or null if passed annotationValue is null
-     */
-    public static TypeMirror[] getClassValueArray(AnnotationValue annotationValue) {
-        return getClassValueArray(getArrayValue(annotationValue));
-    }
-
-    /**
-     * Convenience method to get class value array from annotation value.
-     *
-     * @param attributes
-     * @return the class array containing the attributes's values, or null if passed attributes list is null
-     */
-    public static TypeMirror[] getClassValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
-            return null;
-        }
-
-        return convertAndCastAttributeValueListToArray(attributes, TypeMirror.class);
     }
 
     /**
