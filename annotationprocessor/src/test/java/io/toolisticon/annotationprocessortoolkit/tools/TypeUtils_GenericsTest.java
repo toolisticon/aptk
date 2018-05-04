@@ -8,7 +8,10 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationP
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericType;
+import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeKind;
+import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -44,6 +47,355 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorUnitTest 
         return Arrays.asList(
 
                 new Object[][]{
+                        {
+                                "TypeUtils.Generics.createGenericType - simple non generic type",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(String.class);
+
+                                                              MatcherAssert.assertThat(genericType.getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+                                                              MatcherAssert.assertThat(genericType.getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat("Should have 0 type parameters", genericType.getTypeParameters().length == 0);
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "TypeUtils.Generics.createGenericType - simple non generic type",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(String.class.getCanonicalName());
+
+                                                              MatcherAssert.assertThat(genericType.getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+                                                              MatcherAssert.assertThat(genericType.getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat("Should have 0 type parameters", genericType.getTypeParameters().length == 0);
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "TypeUtils.Generics.createGenericType - simple generic type with one type parameter",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(
+                                                                      Collection.class,
+                                                                      TypeUtils.Generics.createGenericType(String.class)
+                                                              );
+
+                                                              MatcherAssert.assertThat(genericType.getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(Collection.class)));
+                                                              MatcherAssert.assertThat(genericType.getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat("Should have 1 type parameters", genericType.getTypeParameters().length == 1);
+                                                              MatcherAssert.assertThat(genericType.getTypeParameters()[0].getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat(((GenericType) genericType.getTypeParameters()[0]).getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "TypeUtils.Generics.createGenericType - simple generic type with one pure wildcard type parameter",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(
+                                                                      Collection.class,
+                                                                      TypeUtils.Generics.createPureWildcard()
+                                                              );
+
+                                                              MatcherAssert.assertThat(genericType.getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(Collection.class)));
+                                                              MatcherAssert.assertThat(genericType.getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat("Should have 1 type parameters", genericType.getTypeParameters().length == 1);
+                                                              MatcherAssert.assertThat(genericType.getTypeParameters()[0].getType(), Matchers.is(GenericTypeKind.WILDCARD));
+                                                              MatcherAssert.assertThat("Type parameter shoulb be pure wildcard", ((GenericTypeWildcard) genericType.getTypeParameters()[0]).isPureWildcard());
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "TypeUtils.Generics.createGenericType - simple generic type with one extends wildcard type parameter",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(
+                                                                      Collection.class,
+                                                                      TypeUtils.Generics.createWildcardWithExtendsBound(
+                                                                              TypeUtils.Generics.createGenericType(String.class)
+                                                                      )
+                                                              );
+
+                                                              MatcherAssert.assertThat(genericType.getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(Collection.class)));
+                                                              MatcherAssert.assertThat(genericType.getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat("Should have 1 type parameters", genericType.getTypeParameters().length == 1);
+                                                              MatcherAssert.assertThat(genericType.getTypeParameters()[0].getType(), Matchers.is(GenericTypeKind.WILDCARD));
+                                                              MatcherAssert.assertThat("Type parameter should be extends bound wildcard", ((GenericTypeWildcard) genericType.getTypeParameters()[0]).hasExtendsBound());
+                                                              MatcherAssert.assertThat(((GenericTypeWildcard) genericType.getTypeParameters()[0]).getExtendsBound().getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "TypeUtils.Generics.createGenericType - simple generic type with one super wildcard type parameter",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(
+                                                                      Collection.class,
+                                                                      TypeUtils.Generics.createWildcardWithSuperBound(
+                                                                              TypeUtils.Generics.createGenericType(String.class)
+                                                                      )
+                                                              );
+
+                                                              MatcherAssert.assertThat(genericType.getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(Collection.class)));
+                                                              MatcherAssert.assertThat(genericType.getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat("Should have 1 type parameters", genericType.getTypeParameters().length == 1);
+                                                              MatcherAssert.assertThat(genericType.getTypeParameters()[0].getType(), Matchers.is(GenericTypeKind.WILDCARD));
+                                                              MatcherAssert.assertThat("Type parameter should be super bound wildcard", ((GenericTypeWildcard) genericType.getTypeParameters()[0]).hasSuperBound());
+                                                              MatcherAssert.assertThat(((GenericTypeWildcard) genericType.getTypeParameters()[0]).getSuperBound().getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "TypeUtils.Generics.createGenericType - more complex generic type with two type parameter",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(
+                                                                      Map.class,
+                                                                      TypeUtils.Generics.createGenericType(String.class),
+                                                                      TypeUtils.Generics.createGenericType(
+                                                                              Map.class,
+                                                                              TypeUtils.Generics.createWildcardWithExtendsBound(TypeUtils.Generics.createGenericType(String.class)),
+                                                                              TypeUtils.Generics.createGenericType(String.class)
+                                                                      )
+                                                              );
+
+                                                              MatcherAssert.assertThat(genericType.getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(Map.class)));
+                                                              MatcherAssert.assertThat("Should have 2 type parameters", genericType.getTypeParameters().length == 2);
+                                                              MatcherAssert.assertThat(genericType.getTypeParameters()[0].getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat(((GenericType) genericType.getTypeParameters()[0]).getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+
+                                                              MatcherAssert.assertThat(genericType.getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(Map.class)));
+                                                              MatcherAssert.assertThat("Should have 2 type parameters", genericType.getTypeParameters().length == 2);
+                                                              MatcherAssert.assertThat(genericType.getTypeParameters()[1].getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat(((GenericType) genericType.getTypeParameters()[1]).getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(Map.class)));
+
+                                                              MatcherAssert.assertThat("Should have 2 type parameters", ((GenericType) genericType.getTypeParameters()[1]).getTypeParameters().length == 2);
+
+                                                              MatcherAssert.assertThat(((GenericType) genericType.getTypeParameters()[1]).getTypeParameters()[0].getType(), Matchers.is(GenericTypeKind.WILDCARD));
+                                                              MatcherAssert.assertThat(((GenericTypeWildcard) ((GenericType) genericType.getTypeParameters()[1]).getTypeParameters()[0]).getExtendsBound().getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+
+                                                              MatcherAssert.assertThat(((GenericType) genericType.getTypeParameters()[1]).getTypeParameters()[1].getType(), Matchers.is(GenericTypeKind.GENERIC_TYPE));
+                                                              MatcherAssert.assertThat(((GenericType) ((GenericType) genericType.getTypeParameters()[1]).getTypeParameters()[1]).getRawType(), Matchers.is(TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        // #######################
+
+                        {
+                                "TypeUtils.Generics.genericTypeEquals : test null safety",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("isAssignable_testCase1")
+                                                                      .getResult();
+
+                                                              ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(AbstractUnitTestAnnotationProcessorClass.class);
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(
+                                                                      Map.class,
+                                                                      TypeUtils.Generics.createGenericType(String.class),
+                                                                      TypeUtils.Generics.createGenericType(
+                                                                              Map.class,
+                                                                              TypeUtils.Generics.createGenericType(String.class),
+                                                                              TypeUtils.Generics.createGenericType(String.class)
+                                                                      )
+                                                              );
+
+
+                                                              MatcherAssert.assertThat("Should return false if passed typeMirror is null", !TypeUtils.Generics.genericTypeEquals(null, genericType));
+                                                              MatcherAssert.assertThat("Should return false if passed genericType is null", !TypeUtils.Generics.genericIsAssignableTo(method.getParameters().get(0).asType(), null));
+                                                              MatcherAssert.assertThat("Should return false if passed typeMirror and genericType are null", !TypeUtils.Generics.genericTypeEquals(null, null));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+
+                        {
+                                "TypeUtils.Generics.genericTypeEquals : test case 1 - matching type",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("isAssignable_testCase1")
+                                                                      .getResult();
+
+                                                              ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(AbstractUnitTestAnnotationProcessorClass.class);
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(
+                                                                      Map.class,
+                                                                      TypeUtils.Generics.createGenericType(String.class),
+                                                                      TypeUtils.Generics.createGenericType(
+                                                                              Map.class,
+                                                                              TypeUtils.Generics.createGenericType(String.class),
+                                                                              TypeUtils.Generics.createGenericType(String.class)
+                                                                      )
+                                                              );
+
+
+                                                              MatcherAssert.assertThat("Should detect matching types and return true", TypeUtils.Generics.genericTypeEquals(method.getParameters().get(0).asType(), genericType));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "TypeUtils.Generics.genericTypeEquals : test case 2 - mismatching type - Different genericType",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                                                      .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("isAssignable_testCase1")
+                                                                      .getResult();
+
+                                                              ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
+
+                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(AbstractUnitTestAnnotationProcessorClass.class);
+
+
+                                                              // Map<String, Map<String, String>>
+                                                              GenericType genericType = TypeUtils.Generics.createGenericType(
+                                                                      Map.class,
+                                                                      TypeUtils.Generics.createGenericType(String.class),
+                                                                      TypeUtils.Generics.createGenericType(
+                                                                              Map.class,
+                                                                              TypeUtils.Generics.createGenericType(Integer.class),
+                                                                              TypeUtils.Generics.createGenericType(String.class)
+                                                                      )
+                                                              );
+
+
+                                                              MatcherAssert.assertThat("Should detect mismatching types and return false", !TypeUtils.Generics.genericTypeEquals(method.getParameters().get(0).asType(), genericType));
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        // #######################
+
+
                         {
                                 "TypeUtils.Generics.isAssignable : test case 1 - exactly same type",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()

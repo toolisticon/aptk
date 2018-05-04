@@ -489,7 +489,6 @@ public final class TypeUtils {
         }
 
 
-
         /**
          * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
          *
@@ -539,7 +538,6 @@ public final class TypeUtils {
                     && CheckTypeKind.isArray(typeMirror)
                     && TypeComparison.isAssignableTo(getArraysComponentType(typeMirror), genericType);
         }
-
 
 
     }
@@ -799,23 +797,26 @@ public final class TypeUtils {
 
         protected static boolean isAssignableToGenericTypeHandleWildcardTypeRecursively(WildcardType wildcardType, GenericTypeParameter genericTypeParameter) {
 
+            if (wildcardType == null || genericTypeParameter == null) {
+                return false;
+            }
+
+            if (genericTypeParameter.getType() == GenericTypeKind.GENERIC_TYPE) {
+                return false;
+            }
 
             if (wildcardType.getExtendsBound() == null && wildcardType.getSuperBound() == null) {
 
                 // handle pure wildcards - pure wildcard is only assignable to pure wildcard
-                if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).isPureWildcard()) {
-                    return true;
-                }
-
-                return false;
+                return ((GenericTypeWildcard) genericTypeParameter).isPureWildcard();
 
 
             } else if (wildcardType.getExtendsBound() != null) {
 
                 // handle extends wildcards - only EXT => EXT is may be applicable
-                if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).isPureWildcard()) {
+                if (((GenericTypeWildcard) genericTypeParameter).isPureWildcard()) {
                     return true;
-                } else if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).hasExtendsBound()) {
+                } else if (((GenericTypeWildcard) genericTypeParameter).hasExtendsBound()) {
 
                     GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeParameter;
 
@@ -832,12 +833,15 @@ public final class TypeUtils {
                 }
 
 
-            } else if (wildcardType.getSuperBound() != null) {
+            } else
+            // handle super bound
+            //if (wildcardType.getSuperBound() != null)
+            {
 
                 // handle super wildcards - only SUPER => SUPER is may be applicable
-                if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).isPureWildcard()) {
+                if (((GenericTypeWildcard) genericTypeParameter).isPureWildcard()) {
                     return true;
-                } else if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD && ((GenericTypeWildcard) genericTypeParameter).hasSuperBound()) {
+                } else if (((GenericTypeWildcard) genericTypeParameter).hasSuperBound()) {
 
                     GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeParameter;
 
@@ -857,23 +861,13 @@ public final class TypeUtils {
             }
 
 
-            return true;
         }
 
         private static boolean isAssignableToGenericTypeHandleDeclaredTypeRecursively(DeclaredType declaredType, GenericTypeParameter genericTypeParameter) {
 
-            if (genericTypeParameter.getType() == GenericTypeKind.GENERIC_TYPE) {
 
-                // RAW - RAW must have exactly the same type
-                GenericType genericType = (GenericType) genericTypeParameter;
-                if (!TypeComparison.isErasedTypeEqual(getTypes().erasure(declaredType), getTypes().erasure(genericType.getRawType()))) {
-                    return false;
-                }
-
-                // Now compare it's type parameters
-                return isAssignableToGenericTypeRecursively(declaredType, genericType);
-
-            } else if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD) {
+            // Wildcards - there are exactly two kinds of
+            if (genericTypeParameter.getType() == GenericTypeKind.WILDCARD) {
 
                 GenericTypeWildcard wildcard = (GenericTypeWildcard) genericTypeParameter;
 
@@ -891,7 +885,10 @@ public final class TypeUtils {
                     // Now compare it's type parameters
                     return isAssignableToGenericTypeRecursively(declaredType, wildcard.getSuperBound());
 
-                } else if (wildcard.hasExtendsBound()) {
+                } else
+                // must have extends bound - if not necessary
+                //if (wildcard.hasExtendsBound())
+                {
 
                     // type mirrors extends bound type mirror must be assignable to GenericTypes extends bound
                     if (!TypeComparison.isAssignableTo(getTypes().erasure(declaredType), getTypes().erasure(wildcard.getExtendsBound().getRawType()))) {
@@ -904,9 +901,19 @@ public final class TypeUtils {
                 }
 
 
+            } else {
+                // Generic Type - if (genericTypeParameter.getType() == GenericTypeKind.GENERIC_TYPE)
+
+                // RAW - RAW must have exactly the same type
+                GenericType genericType = (GenericType) genericTypeParameter;
+                if (!TypeComparison.isErasedTypeEqual(getTypes().erasure(declaredType), getTypes().erasure(genericType.getRawType()))) {
+                    return false;
+                }
+
+                // Now compare it's type parameters
+                return isAssignableToGenericTypeRecursively(declaredType, genericType);
             }
 
-            return true;
         }
 
 
@@ -915,6 +922,7 @@ public final class TypeUtils {
 
     /**
      * Gets the Types instance from {@link ToolingProvider}.
+     *
      * @return
      */
     public static Types getTypes() {
