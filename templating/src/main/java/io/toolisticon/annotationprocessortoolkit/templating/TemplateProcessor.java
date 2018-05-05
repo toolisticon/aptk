@@ -23,7 +23,6 @@ public class TemplateProcessor {
         try {
             templateString = ParseUtilities.readResourceToString(templateFileName);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new IllegalArgumentException("Cannot open template file '" + templateFileName + "'", e);
         }
 
