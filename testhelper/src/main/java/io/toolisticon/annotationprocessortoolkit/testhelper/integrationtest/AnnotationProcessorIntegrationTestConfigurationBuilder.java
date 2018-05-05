@@ -47,7 +47,7 @@ public final class AnnotationProcessorIntegrationTestConfigurationBuilder {
             return this;
         }
 
-        public BaseConfigurationBuilder resourceShouldMatch(JavaFileObject... expectedGeneratedJavaFileObjects) {
+        public BaseConfigurationBuilder javaFileObjectShouldMatch(JavaFileObject... expectedGeneratedJavaFileObjects) {
             this.expectedGeneratedJavaFileObjects = expectedGeneratedJavaFileObjects;
             return this;
         }

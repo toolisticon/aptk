@@ -34,7 +34,7 @@ public class FilerUtilsTest extends AbstractAnnotationProcessorIntegrationTest<F
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
                                 .setSourceFileToCompile("testcases/generators/FilerUtilsTestClass.java")
                                 .compilationShouldSucceed()
-                                .resourceShouldMatch(JavaFileObjects.forResource("testcases/generators/expectedResult.txt"))
+                                .javaFileObjectShouldMatch(JavaFileObjects.forResource("testcases/generators/expectedResult.txt"))
                                 .build()
                 },
 

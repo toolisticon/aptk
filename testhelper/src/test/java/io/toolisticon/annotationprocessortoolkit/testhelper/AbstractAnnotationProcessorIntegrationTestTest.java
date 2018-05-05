@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper;
 
+import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
@@ -12,6 +13,9 @@ import org.junit.runners.Parameterized;
 import javax.annotation.processing.Processor;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
+import javax.tools.JavaFileObject;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -181,7 +185,29 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                         null
                 },
 
-
+                {
+                        "Test compilation with java file creation",
+                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
+                                .setSourceFileToCompile("TestClass.java")
+                                .compilationShouldSucceed()
+                                .javaFileObjectShouldMatch(JavaFileObjects.forSourceString("Test", "public class Test{}"))
+                                .build(),
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+                                try {
+                                    JavaFileObject javaFileObject = processingEnv.getFiler().createSourceFile("Test", element);
+                                    OutputStream os = javaFileObject.openOutputStream();
+                                    os.write("public class Test{}".getBytes());
+                                    os.flush();
+                                    os.close();
+                                } catch (IOException e) {
+                                    processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "HAD SOME ISSUES WITH FILE CREATION", element);
+                                }
+                            }
+                        },
+                        null
+                },
 
 
         });
