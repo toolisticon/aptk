@@ -13,7 +13,7 @@ public class TemplateProcessor {
     public static String processTemplate(String templateString, Map<String, Object> values) {
 
         TemplateBlockBinder binder = ParseUtilities.parseString(templateString);
-        return binder != null ? binder.getContent(values) : null;
+        return binder.getContent(values);
 
     }
 
