@@ -3,7 +3,7 @@
 
     <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
     <artifactId>annotationprocessortoolkit-parent</artifactId>
-    <version>0.10.0</version>
+    <version>0.10.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>annotationprocessortoolkit-parent</name>
@@ -73,7 +73,7 @@
         <connection>scm:git:git@github.com:toolisticon/annotation-processor-toolkit.git</connection>
         <developerConnection>scm:git:git@github.com:toolisticon/annotation-processor-toolkit.git</developerConnection>
         <url>git@github.com:toolisticon/annotation-processor-toolkit.git</url>
-        <tag>annotationprocessortoolkit-parent-0.10.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
