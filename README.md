@@ -44,7 +44,7 @@ This can be done by adding the following to your annotation processors pom.xml:
          <dependency>
              <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
              <artifactId>annotationprocessor</artifactId>
-             <version>0.9.0</version>
+             <version>0.10.0</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
@@ -92,6 +92,115 @@ This can be done by adding the following to your annotation processors pom.xml:
 Then your annotation processor needs to extends the io.toolisticon.annotationprocessor.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
 
 Please check our example provided in the github.
+
+# Examples
+
+## Enhanced utility support
+Java itself offers the following utility classes to support you build annotation processors:
+
+- Elements
+- Types
+- Messager
+- Filer
+
+This project provides enhanced support for this classes.
+All Utility classes are named like the standard java classes suffixed with Utils.
+
+    // Check if TypeMirror is Array
+    boolean isArray = TypeUtils.CheckTypeKind.isArray(aTypeMirror);
+
+    // get TypeElement or TypeMirrors easily
+    TypeElement typeElement1 = TypeUtils.TypeRetrieval.getTypeElement("fqn.name.of.Clazz");
+    TypeElement typeElement2 = TypeUtils.TypeRetrieval.getTypeElement(Clazz.class);
+    TypeMirror typeMirror1 = TypeUtils.TypeRetrieval.getTypeMirror("fqn.name.of.Clazz");
+    TypeMirror typeMirror2 = TypeUtils.TypeRetrieval.getTypeMirror(Clazz.class);
+
+    boolean checkAssignability = TypeUtils.TypeComparison.isAssignableTo(typeMirror1, typeMirror2);
+
+    // get all enclosed elements annotated with Deprecated annotation
+    List<? extends Element> enclosedElements = ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element,Deprecated.class);
+
+This is are just a few examples of the provided tools. Please check the javadoc for more information.
+
+
+## Criteria Matching, validation and filtering of Elements with CoreMatchers and fluent API
+
+Matchers can be used to check if an Element matches a specific criteria.
+Validation will check for a combination of multiple criteria.
+Filters will filter a List of Elements by specific criteria.
+
+Examples:
+
+    List<Element> elements = new ArrayList<Element>();
+
+    // validator already will print output so additional actions are not necessary
+    FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castToTypeElement(element))
+            .applyValidator(CoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(SpecificInterface.class)
+            .validateAndIssueMessages();
+
+    // Matcher checks for a single criteria
+    boolean isPublic = CoreMatchers.BY_MODIFIER.getMatcher().checkForMatchingCharacteristic(element, Modifier.PUBLIC);
+
+    // Validator checks for multiple criteria : none of, one of, at least one of or all of
+    boolean isPublicAndStatic = CoreMatchers.BY_MODIFIER.getValidator().hasAllOf(element, Modifier.PUBLIC,Modifier.STATIC);
+
+    // Filter checks for multiple criteria and returns a List that contains all matching elements
+    List<Element> isPublicAndStaticElements = CoreMatchers.BY_MODIFIER.getFilter().filterByAllOf(elements, Modifier.PUBLIC,Modifier.STATIC);
+
+    // Just validates without sending messages
+    boolean isPublicAndStatic2 = FluentElementValidator.createFluentElementValidator(element)
+            .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
+            .justValidate();
+
+    // Validate and send messages in case of failing validation
+    FluentElementValidator.createFluentElementValidator(element)
+            .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
+            .validateAndIssueMessages();
+
+
+    // Filters list by criteria : returns all method Elements that are public and static
+    List<ExecutableElement> filteredElements = FluentElementFilter.createFluentElementFilter(elements)
+            .applyFilter(CoreMatchers.IS_METHOD)
+            .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC,Modifier.STATIC)
+            .getResult();
+
+
+
+
+## Template based resource file creation
+
+Resource file creation and source file creation is very simple:
+
+### Sample template file
+A rudimentary templating mechanism can be used to create resources.
+It provides functionality of dynamic text replacement and for and if control blocks.
+
+    !<if textArray != null>
+        !<for text:textArray>
+            Dynamic text: !{text}<br />
+        !</for>
+    !</if>
+
+### Sample code
+
+    String[] textArray = {"A","B","C"};
+
+    // create Model
+    Map<String, Object> model = new HashMap<String, Object>();
+    model.put("textArray", textArray);
+
+    final String package = "io.toolisticon.example";
+    final String fileName = "generatedExample.txt";
+
+    try {
+        // template is loaded resource
+        SimpleResourceWriter resourceWriter = FilerUtils.createResource(StandardLocation.CLASS_OUTPUT, package, fileName);
+        resourceWriter.writeTemplate("example.tpl", model);
+        resourceWriter.close();
+    } catch (IOException e) {
+        MessagerUtils.error(null, "Example file creation failed for package '${0}' and filename '${1}'", package, fileName);
+    }
+
 
 # Projects using this toolkit library
 
