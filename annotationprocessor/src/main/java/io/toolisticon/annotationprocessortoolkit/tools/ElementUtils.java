@@ -1,6 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -8,8 +9,10 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -810,6 +813,105 @@ public final class ElementUtils {
 
             }
 
+        }
+
+
+    }
+
+    /**
+     * Utility cass to access enclosed elements of a {@link Element}.
+     */
+    public static final class AccessTypeHierarchy {
+
+        /**
+         * Hidden constructor.
+         */
+        private AccessTypeHierarchy() {
+            // does nothing except preventing instantiation
+        }
+
+        /**
+         * Gets the direct super TypeElements.
+         * The super Type is followed by all implemented interfaces
+         *
+         * @param typeElement the typeElement to get the direct Super types for.
+         * @return an array containing all direct super types or an empty array if no super types can be found (f.e. for Object)
+         */
+        public static TypeElement[] getDirectSuperTypeElements(TypeElement typeElement) {
+
+            if (typeElement == null) {
+                return new TypeElement[0];
+            }
+
+            List<? extends TypeMirror> superTypeMirrors = TypeUtils.getTypes().directSupertypes(typeElement.asType());
+
+            List<TypeElement> superTypeElements = new ArrayList<TypeElement>();
+
+            for (TypeMirror superTypeMirror : superTypeMirrors) {
+
+                superTypeElements.add(TypeUtils.TypeRetrieval.getTypeElement(superTypeMirror));
+
+            }
+
+            return superTypeElements.toArray(new TypeElement[superTypeElements.size()]);
+        }
+
+        /**
+         * Gets all super types of passed typeElement instance.
+         * The result array contains all super types in hierachical order (bottom up) followed by all implemented interfaces.
+         *
+         * @param typeElement the typeElement to get the super types for.
+         * @return an array containing all direct super types or an empty array if no super types can be found (f.e. for Object)
+         */
+        public static TypeElement[] getSuperTypeElements(TypeElement typeElement) {
+
+            // get super types
+            TypeElement[] superTypes = getDirectSuperTypeElements(typeElement);
+
+
+            // this is not that performant, but i guess it's ok since it's only used at compile time.
+            List<TypeElement> superTypeElements = new ArrayList<TypeElement>();
+
+            for (TypeElement superType : superTypes) {
+                superTypeElements.add(superType);
+
+                List<TypeElement> elementsToBeAdded = Arrays.asList(getSuperTypeElements(superType));
+
+                for (TypeElement elementToBeAdded : elementsToBeAdded) {
+                    if (!superTypeElements.contains(elementToBeAdded)) {
+                        superTypeElements.add(elementToBeAdded);
+                    }
+                }
+            }
+
+            return superTypeElements.toArray(new TypeElement[superTypeElements.size()]);
+        }
+
+
+        public static TypeElement getDirectSuperTypeElementOfKindType(TypeElement typeElement) {
+
+            FluentElementFilter<TypeElement> fluentElementFilter = FluentElementFilter.createFluentElementFilter(Arrays.asList(getDirectSuperTypeElements(typeElement))).applyFilter(CoreMatchers.IS_CLASS);
+            return fluentElementFilter.hasSingleElement() ? fluentElementFilter.getResult().get(0) : null;
+
+        }
+
+        public static TypeElement[] getDirectSuperTypeElementsOfKindInterface(TypeElement typeElement) {
+
+            List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getDirectSuperTypeElements(typeElement))).applyFilter(CoreMatchers.IS_INTERFACE).getResult();
+            return resultList.toArray(new TypeElement[resultList.size()]);
+        }
+
+
+        public static TypeElement[] getSuperTypeElementsOfKindType(TypeElement typeElement) {
+
+            List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getSuperTypeElements(typeElement))).applyFilter(CoreMatchers.IS_CLASS).getResult();
+            return resultList.toArray(new TypeElement[resultList.size()]);
+        }
+
+        public static TypeElement[] getSuperTypeElementsOfKindInterface(TypeElement typeElement) {
+
+            List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getSuperTypeElements(typeElement))).applyFilter(CoreMatchers.IS_INTERFACE).getResult();
+            return resultList.toArray(new TypeElement[resultList.size()]);
         }
 
 

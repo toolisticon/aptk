@@ -3,7 +3,7 @@ package io.toolisticon.annotationprocessortoolkit.tools.corematcher;
 /**
  * Core Matcher failing validation default messages
  */
-public enum CoreMatcherValidationMessages implements ValidationMessage{
+public enum CoreMatcherValidationMessages implements ValidationMessage {
 
     BY_NAME("CM_BY_NAME", "Elements name must ${0} match ${1} of the following names: ${2}"),
     BY_NAME_REGEX("CM_BY_NAME_REGEX", "Elements name must ${0} match ${1} of the following regular expressions ${2}"),
@@ -13,9 +13,14 @@ public enum CoreMatcherValidationMessages implements ValidationMessage{
     BY_MODIFIER("CM_BY_MODIFIER", "Element must ${0} have ${1} of the following modifiers: ${2}"),
     BY_PARAMETER_TYPE("CM_BY_PARAMETER_TYPE", "Element must ${0} have  ${1} of the following parameter type sets: ${2}"),
     BY_PARAMETER_TYPE_FQN("CM_BY_PARAMETER_TYPE_FQN", "Element must ${0} have  ${1} of the following parameter type sets: ${2}"),
+    BY_PARAMETER_TYPE_MIRROR("CM_BY_PARAMETER_TYPE_MIRROR", "Element must ${0} have  ${1} of the following parameter type sets: ${2}"),
+    BY_RETURN_TYPE("CM_BY_RETURN_TYPE", "Element must ${0} have  ${1} of the following return type: ${2}"),
+    BY_RETURN_TYPE_FQN("CM_BY_RETURN_TYPE_FQN", "Element must ${0} have  ${1} of the following return type: ${2}"),
+    BY_RETURN_TYPE_MIRROR("CM_BY_RETURN_TYPE_MIRROR", "Element must ${0} have  ${1} of the following return type: ${2}"),
     BY_RAW_TYPE("CM_BY_RAW_TYPE", "Element must ${0} have ${1} of the following raw types: ${2}"),
     IS_ASSIGNABLE_TO("CM_IS_ASSIGNABLE_TO", "Element must ${0} be assignable to ${1} of the following types: ${2}"),
     HAS_VOID_RETURN_TYPE("CM_HAS_VOID_RETURN_TYPE", "Element must ${0} have void return type"),
+    HAS_NO_PARAMETERS("CM_HAS_NOARGS", "Element must ${0} have no arguments"),
     IS_EXECUTABLE_ELEMENT("CM_IS_EXECTUABLE_ELEMENT", "Element must ${0} be a ExecutableElement"),
     IS_TYPE_ELEMENT("CM_IS_TYPE_ELEMENT", "Element must ${0} be a TypeElement"),
     IS_VARIABLE_ELEMENT("CM_IS_VARIABLE_ELEMENT", "Element must ${0} be a VariableElement"),

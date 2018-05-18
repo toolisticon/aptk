@@ -9,7 +9,12 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByNameMatche
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByNameRegexMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeFqnMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeMirrorMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByRawTypeMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnTypeFqnMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnTypeMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnTypeMirrorMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasNoParametersMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasVoidReturnTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAnnotationTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAssignableToMatcher;
@@ -33,6 +38,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
 
 /**
@@ -100,6 +106,27 @@ public class CoreMatchers {
     public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, Class[]> BY_PARAMETER_TYPE = new ExclusiveCriteriaCoreMatcher<ExecutableElement, Class[]>(new ByParameterTypeMatcher(), CoreMatcherValidationMessages.BY_PARAMETER_TYPE);
 
     /**
+     * Matcher to check if an ExecutableElement has specific parameter types
+     */
+    public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, TypeMirror[]> BY_PARAMETER_TYPE_MIRROR = new ExclusiveCriteriaCoreMatcher<ExecutableElement, TypeMirror[]>(new ByParameterTypeMirrorMatcher(), CoreMatcherValidationMessages.BY_PARAMETER_TYPE_MIRROR);
+
+    /**
+     * Matcher to check if an ExecutableElement has specific parameter types
+     */
+    public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, String> BY_RETURN_TYPE_FQN = new ExclusiveCriteriaCoreMatcher<ExecutableElement, String>(new ByReturnTypeFqnMatcher(), CoreMatcherValidationMessages.BY_RETURN_TYPE_FQN);
+
+    /**
+     * Matcher to check if an ExecutableElement has specific parameter types
+     */
+    public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, Class> BY_RETURN_TYPE = new ExclusiveCriteriaCoreMatcher<ExecutableElement, Class>(new ByReturnTypeMatcher(), CoreMatcherValidationMessages.BY_RETURN_TYPE);
+
+    /**
+     * Matcher to check if an ExecutableElement has specific parameter types
+     */
+    public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, TypeMirror> BY_RETURN_TYPE_MIRROR = new ExclusiveCriteriaCoreMatcher<ExecutableElement, TypeMirror>(new ByReturnTypeMirrorMatcher(), CoreMatcherValidationMessages.BY_RETURN_TYPE_MIRROR);
+
+
+    /**
      * Matcher to check if an Element is assignable to a specific type
      */
     public final static ExclusiveCriteriaElementBasedCoreMatcher<Class> IS_ASSIGNABLE_TO = new ExclusiveCriteriaElementBasedCoreMatcher<Class>(new IsAssignableToMatcher(), CoreMatcherValidationMessages.IS_ASSIGNABLE_TO);
@@ -110,6 +137,8 @@ public class CoreMatchers {
     // ---------------------------------------------------------------------------------
 
     public final static ImplicitCoreMatcher<ExecutableElement> HAS_VOID_RETURN_TYPE = new ImplicitCoreMatcher<ExecutableElement>(new HasVoidReturnTypeMatcher(), CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE);
+
+    public final static ImplicitCoreMatcher<ExecutableElement> HAS_NO_PARAMETERS = new ImplicitCoreMatcher<ExecutableElement>(new HasNoParametersMatcher(), CoreMatcherValidationMessages.HAS_NO_PARAMETERS);
 
     // ---------------------------------------------------------------------------------
     // -- IS CORE MATCHER
