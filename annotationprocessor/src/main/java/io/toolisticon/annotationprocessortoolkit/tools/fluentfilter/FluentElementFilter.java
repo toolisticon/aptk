@@ -10,11 +10,16 @@ import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsCoreMatcher
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.filter.ExclusiveCriteriaElementFilter;
 import io.toolisticon.annotationprocessortoolkit.tools.filter.InclusiveCriteriaElementFilter;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.impl.ElementBasedTransitionFilter;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.impl.TransitionFilter;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.validator.ExclusiveCriteriaElementValidator;
 import io.toolisticon.annotationprocessortoolkit.tools.validator.InclusiveCriteriaElementValidator;
 
 import javax.lang.model.element.Element;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -200,7 +205,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @param coreMatcher the implicit core matcher to use
      * @return the FluentElementFilter instance
      */
-    public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT>  coreMatcher) {
+    public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
 
         elements = (List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true);
         return FluentElementFilter.this;
@@ -373,6 +378,42 @@ public class FluentElementFilter<ELEMENT extends Element> {
     // -------------------------------------------------------------
 
     /**
+     * Applies transition filter.
+     *
+     * @param transitionFilter the transition filter to use
+     * @param <TARGET_ELEMENT>
+     * @return the new FluentElementFilter instance based on transition filter result
+     */
+    public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyTransitionFilter(TransitionFilter<ELEMENT, TARGET_ELEMENT> transitionFilter) {
+
+        return new FluentElementFilter<TARGET_ELEMENT>(transitionFilter.transition(elements));
+
+    }
+
+
+    /**
+     * Applies transition filter.
+     *
+     * @param transitionFilter the transition filter to use
+     * @param <TARGET_ELEMENT>
+     * @return the new FluentElementFilter instance based on transition filter result
+     */
+    public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyTransitionFilter(ElementBasedTransitionFilter<TARGET_ELEMENT> transitionFilter) {
+
+        return new FluentElementFilter<TARGET_ELEMENT>(transitionFilter.transition(elements));
+
+    }
+
+    /**
+     * Removes all duplicate values.
+     * @return this instance
+     */
+    public FluentElementFilter<ELEMENT> removeDuplicates() {
+        elements = (List<ELEMENT>) TransitionFilters.REMOVE_DUPLICATES_ELEMENTS.transition(elements);
+        return this;
+    }
+
+    /**
      * Gets the filter result.
      *
      * @return the filtered List
@@ -420,6 +461,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
         return elements != null && elements.size() == size;
     }
 
+
     /**
      * Gets the result size.
      *
@@ -439,6 +481,17 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public static <E extends Element> FluentElementFilter<E> createFluentElementFilter(List<E> elements) {
         return new FluentElementFilter<E>(elements);
+    }
+
+    /**
+     * Factory method to create FluentElementFilter instance.
+     *
+     * @param elements the elements to filter
+     * @param <E>      The element type
+     * @return the FluentElementFilter instance
+     */
+    public static <E extends Element> FluentElementFilter<E> createFluentElementFilter(E... elements) {
+        return new FluentElementFilter<E>(new ArrayList<E>(elements != null ? Arrays.asList(elements) : Collections.EMPTY_LIST));
     }
 
 

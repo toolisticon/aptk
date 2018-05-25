@@ -1,6 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentfilter;
 
 import io.toolisticon.annotationprocessortoolkit.tools.TestCoreMatcherFactory;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -671,6 +672,18 @@ public class FluentElementFilterTest {
                 .getResult();
 
         MatcherAssert.assertThat(resultList, Matchers.contains(list.get(1), list.get(3), list.get(4)));
+
+    }
+
+    @Test
+    public void testRemoveDuplicates () {
+
+        Element element = Mockito.mock(Element.class);
+
+        MatcherAssert.assertThat("PRECONDITION : MUST contain double Elements", FluentElementFilter.createFluentElementFilter(element,element).getResult(), Matchers.contains(element, element));
+
+
+        MatcherAssert.assertThat(FluentElementFilter.createFluentElementFilter(element,element).removeDuplicates().getResult(), Matchers.contains(element));
 
     }
 
