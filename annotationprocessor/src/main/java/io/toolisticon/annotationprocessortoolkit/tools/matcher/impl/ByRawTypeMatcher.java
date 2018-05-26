@@ -3,12 +3,13 @@ package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
 /**
  * Matcher for raw types.
  */
-public class ByRawTypeMatcher implements CriteriaMatcher<TypeElement, Class> {
+public class ByRawTypeMatcher implements CriteriaMatcher<Element, Class> {
 
     public ByRawTypeMatcher() {
         super();
@@ -18,7 +19,7 @@ public class ByRawTypeMatcher implements CriteriaMatcher<TypeElement, Class> {
      * {@inheritDoc}
      */
     @Override
-    public boolean checkForMatchingCharacteristic(TypeElement element, Class toCheckFor) {
+    public boolean checkForMatchingCharacteristic(Element element, Class toCheckFor) {
 
         if (element == null || toCheckFor == null) {
             return false;

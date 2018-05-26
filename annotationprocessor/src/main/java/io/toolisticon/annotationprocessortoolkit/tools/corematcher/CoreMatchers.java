@@ -92,7 +92,7 @@ public class CoreMatchers {
     /**
      * Matcher to check if an TypeElement matches a specific generic type.
      */
-    public final static ExclusiveCriteriaCoreMatcher<TypeElement, Class> BY_RAW_TYPE = new ExclusiveCriteriaCoreMatcher<TypeElement, Class>(new ByRawTypeMatcher(), CoreMatcherValidationMessages.BY_RAW_TYPE);
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<Class> BY_RAW_TYPE = new ExclusiveCriteriaElementBasedCoreMatcher<Class>(new ByRawTypeMatcher(), CoreMatcherValidationMessages.BY_RAW_TYPE);
 
 
     /**
