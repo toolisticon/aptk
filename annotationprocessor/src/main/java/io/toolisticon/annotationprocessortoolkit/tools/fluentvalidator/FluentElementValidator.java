@@ -1,6 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator;
 
 import io.toolisticon.annotationprocessortoolkit.tools.command.Command;
+import io.toolisticon.annotationprocessortoolkit.tools.command.CommandWithReturnType;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ImplicitCoreMatcher;
@@ -71,12 +72,13 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
         /**
          * Set custom message.
+         *
          * @param customMessage
          * @param messagArgs
          * @return
          */
         public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(ValidationMessage customMessage, Object... messagArgs) {
-            return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.setCustomMessage(customMessage,messagArgs);
+            return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.setCustomMessage(customMessage, messagArgs);
         }
 
         /**
@@ -880,6 +882,30 @@ public class FluentElementValidator<ELEMENT extends Element> {
         if (command != null && fluentValidatorState.getValidationResult()) {
             command.execute(element);
         }
+    }
+
+
+    /**
+     * Executes passed command if validation was successful, issues messages afterwards.
+     *
+     * @param command
+     */
+    public <RETURN_TYPE> RETURN_TYPE executeCommandAndIssueMessages(CommandWithReturnType<ELEMENT, RETURN_TYPE> command) {
+        RETURN_TYPE result = executeCommand(command);
+        fluentValidatorState.issueMessages();
+        return result;
+    }
+
+    /**
+     * Executes passed command if validation was successful.
+     *
+     * @param command
+     */
+    public <RETURN_TYPE> RETURN_TYPE executeCommand(CommandWithReturnType<ELEMENT, RETURN_TYPE> command) {
+        if (command != null && fluentValidatorState.getValidationResult()) {
+            return command.execute(element);
+        }
+        return null;
     }
 
     /**

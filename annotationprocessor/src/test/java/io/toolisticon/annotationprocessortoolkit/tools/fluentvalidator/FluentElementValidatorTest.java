@@ -1,7 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator;
 
 import com.google.testing.compile.JavaFileObjects;
-import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
@@ -10,6 +9,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.ProcessingEnvironmentUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TestCoreMatcherFactory;
 import io.toolisticon.annotationprocessortoolkit.tools.command.Command;
+import io.toolisticon.annotationprocessortoolkit.tools.command.CommandWithReturnType;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
@@ -2079,6 +2079,38 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
                         },
                         {
+                                "execute command with return value - if validation succeeds",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              MatcherAssert.assertThat(
+                                                                      FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true))
+                                                                              .executeCommand(
+                                                                                      new CommandWithReturnType<TypeElement, String>() {
+                                                                                          @Override
+                                                                                          public String execute(TypeElement element) {
+                                                                                              ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.NOTE, "EXECUTED COMMAND");
+                                                                                              return "YES!";
+                                                                                          }
+                                                                                      }),
+                                                                      Matchers.is("YES!")
+                                                              );
+
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setNoteChecks("EXECUTED COMMAND")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
                                 "don't execute command but trigger validation message - if validation fails",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
                                         .compilationShouldSucceed()
@@ -2114,7 +2146,33 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
                                                                               new Command<TypeElement>() {
                                                                                   @Override
                                                                                   public void execute(TypeElement element) {
-                                                                                      ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
+                                                                                     throw new IllegalStateException("Shouldn't execute command if validation fails");
+                                                                                  }
+                                                                              });
+                                                          }
+                                                      }
+                                        )
+                                        .addMessageValidator()
+                                        .setErrorChecks("FAILURE")
+                                        .finishMessageValidator()
+                                        .build()
+
+
+                        },
+                        {
+                                "don't execute command with return value - if validation fails",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldFail()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                                                      .executeCommandAndIssueMessages(
+                                                                              new CommandWithReturnType<TypeElement, String>() {
+                                                                                  @Override
+                                                                                  public String execute(TypeElement element) {
+                                                                                      throw new IllegalStateException("Shouldn't execute command if validation fails");
                                                                                   }
                                                                               });
                                                           }
@@ -2193,6 +2251,7 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
 
                         },
+
 
                 }
 

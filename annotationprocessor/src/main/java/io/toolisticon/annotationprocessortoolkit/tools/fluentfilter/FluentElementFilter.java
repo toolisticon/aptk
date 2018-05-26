@@ -1,5 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentfilter;
 
+import io.toolisticon.annotationprocessortoolkit.tools.command.Command;
+import io.toolisticon.annotationprocessortoolkit.tools.command.CommandWithReturnType;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ExclusiveCriteriaElementBasedCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ImplicitCoreMatcher;
@@ -406,12 +408,58 @@ public class FluentElementFilter<ELEMENT extends Element> {
 
     /**
      * Removes all duplicate values.
+     *
      * @return this instance
      */
     public FluentElementFilter<ELEMENT> removeDuplicates() {
         elements = (List<ELEMENT>) TransitionFilters.REMOVE_DUPLICATES_ELEMENTS.transition(elements);
         return this;
     }
+
+    /**
+     * Executes commands.
+     *
+     * @param command the command to be executed
+     */
+    public void executeCommand(Command<ELEMENT> command) {
+
+        if (command != null) {
+
+            for (ELEMENT element : elements) {
+
+                command.execute(element);
+
+            }
+
+        }
+
+    }
+
+
+    /**
+     * Executes command with a return value.
+     * Returns a list that contains all return values of executed commands.
+     *
+     * @param command       the command to be executed
+     * @param <RETURN_TYPE> the return type
+     * @return a list containing all results of executed commands
+     */
+    public <RETURN_TYPE> List<RETURN_TYPE> executeCommand(CommandWithReturnType<ELEMENT, RETURN_TYPE> command) {
+        List<RETURN_TYPE> resultList = new ArrayList<RETURN_TYPE>();
+
+        if (command != null) {
+
+            for (ELEMENT element : elements) {
+
+                resultList.add(command.execute(element));
+
+            }
+
+        }
+
+        return resultList;
+    }
+
 
     /**
      * Gets the filter result.

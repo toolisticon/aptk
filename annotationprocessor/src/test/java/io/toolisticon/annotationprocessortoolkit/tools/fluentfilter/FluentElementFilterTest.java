@@ -1,7 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentfilter;
 
 import io.toolisticon.annotationprocessortoolkit.tools.TestCoreMatcherFactory;
-import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
+import io.toolisticon.annotationprocessortoolkit.tools.command.Command;
+import io.toolisticon.annotationprocessortoolkit.tools.command.CommandWithReturnType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -676,15 +677,88 @@ public class FluentElementFilterTest {
     }
 
     @Test
-    public void testRemoveDuplicates () {
+    public void testRemoveDuplicates() {
 
         Element element = Mockito.mock(Element.class);
 
-        MatcherAssert.assertThat("PRECONDITION : MUST contain double Elements", FluentElementFilter.createFluentElementFilter(element,element).getResult(), Matchers.contains(element, element));
+        MatcherAssert.assertThat("PRECONDITION : MUST contain double Elements", FluentElementFilter.createFluentElementFilter(element, element).getResult(), Matchers.contains(element, element));
 
 
-        MatcherAssert.assertThat(FluentElementFilter.createFluentElementFilter(element,element).removeDuplicates().getResult(), Matchers.contains(element));
+        MatcherAssert.assertThat(FluentElementFilter.createFluentElementFilter(element, element).removeDuplicates().getResult(), Matchers.contains(element));
 
     }
+
+
+    @Test
+    public void testExecuteCommandWithNullValuedCommand() {
+
+        Element element = Mockito.mock(Element.class);
+
+        FluentElementFilter.createFluentElementFilter(element).executeCommand((Command) null);
+
+    }
+
+    @Test
+    public void testExecuteCommandWithNullValuedCommandWithReturnValue() {
+
+        Element element = Mockito.mock(Element.class);
+
+        MatcherAssert.assertThat(
+                FluentElementFilter.createFluentElementFilter(element).executeCommand((CommandWithReturnType<Element, String>) null),
+                Matchers.hasSize(0));
+
+    }
+
+
+    public static class ExecutionCounter {
+
+        private int counter = 0;
+
+        public void addExecution() {
+            counter++;
+        }
+
+        public int getCounter() {
+            return counter;
+        }
+    }
+
+    @Test
+    public void testExecuteCommand() {
+
+        final Element element = Mockito.mock(Element.class);
+        final ExecutionCounter executionCounter = new ExecutionCounter();
+
+        FluentElementFilter.createFluentElementFilter(element).executeCommand(new Command<Element>() {
+            @Override
+            public void execute(Element element1) {
+                MatcherAssert.assertThat(element1, Matchers.is(element));
+                executionCounter.addExecution();
+            }
+        });
+
+        MatcherAssert.assertThat(executionCounter.getCounter(),Matchers.is(1));
+
+    }
+
+    @Test
+    public void testExecuteCommandWithReturnValue() {
+
+        final Element element = Mockito.mock(Element.class);
+
+        MatcherAssert.assertThat(
+                FluentElementFilter.createFluentElementFilter(element).executeCommand(new CommandWithReturnType<Element, String>() {
+                    @Override
+                    public String execute(Element element1) {
+
+                        MatcherAssert.assertThat(element1, Matchers.is(element));
+
+                        return "YES";
+                    }
+                }),
+                Matchers.contains("YES"));
+
+    }
+
 
 }
