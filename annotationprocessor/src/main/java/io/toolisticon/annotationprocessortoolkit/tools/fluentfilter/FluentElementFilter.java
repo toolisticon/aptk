@@ -70,8 +70,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @return the FluentElementFilter instance
          */
         public FluentElementFilter<ELEMENT> filterByOneOf(CRITERIA... criteria) {
-            elements = (List<ELEMENT>) filter.filterByOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria);
-            return FluentElementFilter.this;
+            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
         /**
@@ -82,8 +81,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @return the FluentElementFilter instance
          */
         public FluentElementFilter<ELEMENT> filterByNoneOf(CRITERIA... criteria) {
-            elements = (List<ELEMENT>) filter.filterByNoneOf((List<FILTER_ELEMENT>) elements, inverted, criteria);
-            return FluentElementFilter.this;
+            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByNoneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
 
@@ -113,8 +111,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @return the FluentElementFilter instance
          */
         public FluentElementFilter<ELEMENT> filterByOneOf(CHARACTERISTIC... criteria) {
-            elements = (List<ELEMENT>) filter.filterByOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria);
-            return FluentElementFilter.this;
+            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
         /**
@@ -125,8 +122,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @return the FluentElementFilter instance
          */
         public FluentElementFilter<ELEMENT> filterByNoneOf(CHARACTERISTIC... criteria) {
-            elements = (List<ELEMENT>) filter.filterByNoneOf((List<FILTER_ELEMENT>) elements, inverted, criteria);
-            return FluentElementFilter.this;
+            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByNoneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
         /**
@@ -137,8 +133,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @return the FluentElementFilter instance
          */
         public FluentElementFilter<ELEMENT> filterByAtLeastOneOf(CHARACTERISTIC... criteria) {
-            elements = (List<ELEMENT>) filter.filterByAtLeastOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria);
-            return FluentElementFilter.this;
+            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByAtLeastOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
         /**
@@ -149,8 +144,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @return the FluentElementFilter instance
          */
         public FluentElementFilter<ELEMENT> filterByAllOf(CHARACTERISTIC... criteria) {
-            elements = (List<ELEMENT>) filter.filterByAllOf((List<FILTER_ELEMENT>) elements, inverted, criteria);
-            return FluentElementFilter.this;
+            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByAllOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
 
@@ -169,8 +163,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyFilter(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
 
-        elements = coreMatcher.getFilter().filter(elements);
-        return new FluentElementFilter<TARGET_ELEMENT>((List<TARGET_ELEMENT>) elements);
+        return new FluentElementFilter<TARGET_ELEMENT>((List<TARGET_ELEMENT>) coreMatcher.getFilter().filter(elements));
 
     }
 
@@ -182,8 +175,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
 
-        elements = coreMatcher.getFilter().filter(elements, true);
-        return FluentElementFilter.this;
+        return new FluentElementFilter<ELEMENT>(coreMatcher.getFilter().filter(elements, true));
 
     }
 
@@ -196,8 +188,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
 
-        elements = (List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements);
-        return new FluentElementFilter<TARGET_ELEMENT>((List<TARGET_ELEMENT>) elements);
+        return new FluentElementFilter<TARGET_ELEMENT>((List<TARGET_ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements));
+
 
     }
 
@@ -209,8 +201,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
 
-        elements = (List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true);
-        return FluentElementFilter.this;
+        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true));
 
     }
 
@@ -252,8 +243,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public FluentElementFilter<ELEMENT> applyFilter(ImplicitElementBasedCoreMatcher coreMatcher) {
 
-        elements = (List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements);
-        return FluentElementFilter.this;
+        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements));
 
     }
 
@@ -265,8 +255,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public FluentElementFilter<ELEMENT> applyInvertedFilter(ImplicitElementBasedCoreMatcher coreMatcher) {
 
-        elements = (List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true);
-        return FluentElementFilter.this;
+        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true));
 
     }
 
@@ -412,8 +401,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @return this instance
      */
     public FluentElementFilter<ELEMENT> removeDuplicates() {
-        elements = (List<ELEMENT>) TransitionFilters.REMOVE_DUPLICATES_ELEMENTS.transition(elements);
-        return this;
+        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) TransitionFilters.REMOVE_DUPLICATES_ELEMENTS.transition(elements));
     }
 
     /**
