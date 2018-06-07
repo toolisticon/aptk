@@ -44,7 +44,7 @@ This can be done by adding the following to your annotation processors pom.xml:
          <dependency>
              <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
              <artifactId>annotationprocessor</artifactId>
-             <version>0.10.0</version>
+             <version>0.10.1</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
@@ -175,11 +175,11 @@ Resource file creation and source file creation is very simple:
 A rudimentary templating mechanism can be used to create resources.
 It provides functionality of dynamic text replacement and for and if control blocks.
 
-    !<if textArray != null>
-        !<for text:textArray>
-            Dynamic text: !{text}<br />
-        !</for>
-    !</if>
+    !{if textArray != null}
+        !{for text:textArray}
+            Dynamic text: ${text}<br />
+        !{/for}
+    !{/if}
 
 ### Sample code
 

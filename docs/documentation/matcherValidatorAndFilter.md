@@ -8,7 +8,7 @@ order: 4
 
 The toolkit provides some predefined Matchers, Validators and Filters.
 
-Those matchers can be accessed in a static way by using the *Matchers*, *Validators* and *Filters* classes.
+Those can be accessed in a static way by using the *CoreMatchers* class.
 
 Currently processing by the following criteria is supported:
 
@@ -46,26 +46,20 @@ Filter can be used to filter Lists of Elements by using a specific validator.
 
 ### Fluent Validators
 
-There are currently 3 different fluent validators:
+The fluent element validator can be used do validations on Elements.
 
-- FluentExecutableElementValidator
-- FluentModifierElementValidator
-- FluentTypeElementValidator
-
-All of these fluent validators will trigger error or warning messages if validation fails.
+All of these fluent validators can trigger error or warning messages if validation fails.
 Per default a default error message is generated if a validation fails.
 The message level and message text can be overwritten by using the fluent api.
 
 #### Example
 ```java
-// usage of FluentExecutableElementValidator
-boolean result = new FluentExecutableElementValidator(getFrameworkToolWrapper(),element)
-    .isMethod()
-    .warning().setCustomMessage("MESSAGE WITH ${0}HOLDER", "PLACE").hasName("methodName")
-    .hasNonVoidReturnType()
-    .hasModifiers(Modifier.STATIC,Modifier.PUBLIC)
-    .hasParameters(String.class, Long.class)
-    .getValidationResult();
+// creates a fluent validator that issues messages if validation fails
+boolean result =
+    FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(element))
+        .applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+        .applyValidator(CoreMatchers.BY_PARAMETER_TYPE).hasOneOf(wrapToArray(String.class))
+        .validateAndIssueMessages();
 ```
 
 
@@ -75,9 +69,9 @@ The *FluentElementFilter* class can be used to filter Lists of Elements:
 
 ```java
 List<? extends Element> result =
-    FluentElementFilter.createFluentFilter(element.getEnclosedElements())
-        .applyFilter(Filters.getElementKindFilter()).filterByOneOf(ElementKind.METHOD)
-        .applyFilter(Filters.getNameFilter()).filterByOneOf("testGenericsOnParameter")
+    FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter")
         .getResult();
 ```
 

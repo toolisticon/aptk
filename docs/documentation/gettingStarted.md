@@ -27,7 +27,7 @@ You need to add the following dependencies to your Maven configuration, if you w
      <dependency>
          <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
          <artifactId>annotationprocessor</artifactId>
-         <version>0.9.0</version>
+         <version>0.10.1</version>
          <scope>compile</compile>
      </dependency>
 
