@@ -156,7 +156,7 @@ public class CoreMatchers {
     /**
      * Matcher to check if an TypeElement has a void return type
      */
-    public final static ImplicitCoreMatcher<Element> HAS_PUBLIC_NOARG_CONSTRUCTOR = new ImplicitCoreMatcher<Element>(new HasPublicNoargConstructorMatcher(), CoreMatcherValidationMessages.HAS_PUBLIC_NOARG_CONSTRUCTOR);
+    public final static ImplicitElementBasedCoreMatcher HAS_PUBLIC_NOARG_CONSTRUCTOR = new ImplicitElementBasedCoreMatcher(new HasPublicNoargConstructorMatcher(), CoreMatcherValidationMessages.HAS_PUBLIC_NOARG_CONSTRUCTOR);
 
 
     // ---------------------------------------------------------------------------------
