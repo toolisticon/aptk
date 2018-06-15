@@ -6,6 +6,7 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUni
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
@@ -33,7 +34,7 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
     @Before
     public void init() {
-        CoreMatcherValidationMessages.setPrintMessageCodes(true);
+        MessagerUtils.setPrintMessageCodes(true);
     }
 
     public FluentElementValidatorTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {

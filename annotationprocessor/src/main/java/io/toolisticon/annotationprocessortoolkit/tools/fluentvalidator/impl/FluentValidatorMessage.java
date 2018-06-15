@@ -1,6 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.impl;
 
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.PlainValidationMessage;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -14,20 +16,20 @@ public class FluentValidatorMessage {
 
     private final Element element;
     private final Diagnostic.Kind kind;
-    private final String message;
+    private final ValidationMessage message;
     private final Object[] args;
     private final AnnotationMirror annotationMirror;
     private final AnnotationValue annotationValue;
 
-    public FluentValidatorMessage(final Element element, Diagnostic.Kind kind, final String message, Object... args) {
+    public FluentValidatorMessage(final Element element, Diagnostic.Kind kind, final ValidationMessage message, Object... args) {
         this(element, null, kind, message, args);
     }
 
-    public FluentValidatorMessage(final Element element, final AnnotationMirror annotationMirror, Diagnostic.Kind kind, final String message, Object... args) {
+    public FluentValidatorMessage(final Element element, final AnnotationMirror annotationMirror, Diagnostic.Kind kind, final ValidationMessage message, Object... args) {
         this(element, annotationMirror, null, kind, message, args);
     }
 
-    public FluentValidatorMessage(final Element element, final AnnotationMirror annotationMirror, final AnnotationValue annotationValue, Diagnostic.Kind kind, final String message, Object... args) {
+    public FluentValidatorMessage(final Element element, final AnnotationMirror annotationMirror, final AnnotationValue annotationValue, Diagnostic.Kind kind, final ValidationMessage message, Object... args) {
 
         this.element = element;
         this.annotationMirror = annotationMirror;

@@ -10,6 +10,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.corematcher.InclusiveChar
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.InclusiveCriteriaCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsCoreMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.IsElementBasedCoreMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.PlainValidationMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.impl.FluentValidatorMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.impl.FluentValidatorState;
@@ -60,6 +61,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
             return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.note();
         }
 
+
         /**
          * Set custom message .
          *
@@ -67,6 +69,28 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * @return the fluent validator instance
          */
         public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(String customMessage) {
+            return setCustomMessage(PlainValidationMessage.create(customMessage));
+        }
+
+        /**
+         * Set custom message.
+         *
+         * @param customMessage
+         * @param messagArgs
+         * @return
+         */
+        public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(String customMessage, Object... messagArgs) {
+            return setCustomMessage(PlainValidationMessage.create(customMessage),messagArgs);
+        }
+
+
+        /**
+         * Set custom message .
+         *
+         * @param customMessage the custom message to use.
+         * @return the fluent validator instance
+         */
+        public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(ValidationMessage customMessage) {
             return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.setCustomMessage(customMessage);
         }
 
@@ -386,23 +410,13 @@ public class FluentElementValidator<ELEMENT extends Element> {
             if ((!validationResult && !inverted) || (validationResult && inverted)) {
                 fluentValidatorState.setAsFailedValidation();
 
-                if (nextValidationContext.getCustomMessage() != null) {
-                    if (nextValidationContext.getCustomMessage().getCode() == null) {
-                        fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), "[" + defaultMessage.getCode() + ": ]" + nextValidationContext.getCustomMessage().getMessage()));
-                    } else {
+                final boolean hasCustomMessage = nextValidationContext.getCustomMessage() != null;
 
-                        if (nextValidationContext.getMessageArgs() != null) {
-                            fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), nextValidationContext.getCustomMessage().getMessage(), nextValidationContext.getMessageArgs()));
-                        } else {
-                            fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), nextValidationContext.getCustomMessage().getMessage()));
-                        }
+                ValidationMessage forgedValidationMessage = !hasCustomMessage ? defaultMessage : PlainValidationMessage.create(nextValidationContext.getCustomMessage().getCode() != null ? nextValidationContext.getCustomMessage().getCode() : defaultMessage.getCode(), nextValidationContext.getCustomMessage().getMessage());
+                Object[] messageArgs = !hasCustomMessage ? messsageParameter : ( nextValidationContext.getMessageArgs() != null ? nextValidationContext.getMessageArgs() : new Object[0]);
 
+                fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), forgedValidationMessage,messageArgs));
 
-                    }
-
-                } else {
-                    fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), defaultMessage.getMessage(), messsageParameter));
-                }
 
                 // rest validation context for next validation
                 nextValidationContext.reset();
@@ -827,6 +841,14 @@ public class FluentElementValidator<ELEMENT extends Element> {
     }
 
     public PrepareApplyValidator<ELEMENT> setCustomMessage(String customMessage) {
+        return setCustomMessage(PlainValidationMessage.create(customMessage));
+    }
+
+    public PrepareApplyValidator<ELEMENT> setCustomMessage(String customMessage, Object... messagArgs) {
+        return setCustomMessage(PlainValidationMessage.create(customMessage), messagArgs);
+    }
+
+    public PrepareApplyValidator<ELEMENT> setCustomMessage(ValidationMessage customMessage) {
         this.nextValidationContext.setCustomMessage(customMessage);
         return new PrepareApplyValidator<ELEMENT>();
     }

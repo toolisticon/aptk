@@ -39,10 +39,6 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
     IS_PACKAGE("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a package"),;
 
 
-    /**
-     * Flag that defines if messages codes will be written as part of the message.
-     */
-    private static boolean printMessageCodes = false;
 
     /**
      * the message code.
@@ -79,17 +75,10 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
      * @return the message text
      */
     public String getMessage() {
-        return (printMessageCodes ? "[" + code + "] : " : "") + message;
+        return message;
     }
 
 
-    /**
-     * Allows toggling if message codes should be printed.
-     *
-     * @param printMessageCodes defines if message codes should be part of the message text
-     */
-    public static void setPrintMessageCodes(boolean printMessageCodes) {
-        CoreMatcherValidationMessages.printMessageCodes = printMessageCodes;
-    }
+
 
 }

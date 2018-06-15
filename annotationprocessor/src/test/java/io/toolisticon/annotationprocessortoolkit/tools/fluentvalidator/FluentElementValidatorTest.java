@@ -6,12 +6,14 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUni
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.ProcessingEnvironmentUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TestCoreMatcherFactory;
 import io.toolisticon.annotationprocessortoolkit.tools.command.Command;
 import io.toolisticon.annotationprocessortoolkit.tools.command.CommandWithReturnType;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.PlainValidationMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -41,7 +43,7 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
     @Before
     public void init() {
-        CoreMatcherValidationMessages.setPrintMessageCodes(true);
+        MessagerUtils.setPrintMessageCodes(true);
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
@@ -2146,7 +2148,7 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
                                                                               new Command<TypeElement>() {
                                                                                   @Override
                                                                                   public void execute(TypeElement element) {
-                                                                                     throw new IllegalStateException("Shouldn't execute command if validation fails");
+                                                                                      throw new IllegalStateException("Shouldn't execute command if validation fails");
                                                                                   }
                                                                               });
                                                           }
@@ -2228,17 +2230,8 @@ public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitT
 
                                                               FluentElementValidator.createFluentElementValidator(element)
                                                                       .error().setCustomMessage(
-                                                                      new ValidationMessage() {
-                                                                          @Override
-                                                                          public String getCode() {
-                                                                              return "XXX";
-                                                                          }
+                                                                      PlainValidationMessage.create("XXX", "ERROR!")
 
-                                                                          @Override
-                                                                          public String getMessage() {
-                                                                              return "ERROR!";
-                                                                          }
-                                                                      }
                                                               ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
                                                                       .validateAndIssueMessages();
                                                           }

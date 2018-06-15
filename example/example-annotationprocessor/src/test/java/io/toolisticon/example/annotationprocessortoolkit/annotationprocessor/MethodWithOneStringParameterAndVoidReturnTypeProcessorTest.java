@@ -3,6 +3,7 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
+import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
 
     @Before
     public void init() {
-        CoreMatcherValidationMessages.setPrintMessageCodes(true);
+        MessagerUtils.setPrintMessageCodes(true);
     }
 
     @Parameterized.Parameters(name = "{index}: \"{0}\"")
