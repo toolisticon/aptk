@@ -15,6 +15,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnType
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnTypeMirrorMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasNoParametersMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasPublicNoargConstructorMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasVoidReturnTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAnnotationTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAssignableToMatcher;
@@ -29,6 +30,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsPackageEle
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsPackageMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsParameterMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsTypeElementMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsTypeEqualMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsVariableElementMatcher;
 
 import javax.lang.model.element.Element;
@@ -131,14 +133,31 @@ public class CoreMatchers {
      */
     public final static ExclusiveCriteriaElementBasedCoreMatcher<Class> IS_ASSIGNABLE_TO = new ExclusiveCriteriaElementBasedCoreMatcher<Class>(new IsAssignableToMatcher(), CoreMatcherValidationMessages.IS_ASSIGNABLE_TO);
 
+    /**
+     * Matcher to check if an Element is assignable to a specific type
+     */
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<Class> IS_TYPE_EQUAL = new ExclusiveCriteriaElementBasedCoreMatcher<Class>(new IsTypeEqualMatcher(), CoreMatcherValidationMessages.IS_TYPE_EQUAL);
+
 
     // ---------------------------------------------------------------------------------
     // -- IMPLICIT CORE MATCHER
     // ---------------------------------------------------------------------------------
 
+    /**
+     * Matcher to check if an ExecutableElement has a void return type
+     */
     public final static ImplicitCoreMatcher<ExecutableElement> HAS_VOID_RETURN_TYPE = new ImplicitCoreMatcher<ExecutableElement>(new HasVoidReturnTypeMatcher(), CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE);
 
+    /**
+     * Matcher to check if an ExecutableElement takes no parameter
+     */
     public final static ImplicitCoreMatcher<ExecutableElement> HAS_NO_PARAMETERS = new ImplicitCoreMatcher<ExecutableElement>(new HasNoParametersMatcher(), CoreMatcherValidationMessages.HAS_NO_PARAMETERS);
+
+    /**
+     * Matcher to check if an TypeElement has a void return type
+     */
+    public final static ImplicitCoreMatcher<Element> HAS_PUBLIC_NOARG_CONSTRUCTOR = new ImplicitCoreMatcher<Element>(new HasPublicNoargConstructorMatcher(), CoreMatcherValidationMessages.HAS_PUBLIC_NOARG_CONSTRUCTOR);
+
 
     // ---------------------------------------------------------------------------------
     // -- IS CORE MATCHER
