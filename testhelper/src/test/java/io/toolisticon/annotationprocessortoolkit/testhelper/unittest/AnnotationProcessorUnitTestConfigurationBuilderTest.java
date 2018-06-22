@@ -146,7 +146,7 @@ public class AnnotationProcessorUnitTestConfigurationBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullValuedCompilingSholdSucceedParameter() {
-        new AnnotationProcessorUnitTestConfiguration(Mockito.mock(AbstractUnitTestAnnotationProcessorClass.class), null, new JavaFileObject[0]);
+        new AnnotationProcessorUnitTestConfiguration(null,Mockito.mock(AbstractUnitTestAnnotationProcessorClass.class), null, new JavaFileObject[0]);
     }
 
 }

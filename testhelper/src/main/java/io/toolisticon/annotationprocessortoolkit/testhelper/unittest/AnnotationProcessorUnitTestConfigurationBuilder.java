@@ -25,6 +25,7 @@ public final class AnnotationProcessorUnitTestConfigurationBuilder {
         private JavaFileObject[] expectedGeneratedJavaFileObjects;
         private TestMessageValidator testMessageValidator;
         private AbstractUnitTestAnnotationProcessorClass processor;
+        private String customSourceFile;
 
         public MessageEvaluation addMessageValidator() {
             return new MessageEvaluation(this);
@@ -51,11 +52,16 @@ public final class AnnotationProcessorUnitTestConfigurationBuilder {
             return this;
         }
 
+        public BaseConfigurationBuilder useCustomSourceFile(String customSourceFile) {
+            this.customSourceFile = customSourceFile;
+            return this;
+        }
+
         public AnnotationProcessorUnitTestConfiguration build() {
             if (testMessageValidator == null) {
-                return new AnnotationProcessorUnitTestConfiguration(processor, shouldCompileSuccessfully, expectedGeneratedJavaFileObjects);
+                return new AnnotationProcessorUnitTestConfiguration(customSourceFile, processor, shouldCompileSuccessfully, expectedGeneratedJavaFileObjects);
             } else {
-                return new AnnotationProcessorUnitTestConfiguration(processor, shouldCompileSuccessfully, expectedGeneratedJavaFileObjects,
+                return new AnnotationProcessorUnitTestConfiguration(customSourceFile, processor, shouldCompileSuccessfully, expectedGeneratedJavaFileObjects,
                         testMessageValidator);
             }
         }
