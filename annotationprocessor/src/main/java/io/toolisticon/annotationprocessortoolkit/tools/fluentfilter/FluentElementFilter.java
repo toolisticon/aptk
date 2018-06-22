@@ -33,7 +33,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
     /**
      * The element list to filter.
      */
-    private List<ELEMENT> elements;
+    private final List<ELEMENT> elements;
 
 
     /**
@@ -217,8 +217,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public FluentElementFilter<ELEMENT> applyFilter(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
 
-        elements = coreMatcher.getFilter().filter(elements);
-        return FluentElementFilter.this;
+        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter(elements));
 
     }
 
@@ -230,8 +229,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public FluentElementFilter<ELEMENT> applyInvertedFilter(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
 
-        elements = coreMatcher.getFilter().filter(elements, true);
-        return FluentElementFilter.this;
+        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter(elements,true));
 
     }
 
