@@ -4,7 +4,6 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationPr
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
-import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
@@ -37,7 +36,7 @@ public class HasPublicNoargConstructorMatcherTest extends AbstractAnnotationProc
     }
 
     public static class NoPublicNoargConstructor {
-        private  NoPublicNoargConstructor() {
+        private NoPublicNoargConstructor() {
 
         }
     }
@@ -45,15 +44,15 @@ public class HasPublicNoargConstructorMatcherTest extends AbstractAnnotationProc
 
     public static class PublicNoargConstructorNextToOtherConstructors {
 
-        private  PublicNoargConstructorNextToOtherConstructors(String arg) {
+        private PublicNoargConstructorNextToOtherConstructors(String arg) {
 
         }
 
-        public  PublicNoargConstructorNextToOtherConstructors(boolean arg) {
+        public PublicNoargConstructorNextToOtherConstructors(boolean arg) {
 
         }
 
-        public  PublicNoargConstructorNextToOtherConstructors() {
+        public PublicNoargConstructorNextToOtherConstructors() {
 
         }
     }
@@ -87,7 +86,7 @@ public class HasPublicNoargConstructorMatcherTest extends AbstractAnnotationProc
 
                                                         TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(DefaultNoargConstructor.class);
 
-                                                        MatcherAssert.assertThat("Must return true for class with default constructor",CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
+                                                        MatcherAssert.assertThat("Must return true for class with default constructor", CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
 
 
                                                     }
@@ -109,7 +108,7 @@ public class HasPublicNoargConstructorMatcherTest extends AbstractAnnotationProc
 
                                                         TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(NonNoargConstructor.class);
 
-                                                        MatcherAssert.assertThat("Must return false for class with no noarg constructor",!CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
+                                                        MatcherAssert.assertThat("Must return false for class with no noarg constructor", !CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
 
 
                                                     }
@@ -131,7 +130,7 @@ public class HasPublicNoargConstructorMatcherTest extends AbstractAnnotationProc
 
                                                         TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(NoPublicNoargConstructor.class);
 
-                                                        MatcherAssert.assertThat("Must return false for class with no public noarg constructor",!CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
+                                                        MatcherAssert.assertThat("Must return false for class with no public noarg constructor", !CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
 
 
                                                     }
@@ -153,7 +152,7 @@ public class HasPublicNoargConstructorMatcherTest extends AbstractAnnotationProc
 
                                                         TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(PublicNoargConstructorNextToOtherConstructors.class);
 
-                                                        MatcherAssert.assertThat("Must return true for class with default constructor",CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
+                                                        MatcherAssert.assertThat("Must return true for class with default constructor", CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
 
 
                                                     }
@@ -179,7 +178,7 @@ public class HasPublicNoargConstructorMatcherTest extends AbstractAnnotationProc
                                                                 .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testField")
                                                                 .getResult().get(0);
 
-                                                        MatcherAssert.assertThat("Must return true for class with default constructor",CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(testElement));
+                                                        MatcherAssert.assertThat("Must return true for class with default constructor", CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(testElement));
 
 
                                                     }
@@ -200,7 +199,57 @@ public class HasPublicNoargConstructorMatcherTest extends AbstractAnnotationProc
                                                     protected void testCase(TypeElement element) {
 
 
-                                                        MatcherAssert.assertThat("Must return false for null valued parameter",!CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(null));
+                                                        MatcherAssert.assertThat("Must return false for null valued parameter", !CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(null));
+
+
+                                                    }
+
+                                                }
+                                        )
+                                        .build()
+
+
+                        },
+                        // -----------------------------------------------
+                        // -- Lombok related tests
+                        // -----------------------------------------------
+
+                        /*-
+                        {
+                                "check : check lombok no constructor but with AllArgsConstructor annotation",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.matchers.hasnoargsconstructormatcher/LombokNoConstructorWithAllArgsConstructorAnnotation.java")
+                                        .compilationShouldSucceed()
+                                        .setProcessor(
+                                                new AbstractUnitTestAnnotationProcessorClass() {
+                                                    @Override
+                                                    protected void testCase(TypeElement element) {
+
+
+                                                        MatcherAssert.assertThat("Must return false for Class with standard constructor annotated with AllArgsConstructor annotation", !CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(element));
+
+
+                                                    }
+
+                                                }
+                                        )
+                                        .build()
+
+
+                        },
+                        */
+                        {
+                                "check : check lombok no constructor but with AllArgsConstructor annotation",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.matchers.hasnoargsconstructormatcher/LombokNoArgsConstructorAnnotation.java")
+                                        .compilationShouldSucceed()
+                                        .setProcessor(
+                                                new AbstractUnitTestAnnotationProcessorClass() {
+                                                    @Override
+                                                    protected void testCase(TypeElement element) {
+
+
+                                                        MatcherAssert.assertThat("Must return false for Class with arg constructor annotated with NoArgsConstructor annotation", CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(element));
 
 
                                                     }
@@ -212,13 +261,13 @@ public class HasPublicNoargConstructorMatcherTest extends AbstractAnnotationProc
 
                         },
 
-
                 }
 
         );
 
 
     }
+
 
     @Test
     public void test() {

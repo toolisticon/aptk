@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
+import io.toolisticon.annotationprocessortoolkit.tools.AnnotationUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
@@ -22,6 +23,7 @@ public class HasPublicNoargConstructorMatcher implements ImplicitMatcher<Element
             return false;
         }
 
+
         // check if underlying TypeElement can be found for element
         TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(element.asType());
         if (typeElement == null) {
@@ -33,7 +35,15 @@ public class HasPublicNoargConstructorMatcher implements ImplicitMatcher<Element
                 .applyFilter(CoreMatchers.IS_CONSTRUCTOR);
 
 
-        return fluentElementFilter.isEmpty() || fluentElementFilter
+        // Check for NoArgConstructor
+        boolean hasLombokNoArgConstructor = AnnotationUtils.getAnnotationMirror(typeElement, "lombok.NoArgsConstructor") != null;
+        boolean hasLombokAllArgsConstructor = AnnotationUtils.getAnnotationMirror(typeElement, "lombok.AllArgsConstructor") != null;
+        boolean hasLombokRequiredArgsConstructor = AnnotationUtils.getAnnotationMirror(typeElement, "lombok.RequiredArgsConstructor") != null;
+
+
+        return (fluentElementFilter.isEmpty() && !hasLombokAllArgsConstructor && !hasLombokRequiredArgsConstructor)
+                || hasLombokNoArgConstructor
+                || fluentElementFilter
                 .applyFilter(CoreMatchers.HAS_NO_PARAMETERS)
                 .applyFilter(CoreMatchers.BY_MODIFIER).filterByOneOf(Modifier.PUBLIC)
                 .hasSingleElement();
