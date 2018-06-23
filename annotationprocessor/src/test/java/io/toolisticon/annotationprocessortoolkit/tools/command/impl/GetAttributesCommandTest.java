@@ -8,6 +8,8 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationP
 import io.toolisticon.annotationprocessortoolkit.tools.BeanUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,106 +35,6 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
         super(configuration);
     }
 
-    @Data
-    private static class TestDataAnnotatedClass {
-
-        private String field1;
-        private static String field2;
-
-    }
-
-    @Getter
-    private static class TestJustGetterAnnotatedClass {
-
-        private String field1;
-        private static String field2;
-
-    }
-
-    @Getter
-    private static class TestJustSetterAnnotatedClass {
-
-        private String field1;
-        private static String field2;
-
-    }
-
-    @Getter
-    @Setter
-    private static class TestGetterAndSetterAnnotatedClass {
-
-        private String field1;
-        private static String field2;
-
-    }
-
-    @Setter
-    private static class TestMixedGetterAndSetterAnnotatedClassAndField1 {
-
-        @Getter
-        private String field1;
-
-    }
-
-    @Getter
-    private static class TestMixedGetterAndSetterAnnotatedClassAndField2 {
-
-        @Setter
-        private String field1;
-
-    }
-
-
-    private static class TestJustSetterAnnotatedField {
-
-        @Setter
-        private String field1;
-
-    }
-
-    private static class TestJustGetterAnnotatedField {
-
-        @Setter
-        private String field1;
-
-    }
-
-    private static class TestGetterAndSetterAnnotatedField {
-
-        @Setter
-        @Getter
-        private String field1;
-
-    }
-
-
-    private static class TestFieldGetterAndSetterMethods {
-
-        private String field1;
-
-        public String getField1() {
-            return field1;
-        }
-
-        public void setField1(String field) {
-            field1 = field;
-        }
-
-    }
-
-    private static class TestFieldGetterAndSetterMethodsWithInvalidSetterParameterType {
-
-        private String field1;
-
-        public String getField1() {
-            return field1;
-        }
-
-        public void setField1(Long field) {
-
-        }
-
-    }
 
 
     @Before
@@ -150,13 +52,16 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - Data annotated class",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestDataAnnotatedClass.class);
-
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestDataAnnotatedClass")
+                                                                      .getResult().get(0);
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
                                                               MatcherAssert.assertThat(attributeResult.length, Matchers.is(1));
@@ -172,12 +77,17 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - Getter annotated class",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestJustGetterAnnotatedClass.class);
+
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustGetterAnnotatedClass")
+                                                                      .getResult().get(0);
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -193,12 +103,17 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - Setter annotated class",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestJustSetterAnnotatedClass.class);
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustSetterAnnotatedClass")
+                                                                      .getResult().get(0);
+
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -214,12 +129,18 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - Getter and Setter annotated class",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestGetterAndSetterAnnotatedClass.class);
+
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestGetterAndSetterAnnotatedClass")
+                                                                      .getResult().get(0);
+
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -236,12 +157,16 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - Mixed Getter and Setter annotated class and field 2",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestMixedGetterAndSetterAnnotatedClassAndField1.class);
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestMixedGetterAndSetterAnnotatedClassAndField1")
+                                                                      .getResult().get(0);
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -258,12 +183,16 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - Mixed Getter and Setter annotated class and field 2",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestMixedGetterAndSetterAnnotatedClassAndField2.class);
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestMixedGetterAndSetterAnnotatedClassAndField2")
+                                                                      .getResult().get(0);
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -280,12 +209,16 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - getter annotated field",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestJustGetterAnnotatedField.class);
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustGetterAnnotatedField")
+                                                                      .getResult().get(0);
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -301,12 +234,17 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - setter annotated field",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestJustSetterAnnotatedField.class);
+
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustSetterAnnotatedField")
+                                                                      .getResult().get(0);
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -322,12 +260,16 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - getter and setter annotated field",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestGetterAndSetterAnnotatedField.class);
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestGetterAndSetterAnnotatedField")
+                                                                      .getResult().get(0);
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -345,12 +287,16 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - getter and setter annotated method",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestFieldGetterAndSetterMethods.class);
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestFieldGetterAndSetterMethods")
+                                                                      .getResult().get(0);
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -368,12 +314,16 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
                         {
                                 "execute - getter and setter annotated method with invalid parameter type",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.commands/GetAttributesCommandTestClass.java")
                                         .compilationShouldSucceed()
                                         .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestFieldGetterAndSetterMethodsWithInvalidSetterParameterType.class);
+                                                              TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CLASS)
+                                                                      .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestFieldGetterAndSetterMethodsWithInvalidSetterParameterType")
+                                                                      .getResult().get(0);
 
                                                               BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -394,10 +344,7 @@ public class GetAttributesCommandTest extends AbstractAnnotationProcessorUnitTes
     }
 
 
-    @Override
-    protected JavaFileObject getSourceFileForCompilation() {
-        return JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
-    }
+
 
     @Test
     public void test() {
