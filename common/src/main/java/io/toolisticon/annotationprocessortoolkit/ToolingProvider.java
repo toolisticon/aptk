@@ -38,11 +38,11 @@ public class ToolingProvider {
     }
 
     private boolean isInitialitzed = false;
+    private final ProcessingEnvironment processingEnvironment;
     private final Elements elements;
     private final Filer filer;
     private final Messager messager;
     private final Types types;
-    private final Trees trees;
 
     /**
      * Constructor to pass in the {@link ProcessingEnvironment}.
@@ -58,11 +58,11 @@ public class ToolingProvider {
         isInitialitzed = true;
 
         // create local references
+        processingEnvironment = processingEnv;
         messager = processingEnv.getMessager();
         types = processingEnv.getTypeUtils();
         filer = processingEnv.getFiler();
         elements = processingEnv.getElementUtils();
-        trees = Trees.instance(processingEnv);
 
     }
 
@@ -105,11 +105,10 @@ public class ToolingProvider {
 
 
     /**
-     * Gets the Trees instance that can be used to access the AST.
-     *
-     * @return the Trees instance to access the AST
+     * Gets the processing environment.
+     * @return the processing environment
      */
-    public Trees getTrees() {
-        return trees;
+    public ProcessingEnvironment getProcessingEnvironment() {
+        return processingEnvironment;
     }
 }

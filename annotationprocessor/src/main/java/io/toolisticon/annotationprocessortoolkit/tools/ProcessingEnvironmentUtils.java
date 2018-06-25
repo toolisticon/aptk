@@ -5,6 +5,7 @@ import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
@@ -58,12 +59,22 @@ public final class ProcessingEnvironmentUtils {
 
 
     /**
+     * Gets processing environment.
+     *
+     * @return The trees instance
+     */
+    public static ProcessingEnvironment getProcessingEnvironment() {
+        return ToolingProvider.getTooling().getProcessingEnvironment();
+    }
+
+    /**
      * Gets Trees instance.
      *
-     * @return  The trees instance
+     * @return The trees instance
      */
     public static Trees getTrees() {
-        return ToolingProvider.getTooling().getTrees();
+        return Trees.instance(ToolingProvider.getTooling().getProcessingEnvironment());
     }
+
 
 }
