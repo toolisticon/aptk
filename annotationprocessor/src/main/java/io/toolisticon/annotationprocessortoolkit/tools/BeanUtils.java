@@ -165,13 +165,11 @@ public final class BeanUtils {
         // now check statements of constructor
         List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(element).getBody().getStatements();
 
-        System.out.println("!!! STATEMENTS SIZE: " + statements.size() + " , toString: '" + (statements.size() == 1 ? statements.get(0).toString() : "") + "'");
-
         if (statements.size() != 1) {
             return false;
         }
 
-        return Pattern.compile("^\\s*super\\(\\);\\s*$").matcher(statements.get(0).toString()).matches();
+        return Pattern.compile("^\\s*super\\(\\)[;]{0,1}\\s*$").matcher(statements.get(0).toString()).matches();
 
     }
 
