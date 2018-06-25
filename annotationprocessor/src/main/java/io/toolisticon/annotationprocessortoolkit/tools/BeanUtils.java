@@ -122,14 +122,15 @@ public final class BeanUtils {
 
 
     /**
-     * Checks wether an ExecutableElement is a default noargs constructor.
+     * Checks whether an ExecutableElement is a default noargs constructor.
      * <p/>
      * Checks if
      * <ul>
-     * <item>executable element is public constructor without parameters</item>
-     * <item>is sole constructor</item>
-     * <item>contains just a super(); statement in body</item>
-     * <p/>
+     * <li>executable element is public constructor without parameters</li>
+     * <li>constructor is sole constructor</li>
+     * <li>constructor contains just a super(); statement in body</li>
+     * <li>constructor has no thrown types declarations</li>
+     * <li>constructor has same visibility modifier like it's type</li>
      * </ul>
      *
      * @param element
@@ -142,19 +143,29 @@ public final class BeanUtils {
                 .applyValidator(CoreMatchers.BY_ELEMENT_KIND).hasOneOf(ElementKind.CONSTRUCTOR)
                 .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC)
                 .applyValidator(CoreMatchers.HAS_NO_PARAMETERS)
+                .applyValidator(CoreMatchers.HAS_NO_THROWN_TYPES)
                 .justValidate()) {
             return false;
         }
 
+
+        TypeElement typeElementFilter = (TypeElement) ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(element, ElementKind.CLASS);
+
         // check for number of constructors
-        if (!FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(element, ElementKind.CLASS).getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
-                .hasSingleElement()) {
+        if (!FluentElementFilter.createFluentElementFilter(typeElementFilter.getEnclosedElements())
+                .applyFilter(CoreMatchers.IS_CONSTRUCTOR).hasSingleElement()) {
+            return false;
+        }
+
+        // must have same visibility like class
+        if (ElementUtils.CheckModifierOfElement.getVisibilityModifier(typeElementFilter) != ElementUtils.CheckModifierOfElement.getVisibilityModifier(element)) {
             return false;
         }
 
         // now check statements of constructor
         List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(element).getBody().getStatements();
+
+        System.out.println("!!! STATEMENTS SIZE: " + statements.size() + " , toString: '" + statements.get(0).toString() + "'");
 
         if (statements.size() != 1) {
             return false;

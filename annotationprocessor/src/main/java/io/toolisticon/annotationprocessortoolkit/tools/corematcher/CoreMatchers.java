@@ -15,6 +15,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnType
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnTypeMirrorMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasNoParametersMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasNoThrownTypesMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasPublicNoargConstructorMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasVoidReturnTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAnnotationTypeMatcher;
@@ -152,6 +153,12 @@ public class CoreMatchers {
      * Matcher to check if an ExecutableElement takes no parameter
      */
     public final static ImplicitCoreMatcher<ExecutableElement> HAS_NO_PARAMETERS = new ImplicitCoreMatcher<ExecutableElement>(new HasNoParametersMatcher(), CoreMatcherValidationMessages.HAS_NO_PARAMETERS);
+
+    /**
+     * Matcher to check if an ExecutableElement has no thrown types
+     */
+    public final static ImplicitCoreMatcher<ExecutableElement> HAS_NO_THROWN_TYPES = new ImplicitCoreMatcher<ExecutableElement>(new HasNoThrownTypesMatcher(), CoreMatcherValidationMessages.HAS_NO_THROWN_TYPES);
+
 
     /**
      * Matcher to check if an TypeElement has a void return type

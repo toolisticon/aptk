@@ -1,6 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -177,6 +178,33 @@ public class ElementUtils_CheckModifierOfElementTest {
 
         // check null valued element
         MatcherAssert.assertThat("Modifier should not be found for null valued elements", !ElementUtils.CheckModifierOfElement.hasStrictfpModifier(null));
+
+    }
+
+    @Test
+    public void testGetVisibilityModifier() {
+
+        Element e = Mockito.mock(Element.class);
+
+        // PUBLIC
+        Mockito.when(e.getModifiers()).thenReturn(Utilities.convertVarargsToSet(Modifier.PUBLIC));
+        MatcherAssert.assertThat(ElementUtils.CheckModifierOfElement.getVisibilityModifier(e), Matchers.is(Modifier.PUBLIC));
+
+        // PROTECTED
+        Mockito.when(e.getModifiers()).thenReturn(Utilities.convertVarargsToSet(Modifier.PROTECTED));
+        MatcherAssert.assertThat(ElementUtils.CheckModifierOfElement.getVisibilityModifier(e), Matchers.is(Modifier.PROTECTED));
+
+
+        // PRIVATE
+        Mockito.when(e.getModifiers()).thenReturn(Utilities.convertVarargsToSet(Modifier.PRIVATE));
+        MatcherAssert.assertThat(ElementUtils.CheckModifierOfElement.getVisibilityModifier(e), Matchers.is(Modifier.PRIVATE));
+
+
+        // PACKAGE PRIVATE
+        Mockito.when(e.getModifiers()).thenReturn(Utilities.convertVarargsToSet(Modifier.ABSTRACT));
+        MatcherAssert.assertThat(ElementUtils.CheckModifierOfElement.getVisibilityModifier(e), Matchers.nullValue());
+
+
 
     }
 

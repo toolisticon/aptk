@@ -22,6 +22,7 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
     IS_TYPE_EQUAL("CM_IS_TYPE_EQUAL", "Element's type must ${0} be equal ${1} to one of the following type: ${2}"),
     HAS_VOID_RETURN_TYPE("CM_HAS_VOID_RETURN_TYPE", "Element must ${0} have void return type"),
     HAS_NO_PARAMETERS("CM_HAS_NOARGS", "Element must ${0} have no arguments"),
+    HAS_NO_THROWN_TYPES("CM_HAS_NO_THROWN_TYPES", "Element must ${0} have no thrown types"),
     HAS_PUBLIC_NOARG_CONSTRUCTOR("CM_HAS_PUBLIC_NOARG_CONSTURCTOR", "Element must ${0} have a public noarg constructor or just the default constructor"),
     IS_EXECUTABLE_ELEMENT("CM_IS_EXECTUABLE_ELEMENT", "Element must ${0} be a ExecutableElement"),
     IS_TYPE_ELEMENT("CM_IS_TYPE_ELEMENT", "Element must ${0} be a TypeElement"),

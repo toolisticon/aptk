@@ -141,7 +141,7 @@ public final class ElementUtils {
          * @return true if passed element is of the passed kind, otherwise false
          */
         public static boolean isOfKind(Element e, ElementKind kind) {
-            return kind != null && e != null ? kind.equals(e.getKind()) : false;
+            return (kind != null && e != null) ? kind.equals(e.getKind()) : false;
         }
 
     }
@@ -487,6 +487,26 @@ public final class ElementUtils {
          */
         private static boolean hasModifier(Element e, Modifier modifier) {
             return CoreMatchers.BY_MODIFIER.getValidator().hasAllOf(e, modifier);
+        }
+
+        /**
+         * Gets the visibility modifier of an element.
+         * @param element the element to check
+         * @return the visibility modifierof an element or null for package privates
+         */
+        public static Modifier getVisibilityModifier(Element element){
+
+            final Modifier[] modifiers = new Modifier[]{Modifier.PUBLIC,Modifier.PROTECTED, Modifier.PRIVATE};
+
+            for (Modifier modifier : modifiers) {
+
+                if (hasModifier(element, modifier)) {
+                    return modifier;
+                }
+
+
+            }
+            return null;
         }
 
     }
