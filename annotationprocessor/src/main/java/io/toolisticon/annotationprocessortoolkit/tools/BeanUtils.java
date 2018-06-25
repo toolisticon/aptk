@@ -97,7 +97,7 @@ public final class BeanUtils {
 
     /**
      * Checks if typeElement has a sole default noargs constructor.
-     *
+     * <p/>
      * Internally calls isDefaultNoargConstructor.
      * See that method description for detailed overview of checked criteria.
      *
@@ -165,7 +165,7 @@ public final class BeanUtils {
         // now check statements of constructor
         List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(element).getBody().getStatements();
 
-        System.out.println("!!! STATEMENTS SIZE: " + statements.size() + " , toString: '" + statements.get(0).toString() + "'");
+        System.out.println("!!! STATEMENTS SIZE: " + statements.size() + " , toString: '" + (statements.size() == 1 ? statements.get(0).toString() : "") + "'");
 
         if (statements.size() != 1) {
             return false;
