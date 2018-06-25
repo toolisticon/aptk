@@ -543,7 +543,7 @@ public class BeanUtilsTest extends AbstractAnnotationProcessorUnitTest {
                         // -----------------------
                         // default constructor tests
                         // -----------------------
-
+/*-
                         {
                                 "BeanUtilsTest - isDefaultNoargConstructor - default noarg constructor",
                                 AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
@@ -623,7 +623,7 @@ public class BeanUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
 
                         },
-
+**/
 
                 }
 
