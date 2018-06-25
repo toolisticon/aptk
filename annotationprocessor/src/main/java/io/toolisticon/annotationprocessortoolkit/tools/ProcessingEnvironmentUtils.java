@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
+import com.sun.source.util.Trees;
 import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 
 import javax.annotation.processing.Filer;
@@ -55,5 +56,14 @@ public final class ProcessingEnvironmentUtils {
         return ToolingProvider.getTooling().getMessager();
     }
 
+
+    /**
+     * Gets Trees instance.
+     *
+     * @return  The trees instance
+     */
+    public static Trees getTrees() {
+        return ToolingProvider.getTooling().getTrees();
+    }
 
 }

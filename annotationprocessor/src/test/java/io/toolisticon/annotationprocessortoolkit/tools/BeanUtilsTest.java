@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
+import com.sun.source.tree.StatementTree;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import java.util.Arrays;
@@ -537,6 +539,92 @@ public class BeanUtilsTest extends AbstractAnnotationProcessorUnitTest {
 
 
                         },
+
+                        // -----------------------
+                        // default constructor tests
+                        // -----------------------
+
+                        {
+                                "BeanUtilsTest - isDefaultNoargConstructor - default noarg constructor",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.beanutils/DefaultNoargConstructorTest.java")
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
+                                                                      .getResult().get(0);
+
+
+                                                              MatcherAssert.assertThat("Should return true for default constructor", BeanUtils.isDefaultNoargConstructor(constructor));
+                                                              MatcherAssert.assertThat("Should return true for default constructor", BeanUtils.hasDefaultNoargsConstructor(element));
+
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "BeanUtilsTest - isDefaultNoargConstructor - explicit noarg constructor",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.beanutils/ExplicitNoargConstructorTest.java")
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
+                                                                      .getResult().get(0);
+
+
+                                                              MatcherAssert.assertThat("Should return false for explicit constructor", !BeanUtils.isDefaultNoargConstructor(constructor));
+                                                              MatcherAssert.assertThat("Should return false for explicit constructor", !BeanUtils.hasDefaultNoargsConstructor(element));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+                        {
+                                "BeanUtilsTest - isDefaultNoargConstructor - explicit noarg constructor",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .useCustomSourceFile("testcases.beanutils/ExplicitNoargConstructorTest2.java")
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+
+                                                              ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                                                      .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
+                                                                      .getResult().get(0);
+
+                                                              List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(constructor).getBody().getStatements();
+
+
+                                                              MatcherAssert.assertThat("Should return true for explicit constructor that looks like default constructor", BeanUtils.isDefaultNoargConstructor(constructor));
+                                                              MatcherAssert.assertThat("Should return true for explicit constructor that looks like default constructor", BeanUtils.hasDefaultNoargsConstructor(element));
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+
                 }
 
         );

@@ -1,6 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit;
 
 
+import com.sun.source.util.Trees;
+
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -40,6 +42,7 @@ public class ToolingProvider {
     private final Filer filer;
     private final Messager messager;
     private final Types types;
+    private final Trees trees;
 
     /**
      * Constructor to pass in the {@link ProcessingEnvironment}.
@@ -59,6 +62,7 @@ public class ToolingProvider {
         types = processingEnv.getTypeUtils();
         filer = processingEnv.getFiler();
         elements = processingEnv.getElementUtils();
+        trees = Trees.instance(processingEnv);
 
     }
 
@@ -99,4 +103,13 @@ public class ToolingProvider {
         return types;
     }
 
+
+    /**
+     * Gets the Trees instance that can be used to access the AST.
+     *
+     * @return the Trees instance to access the AST
+     */
+    public Trees getTrees() {
+        return trees;
+    }
 }

@@ -1,8 +1,10 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
+import com.sun.source.tree.StatementTree;
 import io.toolisticon.annotationprocessortoolkit.tools.command.impl.GetAttributesCommand;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -13,6 +15,7 @@ import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Utility class to handle bean related tasks
@@ -89,6 +92,75 @@ public final class BeanUtils {
      * Hidden constructor
      */
     private BeanUtils() {
+
+    }
+
+    /**
+     * Checks if typeElement has a sole default noargs constructor.
+     *
+     * Internally calls isDefaultNoargConstructor.
+     * See that method description for detailed overview of checked criteria.
+     *
+     * @param typeElement
+     * @return true
+     */
+    public static boolean hasDefaultNoargsConstructor(TypeElement typeElement) {
+
+        List<ExecutableElement> constructors = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
+                .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
+                .getResult();
+
+        // check for number of constructors
+        if (constructors.size() != 1) {
+            return false;
+        }
+
+        return isDefaultNoargConstructor(constructors.get(0));
+
+
+    }
+
+
+    /**
+     * Checks wether an ExecutableElement is a default noargs constructor.
+     * <p/>
+     * Checks if
+     * <ul>
+     * <item>executable element is public constructor without parameters</item>
+     * <item>is sole constructor</item>
+     * <item>contains just a super(); statement in body</item>
+     * <p/>
+     * </ul>
+     *
+     * @param element
+     * @return
+     */
+    public static boolean isDefaultNoargConstructor(ExecutableElement element) {
+
+        // first check element
+        if (!FluentElementValidator.createFluentElementValidator(element)
+                .applyValidator(CoreMatchers.BY_ELEMENT_KIND).hasOneOf(ElementKind.CONSTRUCTOR)
+                .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC)
+                .applyValidator(CoreMatchers.HAS_NO_PARAMETERS)
+                .justValidate()) {
+            return false;
+        }
+
+        // check for number of constructors
+        if (!FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(element, ElementKind.CLASS).getEnclosedElements())
+                .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
+                .hasSingleElement()) {
+            return false;
+        }
+
+        // now check statements of constructor
+        List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(element).getBody().getStatements();
+
+        if (statements.size() != 1) {
+            return false;
+        }
+
+        return Pattern.compile("^\\s*super\\(\\);\\s*$").matcher(statements.get(0).toString()).matches();
 
     }
 
