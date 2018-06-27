@@ -80,7 +80,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * @return
          */
         public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(String customMessage, Object... messagArgs) {
-            return setCustomMessage(PlainValidationMessage.create(customMessage),messagArgs);
+            return setCustomMessage(PlainValidationMessage.create(customMessage), messagArgs);
         }
 
 
@@ -413,9 +413,9 @@ public class FluentElementValidator<ELEMENT extends Element> {
                 final boolean hasCustomMessage = nextValidationContext.getCustomMessage() != null;
 
                 ValidationMessage forgedValidationMessage = !hasCustomMessage ? defaultMessage : PlainValidationMessage.create(nextValidationContext.getCustomMessage().getCode() != null ? nextValidationContext.getCustomMessage().getCode() : defaultMessage.getCode(), nextValidationContext.getCustomMessage().getMessage());
-                Object[] messageArgs = !hasCustomMessage ? messsageParameter : ( nextValidationContext.getMessageArgs() != null ? nextValidationContext.getMessageArgs() : new Object[0]);
+                Object[] messageArgs = !hasCustomMessage ? messsageParameter : (nextValidationContext.getMessageArgs() != null ? nextValidationContext.getMessageArgs() : new Object[0]);
 
-                fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), forgedValidationMessage,messageArgs));
+                fluentValidatorState.addMessage(new FluentValidatorMessage(element, nextValidationContext.getMessageScope(), forgedValidationMessage, messageArgs));
 
 
                 // rest validation context for next validation
@@ -536,7 +536,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
         public FluentElementValidator<ELEMENT> hasOneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
-                setValidationResult(validator.hasOneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", params);
+                setValidationResult(validator.hasOneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "one", params);
             }
             return FluentElementValidator.this;
         }
@@ -544,7 +544,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
         public FluentElementValidator<ELEMENT> hasNoneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
-                setValidationResult(validator.hasNoneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", params);
+                setValidationResult(validator.hasNoneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "none", params);
             }
             return FluentElementValidator.this;
         }
@@ -568,7 +568,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
         public FluentElementValidator<ELEMENT> hasOneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
-                setValidationResult(validator.hasOneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", params);
+                setValidationResult(validator.hasOneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "one", params);
             }
             return FluentElementValidator.this;
         }
@@ -576,7 +576,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
         public FluentElementValidator<ELEMENT> hasNoneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
-                setValidationResult(validator.hasNoneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", params);
+                setValidationResult(validator.hasNoneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "none", params);
             }
             return FluentElementValidator.this;
         }
@@ -584,7 +584,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
         public FluentElementValidator<ELEMENT> hasAtLeastOneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
-                setValidationResult(validator.hasAtLeastOneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", params);
+                setValidationResult(validator.hasAtLeastOneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "at least one", params);
             }
             return FluentElementValidator.this;
         }
@@ -592,7 +592,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
         public FluentElementValidator<ELEMENT> hasAllOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
-                setValidationResult(validator.hasAllOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", params);
+                setValidationResult(validator.hasAllOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "all", params);
             }
             return FluentElementValidator.this;
         }

@@ -9,6 +9,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
+import java.util.Collection;
 
 /**
  * Utility class and wrapper for / of {@link Messager}.
@@ -265,12 +266,65 @@ public final class MessagerUtils {
         if (messageParameters != null) {
 
             for (int i = 0; i < messageParameters.length; i++) {
-                result = result.replaceAll("\\$\\{" + i + "\\}", messageParameters[i] != null ? messageParameters[i].toString() : "null");
+                result = result.replaceAll("\\$\\{" + i + "\\}", messageParameters[i] != null ? argToString(messageParameters[i]) : "null");
             }
         }
 
         return result;
 
     }
+
+    private static String argToString(Object arg){
+
+        if(arg == null) {
+
+            return "<NULL>";
+
+        } else if (arg.getClass().isArray()) {
+
+            StringBuilder stringBuilder = new StringBuilder("[");
+            boolean first = true;
+
+            for (Object argument : (Object[])arg) {
+                if(first) {
+                    first = false;
+                } else {
+                    stringBuilder.append(", ");
+                }
+
+                stringBuilder.append(argToString(argument));
+
+            }
+
+
+            stringBuilder.append("]");
+
+            return stringBuilder.toString();
+
+        } else if (Collection.class.isAssignableFrom(arg.getClass())) {
+
+            StringBuilder stringBuilder = new StringBuilder("[");
+            boolean first = true;
+
+            for (Object argument : (Collection)arg) {
+                if(first) {
+                    first = false;
+                } else {
+                    stringBuilder.append(", ");
+                }
+
+                stringBuilder.append(argToString(argument));
+
+            }
+
+            stringBuilder.append("]");
+            return stringBuilder.toString();
+
+        }
+
+        return arg.toString();
+
+    }
+
 
 }
