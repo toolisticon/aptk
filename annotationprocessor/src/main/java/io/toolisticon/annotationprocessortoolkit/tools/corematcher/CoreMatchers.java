@@ -7,6 +7,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByGenericTyp
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByModifierMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByNameMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByNameRegexMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByNumberOfParametersMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeFqnMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeMirrorMatcher;
@@ -25,11 +26,13 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsConstructo
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsEnumMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsExecutableElementMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsFieldMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsGetterMethodMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsInterfaceMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsMethodMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsPackageElementMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsPackageMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsParameterMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsSetterMethodMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsTypeElementMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsTypeEqualMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsVariableElementMatcher;
@@ -116,6 +119,12 @@ public class CoreMatchers {
     /**
      * Matcher to check if an ExecutableElement has specific parameter types
      */
+    public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, Integer> BY_NUMBER_OF_PARAMETERS = new ExclusiveCriteriaCoreMatcher<ExecutableElement, Integer>(new ByNumberOfParametersMatcher(), CoreMatcherValidationMessages.BY_NUMBER_OF_PARAMETERS);
+
+
+    /**
+     * Matcher to check if an ExecutableElement has specific parameter types
+     */
     public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, String> BY_RETURN_TYPE_FQN = new ExclusiveCriteriaCoreMatcher<ExecutableElement, String>(new ByReturnTypeFqnMatcher(), CoreMatcherValidationMessages.BY_RETURN_TYPE_FQN);
 
     /**
@@ -127,6 +136,7 @@ public class CoreMatchers {
      * Matcher to check if an ExecutableElement has specific parameter types
      */
     public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, TypeMirror> BY_RETURN_TYPE_MIRROR = new ExclusiveCriteriaCoreMatcher<ExecutableElement, TypeMirror>(new ByReturnTypeMirrorMatcher(), CoreMatcherValidationMessages.BY_RETURN_TYPE_MIRROR);
+
 
 
     /**
@@ -164,6 +174,16 @@ public class CoreMatchers {
      * Matcher to check if an TypeElement has a void return type
      */
     public final static ImplicitElementBasedCoreMatcher HAS_PUBLIC_NOARG_CONSTRUCTOR = new ImplicitElementBasedCoreMatcher(new HasPublicNoargConstructorMatcher(), CoreMatcherValidationMessages.HAS_PUBLIC_NOARG_CONSTRUCTOR);
+
+    /**
+     * Matcher to check if an TypeElement has a void return type
+     */
+    public final static ImplicitCoreMatcher<ExecutableElement> IS_GETTER_METHOD = new ImplicitCoreMatcher<ExecutableElement>(new IsGetterMethodMatcher(), CoreMatcherValidationMessages.IS_GETTER_METHOD);
+
+    /**
+     * Matcher to check if an TypeElement has a void return type
+     */
+    public final static ImplicitCoreMatcher<ExecutableElement> IS_SETTER_METHOD = new ImplicitCoreMatcher<ExecutableElement>(new IsSetterMethodMatcher(), CoreMatcherValidationMessages.IS_SETTER_METHOD);
 
 
     // ---------------------------------------------------------------------------------
