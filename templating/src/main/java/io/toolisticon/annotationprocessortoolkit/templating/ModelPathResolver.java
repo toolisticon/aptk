@@ -55,6 +55,7 @@ public class ModelPathResolver {
         return resolveModelPath(modelMapThreadLocal.get(), path);
     }
 
+
     /**
      * Resolves path on the model.
      *
@@ -77,13 +78,13 @@ public class ModelPathResolver {
         for (String currentPathToken : pathTokens) {
 
             if (currentNode == null) {
-                throw new InvalidPathException("Path cannot be resolved. Encountered null value in path so token " + currentPathToken + " cannot be applied.");
+                throw new InvalidPathException("Path cannot be resolved. Encountered null value in path '" + path + "'  so token '" + currentPathToken + "' cannot be applied.");
             } else if (currentNode.getClass().isArray()) {
-                throw new InvalidPathException("Path cannot be resolved. Encountered array in path so token " + currentPathToken + " cannot be applied.");
+                throw new InvalidPathException("Path cannot be resolved. Encountered array in path '" + path + "' so token '" + currentPathToken + "' cannot be applied.");
             } else if (currentNode instanceof Map) {
 
                 if (!(((Map) currentNode).containsKey(currentPathToken))) {
-                    throw new InvalidPathException("Path cannot be resolved. Encountered Map in path which has no key " + currentPathToken + ".");
+                    throw new InvalidPathException("Path cannot be resolved. Encountered Map in path '" + path + "' which has no key " + currentPathToken + ".");
                 }
 
                 currentNode = ((Map) currentNode).get(currentPathToken);
@@ -101,7 +102,7 @@ public class ModelPathResolver {
                 String getterName = getGetter(currentNode, currentPathToken);
 
                 if (getterName == null) {
-                    throw new InvalidPathException("Path cannot be resolved. Path token " + currentPathToken + " not resolvable");
+                    throw new InvalidPathException("Path '" + path + "' cannot be resolved. Path token " + currentPathToken + " not resolvable");
                 }
 
                 // now call method via reflection
@@ -114,7 +115,7 @@ public class ModelPathResolver {
                 } catch (NoSuchMethodException e) {
                     // can be ignored - because it's guaranteed that the method exists
                 } catch (Exception e) {
-                    throw new InvalidPathException("Path cannot be resolved. Cannot invoke getter method", e);
+                    throw new InvalidPathException("Path '\" + path + \"' cannot be resolved. Cannot invoke getter method of token '" + currentPathToken + "'", e);
                 }
 
 
