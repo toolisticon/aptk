@@ -203,6 +203,21 @@ public class ParseUtilities {
     }
 
 
+    /**
+     * Trims content string.
+     * Allows better formatting of templates.
+     * Removes all leading whitespaces
+     * Remove trailing spaces up to last newline (remove newline then too ) or non space char
+     * @param content
+     * @return
+     */
+    public static String trimContentString(String content) {
 
+        String tmpContentString = content;
+        tmpContentString = tmpContentString.replaceFirst("^[ ]*?\n", "");
+        tmpContentString = tmpContentString.replaceAll("[ ]+$", "");
+        return tmpContentString;
+
+    }
 
 }

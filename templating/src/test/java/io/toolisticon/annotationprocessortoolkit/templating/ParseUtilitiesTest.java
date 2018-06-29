@@ -142,9 +142,6 @@ public class ParseUtilitiesTest {
     }
 
 
-
-
-
     @Test
     public void parseString_templateWithDifferentVariableTextBlocks_Test() throws Exception {
 
@@ -157,9 +154,20 @@ public class ParseUtilitiesTest {
         values.put("test", new TestClass2());
 
 
-
         MatcherAssert.assertThat(ParseUtilities.parseString(TEMPLATE_STRING).getContent(values), Matchers.is(EXPECTED_RESULT));
 
     }
+
+    @Test
+    public void trimContentString_trimContentString_Test() {
+        MatcherAssert.assertThat(ParseUtilities.trimContentString("    \nabc"), Matchers.is("abc"));
+        MatcherAssert.assertThat(ParseUtilities.trimContentString("    \n   abc"), Matchers.is("   abc"));
+        MatcherAssert.assertThat(ParseUtilities.trimContentString("    \n   \nabc"), Matchers.is("   \nabc"));
+        MatcherAssert.assertThat(ParseUtilities.trimContentString("\nabc"), Matchers.is("abc"));
+        MatcherAssert.assertThat(ParseUtilities.trimContentString("    \nabc\n  "), Matchers.is("abc\n"));
+        MatcherAssert.assertThat(ParseUtilities.trimContentString("    \nabc\n"), Matchers.is("abc\n"));
+
+    }
+
 
 }

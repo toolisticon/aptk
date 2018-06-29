@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.templating.templateblocks;
 
+import io.toolisticon.annotationprocessortoolkit.templating.ParseUtilities;
 import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidExpressionResult;
 import io.toolisticon.annotationprocessortoolkit.templating.expressions.Expression;
 import io.toolisticon.annotationprocessortoolkit.templating.expressions.ExpressionParser;
@@ -29,7 +30,7 @@ public class IfTemplateBlock implements TemplateBlock {
         }
 
         this.accessPath = attributeString.trim();
-        this.templateString = templateString;
+        this.templateString = ParseUtilities.trimContentString(templateString);
 
 
         binder = new TemplateBlockBinder(templateString);

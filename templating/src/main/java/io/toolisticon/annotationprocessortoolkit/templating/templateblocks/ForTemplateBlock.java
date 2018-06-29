@@ -1,6 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.templating.templateblocks;
 
 import io.toolisticon.annotationprocessortoolkit.templating.ModelPathResolver;
+import io.toolisticon.annotationprocessortoolkit.templating.ParseUtilities;
 import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidExpressionResult;
 import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidPathException;
 
@@ -38,7 +39,8 @@ public class ForTemplateBlock implements TemplateBlock {
 
         this.loopVariableName = matcher.group(1);
         this.accessPath = matcher.group(2);
-        this.templateString = templateString;
+
+        this.templateString = ParseUtilities.trimContentString(templateString);
 
 
         binder = new TemplateBlockBinder(templateString);
@@ -118,4 +120,5 @@ public class ForTemplateBlock implements TemplateBlock {
     public String getTemplateString() {
         return templateString;
     }
+
 }
