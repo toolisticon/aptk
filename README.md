@@ -204,6 +204,7 @@ It provides functionality of dynamic text replacement and for and if control blo
 
 # Projects using this toolkit library
 
+- [bean-builder](https://github.com/toolisticon/bean-builder) : An annotation processor to generate fluent instance builder classes for bean classes
 - [SPIAP](https://github.com/toolisticon/SPI-Annotation-Processor) : An annotation processor that helps you to generate SPI configuration files and service locator classes
 
 
