@@ -1,8 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit;
 
 
-import com.sun.source.util.Trees;
-
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -106,6 +104,7 @@ public class ToolingProvider {
 
     /**
      * Gets the processing environment.
+     *
      * @return the processing environment
      */
     public ProcessingEnvironment getProcessingEnvironment() {

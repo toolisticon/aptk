@@ -80,7 +80,6 @@
                                     <includes>
                                         <include>io.toolisticon.annotationprocessortoolkit:*</include>
                                         <include>com.google.testing.compile:compile-testing</include>
-                                        <include>com.sun:tools:*</include>
                                         <include>*:*:*:*:test:*</include>
                                         <include>*:*:*:*:provided:*</include>
                                     </includes>

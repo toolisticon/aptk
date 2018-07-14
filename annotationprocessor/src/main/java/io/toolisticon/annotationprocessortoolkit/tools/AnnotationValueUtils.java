@@ -1,13 +1,12 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import com.sun.tools.javac.code.Attribute;
-import com.sun.tools.javac.util.List;
-
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.lang.reflect.Array;
+import java.util.List;
 
 /**
  * Utility class which helps to handle different {@link AnnotationValue} related tasks.
@@ -286,8 +285,8 @@ public class AnnotationValueUtils {
      * @param annotationValue the value to get the value from.
      * @return the annotationValues value casted as List of Attributes, or null if value has not the correct type.
      */
-    public static List<Attribute> getArrayValue(AnnotationValue annotationValue) {
-        return !isArray(annotationValue) ? null : (List<Attribute>) annotationValue.getValue();
+    public static List<? extends AnnotationValue> getArrayValue(AnnotationValue annotationValue) {
+        return !isArray(annotationValue) ? null : (List<? extends AnnotationValue>) annotationValue.getValue();
     }
 
 
@@ -312,11 +311,13 @@ public class AnnotationValueUtils {
      * @param annotationValues the annotation values to be converted to a TypeMirror array
      * @return
      */
-    public static TypeMirror[] getTypeAttributeValueArray(List<Attribute> annotationValues) {
+    public static TypeMirror[] getTypeAttributeValueArray(List<? extends AnnotationValue> annotationValues) {
         TypeMirror[] result = new TypeMirror[annotationValues.size()];
 
         for (int i = 0; i < annotationValues.size(); i++) {
-            result[i] = (TypeMirror) annotationValues.get(i).type.getTypeArguments().get(0);
+
+            result[i] = (DeclaredType) annotationValues.get(i).getValue();
+
         }
 
         return result;
@@ -332,7 +333,7 @@ public class AnnotationValueUtils {
      * @return an array of passed type containing all casted elements of passed annotatedValues list or null if passed annotatedValues are null.
      * @throws ClassCastException will be thrown if Attributes of List cannot be cast to passed type
      */
-    public static <T> T[] convertAndCastAttributeValueListToArray(List<Attribute> annotatedValues, Class<T> type) {
+    public static <T> T[] convertAndCastAttributeValueListToArray(List<? extends AnnotationValue> annotatedValues, Class<T> type) {
 
         if (type == null) {
             throw new IllegalArgumentException("passed type must not be null!");
@@ -364,15 +365,15 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get long value array from annotation value.
      *
-     * @param attributes
+     * @param annotationValues
      * @return the long array containing the attributes's values, or null if passed attributes list is null
      */
-    public static Long[] getLongValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
+    public static Long[] getLongValueArray(List<? extends AnnotationValue> annotationValues) {
+        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Long.class)) {
             return null;
         }
 
-        return convertAndCastAttributeValueListToArray(attributes, Long.class);
+        return convertAndCastAttributeValueListToArray(annotationValues, Long.class);
     }
 
     /**
@@ -388,15 +389,15 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get integer value array from annotation value.
      *
-     * @param attributes
+     * @param annotationValues
      * @return the integer array containing the attributes's values, or null if passed attributes list is null
      */
-    public static Integer[] getIntegerValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
+    public static Integer[] getIntegerValueArray(List<? extends AnnotationValue> annotationValues) {
+        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Integer.class)) {
             return null;
         }
 
-        return convertAndCastAttributeValueListToArray(attributes, Integer.class);
+        return convertAndCastAttributeValueListToArray(annotationValues, Integer.class);
     }
 
     /**
@@ -412,15 +413,15 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get double value array from annotation value.
      *
-     * @param attributes
-     * @return the double array containing the attributes's values, or null if passed attributes list is null
+     * @param annotationValues
+     * @return the double array containing the annotationValues's values, or null if passed annotationValues list is null
      */
-    public static Double[] getDoubleValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
+    public static Double[] getDoubleValueArray(List<? extends AnnotationValue> annotationValues) {
+        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Double.class)) {
             return null;
         }
 
-        return convertAndCastAttributeValueListToArray(attributes, Double.class);
+        return convertAndCastAttributeValueListToArray(annotationValues, Double.class);
     }
 
     /**
@@ -436,15 +437,15 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get float value array from annotation value.
      *
-     * @param attributes
+     * @param annotationValues
      * @return the float array containing the attributes's values, or null if passed attributes list is null
      */
-    public static Float[] getFloatValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
+    public static Float[] getFloatValueArray(List<? extends AnnotationValue> annotationValues) {
+        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Float.class)) {
             return null;
         }
 
-        return convertAndCastAttributeValueListToArray(attributes, Float.class);
+        return convertAndCastAttributeValueListToArray(annotationValues, Float.class);
     }
 
     /**
@@ -460,15 +461,15 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get boolean value array from annotation value.
      *
-     * @param attributes
+     * @param annotationValues
      * @return the boolean array containing the attributes's values, or null if passed attributes list is null
      */
-    public static Boolean[] getBooleanValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
+    public static Boolean[] getBooleanValueArray(List<? extends AnnotationValue> annotationValues) {
+        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Boolean.class)) {
             return null;
         }
 
-        return convertAndCastAttributeValueListToArray(attributes, Boolean.class);
+        return convertAndCastAttributeValueListToArray(annotationValues, Boolean.class);
     }
 
     /**
@@ -484,15 +485,15 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get char value array from annotation value.
      *
-     * @param attributes
+     * @param annotationValues
      * @return the char array containing the attributes's values, or null if passed attributes list is null
      */
-    public static Character[] getCharValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
+    public static Character[] getCharValueArray(List<? extends AnnotationValue> annotationValues) {
+        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Character.class)) {
             return null;
         }
 
-        return convertAndCastAttributeValueListToArray(attributes, Character.class);
+        return convertAndCastAttributeValueListToArray(annotationValues, Character.class);
     }
 
     /**
@@ -508,15 +509,15 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get String value array from annotation value.
      *
-     * @param attributes
+     * @param annotationValues
      * @return the String array containing the attributes's values, or null if passed attributes list is null
      */
-    public static String[] getStringValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
+    public static String[] getStringValueArray(List<? extends AnnotationValue> annotationValues) {
+        if (annotationValues == null || !isAnnotationValueArray(annotationValues, String.class)) {
             return null;
         }
 
-        return convertAndCastAttributeValueListToArray(attributes, String.class);
+        return convertAndCastAttributeValueListToArray(annotationValues, String.class);
     }
 
     /**
@@ -533,15 +534,15 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get enum value array from annotation value.
      *
-     * @param attributes
+     * @param annotationValues
      * @return the enum array containing the attributes's values, or null if passed attributes list is null
      */
-    public static VariableElement[] getEnumValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
+    public static VariableElement[] getEnumValueArray(List<? extends AnnotationValue> annotationValues) {
+        if (annotationValues == null || !isAnnotationValueArray(annotationValues, VariableElement.class)) {
             return null;
         }
 
-        return convertAndCastAttributeValueListToArray(attributes, VariableElement.class);
+        return convertAndCastAttributeValueListToArray(annotationValues, VariableElement.class);
     }
 
     /**
@@ -557,15 +558,150 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get annotation value array from annotation value.
      *
-     * @param attributes
-     * @return the annotation array containing the attributes's values, or null if passed attributes list is null
+     * @param annotationValues
+     * @return the annotation array containing the annotationValues's values, or null if passed annotationValues list is null
      */
-    public static AnnotationMirror[] getAnnotationValueArray(List<Attribute> attributes) {
-        if (attributes == null) {
+    public static AnnotationMirror[] getAnnotationValueArray(List<? extends AnnotationValue> annotationValues) {
+        if (annotationValues == null || !isAnnotationValueArray(annotationValues, AnnotationMirror.class)) {
             return null;
         }
 
-        return convertAndCastAttributeValueListToArray(attributes, AnnotationMirror.class);
+        return convertAndCastAttributeValueListToArray(annotationValues, AnnotationMirror.class);
     }
+
+
+    // -----------------------------------------------------------------------------------------
+    // -- Array value functions
+    // -----------------------------------------------------------------------------------------
+
+
+    /**
+     * Checks if passed annotation value is of type Integer.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type Integer, otherwise false
+     */
+    public static boolean isIntegerArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, Integer.class);
+    }
+
+    /**
+     * Checks if passed annotation value is of type Integer.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type Integer, otherwise false
+     */
+    public static boolean isLongArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, Long.class);
+    }
+
+
+    /**
+     * Checks if passed annotation value is of type Boolean.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type Boolean, otherwise false
+     */
+    public static boolean isBooleanArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, Boolean.class);
+    }
+
+    /**
+     * Checks if passed annotation value is of type Float.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type Float, otherwise false
+     */
+    public static boolean isFloatArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, Float.class);
+    }
+
+    /**
+     * Checks if passed annotation value is of type Integer.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type Integer, otherwise false
+     */
+    public static boolean isDoubleArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, Double.class);
+    }
+
+    /**
+     * Checks if passed annotation value is of type String.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type String, otherwise false
+     */
+    public static boolean isStringArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, String.class);
+    }
+
+    /**
+     * Checks if passed annotation value is of type String.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type String, otherwise false
+     */
+    public static boolean isCharArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, Character.class);
+    }
+
+    /**
+     * Checks if passed annotation value is an enum.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type Integer, otherwise false
+     */
+    public static boolean isEnumArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, VariableElement.class);
+    }
+
+    /**
+     * Checks if passed annotation value is of type AnnotationValue.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type AnnotationValue, otherwise false
+     */
+    public static boolean isClassArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, TypeMirror.class);
+    }
+
+    /**
+     * Checks if passed annotation value is an array.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is an array, otherwise false
+     */
+    public static boolean isArrayArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, List.class);
+    }
+
+
+    /**
+     * Checks if passed annotation value is an AnnotationValue.
+     *
+     * @param annotationValue the value to check
+     * @return true, if passed annotation is of type AnnotationValue, otherwise false
+     */
+    public static boolean isAnnotationArray(AnnotationValue annotationValue) {
+        return isAnnotationValueArray(annotationValue, AnnotationMirror.class);
+    }
+
+
+    public static boolean isAnnotationValueArray(AnnotationValue annotationValue, Class type) {
+
+        return annotationValue != null && type != null
+                && annotationValue.getValue() instanceof List
+                && isAnnotationValueArray((List<? extends AnnotationValue>) annotationValue.getValue(), type);
+    }
+
+
+    public static boolean isAnnotationValueArray(List<? extends AnnotationValue> annotationValues, Class type) {
+
+        return annotationValues != null && type != null
+                && annotationValues.size() >= 1
+                && hasAnnotationValueOneOfPassedTypes(annotationValues.get(0), type);
+    }
+
 
 }

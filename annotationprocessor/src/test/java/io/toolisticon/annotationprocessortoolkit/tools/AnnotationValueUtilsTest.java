@@ -1,13 +1,11 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
 import com.google.testing.compile.JavaFileObjects;
-import com.sun.tools.javac.code.Attribute;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.annotationvalueutilstestclasses.AnnotationValueTestAnnotation;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -1021,15 +1019,15 @@ public class AnnotationValueUtilsTest extends AbstractAnnotationProcessorUnitTes
 
 
                                                               // test null safety
-                                                              MatcherAssert.assertThat(AnnotationValueUtils.getLongValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
-                                                              MatcherAssert.assertThat(AnnotationValueUtils.getIntegerValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
-                                                              MatcherAssert.assertThat(AnnotationValueUtils.getBooleanValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
-                                                              MatcherAssert.assertThat(AnnotationValueUtils.getFloatValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
-                                                              MatcherAssert.assertThat(AnnotationValueUtils.getDoubleValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
-                                                              MatcherAssert.assertThat(AnnotationValueUtils.getStringValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
-                                                              MatcherAssert.assertThat(AnnotationValueUtils.getCharValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
-                                                              MatcherAssert.assertThat(AnnotationValueUtils.getEnumValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
-                                                              MatcherAssert.assertThat(AnnotationValueUtils.getAnnotationValueArray((com.sun.tools.javac.util.List<Attribute>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getLongValueArray((List<? extends AnnotationValue>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getIntegerValueArray((List<? extends AnnotationValue>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getBooleanValueArray((List<? extends AnnotationValue>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getFloatValueArray((List<? extends AnnotationValue>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getDoubleValueArray((List<? extends AnnotationValue>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getStringValueArray((List<? extends AnnotationValue>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getCharValueArray((List<? extends AnnotationValue>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getEnumValueArray((List<? extends AnnotationValue>) null), Matchers.nullValue());
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.getAnnotationValueArray((List<? extends AnnotationValue>) null), Matchers.nullValue());
 
 
                                                               MatcherAssert.assertThat(AnnotationValueUtils.getLongValueArray((AnnotationValue) null), Matchers.nullValue());
@@ -1041,6 +1039,60 @@ public class AnnotationValueUtilsTest extends AbstractAnnotationProcessorUnitTes
                                                               MatcherAssert.assertThat(AnnotationValueUtils.getCharValueArray((AnnotationValue) null), Matchers.nullValue());
                                                               MatcherAssert.assertThat(AnnotationValueUtils.getEnumValueArray((AnnotationValue) null), Matchers.nullValue());
                                                               MatcherAssert.assertThat(AnnotationValueUtils.getAnnotationValue((AnnotationValue) null), Matchers.nullValue());
+
+
+                                                          }
+                                                      }
+                                        )
+                                        .build()
+
+
+                        },
+
+                        {
+                                "AnnotationValueUtils test - isXXXArray",
+                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
+                                        .compilationShouldSucceed()
+                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                                          @Override
+                                                          protected void testCase(TypeElement element) {
+
+                                                              AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, AnnotationValueTestAnnotation.class);
+
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isLongArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "longArrayValue")), Matchers.is(true));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isIntegerArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "intArrayValue")), Matchers.is(true));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isBooleanArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "booleanArrayValue")), Matchers.is(true));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isFloatArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "floatArrayValue")), Matchers.is(true));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isDoubleArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "doubleArrayValue")), Matchers.is(true));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isStringArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "stringArrayValue")), Matchers.is(true));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isCharArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "charArrayValue")), Matchers.is(true));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isEnumArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "enumArrayValue")), Matchers.is(true));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isClassArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "classArrayValue")), Matchers.is(true));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isAnnotationArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "annotationArrayValue")), Matchers.is(true));
+
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isLongArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "intArrayValue")), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isIntegerArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "booleanArrayValue")), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isBooleanArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "floatArrayValue")), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isFloatArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "doubleArrayValue")), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isDoubleArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "stringArrayValue")), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isStringArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "charArrayValue")), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isCharArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "enumArrayValue")), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isEnumArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "classArrayValue")), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isClassArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "annotationArrayValue")), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isAnnotationArray(AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, "floatArrayValue")), Matchers.is(false));
+
+
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isLongArray(null), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isIntegerArray(null), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isBooleanArray(null), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isFloatArray(null), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isDoubleArray(null), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isStringArray(null), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isCharArray(null), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isEnumArray(null), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isClassArray(null), Matchers.is(false));
+                                                              MatcherAssert.assertThat(AnnotationValueUtils.isAnnotationArray(null), Matchers.is(false));
+
 
 
                                                           }
