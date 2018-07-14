@@ -86,7 +86,7 @@
 
         <java.version>1.8.0</java.version>
 
-        <spiap.version>0.3.0</spiap.version>
+        <spiap.version>0.5.1</spiap.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.12</junit.version>
