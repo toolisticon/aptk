@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
@@ -138,8 +138,6 @@ public class ElementUtils_AccessTypeHierarchyTest extends AbstractAnnotationProc
                                                               MatcherAssert.assertThat(ElementUtils.AccessTypeHierarchy.getDirectSuperTypeElementOfKindType(typeElement), Matchers.nullValue());
 
 
-
-
                                                           }
                                                       }
                                         )
@@ -251,7 +249,7 @@ public class ElementUtils_AccessTypeHierarchyTest extends AbstractAnnotationProc
 
     @Override
     protected JavaFileObject getSourceFileForCompilation() {
-        return JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
+        return JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java");
     }
 
     @Test

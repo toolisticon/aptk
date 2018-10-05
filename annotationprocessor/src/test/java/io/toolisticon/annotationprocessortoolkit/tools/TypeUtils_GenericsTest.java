@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
@@ -1511,7 +1511,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorUnitTest 
 
     @Override
     protected JavaFileObject getSourceFileForCompilation() {
-        return JavaFileObjects.forResource("GenericsTestClass.java");
+        return JavaFileObjectUtils.readFromResource("/GenericsTestClass.java");
     }
 
     @Test

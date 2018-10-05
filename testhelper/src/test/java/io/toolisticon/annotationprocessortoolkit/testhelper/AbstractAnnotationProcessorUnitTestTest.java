@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper;
 
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.InvalidTestConfigurationException;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;

@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
@@ -1094,7 +1094,6 @@ public class AnnotationValueUtilsTest extends AbstractAnnotationProcessorUnitTes
                                                               MatcherAssert.assertThat(AnnotationValueUtils.isAnnotationArray(null), Matchers.is(false));
 
 
-
                                                           }
                                                       }
                                         )
@@ -1112,7 +1111,7 @@ public class AnnotationValueUtilsTest extends AbstractAnnotationProcessorUnitTes
 
     @Override
     protected JavaFileObject getSourceFileForCompilation() {
-        return JavaFileObjects.forResource("AnnotationValueUtilsTestClass.java");
+        return JavaFileObjectUtils.readFromResource("/AnnotationValueUtilsTestClass.java");
     }
 
     @Test

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
@@ -84,7 +85,7 @@
         <java.compile.source.version>1.6</java.compile.source.version>
         <java.compile.target.version>1.6</java.compile.target.version>
 
-        <java.version>1.8.0</java.version>
+        <java.version>1.6.0</java.version>
 
         <spiap.version>0.5.1</spiap.version>
 
@@ -92,7 +93,7 @@
         <junit.version>4.12</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
         <mockito.version>1.10.19</mockito.version>
-        <lombok.version>1.16.6</lombok.version>
+        <lombok.version>1.18.2</lombok.version>
         <google-compile-testing.version>0.9</google-compile-testing.version>
 
     </properties>
@@ -143,7 +144,6 @@
                                         <include>com.sun:tools:*</include>
                                         <include>*:*:*:*:test:*</include>
                                         <include>*:*:*:*:provided:*</include>
-
                                     </includes>
                                 </bannedDependencies>
                             </rules>
@@ -185,39 +185,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <version>1.16</version>
-
-
-                <executions>
-
-                    <execution>
-                        <id>check_java17</id>
-
-                        <phase>test</phase>
-
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-
-                        <configuration>
-
-                            <signature>
-                                <groupId>org.codehaus.mojo.signature</groupId>
-                                <artifactId>java16</artifactId>
-                                <version>1.0</version>
-                            </signature>
-
-                        </configuration>
-
-                    </execution>
-
-                </executions>
-
-
-            </plugin>
 
         </plugins>
         <pluginManagement>
@@ -237,7 +204,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.0</version>
+                    <version>3.8.0</version>
                     <configuration>
                         <source>${java.compile.source.version}</source>
                         <target>${java.compile.target.version}</target>
@@ -432,41 +399,116 @@
         </profile>
 
         <profile>
-            <id>tools-jar</id>
+            <id>jdksmallerthan9</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
-                <file>
-                    <exists>${java.home}/../lib/tools.jar</exists>
-                </file>
+                <jdk>[1.6,9)</jdk>
             </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.sun</groupId>
-                    <artifactId>tools</artifactId>
-                    <version>${java.version}</version>
-                    <scope>system</scope>
-                    <systemPath>${java.home}/../lib/tools.jar</systemPath>
-                </dependency>
-            </dependencies>
+
+
+            <build>
+
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>animal-sniffer-maven-plugin</artifactId>
+                        <version>1.16</version>
+
+
+                        <executions>
+
+                            <execution>
+                                <id>check_java17</id>
+
+                                <phase>test</phase>
+
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+
+                                <configuration>
+
+                                    <signature>
+                                        <groupId>org.codehaus.mojo.signature</groupId>
+                                        <artifactId>java16</artifactId>
+                                        <version>1.0</version>
+                                    </signature>
+
+                                </configuration>
+
+                            </execution>
+
+                        </executions>
+
+
+                    </plugin>
+
+                </plugins>
+
+
+            </build>
         </profile>
+
         <profile>
-            <id>classes-jar</id>
+            <id>jdkgreaterthan8</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
-                <file>
-                    <exists>${java.home}/../Classes/classes.jar</exists>
-                </file>
+                <jdk>[9,20)</jdk>
             </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.sun</groupId>
-                    <artifactId>tools</artifactId>
-                    <!--<version>${java.version}</version>-->
-                    <scope>system</scope>
-                    <systemPath>${java.home}/../Classes/classes.jar</systemPath>
-                </dependency>
-            </dependencies>
+
+
+            <build>
+
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>animal-sniffer-maven-plugin</artifactId>
+                        <version>1.16</version>
+
+                        <configuration>
+
+                            <ignores>
+                                <ignore>com.sun.source.util.Trees</ignore>
+                                <ignore>com.sun.source.tree.*</ignore>
+                            </ignores>
+
+                        </configuration>
+
+                        <executions>
+
+                            <execution>
+                                <id>check_java17</id>
+
+                                <phase>test</phase>
+
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+
+                                <configuration>
+
+                                    <signature>
+                                        <groupId>org.codehaus.mojo.signature</groupId>
+                                        <artifactId>java16</artifactId>
+                                        <version>1.0</version>
+                                    </signature>
+
+                                </configuration>
+
+                            </execution>
+
+                        </executions>
+
+
+                    </plugin>
+
+                </plugins>
+
+
+            </build>
         </profile>
+
+
     </profiles>
 
     <dependencies>
@@ -547,12 +589,6 @@
                 <scope>provided</scope>
             </dependency>
 
-            <dependency>
-                <groupId>com.google.testing.compile</groupId>
-                <artifactId>compile-testing</artifactId>
-                <version>${google-compile-testing.version}</version>
-                <scope>test</scope>
-            </dependency>
 
         </dependencies>
     </dependencyManagement>

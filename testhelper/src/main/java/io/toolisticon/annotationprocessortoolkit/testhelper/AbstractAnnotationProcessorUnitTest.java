@@ -1,11 +1,10 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper;
 
-import com.google.testing.compile.JavaFileObjects;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 
 import javax.annotation.processing.Processor;
 import javax.tools.JavaFileObject;
-import java.net.URL;
 
 /**
  * Abstract base class for testing annotation processor internal stuff where tools offered by {@link ProcessEnvironment} are needed.
@@ -21,11 +20,11 @@ public abstract class AbstractAnnotationProcessorUnitTest extends AbstractAnnota
 
     @Override
     protected JavaFileObject getSourceFileForCompilation() {
-        URL url = AbstractAnnotationProcessorUnitTest.class.getClassLoader().getResource(
-                getAnnotationProcessorTestConfiguration().getCustomSourceFile() != null ?
-                        getAnnotationProcessorTestConfiguration().getCustomSourceFile() :
-                        "AnnotationProcessorUnitTestClass.java");
-        return url != null ? JavaFileObjects.forResource(url) : null;
+
+        return JavaFileObjectUtils.readFromResource(getAnnotationProcessorTestConfiguration().getCustomSourceFile() != null ?
+                getAnnotationProcessorTestConfiguration().getCustomSourceFile() :
+                "/AnnotationProcessorUnitTestClass.java");
+
     }
 
     @Override

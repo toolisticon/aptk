@@ -1,10 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator;
 
-import com.google.testing.compile.JavaFileObjects;
-import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.CompileTestBuilder;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.ProcessingEnvironmentUtils;
@@ -19,14 +17,11 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
-import javax.tools.JavaFileObject;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,2240 +29,2453 @@ import java.util.List;
 /**
  * Unit test for {@link FluentElementValidator}.
  */
-@RunWith(Parameterized.class)
-public class FluentElementValidatorTest extends AbstractAnnotationProcessorUnitTest {
-
-    public FluentElementValidatorTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
-        super(configuration);
-    }
+public class FluentElementValidatorTest {
 
     @Before
     public void init() {
         MessagerUtils.setPrintMessageCodes(true);
     }
 
-    @Parameterized.Parameters(name = "{index}: {0}")
-    public static List<Object[]> data() {
-        return Arrays.asList(
+    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
+            .createCompileTestBuilder()
+            .unitTest()
+            .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java"));
 
-                new Object[][]{
+    @Test
+    public void validateByNoneOfCriteriaWithDefaults() {
 
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
 
-                        {
-                                "validate by none of criteria with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
-                                                              FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
+                    }
+                })
 
-                                                          }
-                                                      }
-                                        )
-                                        .build()
+                .compilationShouldSucceed()
+                .testCompilation();
 
-
-                        },
-                        {
-                                "validate by none of criteria with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by one of criteria with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by one of criteria with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by all of criteria with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by all of criteria with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by at least one of criteria with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by at least one of criteria with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by is criteria (element based and type element based) with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_TYPE_ELEMENT).is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by is criteria (element based and type element based) with defaults - failing validation (ELEMENT CHECK)",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_EXECUTABLE_ELEMENT).is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.IS_EXECUTABLE_ELEMENT.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by is criteria (element based and type element based) with defaults - failing validation (ELEMENT KIND CHECK)",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_TYPE_ELEMENT).is(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.IS_INTERFACE.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by implicit criteria (has return type) with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by implicit criteria (has return type) with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-
-
-                        // Now do the same test with custom message or message scope
-                        {
-                                "validate by none of criteria with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by none of criteria with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by one of criteria with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by one of criteria with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by all of criteria with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by all of criteria with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by at least one of criteria with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by at least one of criteria with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by is criteria (element based and type element based) with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(CoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by is criteria (element based and type element based) with custom settings - failing validation (ELEMENT CHECK)",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(CoreMatchers.IS_EXECUTABLE_ELEMENT).is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.IS_EXECUTABLE_ELEMENT.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by is criteria (element based and type element based) with custom settings - failing validation (ELEMENT KIND CHECK)",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.IS_INTERFACE.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by implicit criteria (has return type) with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).warning().applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate by implicit criteria (has return type) with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).setCustomMessage("UPS").applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-
-                        // --------------------------------------------------
-                        // -- Now do the same with inverted validator
-                        // --------------------------------------------------
-
-                        {
-                                "validate inverted by none of criteria with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by none of criteria with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by one of criteria with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by one of criteria with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by all of criteria with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED, Modifier.FINAL).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by all of criteria with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by at least one of criteria with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by at least one of criteria with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC, Modifier.ABSTRACT).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by is criteria (element based and type element based) with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by is criteria (element based and type element based) with defaults - failing validation (ELEMENT CHECK)",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_TYPE_ELEMENT).isNot(CoreMatchers.IS_CLASS).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.IS_TYPE_ELEMENT.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by is criteria (element based and type element based) with defaults - failing validation (ELEMENT KIND CHECK)",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(CoreMatchers.IS_CLASS).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.IS_CLASS.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by implicit criteria (has return type) with defaults",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by implicit criteria (has return type) with defaults - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-
-
-                        // Now do the same test with custom message or message scope
-                        {
-                                "validate inverted by none of criteria with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by none of criteria with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by one of criteria with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by one of criteria with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by all of criteria with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by all of criteria with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by at least one of criteria with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by at least one of criteria with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by is criteria (element based and type element based) with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by is criteria (element based and type element based) with custom settings - failing validation (ELEMENT CHECK)",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(CoreMatchers.IS_TYPE_ELEMENT).isNot(CoreMatchers.IS_METHOD).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.IS_TYPE_ELEMENT.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by is criteria (element based and type element based) with custom settings - failing validation (ELEMENT KIND CHECK)",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(CoreMatchers.IS_CLASS).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.IS_CLASS.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by implicit criteria (has return type) with custom settings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).warning().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "validate inverted by implicit criteria (has return type) with custom settings - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "UPS")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate note, warning and error message - failing validation with setCustomMessage done upfront",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                                              .setCustomMessage("NOTE").note().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                                                                              .validateAndIssueMessages()
-                                                                      , Matchers.equalTo(false));
-
-                                                              MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                                              .setCustomMessage("WARNING").warning().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                                                                              .validateAndIssueMessages()
-                                                                      , Matchers.equalTo(false));
-
-                                                              MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                                              .setCustomMessage("ERROR").error().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                                                                              .validateAndIssueMessages()
-                                                                      , Matchers.equalTo(false));
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setNoteChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "NOTE")
-                                        .setWarningChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "WARNING")
-                                        .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "ERROR")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate note, warning and error message - failing validation",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
-                                                              MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                                                              MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                                                              MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                                              .note().setCustomMessage("NOTE").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                                                                              .validateAndIssueMessages()
-                                                                      , Matchers.equalTo(false));
-
-                                                              MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                                              .warning().setCustomMessage("WARNING").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                                                                              .validateAndIssueMessages()
-                                                                      , Matchers.equalTo(false));
-
-                                                              MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                                              .error().setCustomMessage("ERROR").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                                                                              .validateAndIssueMessages()
-                                                                      , Matchers.equalTo(false));
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setNoteChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "NOTE")
-                                        .setWarningChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "WARNING")
-                                        .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "ERROR")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Implicit Element based validator",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("SUCCESS", true)).validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("FAILURE", false)).validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Implicit validator",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "SUCCESS", true)).validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "FAILURE", false)).validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Implicit Element based validator",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("SUCCESS", false)).validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("FAILURE", true)).validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Implicit validator",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "SUCCESS", false)).validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "FAILURE", true)).validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Inclusive Characteristics Element based validator - none of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Inclusive Characteristics validator - none of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Inclusive Characteristics Element based validator - none of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Inclusive Characteristics validator - none of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Inclusive Characteristics Element based validator - one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Inclusive Characteristics validator - one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Inclusive Characteristics Element based validator - one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Inclusive Characteristics validator - one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Inclusive Characteristics Element based validator -  at least one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Inclusive Characteristics validator - at least one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Inclusive Characteristics Element based validator -  at least one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasAtLeastOneOf("XX", "YY").justValidate()
-                                                                      , Matchers.equalTo(false));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Inclusive Characteristics validator - at least one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS!", false, true)).hasAtLeastOneOf("XX", "YY").justValidate()
-                                                                      , Matchers.equalTo(false));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Inclusive Characteristics Element based validator - all of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Inclusive Characteristics validator - all of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Inclusive Characteristics Element based validator - all of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasAllOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Inclusive Characteristics validator - all of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasAllOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Exclusive Characteristics Element based validator - none of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Exclusive Characteristics validator - none of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Exclusive Characteristics Element based validator - none of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Exclusive Characteristics validator - none of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Exclusive Characteristics Element based validator - one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate Exclusive Characteristics validator - one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, false)).hasOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Exclusive Characteristics Element based validator - one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, false)).hasOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate INVERTED Exclusive Characteristics validator - one of",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element)
-                                                                              .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate IS Element based validator",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator((Element) element).is(TestCoreMatcherFactory.createElementBasedIsCoreMatcher(TypeElement.class, "SUCCESS", true)).validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator((Element) element).is(TestCoreMatcherFactory.createElementBasedIsCoreMatcher(TypeElement.class, "FAILURE", false)).validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "validate IS validator",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true)).validateAndIssueMessages()
-                                                                      , Matchers.equalTo(true));
-
-                                                              FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false)).validateAndIssueMessages();
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "execute command - if validation succeeds",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-
-                                                              FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true))
-                                                                      .executeCommand(
-                                                                              new Command<TypeElement>() {
-                                                                                  @Override
-                                                                                  public void execute(TypeElement element) {
-                                                                                      ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.NOTE, "EXECUTED COMMAND");
-                                                                                  }
-                                                                              });
-
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setNoteChecks("EXECUTED COMMAND")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "execute command with return value - if validation succeeds",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-
-                                                              MatcherAssert.assertThat(
-                                                                      FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true))
-                                                                              .executeCommand(
-                                                                                      new CommandWithReturnType<TypeElement, String>() {
-                                                                                          @Override
-                                                                                          public String execute(TypeElement element) {
-                                                                                              ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.NOTE, "EXECUTED COMMAND");
-                                                                                              return "YES!";
-                                                                                          }
-                                                                                      }),
-                                                                      Matchers.is("YES!")
-                                                              );
-
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setNoteChecks("EXECUTED COMMAND")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "don't execute command but trigger validation message - if validation fails",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
-                                                                      .executeCommand(
-                                                                              new Command<TypeElement>() {
-                                                                                  @Override
-                                                                                  public void execute(TypeElement element) {
-                                                                                      ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
-                                                                                  }
-                                                                              });
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-                        {
-                                "don't execute command - if validation fails",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
-                                                                      .executeCommandAndIssueMessages(
-                                                                              new Command<TypeElement>() {
-                                                                                  @Override
-                                                                                  public void execute(TypeElement element) {
-                                                                                      throw new IllegalStateException("Shouldn't execute command if validation fails");
-                                                                                  }
-                                                                              });
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "don't execute command with return value - if validation fails",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
-                                                                      .executeCommandAndIssueMessages(
-                                                                              new CommandWithReturnType<TypeElement, String>() {
-                                                                                  @Override
-                                                                                  public String execute(TypeElement element) {
-                                                                                      throw new IllegalStateException("Shouldn't execute command if validation fails");
-                                                                                  }
-                                                                              });
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("FAILURE")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "custom message - with ValidationMessage class and Messageargs",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().setCustomMessage(
-                                                                      new ValidationMessage() {
-                                                                          @Override
-                                                                          public String getCode() {
-                                                                              return "XXX";
-                                                                          }
-
-                                                                          @Override
-                                                                          public String getMessage() {
-                                                                              return "ERROR ${0} ${0} ${1}!";
-                                                                          }
-                                                                      }, "YES", "AGAIN"
-                                                              ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
-                                                                      .validateAndIssueMessages();
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("ERROR YES YES AGAIN!")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-                        {
-                                "custom message - with ValidationMessage class without MessageArgs",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldFail()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
-
-                                                              FluentElementValidator.createFluentElementValidator(element)
-                                                                      .error().setCustomMessage(
-                                                                      PlainValidationMessage.create("XXX", "ERROR!")
-
-                                                              ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
-                                                                      .validateAndIssueMessages();
-                                                          }
-                                                      }
-                                        )
-                                        .addMessageValidator()
-                                        .setErrorChecks("ERROR!")
-                                        .finishMessageValidator()
-                                        .build()
-
-
-                        },
-
-
-                }
-
-        );
-
-
-    }
-
-
-    @Override
-    protected JavaFileObject getSourceFileForCompilation() {
-        return JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
     }
 
     @Test
-    public void test() {
-        super.test();
+    public void validateByNoneOfCriteriaWithDefaults_failingValidation() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                    }
+                })
+
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .finishAddMessageChecks()
+                .compilationShouldFail()
+                .testCompilation();
+
     }
+
+
+    @Test
+    public void validateByOneOfCriteriaWithDefaults() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                    }
+                })
+
+                .compilationShouldSucceed()
+                .testCompilation();
+
+    }
+
+
+    @Test
+    public void validateByOneOfCriteriaWithDefaults_failingValidation() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                    }
+                })
+
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .finishAddMessageChecks()
+                .compilationShouldFail()
+                .testCompilation();
+
+    }
+
+    @Test
+    public void validateByAllOfCriteriaWithDefaults() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                    }
+                })
+
+                .compilationShouldSucceed()
+                .testCompilation();
+
+    }
+
+    @Test
+    public void validateByAllOfCriteriaWithDefaults_failingValidation() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                    }
+                })
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .finishAddMessageChecks()
+                .compilationShouldFail()
+                .testCompilation();
+
+    }
+
+    @Test
+    public void validateByAtLeastOneOfCriteriaWithDefaults() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                    }
+                })
+                .compilationShouldSucceed()
+                .testCompilation();
+
+    }
+
+    @Test
+    public void validateByAtLeastOneOfCriteriaWithDefaults_failingValidation() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
+
+
+                    }
+                })
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .finishAddMessageChecks()
+                .compilationShouldFail()
+                .testCompilation();
+
+    }
+
+    @Test
+    public void validateByIsCriteria_elementBasedAndTypeElementBased_withDefaults() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_TYPE_ELEMENT).is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+
+
+                    }
+                })
+                .compilationShouldSucceed()
+                .testCompilation();
+
+    }
+
+    @Test
+    public void validateByIsCriteria_elementBasedAndTypeElementBased_withDefaults_failingValidation_ELEMENT_CHECK() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_EXECUTABLE_ELEMENT).is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+
+
+                    }
+                })
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.IS_EXECUTABLE_ELEMENT.getCode())
+                .finishAddMessageChecks()
+                .compilationShouldFail()
+                .testCompilation();
+
+    }
+
+
+    @Test
+    public void validateByIsCriteria_elementBasedAndTypeElementBased_withDefaults_failingValidation_ELEMENT_KIND_CHECK() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_TYPE_ELEMENT).is(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
+
+
+                    }
+                })
+                .compilationShouldFail()
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.IS_INTERFACE.getCode())
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validateByImplicitCriteria_hasReturnType_withDefaults() {
+
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
+                        MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                        MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                        FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+
+
+                    }
+                })
+                .compilationShouldSucceed()
+                .testCompilation();
+
+
+    }
+
+    @Test
+    public void validateByImplicitCriteria_hasReturnType_withDefaults_failibgValidation() {
+        unitTestBuilder.compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    // Now do the same test_with_custom_message or message scope
+
+    @Test
+    public void validateByNoneOfCriteriaWithCustomSettings() {
+        unitTestBuilder.useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                    }
+                })
+
+                .compilationShouldSucceed()
+
+                .testCompilation();
+
+
+    }
+
+    @Test
+    public void validateByNoneOfCriteriaWithCustomSettings_failingValidation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validatByOneOfCriteriaWithCustomSettings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validateByOneOfCriteriaWithCustomSettings_failingValidation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validateByAllOfCriteriaWithCustomSettings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validateByAllOfCriteriaWithCustomSettings_failingValidation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validateByAtLeastOneOfCriteriaWithCustomSettings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_by_at_least_one_of_criteria_with_custom_settings__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validateby_is_criteria__element_based_and_type_element_based__with_custom_settings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(CoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_by_is_criteria__element_based_and_type_element_based__with_custom_settings__failing_validation__ELEMENT_CHECK() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(CoreMatchers.IS_EXECUTABLE_ELEMENT).is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.IS_EXECUTABLE_ELEMENT.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_by_is_criteria__element_based_and_type_element_based__with_custom_settings__failing_validation__ELEMENT_KIND_CHECK() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.IS_INTERFACE.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_by_implicit_criteria__has_return_type__with_custom_settings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).warning().applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_by_implicit_criteria__has_return_type__with_custom_settings__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).setCustomMessage("UPS").applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+    // --------------------------------------------------
+    // -- Now do the same_with_inverted validator
+    // --------------------------------------------------
+
+
+    @Test
+    public void validate_inverted_by_none_of_criteria_with_defaults() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_none_of_criteria_with_defaults__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_one_of_criteria_with_defaults() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_one_of_criteria_with_defaults__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_all_of_criteria_with_defaults() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED, Modifier.FINAL).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_all_of_criteria_with_defaults__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_at_least_one_of_criteria_with_defaults() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_at_least_one_of_criteria_with_defaults__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC, Modifier.ABSTRACT).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_defaults() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_defaults__failing_validation__ELEMENT_CHECK() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_TYPE_ELEMENT).isNot(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.IS_TYPE_ELEMENT.getCode())
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_defaults__failing_validation__ELEMENT_KIND_CHECK() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.IS_CLASS.getCode())
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_implicit_criteria__has_return_type__with_defaults() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+    @Test
+    public void validate_inverted_by_implicit_criteria__has_return_type__with_defaults__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    // Now do the same test_with_custom_message or message scope
+
+    @Test
+    public void validate_inverted_by_none_of_criteria_with_custom_settings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_none_of_criteria_with_custom_settings__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_one_of_criteria_with_custom_settings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_one_of_criteria_with_custom_settings__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_all_of_criteria_with_custom_settings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_all_of_criteria_with_custom_settings__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_at_least_one_of_criteria_with_custom_settings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_at_least_one_of_criteria_with_custom_settings__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_custom_settings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_custom_settings__failing_validation__ELEMENT_CHECK() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(CoreMatchers.IS_TYPE_ELEMENT).isNot(CoreMatchers.IS_METHOD).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.IS_TYPE_ELEMENT.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_custom_settings__failing_validation__ELEMENT_KIND_CHECK() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.IS_CLASS.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_implicit_criteria__has_return_type__with_custom_settings() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).warning().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_inverted_by_implicit_criteria__has_return_type__with_custom_settings__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "UPS")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_note_warning_and_error_message__failing_validation_with_setCustomMessage_done_upfront() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                                MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
+                                                .setCustomMessage("NOTE").note().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .validateAndIssueMessages()
+                                        , Matchers.equalTo(false));
+
+                                MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
+                                                .setCustomMessage("WARNING").warning().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .validateAndIssueMessages()
+                                        , Matchers.equalTo(false));
+
+                                MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
+                                                .setCustomMessage("ERROR").error().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .validateAndIssueMessages()
+                                        , Matchers.equalTo(false));
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addNoteChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "NOTE")
+                .addWarningChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "WARNING")
+                .addErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "ERROR")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_note_warning_and_error_message__failing_validation() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
+
+
+                                MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
+                                                .note().setCustomMessage("NOTE").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .validateAndIssueMessages()
+                                        , Matchers.equalTo(false));
+
+                                MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
+                                                .warning().setCustomMessage("WARNING").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .validateAndIssueMessages()
+                                        , Matchers.equalTo(false));
+
+                                MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
+                                                .error().setCustomMessage("ERROR").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .validateAndIssueMessages()
+                                        , Matchers.equalTo(false));
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addNoteChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "NOTE")
+                .addWarningChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "WARNING")
+                .addErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "ERROR")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Implicit_Element_based_validator() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("SUCCESS", true)).validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("FAILURE", false)).validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+    @Test
+    public void validate_Implicit_validator() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "SUCCESS", true)).validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "FAILURE", false)).validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Implicit_Element_based_validator() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("SUCCESS", false)).validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedImplicitCoreMatcher("FAILURE", true)).validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Implicit_validator() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "SUCCESS", false)).validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createImplicitCoreMatcher(TypeElement.class, "FAILURE", true)).validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Inclusive_Characteristics_Element_based_validator__none_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Inclusive_Characteristics_validator__none_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Inclusive_Characteristics_Element_based_validator__none_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Inclusive_Characteristics_validator__none_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Inclusive_Characteristics_Element_based_validator__one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Inclusive_Characteristics_validator__one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Inclusive_Characteristics_Element_based_validator__one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Inclusive_Characteristics_validator__one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Inclusive_Characteristics_Element_based_validator___at_least_one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Inclusive_Characteristics_validator__at_least_one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Inclusive_Characteristics_Element_based_validator___at_least_one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasAtLeastOneOf("XX", "YY").justValidate()
+                                        , Matchers.equalTo(false));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Inclusive_Characteristics_validator__at_least_one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS!", false, true)).hasAtLeastOneOf("XX", "YY").justValidate()
+                                        , Matchers.equalTo(false));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasAtLeastOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Inclusive_Characteristics_Element_based_validator__all_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Inclusive_Characteristics_validator__all_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Inclusive_Characteristics_Element_based_validator__all_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedInclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Inclusive_Characteristics_validator__all_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasAllOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createInclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasAllOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Exclusive_Characteristics_Element_based_validator__none_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Exclusive_Characteristics_validator__none_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, true)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Exclusive_Characteristics_Element_based_validator__none_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Exclusive_Characteristics_validator__none_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, false)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasNoneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", false, false)).hasNoneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Exclusive_Characteristics_Element_based_validator__one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_Exclusive_Characteristics_validator__one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, false)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Exclusive_Characteristics_Element_based_validator__one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", false, false)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "SUCCESS", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyInvertedValidator(TestCoreMatcherFactory.createElementBasedExclusiveCriteriaCoreMatcher(String.class, "FAILURE", true, false)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_INVERTED_Exclusive_Characteristics_validator__one_of() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element)
+                                                .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "SUCCESS", false, true)).hasOneOf("XX", "YY").validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().applyValidator(TestCoreMatcherFactory.createExclusiveCriteriaCoreMatcher(TypeElement.class, String.class, "FAILURE", true, true)).hasOneOf("XX", "YY").validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_IS_Element_based_validator() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator((Element) element).is(TestCoreMatcherFactory.createElementBasedIsCoreMatcher(TypeElement.class, "SUCCESS", true)).validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator((Element) element).is(TestCoreMatcherFactory.createElementBasedIsCoreMatcher(TypeElement.class, "FAILURE", false)).validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void validate_IS_validator() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true)).validateAndIssueMessages()
+                                        , Matchers.equalTo(true));
+
+                                FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false)).validateAndIssueMessages();
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void execute_command__if_validation_succeeds() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+
+                                FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true))
+                                        .executeCommand(
+                                                new Command<TypeElement>() {
+                                                    @Override
+                                                    public void execute(TypeElement element) {
+                                                        ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.NOTE, "EXECUTED COMMAND");
+                                                    }
+                                                });
+
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addNoteChecks("EXECUTED COMMAND")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void execute_command_with_return_value__if_validation_succeeds() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+
+                                MatcherAssert.assertThat(
+                                        FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true))
+                                                .executeCommand(
+                                                        new CommandWithReturnType<TypeElement, String>() {
+                                                            @Override
+                                                            public String execute(TypeElement element) {
+                                                                ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.NOTE, "EXECUTED COMMAND");
+                                                                return "YES!";
+                                                            }
+                                                        }),
+                                        Matchers.is("YES!")
+                                );
+
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addNoteChecks("EXECUTED COMMAND")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void dont_execute_command_but_trigger_validation_message__if_validation_fails() {
+        unitTestBuilder
+                .compilationShouldSucceed()
+                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                                  @Override
+                                  protected void testCase(TypeElement element) {
+
+                                      FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                              .executeCommand(
+                                                      new Command<TypeElement>() {
+                                                          @Override
+                                                          public void execute(TypeElement element) {
+                                                              ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
+                                                          }
+                                                      });
+                                  }
+                              }
+                )
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void dont_execute_command__if_validation_fails() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                        .executeCommandAndIssueMessages(
+                                                new Command<TypeElement>() {
+                                                    @Override
+                                                    public void execute(TypeElement element) {
+                                                        throw new IllegalStateException("Shouldn't execute_command if_validation_fails");
+                                                    }
+                                                });
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void dont_execute_command_with_return_value__if_validation_fails() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                        .executeCommandAndIssueMessages(
+                                                new CommandWithReturnType<TypeElement, String>() {
+                                                    @Override
+                                                    public String execute(TypeElement element) {
+                                                        throw new IllegalStateException("Shouldn't execute_command if_validation_fails");
+                                                    }
+                                                });
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("FAILURE")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void custom_message__with_ValidationMessage_class_and_Messageargs() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().setCustomMessage(
+                                        new ValidationMessage() {
+                                            @Override
+                                            public String getCode() {
+                                                return "XXX";
+                                            }
+
+                                            @Override
+                                            public String getMessage() {
+                                                return "ERROR ${0} ${0} ${1}!";
+                                            }
+                                        }, "YES", "AGAIN"
+                                ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                        .validateAndIssueMessages();
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("ERROR YES YES AGAIN!")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
+
+    public void custom_message__with_ValidationMessage_class_without_MessageArgs() {
+        unitTestBuilder
+                .compilationShouldFail()
+                .useProcessor(
+                        new AbstractUnitTestAnnotationProcessorClass() {
+                            @Override
+                            protected void testCase(TypeElement element) {
+
+                                FluentElementValidator.createFluentElementValidator(element)
+                                        .error().setCustomMessage(
+                                        PlainValidationMessage.create("XXX", "ERROR!")
+
+                                ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                        .validateAndIssueMessages();
+                            }
+                        }
+                )
+                .addMessageChecks()
+                .addErrorChecks("ERROR!")
+                .finishAddMessageChecks()
+                .testCompilation();
+
+
+    }
+
 
     public static <T> List<T> convertToList(T... element) {
 
         return Arrays.asList(element);
 
     }
+
 
 }

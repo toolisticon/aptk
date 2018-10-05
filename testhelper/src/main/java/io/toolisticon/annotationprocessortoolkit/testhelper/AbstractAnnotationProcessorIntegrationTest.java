@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper;
 
-import com.google.testing.compile.JavaFileObjects;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
 
 import javax.annotation.processing.Processor;
@@ -11,7 +11,6 @@ import javax.tools.JavaFileObject;
  */
 public abstract class AbstractAnnotationProcessorIntegrationTest<T extends Processor>
         extends AbstractAnnotationProcessorTest<AnnotationProcessorIntegrationTestConfiguration> {
-
 
 
     protected AbstractAnnotationProcessorIntegrationTest(
@@ -28,6 +27,6 @@ public abstract class AbstractAnnotationProcessorIntegrationTest<T extends Proce
 
     @Override
     protected JavaFileObject getSourceFileForCompilation() {
-        return JavaFileObjects.forResource(getAnnotationProcessorTestConfiguration().getSource());
+        return JavaFileObjectUtils.readFromResource(getAnnotationProcessorTestConfiguration().getSource());
     }
 }

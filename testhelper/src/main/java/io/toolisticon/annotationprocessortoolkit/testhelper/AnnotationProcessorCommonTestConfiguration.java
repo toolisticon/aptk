@@ -24,6 +24,7 @@ public class AnnotationProcessorCommonTestConfiguration {
         this.compilingShouldSucceed = compilingShouldSucceed;
         this.expectedGeneratedJavaFileObjects = expectedGeneratedJavaFileObjects;
         this.testcases = testcases;
+
     }
 
     public Boolean getCompilingShouldSucceed() {

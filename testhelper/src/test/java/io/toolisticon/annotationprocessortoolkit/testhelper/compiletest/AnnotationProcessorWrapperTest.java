@@ -1,5 +1,6 @@
-package io.toolisticon.annotationprocessortoolkit.testhelper;
+package io.toolisticon.annotationprocessortoolkit.testhelper.compiletest;
 
+import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotation;
 import io.toolisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotationProcessor;
 import io.toolisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotationProcessorWithMissingNoArgConstructor;
@@ -145,7 +146,7 @@ public class AnnotationProcessorWrapperTest {
 
         unit.process(set, roundEnvironment);
 
-        Mockito.verify(messager).printMessage(Diagnostic.Kind.NOTE, AbstractAnnotationProcessorTest.TEST_EXECUTION_MESSAGE);
+        Mockito.verify(messager).printMessage(Diagnostic.Kind.NOTE, ((AnnotationProcessorWrapper) unit).getProcessorWasAppliedMessage());
         Mockito.verify(processorSpy).process(set, roundEnvironment);
 
     }
@@ -180,6 +181,8 @@ public class AnnotationProcessorWrapperTest {
 
 
     }
+
+
 
 
 }

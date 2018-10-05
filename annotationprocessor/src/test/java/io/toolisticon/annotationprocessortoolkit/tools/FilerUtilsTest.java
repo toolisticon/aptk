@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.generators.FileObjectUtilsTestAnnotationProcessor;
@@ -32,9 +32,9 @@ public class FilerUtilsTest extends AbstractAnnotationProcessorIntegrationTest<F
                 {
                         "Test valid usage",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/generators/FilerUtilsTestClass.java")
+                                .setSourceFileToCompile("/testcases/generators/FilerUtilsTestClass.java")
                                 .compilationShouldSucceed()
-                                .javaFileObjectShouldMatch(JavaFileObjects.forResource("testcases/generators/expectedResult.txt"))
+                                .javaFileObjectShouldMatch(JavaFileObjectUtils.readFromResource("/testcases/generators/expectedResult.txt"))
                                 .build()
                 },
 

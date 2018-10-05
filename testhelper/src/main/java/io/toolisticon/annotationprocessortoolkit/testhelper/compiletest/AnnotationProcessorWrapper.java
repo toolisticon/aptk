@@ -1,4 +1,6 @@
-package io.toolisticon.annotationprocessortoolkit.testhelper;
+package io.toolisticon.annotationprocessortoolkit.testhelper.compiletest;
+
+import org.junit.Assert;
 
 import javax.annotation.processing.Completion;
 import javax.annotation.processing.Messager;
@@ -19,11 +21,16 @@ import java.util.Set;
 public final class AnnotationProcessorWrapper implements Processor {
 
     private final Processor wrappedProcessor;
+    private final Class<? extends Throwable> expectedThrownException;
     private Messager messager;
 
-
     private AnnotationProcessorWrapper(Processor processor) {
+        this(processor, null);
+    }
+
+    private AnnotationProcessorWrapper(Processor processor, Class<? extends Throwable> expectedThrownException) {
         this.wrappedProcessor = processor;
+        this.expectedThrownException = expectedThrownException;
     }
 
 
@@ -55,9 +62,33 @@ public final class AnnotationProcessorWrapper implements Processor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
         // now set note message before calling the processor
-        messager.printMessage(Diagnostic.Kind.NOTE, AbstractAnnotationProcessorTest.TEST_EXECUTION_MESSAGE);
+        messager.printMessage(Diagnostic.Kind.NOTE, getProcessorWasAppliedMessage());
 
-        return wrappedProcessor.process(annotations, roundEnv);
+        try {
+            boolean returnValue = wrappedProcessor.process(annotations, roundEnv);
+
+            if (this.expectedThrownException != null) {
+                Assert.fail("Expected exception of type '" + this.expectedThrownException.getClass().getCanonicalName() + "' to be thrown");
+            }
+
+            return returnValue;
+
+        } catch (Throwable e) {
+
+            if (this.expectedThrownException != null) {
+
+
+                if(e.getClass().equals(this.expectedThrownException)) {
+                    return true;
+                }
+
+            }
+
+            // rethrow e if thrown exception didn't match excepted one
+            throw new RuntimeException("Caught and rethrown Exception. Had been repacked because it could be a checked exception.", e);
+
+
+        }
     }
 
     @Override
@@ -65,7 +96,19 @@ public final class AnnotationProcessorWrapper implements Processor {
         return wrappedProcessor.getCompletions(element, annotation, member, userText);
     }
 
-    public static Processor wrapProcessor(Processor processorToWrap) {
+    public String getProcessorWasAppliedMessage() {
+        return CompileTestUtilities.getAnnotationProcessorWasAppliedMessage(wrappedProcessor);
+    }
+
+    public Processor getWrappedProcessor() {
+        return wrappedProcessor;
+    }
+
+    public static AnnotationProcessorWrapper wrapProcessor(Processor processorToWrap) {
+        return wrapProcessor(processorToWrap,null);
+    }
+
+    public static AnnotationProcessorWrapper wrapProcessor(Processor processorToWrap, Class<? extends Throwable> expectedThrownException) {
 
         if (processorToWrap == null) {
             throw new IllegalArgumentException("Passed processor must not be null");
@@ -74,7 +117,11 @@ public final class AnnotationProcessorWrapper implements Processor {
         return new AnnotationProcessorWrapper(processorToWrap);
     }
 
-    public static <G extends Processor> Processor wrapProcessor(Class<G> processorTypeToWrap) {
+    public static <T extends Processor> AnnotationProcessorWrapper wrapProcessor(Class<T> processorTypeToWrap) {
+        return wrapProcessor(processorTypeToWrap,null);
+    }
+
+    public static <T extends Processor> AnnotationProcessorWrapper wrapProcessor(Class<T> processorTypeToWrap, Class<? extends Throwable> expectedThrownException) {
 
         if (processorTypeToWrap == null) {
             throw new IllegalArgumentException("passed type must not be null");
@@ -87,5 +134,6 @@ public final class AnnotationProcessorWrapper implements Processor {
         }
 
     }
+
 
 }

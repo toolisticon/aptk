@@ -1,6 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper;
 
-import com.google.testing.compile.JavaFileObjects;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.InvalidTestConfigurationException;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
@@ -50,7 +51,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                 {
                         "Test compilation that succeeds",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("TestClass.java")
+                                .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldSucceed()
                                 .build(),
 
@@ -65,7 +66,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                 {
                         "Test compilation that succeeds with warning",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("TestClass.java")
+                                .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldSucceed()
                                 .build(),
 
@@ -81,7 +82,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                 {
                         "Test compilation that succeeds with warning - check warning message",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("TestClass.java")
+                                .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldSucceed()
                                 .addMessageValidator()
                                 .setWarningChecks("MURKS")
@@ -99,7 +100,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                 {
                         "Test compilation that succeeds with warning - check note/info message",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("TestClass.java")
+                                .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldSucceed()
                                 .addMessageValidator()
                                 .setInfoChecks("MURKS")
@@ -117,7 +118,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                 {
                         "Test compilation that throws error",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("TestClass.java")
+                                .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldFail()
                                 .build(),
                         new AbstractUnitTestAnnotationProcessorClass() {
@@ -131,7 +132,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                 {
                         "Test compilation that throws error - check error message",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("TestClass.java")
+                                .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldFail()
                                 .addMessageValidator()
                                 .setErrorChecks("MURKS")
@@ -148,7 +149,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                 {
                         "Test invalid test configuration: compilationShouldSucceed and error messages in MessageValidator",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("TestClass.java")
+                                .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldSucceed()
                                 .addMessageValidator()
                                 .setErrorChecks("MURKS")
@@ -166,7 +167,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                 {
                         "Test failing compilation with and note, warning and error messages in MessageValidator",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("TestClass.java")
+                                .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldFail()
                                 .addMessageValidator()
                                 .setErrorChecks("MURKS_ERROR")
@@ -188,9 +189,9 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                 {
                         "Test compilation with java file creation",
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("TestClass.java")
+                                .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldSucceed()
-                                .javaFileObjectShouldMatch(JavaFileObjects.forSourceString("Test", "public class Test{}"))
+                                .javaFileObjectShouldMatch(JavaFileObjectUtils.readFromString("Test", "public class Test{}"))
                                 .build(),
                         new AbstractUnitTestAnnotationProcessorClass() {
                             @Override

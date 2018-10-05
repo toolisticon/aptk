@@ -1,9 +1,9 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation1;
 import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation2;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
+import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
@@ -196,7 +196,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           @Override
                                                           protected void testCase(TypeElement element) {
 
-                                                              List<? extends Element> results = FluentElementFilter.createFluentElementFilter((List<Element>)null)
+                                                              List<? extends Element> results = FluentElementFilter.createFluentElementFilter((List<Element>) null)
                                                                       .applyInvertedFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
                                                                       .getResult();
 
@@ -382,7 +382,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // null valued element list
                                                               List<? extends Element> result =
-                                                                      FluentElementFilter.createFluentElementFilter((List<Element>)null)
+                                                                      FluentElementFilter.createFluentElementFilter((List<Element>) null)
                                                                               .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(null)
                                                                               .getResult();
 
@@ -530,7 +530,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
                                                               // null valued element list
                                                               List<? extends Element> result =
-                                                                      FluentElementFilter.createFluentElementFilter((List<Element>)null)
+                                                                      FluentElementFilter.createFluentElementFilter((List<Element>) null)
                                                                               .applyInvertedFilter(CoreMatchers.BY_NAME).filterByOneOf(null)
                                                                               .getResult();
 
@@ -674,7 +674,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
 
                                                               // handle nulls correctly
-                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter((List<Element>)null)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter((List<Element>) null)
                                                                       .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(null)
                                                                       .getResult();
 
@@ -819,7 +819,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
 
                                                               // handle nulls correctly
-                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter((List<Element>)null)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter((List<Element>) null)
                                                                       .applyFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
                                                                       .getResult();
 
@@ -971,7 +971,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
 
                                                               // handle nulls correctly
-                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter((List<Element>)null)
+                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter((List<Element>) null)
                                                                       .applyInvertedFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
                                                                       .getResult();
 
@@ -1098,7 +1098,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
 
                                                               // detects multiple elements correctly
-                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentElementFilter((List<Element>)null).hasSingleElement(), Matchers.is(false));
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentElementFilter((List<Element>) null).hasSingleElement(), Matchers.is(false));
 
 
                                                           }
@@ -1286,7 +1286,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
                                                           protected void testCase(TypeElement element) {
 
                                                               // detects empty results correctly
-                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentElementFilter((List<Element>)null).getResultSize(), Matchers.is(0));
+                                                              MatcherAssert.assertThat(FluentElementFilter.createFluentElementFilter((List<Element>) null).getResultSize(), Matchers.is(0));
 
 
                                                           }
@@ -1322,7 +1322,7 @@ public class FluentElementFilterTest extends AbstractAnnotationProcessorUnitTest
 
     @Override
     protected JavaFileObject getSourceFileForCompilation() {
-        return JavaFileObjects.forResource("AnnotationProcessorTestClass.java");
+        return JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java");
     }
 
     @Test

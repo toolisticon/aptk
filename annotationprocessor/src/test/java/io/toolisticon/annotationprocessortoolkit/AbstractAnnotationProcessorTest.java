@@ -5,10 +5,12 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUni
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -25,6 +27,11 @@ public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessor
 
     public AbstractAnnotationProcessorTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
         super(configuration);
+    }
+
+    @Before
+    public void init() {
+        MessagerUtils.setPrintMessageCodes(true);
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
