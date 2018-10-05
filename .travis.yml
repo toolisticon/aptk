@@ -9,6 +9,11 @@ jdk:
 - openjdk7
 - openjdk8
 - oraclejdk8
+- oraclejdk9
+- oraclejdk10
+- oraclejdk-ea
+- openjdk10
+- openjdk11
 install: mvn install -DskipTests=true -q
 script: 
 - mvn verify -B -q
