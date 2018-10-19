@@ -94,7 +94,6 @@
         <hamcrest.version>1.3</hamcrest.version>
         <mockito.version>1.10.19</mockito.version>
         <lombok.version>1.18.2</lombok.version>
-        <google-compile-testing.version>0.9</google-compile-testing.version>
 
     </properties>
 

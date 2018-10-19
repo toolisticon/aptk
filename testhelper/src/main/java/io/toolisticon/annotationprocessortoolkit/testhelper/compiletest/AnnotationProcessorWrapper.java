@@ -78,14 +78,14 @@ public final class AnnotationProcessorWrapper implements Processor {
             if (this.expectedThrownException != null) {
 
 
-                if(e.getClass().equals(this.expectedThrownException)) {
+                if (e.getClass().equals(this.expectedThrownException)) {
                     return true;
                 }
 
             }
-
+            
             // rethrow e if thrown exception didn't match excepted one
-            throw new RuntimeException("Caught and rethrown Exception. Had been repacked because it could be a checked exception.", e);
+            throw new RuntimeException("Caught and rethrown Exception. Had been repacked because it could be a checked exception. '" + e.getMessage() + "'", e);
 
 
         }
@@ -105,7 +105,7 @@ public final class AnnotationProcessorWrapper implements Processor {
     }
 
     public static AnnotationProcessorWrapper wrapProcessor(Processor processorToWrap) {
-        return wrapProcessor(processorToWrap,null);
+        return wrapProcessor(processorToWrap, null);
     }
 
     public static AnnotationProcessorWrapper wrapProcessor(Processor processorToWrap, Class<? extends Throwable> expectedThrownException) {
@@ -118,7 +118,7 @@ public final class AnnotationProcessorWrapper implements Processor {
     }
 
     public static <T extends Processor> AnnotationProcessorWrapper wrapProcessor(Class<T> processorTypeToWrap) {
-        return wrapProcessor(processorTypeToWrap,null);
+        return wrapProcessor(processorTypeToWrap, null);
     }
 
     public static <T extends Processor> AnnotationProcessorWrapper wrapProcessor(Class<T> processorTypeToWrap, Class<? extends Throwable> expectedThrownException) {

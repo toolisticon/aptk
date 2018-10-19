@@ -189,7 +189,7 @@ public class CompileTestFileManager extends ForwardingJavaFileManager<StandardJa
 
     public class InMemoryOutputJavaFileObject extends SimpleJavaFileObject implements OutputStreamCallback {
 
-        private byte[] content;
+        private byte[] content = new byte[0];
 
         public InMemoryOutputJavaFileObject(URI uri, Kind kind) {
             super(uri, kind);
@@ -197,7 +197,7 @@ public class CompileTestFileManager extends ForwardingJavaFileManager<StandardJa
 
         @Override
         public void setContent(byte[] content) {
-            this.content = content;
+            this.content = content != null ? content : new byte[0];
         }
 
         @Override
