@@ -61,6 +61,11 @@ public final class AnnotationProcessorWrapper implements Processor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
+        // skip processing over round
+        if (annotations.size() == 0 && roundEnv.processingOver()) {
+            return true;
+        }
+
         // now set note message before calling the processor
         messager.printMessage(Diagnostic.Kind.NOTE, getProcessorWasAppliedMessage());
 
@@ -68,25 +73,33 @@ public final class AnnotationProcessorWrapper implements Processor {
             boolean returnValue = wrappedProcessor.process(annotations, roundEnv);
 
             if (this.expectedThrownException != null) {
-                Assert.fail("Expected exception of type '" + this.expectedThrownException.getClass().getCanonicalName() + "' to be thrown");
+                Assert.fail("Expected exception of type '" + this.expectedThrownException.getCanonicalName() + "' to be thrown, but wasn't");
             }
 
             return returnValue;
 
         } catch (Throwable e) {
 
+            // pass through assertions
+            if (AssertionError.class.isAssignableFrom(e.getClass())) {
+                throw (AssertionError) e;
+            }
+
             if (this.expectedThrownException != null) {
 
-
-                if (e.getClass().equals(this.expectedThrownException)) {
-                    return true;
+                if (!this.expectedThrownException.isAssignableFrom(e.getClass())) {
+                    Assert.fail("Expected exception of type '" + this.expectedThrownException.getCanonicalName() + "' but exception of type '" + e.getClass().getCanonicalName() + (e.getMessage() != null ? "'  with message '" + e.getMessage() : "") + "' was thrown instead.");
                 }
+
+
+            } else {
+
+                // Got unexpected exception
+                Assert.fail("An unexpected exception of type '" + e.getClass().getCanonicalName() + (e.getMessage() != null ? "'  with message '" + e.getMessage() : "") + "' has been thrown.");
 
             }
 
-            // rethrow e if thrown exception didn't match excepted one
-            throw new RuntimeException("Caught and rethrown Exception. Had been repacked because it could be a checked exception. '" + e.getMessage() + "'", e);
-
+            return true;
 
         }
     }
@@ -114,11 +127,20 @@ public final class AnnotationProcessorWrapper implements Processor {
             throw new IllegalArgumentException("Passed processor must not be null");
         }
 
-        return new AnnotationProcessorWrapper(processorToWrap);
+        return new AnnotationProcessorWrapper(processorToWrap, expectedThrownException);
     }
 
     public static <T extends Processor> AnnotationProcessorWrapper wrapProcessor(Class<T> processorTypeToWrap) {
-        return wrapProcessor(processorTypeToWrap, null);
+        if (processorTypeToWrap == null) {
+            throw new IllegalArgumentException("passed type must not be null");
+        }
+
+        try {
+            return new AnnotationProcessorWrapper(processorTypeToWrap.newInstance());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Cannot instantiate passed processor Class '" + processorTypeToWrap.getCanonicalName() + "'. Make sure that a NoArg constructor exists and is accessible.", e);
+        }
+
     }
 
     public static <T extends Processor> AnnotationProcessorWrapper wrapProcessor(Class<T> processorTypeToWrap, Class<? extends Throwable> expectedThrownException) {
@@ -127,10 +149,14 @@ public final class AnnotationProcessorWrapper implements Processor {
             throw new IllegalArgumentException("passed type must not be null");
         }
 
+        if (expectedThrownException == null) {
+            throw new IllegalArgumentException("passed expectedThrownException must not be null");
+        }
+
         try {
-            return new AnnotationProcessorWrapper(processorTypeToWrap.newInstance());
+            return new AnnotationProcessorWrapper(processorTypeToWrap.newInstance(), expectedThrownException);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Cannot instantiate passed Class. Make sure that a NoArg constructor exists and is accessible.", e);
+            throw new IllegalArgumentException(" instantiate passed processor Class '" + processorTypeToWrap.getCanonicalName() + "'. Make sure that a NoArg constructor exists and is accessible.", e);
         }
 
     }

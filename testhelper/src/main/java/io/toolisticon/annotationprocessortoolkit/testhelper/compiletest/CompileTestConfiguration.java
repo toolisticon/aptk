@@ -32,6 +32,8 @@ public class CompileTestConfiguration {
     private final Set<Processor> processors = new HashSet<Processor>();
     private final Set<ProcessorWithExpectedException> processorsWithExpectedExceptions = new HashSet<ProcessorWithExpectedException>();
 
+    private Class<? extends Throwable> expectedThrownException = null;
+
     private Boolean compilationShouldSucceed;
     private final Set<String> warningMessageCheck = new HashSet<String>();
     private final Set<String> mandatoryWarningMessageCheck = new HashSet<String>();
@@ -54,6 +56,7 @@ public class CompileTestConfiguration {
         this.sourceFiles.addAll(source.getSourceFiles());
         this.processors.addAll(source.getProcessors());
         this.processorsWithExpectedExceptions.addAll(source.processorsWithExpectedExceptions);
+        this.expectedThrownException = source.getExpectedThrownException();
 
         this.compilationShouldSucceed = source.getCompilationShouldSucceed();
         this.warningMessageCheck.addAll(source.getWarningMessageCheck());
@@ -131,6 +134,10 @@ public class CompileTestConfiguration {
         this.expectedGenerateFileObjectsCheck.remove(null);
     }
 
+    public void setExpectedThrownException(Class<? extends Throwable> expectedThrownException) {
+        this.expectedThrownException = expectedThrownException;
+    }
+
     public Set<JavaFileObject> getSourceFiles() {
         return sourceFiles;
     }
@@ -148,11 +155,19 @@ public class CompileTestConfiguration {
         Set<AnnotationProcessorWrapper> wrappedProcessors = new HashSet<AnnotationProcessorWrapper>();
 
         for (Processor processor : this.processors) {
-            wrappedProcessors.add(AnnotationProcessorWrapper.wrapProcessor(processor));
+
+            if (this.expectedThrownException != null) {
+                wrappedProcessors.add(AnnotationProcessorWrapper.wrapProcessor(processor, expectedThrownException));
+            } else {
+                wrappedProcessors.add(AnnotationProcessorWrapper.wrapProcessor(processor, expectedThrownException));
+            }
+
         }
 
         for (ProcessorWithExpectedException processor : this.processorsWithExpectedExceptions) {
-            wrappedProcessors.add(AnnotationProcessorWrapper.wrapProcessor(processor.processor, processor.throwable));
+
+            wrappedProcessors.add(AnnotationProcessorWrapper.wrapProcessor(processor.processor, processor.throwable != null ? processor.throwable : expectedThrownException));
+
         }
 
         return wrappedProcessors;
@@ -183,5 +198,8 @@ public class CompileTestConfiguration {
         return expectedGenerateFileObjectsCheck;
     }
 
+    public Class<? extends Throwable> getExpectedThrownException() {
+        return expectedThrownException;
+    }
 
 }

@@ -39,7 +39,8 @@ public class CompileTest {
 
         // Check if compilation succeeded
         if (compileTestConfiguration.getCompilationShouldSucceed() != null) {
-            Assert.assertEquals(compileTestConfiguration.getCompilationShouldSucceed(), compilationResult.getCompilationSucceeded());
+            Assert.assertTrue(compileTestConfiguration.getCompilationShouldSucceed() ? "Compilation should have succeeded but failed" : "Compilation should have failed but succeeded",
+                    compileTestConfiguration.getCompilationShouldSucceed().equals(compilationResult.getCompilationSucceeded()));
         }
 
 
@@ -53,9 +54,9 @@ public class CompileTest {
         for (JavaFileObject javaFileObject :
                 this.compileTestConfiguration.getExpectedGeneratedJavaFileObjectsCheck()) {
 
-           if (!compilationResult.getCompileTestFileManager().containsGeneratedJavaFileObject(javaFileObject)) {
-               AssertionSpiServiceLocator.locate().fail("Expected generated file can't be found");
-           }
+            if (!compilationResult.getCompileTestFileManager().containsGeneratedJavaFileObject(javaFileObject)) {
+                AssertionSpiServiceLocator.locate().fail("Expected generated file can't be found");
+            }
 
         }
 

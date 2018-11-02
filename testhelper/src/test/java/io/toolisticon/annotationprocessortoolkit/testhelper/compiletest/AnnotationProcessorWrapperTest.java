@@ -4,6 +4,7 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationPr
 import io.toolisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotation;
 import io.toolisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotationProcessor;
 import io.toolisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotationProcessorWithMissingNoArgConstructor;
+import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -182,7 +183,102 @@ public class AnnotationProcessorWrapperTest {
 
     }
 
+    // ----------------------------------------------------
+    // --  Test exception handling and detection on wrapper.
+    // ----------------------------------------------------
 
+
+    @Test
+    public void process_withoutExpectedExceptionShouldSucceed() {
+
+
+        CompileTestBuilder.createCompileTestBuilder().unitTest().useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                    }
+
+                })
+                .compilationShouldSucceed()
+                .testCompilation();
+
+
+    }
+
+
+    @Test
+    public void process_testExpectedExceptionIsThrown_assertionShouldSucceed() {
+
+
+        CompileTestBuilder.createCompileTestBuilder().unitTest().useProcessor(
+                new AbstractUnitTestAnnotationProcessorClass() {
+
+                    @Override
+                    protected void testCase(TypeElement element) {
+                        throw new IllegalArgumentException();
+                    }
+
+                })
+                .expectedThrownException(IllegalArgumentException.class)
+                .testCompilation();
+
+
+    }
+
+    @Test
+    public void process_testExpectedExceptionNotThrown_assertionShouldFail() {
+
+        try {
+            CompileTestBuilder.createCompileTestBuilder().unitTest().useProcessor(
+                    new AbstractUnitTestAnnotationProcessorClass() {
+
+                        @Override
+                        protected void testCase(TypeElement element) {
+
+                        }
+
+                    })
+                    .expectedThrownException(IllegalArgumentException.class)
+                    .testCompilation();
+        } catch (Throwable e) {
+            MatcherAssert.assertThat(e.getMessage(), Matchers.containsString("Expected exception of type 'java.lang.IllegalArgumentException'"));
+        }
+
+    }
+
+    @Test
+    public void process_testUnexpectedExceptionWasThrown_assertionShouldFail() {
+
+        try {
+            CompileTestBuilder.createCompileTestBuilder().unitTest().useProcessor(
+                    new AbstractUnitTestAnnotationProcessorClass() {
+
+                        @Override
+                        protected void testCase(TypeElement element) {
+                            throw new IllegalStateException();
+                        }
+
+                    })
+                    .expectedThrownException(IllegalArgumentException.class)
+                    .testCompilation();
+        } catch (Throwable e) {
+            MatcherAssert.assertThat(e.getMessage(), Matchers.containsString("Expected exception of type 'java.lang.IllegalArgumentException' but exception of type 'java.lang.IllegalStateException' was thrown instead"));
+        }
+
+    }
+
+    @Test
+    public void getWrappedProcessor_testGet() {
+
+        Processor processor = Mockito.mock(Processor.class);
+
+        AnnotationProcessorWrapper unit = AnnotationProcessorWrapper.wrapProcessor(processor);
+
+        MatcherAssert.assertThat(unit.getWrappedProcessor(), Matchers.is(processor));
+
+    }
 
 
 }

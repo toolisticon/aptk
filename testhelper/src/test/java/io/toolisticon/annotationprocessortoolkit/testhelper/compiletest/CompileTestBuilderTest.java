@@ -6,7 +6,9 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Processor;
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
@@ -14,6 +16,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Set;
 
 public class CompileTestBuilderTest {
 
@@ -286,6 +289,81 @@ public class CompileTestBuilderTest {
 
 
         MatcherAssert.assertThat(builder.createCompileTestConfiguration().getProcessorsWithExpectedExceptions(), Matchers.<CompileTestConfiguration.ProcessorWithExpectedException>hasSize(2));
+
+
+    }
+
+    @Test
+    public void test_useSource_addSingleSource() {
+
+        JavaFileObject javaFileObject = Mockito.mock(JavaFileObject.class);
+
+        CompileTestBuilder.UnitTestBuilder builder = CompileTestBuilder.createCompileTestBuilder()
+                .unitTest()
+                .useSource(javaFileObject);
+
+        MatcherAssert.assertThat(builder.createCompileTestConfiguration().getSourceFiles(), Matchers.contains(javaFileObject));
+
+    }
+
+    @Test
+    public void test_useSource_addSourceTwice_onlySecondSourceShouldBeUsed() {
+
+        JavaFileObject javaFileObject1 = Mockito.mock(JavaFileObject.class);
+        JavaFileObject javaFileObject2 = Mockito.mock(JavaFileObject.class);
+
+        CompileTestBuilder.UnitTestBuilder builder = CompileTestBuilder.createCompileTestBuilder()
+                .unitTest()
+                .useSource(javaFileObject1)
+                .useSource(javaFileObject2);
+
+        MatcherAssert.assertThat(builder.createCompileTestConfiguration().getSourceFiles(), Matchers.contains(javaFileObject2));
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_useSource_addNullValuedSource() {
+
+
+        CompileTestBuilder.UnitTestBuilder builder = CompileTestBuilder.createCompileTestBuilder()
+                .unitTest()
+                .useSource(null);
+
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_useProcessor_addNullValuedProcessor() {
+
+
+        CompileTestBuilder.UnitTestBuilder builder = CompileTestBuilder.createCompileTestBuilder()
+                .unitTest()
+                .useProcessor(null);
+
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_CompileTimeTestBuilder_useProcessorAndExpectException_addNullValuedProcessor() {
+
+        CompileTestBuilder.createCompileTestBuilder()
+                .compilationTest()
+                .useProcessorAndExpectException(null, IllegalStateException.class);
+
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_CompileTimeTestBuilder_useProcessorAndExpectException_addNullValuedException() {
+
+        CompileTestBuilder.createCompileTestBuilder()
+                .compilationTest()
+                .useProcessorAndExpectException(new AbstractProcessor() {
+                    @Override
+                    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+                        return false;
+                    }
+                }, null);
 
 
     }

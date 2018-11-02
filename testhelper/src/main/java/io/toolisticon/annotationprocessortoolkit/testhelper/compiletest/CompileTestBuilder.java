@@ -1,5 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper.compiletest;
 
+import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+
 import javax.annotation.processing.Processor;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
@@ -148,6 +150,7 @@ public class CompileTestBuilder {
 
         /**
          * Starts the compilation tests.
+         *
          * @throws IllegalStateException if there's some invalid configuration
          */
         public void testCompilation() {
@@ -157,6 +160,9 @@ public class CompileTestBuilder {
 
             new CompileTest(createCompileTestConfiguration()).executeTest();
         }
+
+
+
 
         /**
          * Creates the next immutable builder instance
@@ -211,6 +217,8 @@ public class CompileTestBuilder {
 
         /**
          * Sets the processor to use.
+         * The processor should extend {@link AbstractUnitTestAnnotationProcessorClass} if no custom source is used.
+         * If custom source is used you need to define a processor that is going to process thesource file.
          *
          * @param processor the processor to use
          * @return the UnitTestBuilder instance
@@ -248,6 +256,16 @@ public class CompileTestBuilder {
             compileTestConfiguration.getSourceFiles().clear();
             compileTestConfiguration.addSourceFiles(source);
 
+            return createNextInstance(compileTestConfiguration);
+        }
+
+        /**
+         * Sets an expected exception thrown in the unit test case.
+         */
+        public UnitTestBuilder expectedThrownException(Class<? extends Throwable> expectedException) {
+            if (expectedException != null) {
+                compileTestConfiguration.setExpectedThrownException(expectedException);
+            }
             return createNextInstance(compileTestConfiguration);
         }
 
