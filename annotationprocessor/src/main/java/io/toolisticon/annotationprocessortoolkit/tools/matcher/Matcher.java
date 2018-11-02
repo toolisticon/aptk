@@ -13,17 +13,10 @@ public class Matcher<MT extends BaseMatcher> {
     /**
      * Constructor that allows passing in of the {@link Matcher} to be wrapped.
      *
-     * @param matcher
+     * @param matcher the matcher to be wrapped within
      */
     public Matcher(MT matcher) {
         this.matcher = matcher;
-    }
-
-    /**
-     * Hidden constructor.
-     */
-    private Matcher() {
-        this.matcher = null;
     }
 
     /**

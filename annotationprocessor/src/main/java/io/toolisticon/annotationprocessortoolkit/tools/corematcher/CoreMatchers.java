@@ -21,6 +21,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasPublicNoa
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.HasVoidReturnTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAnnotationTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAssignableToMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsAttributeFieldMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsClassMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsConstructorMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.IsEnumMatcher;
@@ -185,6 +186,13 @@ public class CoreMatchers {
      */
     public final static ImplicitCoreMatcher<ExecutableElement> IS_SETTER_METHOD = new ImplicitCoreMatcher<ExecutableElement>(new IsSetterMethodMatcher(), CoreMatcherValidationMessages.IS_SETTER_METHOD);
 
+    /**
+     * Matcher to check if passed element represents an attribute.
+     * Passed VariableElement for field must not be static and must have valid getter and setter methods.
+     */
+    public final static ImplicitCoreMatcher<VariableElement> IS_ATTRIBUTE_FIELD = new ImplicitCoreMatcher<VariableElement>(new IsAttributeFieldMatcher(), CoreMatcherValidationMessages.IS_ATTRIBUTE_FIELD);
+
+
 
     // ---------------------------------------------------------------------------------
     // -- IS CORE MATCHER
@@ -254,6 +262,8 @@ public class CoreMatchers {
      * Matcher to check if passed element represents a parameter.
      */
     public final static IsElementBasedCoreMatcher<VariableElement> IS_PARAMETER = new IsElementBasedCoreMatcher<VariableElement>(new IsParameterMatcher<Element>(), CoreMatcherValidationMessages.IS_PARAMETER);
+
+
 
 
 }

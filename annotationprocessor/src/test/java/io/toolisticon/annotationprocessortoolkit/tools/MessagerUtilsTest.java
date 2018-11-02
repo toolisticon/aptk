@@ -13,6 +13,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
+import java.util.Arrays;
 
 /**
  * Unit test for {@link MessagerUtils}.
@@ -63,6 +64,64 @@ public class MessagerUtilsTest {
 
     }
 
+    @Test
+    public void createMessage_exactNumberOfParameters() {
+
+        MatcherAssert.assertThat(MessagerUtils.createMessage("TEST ${0}, ${2}, ${1}", 1, "YES", true), Matchers.is("TEST 1, true, YES"));
+
+    }
+
+    @Test
+    public void createMessage_smallerNumberOfParameters() {
+
+        MatcherAssert.assertThat(MessagerUtils.createMessage("TEST ${0}, ${2}, ${1}", 1, "YES"), Matchers.is("TEST 1, ${2}, YES"));
+
+    }
+
+    @Test
+    public void createMessage_greaterNumberOfParameters() {
+
+        MatcherAssert.assertThat(MessagerUtils.createMessage("TEST ${0}, ${2}, ${1}", 1, "YES", true, "WTF"), Matchers.is("TEST 1, true, YES"));
+
+    }
+
+    @Test
+    public void createMessage_noParameters() {
+
+        MatcherAssert.assertThat(MessagerUtils.createMessage("TEST ${0}, ${2}, ${1}"), Matchers.is("TEST ${0}, ${2}, ${1}"));
+
+    }
+
+
+    @Test
+    public void argToString_nullValue() {
+        MatcherAssert.assertThat(MessagerUtils.argToString(null), Matchers.is("<NULL>"));
+    }
+
+    @Test
+    public void argToString_arrayValue() {
+
+        String[] array = {"A", "B", "C"};
+        MatcherAssert.assertThat(MessagerUtils.argToString(array), Matchers.is("[A, B, C]"));
+
+    }
+
+    @Test
+    public void argToString_collectionValue() {
+
+        String[] array = {"A", "B", "C"};
+
+        MatcherAssert.assertThat(MessagerUtils.argToString(Arrays.asList(array)), Matchers.is("[A, B, C]"));
+
+    }
+
+    @Test
+    public void argToString_otherValue() {
+
+        MatcherAssert.assertThat(MessagerUtils.argToString(1), Matchers.is("1"));
+
+    }
+
 
     // ----------------------------------------------------
     // Test different number of args and it's stability
@@ -104,6 +163,37 @@ public class MessagerUtilsTest {
 
     }
 
+
+    // ----------------------------------------------------
+    // Test string based pribtMessage methods
+    // ----------------------------------------------------
+
+    @Test
+    public void printMessage_testStringBasedMessage() {
+
+        unit.printMessage(element, Diagnostic.Kind.ERROR, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+
+        Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element);
+
+    }
+
+    @Test
+    public void printMessage_testStringBasedMessageWithAnnotationMirror() {
+
+        unit.printMessage(element, annotationMirror, Diagnostic.Kind.ERROR, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+
+        Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror);
+
+    }
+
+    @Test
+    public void printMessage_testStringBasedMessageWithAnnotationMirrorAndValue() {
+
+        unit.printMessage(element, annotationMirror, annotationValue, Diagnostic.Kind.ERROR, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+
+        Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror, annotationValue);
+
+    }
 
     // ----------------------------------------------------
     // Test different kind of MessagerUtils methods

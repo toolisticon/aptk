@@ -81,8 +81,11 @@ public final class Utilities {
      * @param <T>
      * @return a array that contains all varargs arguments or an array of length 0 if no varargs arguments have been used
      */
-    public static <T> T[] convertVarargsToArray(T... varargs) {
+    public static <T> T[] convertVarargsToArray(T... varargs) { final Object[] e =  {};
 
+        if (varargs == null) {
+            return (T[])new Object[0];
+        }
         return varargs;
 
     }

@@ -83,7 +83,7 @@ public final class AnnotationProcessorWrapper implements Processor {
                 }
 
             }
-            
+
             // rethrow e if thrown exception didn't match excepted one
             throw new RuntimeException("Caught and rethrown Exception. Had been repacked because it could be a checked exception. '" + e.getMessage() + "'", e);
 
