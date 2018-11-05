@@ -55,7 +55,7 @@ public abstract class AbstractAnnotationProcessorTest<T extends AnnotationProces
         configuration.addSourceFiles(getSourceFileForCompilation());
         configuration.setCompilationShouldSucceed(annotationProcessorCommonTestConfiguration.getCompilingShouldSucceed());
         if (messageValidationTest != null) {
-            configuration.addNoteMessageCheck(messageValidationTest.getInfos());
+            configuration.addNoteMessageCheck(messageValidationTest.getNotes());
             configuration.addWarningMessageCheck(messageValidationTest.getWarnings());
             configuration.addErrorMessageCheck(messageValidationTest.getErrors());
         }

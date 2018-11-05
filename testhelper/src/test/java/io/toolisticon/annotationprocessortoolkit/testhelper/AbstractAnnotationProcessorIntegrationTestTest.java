@@ -103,7 +103,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                                 .setSourceFileToCompile("/TestClass.java")
                                 .compilationShouldSucceed()
                                 .addMessageValidator()
-                                .setInfoChecks("MURKS")
+                                .setNoteChecks("MURKS")
                                 .finishMessageValidator()
                                 .build(),
 
@@ -172,7 +172,7 @@ public class AbstractAnnotationProcessorIntegrationTestTest extends AbstractAnno
                                 .addMessageValidator()
                                 .setErrorChecks("MURKS_ERROR")
                                 .setWarningChecks("MURKS_WARNING")
-                                .setInfoChecks("MURKS_NOTE")
+                                .setNoteChecks("MURKS_NOTE")
                                 .finishMessageValidator()
                                 .build(),
                         new AbstractUnitTestAnnotationProcessorClass() {

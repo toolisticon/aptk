@@ -5,13 +5,8 @@ package io.toolisticon.annotationprocessortoolkit.testhelper.compiletest;
  */
 public class InvalidTestConfigurationException extends RuntimeException {
 
-
-    public InvalidTestConfigurationException() {
-
-    }
-
-
     public InvalidTestConfigurationException(String message) {
         super(message);
     }
+
 }

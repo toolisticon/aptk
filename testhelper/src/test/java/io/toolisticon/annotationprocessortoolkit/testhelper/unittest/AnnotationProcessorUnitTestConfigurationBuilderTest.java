@@ -144,9 +144,32 @@ public class AnnotationProcessorUnitTestConfigurationBuilderTest {
 
     }
 
+    @Test
+    public void testBuildingOfConfiguration_noInput_setMessageValidator_withNotes() {
+
+        AnnotationProcessorIntegrationTestConfiguration configuration = AnnotationProcessorIntegrationTestConfigurationBuilder
+                .createTestConfig()
+                .addMessageValidator()
+                .setNoteChecks("A", "B", "C")
+                .finishMessageValidator()
+                .build();
+
+        MatcherAssert.assertThat(configuration, Matchers.notNullValue());
+        MatcherAssert.assertThat(configuration.getCompilingShouldSucceed(), Matchers.is(true));
+        MatcherAssert.assertThat(configuration.getTestcases(), Matchers.arrayWithSize(1));
+        MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
+        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(0));
+        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getWarnings(), Matchers.arrayWithSize(0));
+        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getNotes(), Matchers.arrayWithSize(3));
+        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getNotes(), Matchers.arrayContainingInAnyOrder("A", "B", "C"));
+        MatcherAssert.assertThat(configuration.getSource(), Matchers.nullValue());
+
+
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testNullValuedCompilingSholdSucceedParameter() {
-        new AnnotationProcessorUnitTestConfiguration(null,Mockito.mock(AbstractUnitTestAnnotationProcessorClass.class), null, new JavaFileObject[0]);
+        new AnnotationProcessorUnitTestConfiguration(null, Mockito.mock(AbstractUnitTestAnnotationProcessorClass.class), null, new JavaFileObject[0]);
     }
 
 }

@@ -217,7 +217,7 @@ public class CompileTestFileManager extends ForwardingJavaFileManager<StandardJa
 
         @Override
         public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
-            return content != null ? new String(content) : null;
+            return new String(content);
         }
 
         @Override
