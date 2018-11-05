@@ -1,7 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper.compiletest;
 
-import org.junit.Assert;
-
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
 import javax.tools.FileObject;
@@ -38,9 +36,10 @@ public class CompileTest {
 
 
         // Check if compilation succeeded
-        if (compileTestConfiguration.getCompilationShouldSucceed() != null) {
-            Assert.assertTrue(compileTestConfiguration.getCompilationShouldSucceed() ? "Compilation should have succeeded but failed" : "Compilation should have failed but succeeded",
-                    compileTestConfiguration.getCompilationShouldSucceed().equals(compilationResult.getCompilationSucceeded()));
+        if (compileTestConfiguration.getCompilationShouldSucceed() != null && !compileTestConfiguration.getCompilationShouldSucceed().equals(compilationResult.getCompilationSucceeded())) {
+
+            AssertionSpiServiceLocator.locate().fail(compileTestConfiguration.getCompilationShouldSucceed() ? "Compilation should have succeeded but failed" : "Compilation should have failed but succeeded");
+
         }
 
 
@@ -99,7 +98,7 @@ public class CompileTest {
                 }
             }
 
-            Assert.fail("Annotation processor " + processor.getWrappedProcessor().getClass().getCanonicalName() + " hasn't been applied to a class");
+            AssertionSpiServiceLocator.locate().fail("Annotation processor " + processor.getWrappedProcessor().getClass().getCanonicalName() + " hasn't been applied to a class");
 
         }
 
@@ -122,7 +121,7 @@ public class CompileTest {
             }
 
             // Not found ==> assertion fails
-            Assert.fail("Haven't found expeected message string '" + messageToCheck + "' of kind " + kind.name());
+            AssertionSpiServiceLocator.locate().fail("Haven't found expeected message string '" + messageToCheck + "' of kind " + kind.name());
 
         }
 

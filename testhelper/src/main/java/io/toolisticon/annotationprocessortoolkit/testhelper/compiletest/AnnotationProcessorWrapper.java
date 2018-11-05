@@ -1,7 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper.compiletest;
 
-import org.junit.Assert;
-
 import javax.annotation.processing.Completion;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -73,7 +71,7 @@ public final class AnnotationProcessorWrapper implements Processor {
             boolean returnValue = wrappedProcessor.process(annotations, roundEnv);
 
             if (this.expectedThrownException != null) {
-                Assert.fail("Expected exception of type '" + this.expectedThrownException.getCanonicalName() + "' to be thrown, but wasn't");
+                AssertionSpiServiceLocator.locate().fail("Expected exception of type '" + this.expectedThrownException.getCanonicalName() + "' to be thrown, but wasn't");
             }
 
             return returnValue;
@@ -88,14 +86,14 @@ public final class AnnotationProcessorWrapper implements Processor {
             if (this.expectedThrownException != null) {
 
                 if (!this.expectedThrownException.isAssignableFrom(e.getClass())) {
-                    Assert.fail("Expected exception of type '" + this.expectedThrownException.getCanonicalName() + "' but exception of type '" + e.getClass().getCanonicalName() + (e.getMessage() != null ? "'  with message '" + e.getMessage() : "") + "' was thrown instead.");
+                    AssertionSpiServiceLocator.locate().fail("Expected exception of type '" + this.expectedThrownException.getCanonicalName() + "' but exception of type '" + e.getClass().getCanonicalName() + (e.getMessage() != null ? "'  with message '" + e.getMessage() : "") + "' was thrown instead.");
                 }
 
 
             } else {
 
                 // Got unexpected exception
-                Assert.fail("An unexpected exception of type '" + e.getClass().getCanonicalName() + (e.getMessage() != null ? "'  with message '" + e.getMessage() : "") + "' has been thrown.");
+                AssertionSpiServiceLocator.locate().fail("An unexpected exception of type '" + e.getClass().getCanonicalName() + (e.getMessage() != null ? "'  with message '" + e.getMessage() : "") + "' has been thrown.");
 
             }
 

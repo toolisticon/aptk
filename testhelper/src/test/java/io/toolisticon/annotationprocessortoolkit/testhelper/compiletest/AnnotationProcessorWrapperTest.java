@@ -1,5 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper.compiletest;
 
+
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotation;
 import io.toolisticon.annotationprocessortoolkit.testhelper.testcases.TestAnnotationProcessor;
@@ -51,6 +52,48 @@ public class AnnotationProcessorWrapperTest {
         Processor unit = AnnotationProcessorWrapper.wrapProcessor(TestAnnotationProcessor.class);
 
         MatcherAssert.assertThat("Must return non null valued Processor", unit != null);
+
+    }
+
+    @Test
+    public void createWrapperWithTypeAndException() {
+
+        Processor unit = AnnotationProcessorWrapper.wrapProcessor(TestAnnotationProcessor.class, IllegalStateException.class);
+
+        MatcherAssert.assertThat("Must return non null valued Processor", unit != null);
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createWrapperWithTypeAndException_nullValuedProcessorClass() {
+
+        AnnotationProcessorWrapper.wrapProcessor((Class) null, IllegalStateException.class);
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createWrapperWithTypeAndException_nullValuedExceptionClass() {
+
+        AnnotationProcessorWrapper.wrapProcessor(TestAnnotationProcessor.class, (Class) null);
+
+    }
+
+    public static class InvalidProcessor extends AbstractProcessor {
+
+        public InvalidProcessor(String abc) {
+
+        }
+
+        @Override
+        public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+            return false;
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createWrapperWithTypeAndException_notIntancableProcessorClass() {
+
+        AnnotationProcessorWrapper.wrapProcessor(InvalidProcessor.class, IllegalStateException.class);
 
     }
 
@@ -265,6 +308,26 @@ public class AnnotationProcessorWrapperTest {
                     .testCompilation();
         } catch (Throwable e) {
             MatcherAssert.assertThat(e.getMessage(), Matchers.containsString("Expected exception of type 'java.lang.IllegalArgumentException' but exception of type 'java.lang.IllegalStateException' was thrown instead"));
+        }
+
+    }
+
+    @Test
+    public void process_testUnexpectedExceptionWasThrownWhenExpectedExceptionNotSet_assertionShouldFail() {
+
+        try {
+            CompileTestBuilder.createCompileTestBuilder().unitTest().useProcessor(
+                    new AbstractUnitTestAnnotationProcessorClass() {
+
+                        @Override
+                        protected void testCase(TypeElement element) {
+                            throw new IllegalStateException();
+                        }
+
+                    })
+                    .testCompilation();
+        } catch (Throwable e) {
+            MatcherAssert.assertThat(e.getMessage(), Matchers.containsString("An unexpected exception of type 'java.lang.IllegalStateException'"));
         }
 
     }
