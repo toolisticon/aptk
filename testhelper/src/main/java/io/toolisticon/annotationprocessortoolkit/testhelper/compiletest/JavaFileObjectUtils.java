@@ -101,7 +101,7 @@ public class JavaFileObjectUtils {
 
 
     /**
-     * Resource based java source
+     * Url based java source
      */
     public static class JavaSourceFromUrl extends SimpleJavaFileObject {
 
@@ -138,6 +138,11 @@ public class JavaFileObjectUtils {
      * @return
      */
     public static SimpleJavaFileObject readFromResource(String location, Class<?> relativeLocationRoot) {
+
+        if (location == null) {
+            throw new IllegalArgumentException("Passed location must not be null");
+        }
+
         return new JavaSourceFromResource(location, relativeLocationRoot);
     }
 
@@ -149,6 +154,11 @@ public class JavaFileObjectUtils {
      * @return
      */
     public static SimpleJavaFileObject readFromResource(String location) {
+
+        if (location == null) {
+            throw new IllegalArgumentException("Passed location must not be null");
+        }
+
         return new JavaSourceFromResource((!location.startsWith("/") ? "/" : "") + location, null);
     }
 
@@ -161,6 +171,15 @@ public class JavaFileObjectUtils {
      * @return
      */
     public static SimpleJavaFileObject readFromString(String location, String content) {
+
+        if (location == null) {
+            throw new IllegalArgumentException("Passed location must not be null");
+        }
+
+        if (content == null) {
+            throw new IllegalArgumentException("Passed content must not be null");
+        }
+
         return new JavaSourceFromString(location, content);
     }
 
@@ -171,6 +190,11 @@ public class JavaFileObjectUtils {
      * @return
      */
     public static SimpleJavaFileObject readFromUrl(URL url) throws URISyntaxException {
+
+        if (url == null) {
+            throw new IllegalArgumentException("Passed url must not be null");
+        }
+
         return new JavaSourceFromUrl(url);
     }
 
