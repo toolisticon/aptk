@@ -191,18 +191,7 @@ public class CompileTestFileManagerTest {
 
 
     }
-
-    @Test
-    public void test_CompileTestFileManager_getFileForInput_fromNonOutputLocation() throws IOException {
-
-        CompileTestFileManager unit = new CompileTestFileManager(standardJavaFileManager);
-
-        FileObject fileObject2 = unit.getFileForInput(StandardLocation.SOURCE_PATH, "io.toolisticon.annotationprocessor", "TestClass");
-
-        MatcherAssert.assertThat(fileObject2, Matchers.notNullValue());
-
-
-    }
+    
 
     @Test(expected = FileNotFoundException.class)
     public void test_CompileTestFileManager_getJavaFileForInput_nonExistingFile() throws IOException {
@@ -219,7 +208,8 @@ public class CompileTestFileManagerTest {
 
         CompileTestFileManager unit = new CompileTestFileManager(standardJavaFileManager);
 
-        JavaFileObject fileObject1 = unit.getJavaFileForInput(StandardLocation.SOURCE_OUTPUT, "de.toolisticon.Test", JavaFileObject.Kind.SOURCE);
+        JavaFileObject fileObject1 = unit.getJavaFileForOutput(StandardLocation.SOURCE_OUTPUT, "de.toolisticon.Test", JavaFileObject.Kind.SOURCE, null);
+
         Writer writer = fileObject1.openWriter();
         writer.write("ABC");
         writer.flush();
@@ -233,16 +223,6 @@ public class CompileTestFileManagerTest {
 
     }
 
-    @Test
-    public void test_CompileTestFileManager_getJavaFileForInput_fromNonOutputLocation() throws IOException {
 
-        CompileTestFileManager unit = new CompileTestFileManager(standardJavaFileManager);
-
-        FileObject fileObject2 = unit.getJavaFileForInput(StandardLocation.SOURCE_PATH, "io.toolisticon.annotationprocessor.TestClass", JavaFileObject.Kind.SOURCE);
-
-        MatcherAssert.assertThat(fileObject2, Matchers.notNullValue());
-
-
-    }
 
 }
