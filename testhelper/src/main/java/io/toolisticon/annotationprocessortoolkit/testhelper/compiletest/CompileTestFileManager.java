@@ -82,9 +82,9 @@ public class CompileTestFileManager extends ForwardingJavaFileManager<StandardJa
     @Override
     public JavaFileObject getJavaFileForInput(Location location, String className, JavaFileObject.Kind kind) throws IOException {
 
-        URI uri = uriForJavaFileObject(location, className, kind);
-
         if (location.isOutputLocation()) {
+
+            URI uri = uriForJavaFileObject(location, className, kind);
 
             if (generatedJavaFileObjectCache.contains(uri)) {
                 return generatedJavaFileObjectCache.getFileObject(uri);
@@ -94,7 +94,7 @@ public class CompileTestFileManager extends ForwardingJavaFileManager<StandardJa
         }
         JavaFileObject javaFileObject = super.getJavaFileForInput(location, className, kind);
         if (javaFileObject == null) {
-            throw new FileNotFoundException("Can't find JavaFileObject for uri:" + uri.toString());
+            throw new FileNotFoundException("Can't find JavaFileObject for : " + location.toString() + "|" + className + "|" + kind);
         }
         return javaFileObject;
     }
@@ -102,9 +102,11 @@ public class CompileTestFileManager extends ForwardingJavaFileManager<StandardJa
     @Override
     public FileObject getFileForInput(Location location, String packageName, String relativeName) throws IOException {
 
-        URI uri = uriForFileObject(location, packageName, relativeName);
 
         if (location.isOutputLocation()) {
+
+            URI uri = uriForFileObject(location, packageName, relativeName);
+
             if (generatedFileObjectsCache.contains(uri)) {
                 return generatedFileObjectsCache.getFileObject(uri);
             } else {

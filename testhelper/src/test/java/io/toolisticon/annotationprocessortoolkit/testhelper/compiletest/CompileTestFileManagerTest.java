@@ -191,7 +191,7 @@ public class CompileTestFileManagerTest {
 
 
     }
-    
+
 
     @Test(expected = FileNotFoundException.class)
     public void test_CompileTestFileManager_getJavaFileForInput_nonExistingFile() throws IOException {
