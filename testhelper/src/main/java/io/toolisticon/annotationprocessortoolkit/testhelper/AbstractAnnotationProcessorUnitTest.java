@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import io.toolisticon.compiletesting.JavaFileObjectUtils;
 
 import javax.annotation.processing.Processor;
 import javax.tools.JavaFileObject;

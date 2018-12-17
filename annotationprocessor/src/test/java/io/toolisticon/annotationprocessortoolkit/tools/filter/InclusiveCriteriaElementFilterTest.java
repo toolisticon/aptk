@@ -1,10 +1,10 @@
 package io.toolisticon.annotationprocessortoolkit.tools.filter;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.CompileTestBuilder;
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
+import io.toolisticon.compiletesting.CompileTestBuilder;
+import io.toolisticon.compiletesting.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -30,7 +30,6 @@ public class InclusiveCriteriaElementFilterTest {
     public void findByAll_happyPath() {
 
         CompileTestBuilder
-                .createCompileTestBuilder()
                 .unitTest()
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
 

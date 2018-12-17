@@ -1,11 +1,11 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.AnnotationProcessorWrapper;
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.CompileTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.CompileTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.validator.TestMessageValidator;
 import io.toolisticon.annotationprocessortoolkit.testhelper.validator.TestValidator;
 import io.toolisticon.annotationprocessortoolkit.testhelper.validator.TestValidatorType;
+import io.toolisticon.compiletesting.impl.AnnotationProcessorWrapper;
+import io.toolisticon.compiletesting.impl.CompileTest;
+import io.toolisticon.compiletesting.impl.CompileTestConfiguration;
 
 import javax.annotation.processing.Processor;
 import javax.tools.JavaFileObject;

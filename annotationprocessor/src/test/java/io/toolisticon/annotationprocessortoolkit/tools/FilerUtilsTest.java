@@ -1,10 +1,10 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.generators.FileObjectUtilsTestAnnotationProcessor;
+import io.toolisticon.compiletesting.JavaFileObjectUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

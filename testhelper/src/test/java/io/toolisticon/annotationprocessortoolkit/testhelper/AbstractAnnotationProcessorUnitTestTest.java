@@ -1,9 +1,9 @@
 package io.toolisticon.annotationprocessortoolkit.testhelper;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.InvalidTestConfigurationException;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+import io.toolisticon.compiletesting.InvalidTestConfigurationException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;

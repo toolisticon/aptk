@@ -1,10 +1,10 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.CompileTestBuilder;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
+import io.toolisticon.compiletesting.CompileTestBuilder;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -47,7 +47,7 @@ public class IsAttributeFieldMatcherTest {
     @Test
     public void test_isAttributeField_match__shouldReturnTrue() {
 
-        CompileTestBuilder.createCompileTestBuilder()
+        CompileTestBuilder
                 .unitTest()
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override
@@ -70,7 +70,7 @@ public class IsAttributeFieldMatcherTest {
     @Test
     public void test_isNoAttributeField_noGetter_shouldReturnFalse() {
 
-        CompileTestBuilder.createCompileTestBuilder()
+        CompileTestBuilder
                 .unitTest()
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override
@@ -93,7 +93,7 @@ public class IsAttributeFieldMatcherTest {
     @Test
     public void test_isNoAttributeField_noSetter_shouldReturnFalse() {
 
-        CompileTestBuilder.createCompileTestBuilder()
+        CompileTestBuilder
                 .unitTest()
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override
@@ -116,7 +116,7 @@ public class IsAttributeFieldMatcherTest {
     @Test
     public void test_isNoAttributeField_isStatic_shouldReturnFalse() {
 
-        CompileTestBuilder.createCompileTestBuilder()
+        CompileTestBuilder
                 .unitTest()
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override
@@ -139,7 +139,7 @@ public class IsAttributeFieldMatcherTest {
     @Test
     public void test_passedNullValue_shouldReturnFalse() {
 
-        CompileTestBuilder.createCompileTestBuilder()
+        CompileTestBuilder
                 .unitTest()
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override

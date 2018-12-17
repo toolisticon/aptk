@@ -1,13 +1,13 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.impl;
 
 import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation1;
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.CompileTestBuilder;
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.tools.AnnotationUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.PlainValidationMessage;
+import io.toolisticon.compiletesting.CompileTestBuilder;
+import io.toolisticon.compiletesting.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -31,7 +31,6 @@ public class FluentValidatorMessageTest {
     }
 
     private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
-            .createCompileTestBuilder()
             .unitTest()
             .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java"));
 

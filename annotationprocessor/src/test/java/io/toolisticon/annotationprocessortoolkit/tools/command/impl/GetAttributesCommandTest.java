@@ -1,12 +1,12 @@
 package io.toolisticon.annotationprocessortoolkit.tools.command.impl;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.CompileTestBuilder;
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.tools.BeanUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
+import io.toolisticon.compiletesting.CompileTestBuilder;
+import io.toolisticon.compiletesting.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -25,7 +25,6 @@ public class GetAttributesCommandTest {
     }
 
     private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
-            .createCompileTestBuilder()
             .unitTest()
             .useSource(JavaFileObjectUtils.readFromResource("/testcases.commands/GetAttributesCommandTestClass.java"));
 

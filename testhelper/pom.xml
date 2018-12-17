@@ -47,6 +47,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.toolisticon.compiletesting</groupId>
+            <artifactId>compiletesting</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
 

@@ -1,11 +1,11 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.impl;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.CompileTestBuilder;
-import io.toolisticon.annotationprocessortoolkit.testhelper.compiletest.JavaFileObjectUtils;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.TransitionFilters;
+import io.toolisticon.compiletesting.CompileTestBuilder;
+import io.toolisticon.compiletesting.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -29,7 +29,7 @@ public class RemoveDuplicatesTransitionFilterTest {
     @Test
     public void removeDuplicatesTransitionFilter_testTransitionToRemoveDuplicateValues() {
 
-        CompileTestBuilder.createCompileTestBuilder().unitTest()
+        CompileTestBuilder.unitTest()
                 .useProcessor(
                         new AbstractUnitTestAnnotationProcessorClass() {
                             @Override
