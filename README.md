@@ -1,8 +1,8 @@
 # Annotation-Processor-Toolkit
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessortoolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessortoolkit-parent)
-[![Build Status](https://api.travis-ci.org/toolisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/toolisticon/annotation-processor-toolkit)
-[![codecov](https://codecov.io/gh/toolisticon/annotation-processor-toolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/toolisticon/annotation-processor-toolkit)
+[![Build Status](https://api.travis-ci.org/tobiasstamann/annotation-processor-toolkit.svg)](https://travis-ci.org/tobiasstamann/annotation-processor-toolkit)
+[![codecov](https://codecov.io/gh/tobiasstamann/annotation-processor-toolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/tobiasstamann/annotation-processor-toolkit)
 
 Please check detailed documentation at the projects [github page](https://toolisticon.github.io/annotation-processor-toolkit/)
 

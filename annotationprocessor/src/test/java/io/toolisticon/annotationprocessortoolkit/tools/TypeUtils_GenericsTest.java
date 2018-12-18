@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import com.google.testing.compile.JavaFileObjects;
 import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
@@ -10,6 +9,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElemen
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericType;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeKind;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
+import io.toolisticon.compiletesting.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -1511,7 +1511,7 @@ public class TypeUtils_GenericsTest extends AbstractAnnotationProcessorUnitTest 
 
     @Override
     protected JavaFileObject getSourceFileForCompilation() {
-        return JavaFileObjects.forResource("GenericsTestClass.java");
+        return JavaFileObjectUtils.readFromResource("/GenericsTestClass.java");
     }
 
     @Test

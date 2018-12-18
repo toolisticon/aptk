@@ -41,7 +41,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
                         AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
                                 .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
                                 .addMessageValidator()
-                                    .setInfoChecks("Start processing")
+                                .setNoteChecks("Start processing")
                                 .finishMessageValidator()
                                 .compilationShouldSucceed()
                                 .build()
@@ -52,7 +52,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
                                 .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
                                 .compilationShouldFail()
                                 .addMessageValidator()
-                                    .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
+                                .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
                                 .finishMessageValidator()
                                 .build()
                 },
@@ -62,7 +62,7 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends 
                                 .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
                                 .compilationShouldFail()
                                 .addMessageValidator()
-                                    .setErrorChecks(CoreMatcherValidationMessages.BY_PARAMETER_TYPE.getCode())
+                                .setErrorChecks(CoreMatcherValidationMessages.BY_PARAMETER_TYPE.getCode())
                                 .finishMessageValidator()
                                 .build()
                 },

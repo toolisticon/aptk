@@ -7,7 +7,6 @@ import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
 import io.toolisticon.spiap.api.Service;
-import sun.misc.MessageUtils;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -48,7 +47,6 @@ public class MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor e
                     .applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
                     .applyValidator(CoreMatchers.BY_PARAMETER_TYPE).hasOneOf(wrapToArray(String.class))
                     .validateAndIssueMessages();
-
 
 
         }

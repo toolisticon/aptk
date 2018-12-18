@@ -27,6 +27,7 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
     HAS_PUBLIC_NOARG_CONSTRUCTOR("CM_HAS_PUBLIC_NOARG_CONSTURCTOR", "Element must ${0} have a public noarg constructor or just the default constructor"),
     IS_GETTER_METHOD("CM_IS_GETTER_METHOD", "Element must ${0} be a getter method : public, not abstract, not static, non void return type, no parameters, with 'get' as name prefix or 'is' or 'has' for boolean return types."),
     IS_SETTER_METHOD("CM_IS_SETTER_METHOD", "Element must ${0} be a setter method : public, not abstract, not static, void return type, one parameter, with 'set' as name prefix"),
+    IS_ATTRIBUTE_FIELD("CM_IS_ATTRIBUTE_FIELD", "Element must ${0} not be static and must have a public getter and setter method"),
     IS_EXECUTABLE_ELEMENT("CM_IS_EXECTUABLE_ELEMENT", "Element must ${0} be a ExecutableElement"),
     IS_TYPE_ELEMENT("CM_IS_TYPE_ELEMENT", "Element must ${0} be a TypeElement"),
     IS_VARIABLE_ELEMENT("CM_IS_VARIABLE_ELEMENT", "Element must ${0} be a VariableElement"),

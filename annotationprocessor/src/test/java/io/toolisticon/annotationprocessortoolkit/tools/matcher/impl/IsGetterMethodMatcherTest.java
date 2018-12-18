@@ -4,11 +4,9 @@ import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationPr
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
 import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
-import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -17,7 +15,6 @@ import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -76,17 +73,17 @@ public class IsGetterMethodMatcherTest extends AbstractAnnotationProcessorUnitTe
 
     }
 
-    public static void checkGetter (TypeElement typeElement, String methodName, boolean expectedResult) {
+    public static void checkGetter(TypeElement typeElement, String methodName, boolean expectedResult) {
 
         List<ExecutableElement> executableElements =
-        FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_METHOD)
-                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(methodName)
-                .getResult();
+                FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
+                        .applyFilter(CoreMatchers.IS_METHOD)
+                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(methodName)
+                        .getResult();
 
         MatcherAssert.assertThat("Precondition: Single result for " + methodName, executableElements.size() == 1);
 
-        MatcherAssert.assertThat("methodName",CoreMatchers.IS_GETTER_METHOD.getMatcher().check(executableElements.get(0)), Matchers.is(expectedResult));
+        MatcherAssert.assertThat("methodName", CoreMatchers.IS_GETTER_METHOD.getMatcher().check(executableElements.get(0)), Matchers.is(expectedResult));
 
     }
 
@@ -119,8 +116,6 @@ public class IsGetterMethodMatcherTest extends AbstractAnnotationProcessorUnitTe
                                                         checkGetter(typeElement, "isGetterValid", true);
                                                         checkGetter(typeElement, "hasGetterInvalid", false);
                                                         checkGetter(typeElement, "isGetterInvalid", false);
-
-
 
 
                                                     }

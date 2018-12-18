@@ -7,12 +7,12 @@ public class TestMessageValidator implements TestValidator {
 
     private final String[] errors;
     private final String[] warnings;
-    private final String[] infos;
+    private final String[] notes;
 
-    public TestMessageValidator(String[] errors, String[] warnings, String[] infos) {
+    public TestMessageValidator(String[] errors, String[] warnings, String[] notes) {
         this.errors = errors;
         this.warnings = warnings;
-        this.infos = infos;
+        this.notes = notes;
     }
 
     @Override
@@ -28,5 +28,7 @@ public class TestMessageValidator implements TestValidator {
         return warnings;
     }
 
-    public String[] getInfos() { return infos; }
+    public String[] getNotes() {
+        return notes;
+    }
 }

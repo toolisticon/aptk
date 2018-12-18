@@ -88,7 +88,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
         MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(0));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getWarnings(), Matchers.arrayWithSize(0));
-        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getInfos(), Matchers.arrayWithSize(0));
+        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getNotes(), Matchers.arrayWithSize(0));
         MatcherAssert.assertThat(configuration.getSource(), Matchers.nullValue());
 
 
@@ -111,7 +111,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(3));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayContainingInAnyOrder("A", "B", "C"));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getWarnings(), Matchers.arrayWithSize(0));
-        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getInfos(), Matchers.arrayWithSize(0));
+        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getNotes(), Matchers.arrayWithSize(0));
         MatcherAssert.assertThat(configuration.getSource(), Matchers.nullValue());
 
 
@@ -134,7 +134,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(0));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getWarnings(), Matchers.arrayWithSize(3));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getWarnings(), Matchers.arrayContainingInAnyOrder("A", "B", "C"));
-        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getInfos(), Matchers.arrayWithSize(0));
+        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getNotes(), Matchers.arrayWithSize(0));
         MatcherAssert.assertThat(configuration.getSource(), Matchers.nullValue());
 
 
@@ -146,7 +146,7 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
         AnnotationProcessorIntegrationTestConfiguration configuration = AnnotationProcessorIntegrationTestConfigurationBuilder
                 .createTestConfig()
                 .addMessageValidator()
-                .setInfoChecks("A", "B", "C")
+                .setNoteChecks("A", "B", "C")
                 .finishMessageValidator()
                 .build();
 
@@ -156,8 +156,8 @@ public class AnnotationProcessorIntegrationTestConfigurationBuilderTest {
         MatcherAssert.assertThat(configuration.getTestcases()[0].getAnnotationProcessorTestType(), Matchers.is(TestValidatorType.MESSAGE_VALIDATOR));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getErrors(), Matchers.arrayWithSize(0));
         MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getWarnings(), Matchers.arrayWithSize(0));
-        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getInfos(), Matchers.arrayWithSize(3));
-        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getInfos(), Matchers.arrayContainingInAnyOrder("A", "B", "C"));
+        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getNotes(), Matchers.arrayWithSize(3));
+        MatcherAssert.assertThat(((TestMessageValidator) configuration.getTestcases()[0]).getNotes(), Matchers.arrayContainingInAnyOrder("A", "B", "C"));
         MatcherAssert.assertThat(configuration.getSource(), Matchers.nullValue());
 
 

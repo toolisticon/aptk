@@ -274,7 +274,7 @@ public final class MessagerUtils {
 
     }
 
-    private static String argToString(Object arg){
+    protected static String argToString(Object arg){
 
         if(arg == null) {
 

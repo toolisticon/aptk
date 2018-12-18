@@ -47,4 +47,6 @@ public class PlainValidationMessage implements ValidationMessage {
     public static PlainValidationMessage create(String code, String message) {
         return new PlainValidationMessage(code, message);
     }
+
+
 }
