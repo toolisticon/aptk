@@ -8,33 +8,39 @@ Please check detailed documentation at the projects [github page](https://toolis
 
 # Why you should use this project?
 
-Nowadays one could not imagine Java development without annotations.
-They allow you to provide meta-data in your source code which can either be processed at run time via reflection or at compile time by using annotation processors.
+Nowadays no one could imagine Java development without annotations.
+They allow you to provide meta-data in your source code which can either be processed at runtime via reflection or at compile time by using annotation processors.
 
-Annotation processors allow you to validate if your annotations are used correctly and allow you to generate resource files or even classes.
+Annotation processors allow you
 
-Validation by annotation processors can become quite handy if there are any constraints related with your annotations. Without validation by an annotation processor misuse of the annotation can only be detected on runtime. By using an annotation processor this can be validated at compile time and may trigger a compile error.
-Code or resource generation with annotations can also be very useful.
+- to validate if your annotations are used correctly 
+- to generate source and resource files or even classes
 
-Sadly it's quite uncomfortable to develop and test annotation processors.
-First problem is that you have to cope with both both java compile time and run time model, which can be very tricky at the beginning.
-Another problem is that the tools offered by the JDK only offer some basic support for development.
-This project supports you by offering utilities that allow you to develop annotation processors in a more comfortable way.
-It also reduces the complexity of handling compile time and run time model by shading common pitfalls behind it's api.'
-Additionally it introduces a common approach how those annotation processors can be tested.
+at compilation time.
+
+Validation by using annotation processors can become quite handy, if there are some constraints related to the usage of annotations. 
+Without validation by an annotation processor misuse of the annotation could only be detected on runtime. 
+But in a lot of cases this could already be evaluated at compile time by using annotation processors which could trigger a compilation error in case of a constraint violation.
+Additionally, annotation processor driven code or resource file generation can also be very useful.
+
+Unfortunately it's quite uncomfortable to develop and test annotation processors.
+First problem is that you have to cope with both java compile time and run time model, which can be very tricky at the beginning.
+Another problem is that the tools offered by java only offer some basic support for development.
+This project supports you by providing utilities that allow you to develop annotation processors in a more comfortable way.
+It also reduces the complexity of handling compile time and runtime model by shading common pitfalls behind it's api.
 
 # Features
 - provides support for Class conversion from runtime to compile time model (Class / FQN to Element and TypeMirror)
 - provides support for accessing the compile time element tree
 - provides generic Element based filters, validator and matchers
 - provides fluent element validation and filtering api
-- provides basic support for creation of resources
-- provides support for setting up unit and integration (compile time) tests
+- provides support for template based creation of java source and resource files
+- compatible with all java versions >=6 (java >=9 compatibility since version 0.12.0)
 
 # How does it work?
 
-This project offers an abstract base class which extends the AbstractProcessor class offered by the java framework.
-This class provides support for validating different kinds of Elements in a fluent way and offers you helper functions to do some filtering.
+This project provides the abstract base class _io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_ which extends the AbstractProcessor class provided by java. 
+Your annotation processor needs to extends this class to be able to use the utilities offered by this project and to build your annotation processor.
 
 Since your annotation processor later mostly will be bound as a provided dependency you should use the maven shade plugin to embed the annotation-processor-toolkit and all other 3rd party dependency classes into your annotation processor artifact.
 This can be done by adding the following to your annotation processors pom.xml:
@@ -44,15 +50,14 @@ This can be done by adding the following to your annotation processors pom.xml:
          <dependency>
              <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
              <artifactId>annotationprocessor</artifactId>
-             <version>0.10.1</version>
+             <version>${aptk.currentVersion}</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
         <dependency>
-            <groupId>com.google.testing.compile</groupId>
-            <artifactId>compile-testing</artifactId>
-            <!-- use version 0.9 if you need java 6 compatibility - later versions are based on java 8 -->
-            <version>0.10</version>
+            <groupId>io.toolisticon.compiletesting</groupId>
+            <artifactId>compiletesting</artifactId>
+            <version>${compileTesting.currentVersion}</version>
             <scope>test</scope>
         </dependency>
 
@@ -89,22 +94,19 @@ This can be done by adding the following to your annotation processors pom.xml:
          </plugins>
      </build>
 
-Then your annotation processor needs to extends the io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
-
 Please check our example provided in the github.
 
 # Examples
 
 ## Enhanced utility support
-Java itself offers the following utility classes to support you build annotation processors:
+Java itself provides some tools to support you to build annotation processors. 
+This framework provides some utility classes to add some useful features not covered by these tools:
 
-- Elements
-- Types
-- Messager
-- Filer
+- Elements : _ElementUtils_ provides support to navigate through the Element tree
+- Types : _TypeUtils_ provides support to cope with type in java compile time model
+- Messager : _MessagerUtils_ provides support to issue messages during compilation
+- Filer : _FilerUtils_ provides support to access or write java source or resource files 
 
-This project provides enhanced support for this classes.
-All Utility classes are named like the standard java classes suffixed with Utils.
 
     // Check if TypeMirror is Array
     boolean isArray = TypeUtils.CheckTypeKind.isArray(aTypeMirror);
@@ -120,16 +122,20 @@ All Utility classes are named like the standard java classes suffixed with Utils
     // get all enclosed elements annotated with Deprecated annotation
     List<? extends Element> enclosedElements = ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element,Deprecated.class);
 
-This is are just a few examples of the provided tools. Please check the javadoc for more information.
+These are just a few examples of the provided tools. Please check the javadoc for more information.
 
 
-## Criteria Matching, validation and filtering of Elements with CoreMatchers and fluent API
+## Characteristic matching, validation and filtering of Elements with CoreMatchers and fluent API
 
-Matchers can be used to check if an Element matches a specific criteria.
-Validation will check for a combination of multiple criteria.
-Filters will filter a List of Elements by specific criteria.
+The framework provides a set of CoreMatchers that can be used to check if an Element matches a specific characteristic.
 
-Examples:
+Those CoreMatchers can also be used for validation - validators allow you to check if an element matches none, one, at least one or all of the passed characeristics.  
+
+Additionally the CoreMatchers can be used to filter a List of Elements by specific characeristics.
+
+The framework provides a _FluentElementValidator_ and a _FluentElementFilter_ class that allow you to combine multiple filters and validations by providing a simple and powerfull fluent api.
+
+Please check following examples:
 
     List<Element> elements = new ArrayList<Element>();
 
@@ -167,13 +173,13 @@ Examples:
 
 
 
-## Template based resource file creation
+## Template based java source and resource file creation
 
-Resource file creation and source file creation is very simple:
+Template based java source Resource file creation and source file creation is very simple:
 
 ### Sample template file
-A rudimentary templating mechanism can be used to create resources.
-It provides functionality of dynamic text replacement and for and if control blocks.
+The framework provides a rudimentary templating mechanism which can be used to create resource and java source files.
+It supports dynamic text replacement and for and if control blocks.
 
     !{if textArray != null}
         !{for text:textArray}
@@ -181,7 +187,7 @@ It provides functionality of dynamic text replacement and for and if control blo
         !{/for}
     !{/if}
 
-### Sample code
+### Sample code : Resource file creation
 
     String[] textArray = {"A","B","C"};
 
@@ -202,11 +208,18 @@ It provides functionality of dynamic text replacement and for and if control blo
     }
 
 
+
 # Projects using this toolkit library
 
 - [bean-builder](https://github.com/toolisticon/bean-builder) : An annotation processor to generate fluent instance builder classes for bean classes
 - [SPIAP](https://github.com/toolisticon/SPI-Annotation-Processor) : An annotation processor that helps you to generate SPI configuration files and service locator classes
 
+# Useful links
+
+## Compile time testing of annotation processors
+
+- [toolisticon compile-testing](https://github.com/toolisticon/compile-testing) : A simple compile testing framework that allows you to test annotation processors. It is used in this project as well.
+- [google compile-testing](https://github.com/google/compile-testing) : Another compile testing framework which was used in the past by this framework. It has some flaws like missing compatibility with different Java versions, is binding a lot of common 3rd party libraries, and has almost no documentation
 
 # Contributing
 
