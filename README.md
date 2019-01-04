@@ -107,20 +107,21 @@ This framework provides some utility classes to add some useful features not cov
 - Messager : _MessagerUtils_ provides support to issue messages during compilation
 - Filer : _FilerUtils_ provides support to access or write java source or resource files 
 
+Example:
 
-    // Check if TypeMirror is Array
-    boolean isArray = TypeUtils.CheckTypeKind.isArray(aTypeMirror);
+     // Check if TypeMirror is Array
+     boolean isArray = TypeUtils.CheckTypeKind.isArray(aTypeMirror);
 
-    // get TypeElement or TypeMirrors easily
-    TypeElement typeElement1 = TypeUtils.TypeRetrieval.getTypeElement("fqn.name.of.Clazz");
-    TypeElement typeElement2 = TypeUtils.TypeRetrieval.getTypeElement(Clazz.class);
-    TypeMirror typeMirror1 = TypeUtils.TypeRetrieval.getTypeMirror("fqn.name.of.Clazz");
-    TypeMirror typeMirror2 = TypeUtils.TypeRetrieval.getTypeMirror(Clazz.class);
+     // get TypeElement or TypeMirrors easily
+     TypeElement typeElement1 = TypeUtils.TypeRetrieval.getTypeElement("fqn.name.of.Clazz");
+     TypeElement typeElement2 = TypeUtils.TypeRetrieval.getTypeElement(Clazz.class);
+     TypeMirror typeMirror1 = TypeUtils.TypeRetrieval.getTypeMirror("fqn.name.of.Clazz");
+     TypeMirror typeMirror2 = TypeUtils.TypeRetrieval.getTypeMirror(Clazz.class);
 
-    boolean checkAssignability = TypeUtils.TypeComparison.isAssignableTo(typeMirror1, typeMirror2);
+     boolean checkAssignability = TypeUtils.TypeComparison.isAssignableTo(typeMirror1, typeMirror2);
 
-    // get all enclosed elements annotated with Deprecated annotation
-    List<? extends Element> enclosedElements = ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element,Deprecated.class);
+     // get all enclosed elements annotated with Deprecated annotation
+     List<? extends Element> enclosedElements = ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element,Deprecated.class);
 
 These are just a few examples of the provided tools. Please check the javadoc for more information.
 
