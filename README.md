@@ -43,6 +43,7 @@ Your annotation processor needs to extends this class to be able to use the util
 Since your annotation processor later mostly will be bound as a provided dependency you should use the maven shade plugin to embed the annotation-processor-toolkit and all other 3rd party dependency classes into your annotation processor artifact.
 This can be done by adding the following to your annotation processors pom.xml:
 
+```xml
      <dependencies>
 
          <dependency>
@@ -91,6 +92,7 @@ This can be done by adding the following to your annotation processors pom.xml:
 
          </plugins>
      </build>
+```
 
 Please check our example provided in the github.
 
@@ -106,7 +108,7 @@ This framework provides some utility classes to add some useful features not cov
 - Filer : _FilerUtils_ provides support to access or write java source or resource files 
 
 Example:
-
+```java
      // Check if TypeMirror is Array
      boolean isArray = TypeUtils.CheckTypeKind.isArray(aTypeMirror);
 
@@ -120,6 +122,7 @@ Example:
 
      // get all enclosed elements annotated with Deprecated annotation
      List<? extends Element> enclosedElements = ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element,Deprecated.class);
+```
 
 These are just a few examples of the provided tools. Please check the javadoc for more information.
 
@@ -135,7 +138,7 @@ Additionally the CoreMatchers can be used to filter a List of Elements by specif
 The framework provides a _FluentElementValidator_ and a _FluentElementFilter_ class that allow you to combine multiple filters and validations by providing a simple and powerfull fluent api.
 
 Please check following examples:
-
+```java
     List<Element> elements = new ArrayList<Element>();
 
     // validator already will print output so additional actions are not necessary
@@ -168,9 +171,7 @@ Please check following examples:
             .applyFilter(CoreMatchers.IS_METHOD)
             .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC,Modifier.STATIC)
             .getResult();
-
-
-
+```
 
 ## Template based java source and resource file creation
 
@@ -188,6 +189,7 @@ It supports dynamic text replacement and for and if control blocks.
 
 ### Sample code : Resource file creation
 
+```java
     String[] textArray = {"A","B","C"};
 
     // create Model
@@ -205,7 +207,7 @@ It supports dynamic text replacement and for and if control blocks.
     } catch (IOException e) {
         MessagerUtils.error(null, "Example file creation failed for package '${0}' and filename '${1}'", package, fileName);
     }
-
+```
 
 
 # Projects using this toolkit library
