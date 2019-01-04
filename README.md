@@ -4,8 +4,6 @@
 [![Build Status](https://api.travis-ci.org/tobiasstamann/annotation-processor-toolkit.svg)](https://travis-ci.org/tobiasstamann/annotation-processor-toolkit)
 [![codecov](https://codecov.io/gh/tobiasstamann/annotation-processor-toolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/tobiasstamann/annotation-processor-toolkit)
 
-Please check detailed documentation at the projects [github page](https://toolisticon.github.io/annotation-processor-toolkit/)
-
 # Why you should use this project?
 
 Nowadays no one could imagine Java development without annotations.
