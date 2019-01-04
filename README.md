@@ -8,7 +8,7 @@ Please check detailed documentation at the projects [github page](https://toolis
 
 # Why you should use this project?
 
-Nowadays one could not imagine Java development without annotions.
+Nowadays one could not imagine Java development without annotations.
 They allow you to provide meta-data in your source code which can either be processed at run time via reflection or at compile time by using annotation processors.
 
 Annotation processors allow you to validate if your annotations are used correctly and allow you to generate resource files or even classes.
@@ -89,7 +89,7 @@ This can be done by adding the following to your annotation processors pom.xml:
          </plugins>
      </build>
 
-Then your annotation processor needs to extends the io.toolisticon.annotationprocessor.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
+Then your annotation processor needs to extends the io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor to be able to use the utilities offered by this project and to build your annotation processor.
 
 Please check our example provided in the github.
 
