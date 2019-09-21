@@ -1,207 +1,179 @@
 package io.toolisticon.annotationprocessortoolkit;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
+import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
+import io.toolisticon.compiletesting.CompileTestBuilder;
+import io.toolisticon.compiletesting.UnitTestProcessor;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
-@RunWith(Parameterized.class)
-public class AbstractAnnotationProcessorTest extends AbstractAnnotationProcessorUnitTest {
-
-    public AbstractAnnotationProcessorTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
-        super(configuration);
-    }
+public class AbstractAnnotationProcessorTest {
 
     @Before
     public void init() {
         MessagerUtils.setPrintMessageCodes(true);
     }
 
-    @Parameterized.Parameters(name = "{index}: {0}")
-    public static List<Object[]> data() {
-        return Arrays.asList(
 
-                new Object[][]{
+    private static class AnnotationProcessorUnitTestClass {
 
+        private String privateField;
+        protected String protectedField;
+        String packagePrivateField;
+        public String publicField;
+        public final String publicFinalField = "";
+        public static String publicStaticField;
+        public transient String publicTransientField;
 
-                        {
-                                "FluentElementFilter : Do filterings",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
+        enum TestEnum1 {
+            TEST11, TEST12;
+        }
 
-                                                              List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
-                                                                      .getResult();
-                                                              MatcherAssert.assertThat(result, Matchers.hasSize(8));
+        public enum TestEnum2 {
+            TEST21, TEST22;
+        }
 
+        public static class EmbeddedStaticClass {
 
-                                                              result = FluentElementFilter.createFluentElementFilter(
-                                                                      element.getEnclosedElements())
-                                                                      .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
-                                                                      .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
-                                                                      .getResult();
-                                                              MatcherAssert.assertThat(result, Matchers.hasSize(1));
-                                                              MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
+        }
 
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
+        public Comparator<Long> comparatorWithAnonymousClass = new Comparator<Long>() {
+            @Override
+            public int compare(Long o1, Long o2) {
+                return 0;
+            }
+        };
 
 
-                        },
+        public class EmbeddedClass {
 
-                        {
-                                "createSupportedAnnotationSet : without parameters",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
+        }
 
-                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(), Matchers.<String>empty());
+        public class EmbeddedClassWithNoNoargConstructor {
 
-                                                          }
-                                                      }
-                                        )
-                                        .build()
+            public EmbeddedClassWithNoNoargConstructor(String abs) {
 
+            }
 
-                        },
+        }
 
-                        {
-                                "createSupportedAnnotationSet : with parameters",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
+        public abstract class AbstractEmbeddedClass {
 
-                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(Override.class, TestAnnotation.class), Matchers.contains(Override.class.getCanonicalName(), TestAnnotation.class.getCanonicalName()));
+            public abstract void abstractMethod();
 
-                                                          }
-                                                      }
-                                        )
-                                        .build()
+        }
 
+        {
+            int x = 0;
+        }
 
-                        },
+        static {
+            int y = 0;
+        }
 
-                        {
-                                "createSupportedAnnotationSet : with null value parameters",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
+        public AnnotationProcessorUnitTestClass() {
 
-                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(null), Matchers.<String>empty());
-                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(Override.class, null, TestAnnotation.class), Matchers.contains(Override.class.getCanonicalName(), TestAnnotation.class.getCanonicalName()));
+        }
 
-                                                          }
-                                                      }
-                                        )
-                                        .build()
+        public AnnotationProcessorUnitTestClass(String withParameter) {
+
+        }
+
+        public String methodWithReturnTypeAndParameters(Boolean first, String second) {
+            return "";
+        }
 
 
-                        },
+        public int testGenericsOnParameter(Map<String, Comparator<Long>> o1, Map<? extends StringBuilder, Comparator<? super List<?>>> o2) {
+            return 0;
+        }
 
-                        {
-                                "wrapToArray : with null value parameters",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
+    }
 
-                                                              MatcherAssert.assertThat("Should return null", AbstractAnnotationProcessor.wrapToArray((String) null)[0] == null);
+    @Test
+    public void fluentElementFilter_doFilterings() {
 
-                                                              Class[] resultArray = AbstractAnnotationProcessor.wrapToArray(Override.class, null, TestAnnotation.class);
-                                                              MatcherAssert.assertThat(Arrays.asList(resultArray), Matchers.hasSize(3));
-                                                              MatcherAssert.assertThat(resultArray[0], Matchers.equalTo((Class) Override.class));
-                                                              MatcherAssert.assertThat(resultArray[1], Matchers.nullValue());
-                                                              MatcherAssert.assertThat(resultArray[2], Matchers.equalTo((Class) TestAnnotation.class));
+        CompileTestBuilder.unitTest()
+                .useProcessor(new UnitTestProcessor() {
+                    @Override
+                    public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement1) {
 
-                                                          }
-                                                      }
-                                        )
-                                        .build()
+                        // init processor tools and get element used for tests
+                        ToolingProvider.setTooling(processingEnvironment);
+                        Element element = TypeUtils.TypeRetrieval.getTypeElement(AnnotationProcessorUnitTestClass.class);
 
 
-                        },
-                        {
-                                "wrapToArray : test convenience access methods for filr, messager, types and elements",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                                          @Override
-                                                          protected void testCase(TypeElement element) {
+                        List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                                .getResult();
+                        MatcherAssert.assertThat(result, Matchers.hasSize(8));
 
 
-                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.getElements(), Matchers.notNullValue());
-                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.getTypes(), Matchers.notNullValue());
-                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.getFiler(), Matchers.notNullValue());
-                                                              MatcherAssert.assertThat(AbstractAnnotationProcessor.getMessager(), Matchers.notNullValue());
+                        result = FluentElementFilter.createFluentElementFilter(
+                                element.getEnclosedElements())
+                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                                .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
+                                .getResult();
+                        MatcherAssert.assertThat(result, Matchers.hasSize(1));
+                        MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
 
-
-                                                          }
-                                                      }
-                                        )
-                                        .build()
-
-
-                        },
-
-                        /*-
-                        {
-                                "",
-                                new AbstractTestAnnotationProcessorClass() {
-                                    @Override
-                                    protected void testCase(TypeElement element) {
-
-                                        getTypeUtils().getTypeElement(AbstractTestAnnotationProcessorClass.class);
-
-
-                                    }
-                                },
-                                true
-
-
-                        },
-                        */
-
-                }
-
-        );
-
+                    }
+                })
+                .compilationShouldSucceed()
+                .testCompilation();
 
     }
 
 
     @Test
-    public void test() {
-        super.test();
+    public void createSupportedAnnotationSet_withoutParameters() {
+
+        MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(), Matchers.<String>empty());
+
     }
+
+    @Test
+    public void createSupportedAnnotationSet_withParameters() {
+
+        MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(Override.class, Ignore.class), Matchers.containsInAnyOrder(Override.class.getCanonicalName(), Ignore.class.getCanonicalName()));
+
+    }
+
+    @Test
+    public void createSupportedAnnotationSet_withNullParameter() {
+
+        MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(null), Matchers.<String>empty());
+        MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(Override.class, null, Ignore.class), Matchers.containsInAnyOrder(Override.class.getCanonicalName(), Ignore.class.getCanonicalName()));
+
+    }
+
+    @Test
+    public void wrapToArrayt_withNullParameter() {
+
+        MatcherAssert.assertThat("Should return null", AbstractAnnotationProcessor.wrapToArray((String) null)[0] == null);
+
+        Class[] resultArray = AbstractAnnotationProcessor.wrapToArray(Override.class, null, Ignore.class);
+        MatcherAssert.assertThat(Arrays.asList(resultArray), Matchers.hasSize(3));
+        MatcherAssert.assertThat(resultArray[0], Matchers.equalTo((Class) Override.class));
+        MatcherAssert.assertThat(resultArray[1], Matchers.nullValue());
+        MatcherAssert.assertThat(resultArray[2], Matchers.equalTo((Class) Ignore.class));
+
+    }
+
 
 }

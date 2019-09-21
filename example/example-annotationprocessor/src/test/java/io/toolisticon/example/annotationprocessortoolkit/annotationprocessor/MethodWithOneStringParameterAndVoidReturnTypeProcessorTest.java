@@ -1,81 +1,45 @@
 package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
-import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
+import io.toolisticon.compiletesting.CompileTestBuilder;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import java.util.Arrays;
-import java.util.List;
 
 
-@RunWith(Parameterized.class)
-public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest extends AbstractAnnotationProcessorIntegrationTest<MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor> {
-
-
-    public MethodWithOneStringParameterAndVoidReturnTypeProcessorTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
-        super(annotationProcessorIntegrationTestConfiguration);
-    }
-
-    @Override
-    protected MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor getAnnotationProcessor() {
-        return new MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor();
-    }
+public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest {
 
     @Before
     public void init() {
         MessagerUtils.setPrintMessageCodes(true);
     }
 
-    @Parameterized.Parameters(name = "{index}: \"{0}\"")
-    public static List<Object[]> data() {
 
-        return Arrays.asList(new Object[][]{
-                {
-                        "Test valid usage",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
-                                .addMessageValidator()
-                                .setNoteChecks("Start processing")
-                                .finishMessageValidator()
-                                .compilationShouldSucceed()
-                                .build()
-                },
-                {
-                        "Test invalid usage : non void return type",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
-                                .compilationShouldFail()
-                                .addMessageValidator()
-                                .setErrorChecks(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
-                                .finishMessageValidator()
-                                .build()
-                },
-                {
-                        "Test invalid usage : non String parameter",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
-                                .compilationShouldFail()
-                                .addMessageValidator()
-                                .setErrorChecks(CoreMatcherValidationMessages.BY_PARAMETER_TYPE.getCode())
-                                .finishMessageValidator()
-                                .build()
-                },
-
-
-        });
-
-    }
-
+    private CompileTestBuilder.CompilationTestBuilder compilationTestBuilder = CompileTestBuilder.compilationTest()
+            .addProcessors(MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor.class);
 
     @Test
-    public void test() {
-        super.test();
+    public void testValidUsage() {
+        compilationTestBuilder.addSources("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
+                .compilationShouldSucceed()
+                .expectedNoteMessages("Start processing")
+                .testCompilation();
+    }
+
+    @Test
+    public void testInvalidUsage_nonVoidReturnType() {
+        compilationTestBuilder.addSources("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
+                .compilationShouldFail()
+                .expectedErrorMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
+                .testCompilation();
+    }
+
+    @Test
+    public void testInvalidUsage_nonStringParameter() {
+        compilationTestBuilder.addSources("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
+                .compilationShouldFail()
+                .expectedErrorMessages(CoreMatcherValidationMessages.BY_PARAMETER_TYPE.getCode())
+                .testCompilation();
     }
 
 

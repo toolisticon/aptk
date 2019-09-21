@@ -1,76 +1,46 @@
 package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
-import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
+import io.toolisticon.compiletesting.CompileTestBuilder;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Integration test for {@link ImplementsSpecificInterfaceCheckAnnotationProcessor}.
  */
-@RunWith(Parameterized.class)
-public class ImplementsSpecificInterfaceCheckAnnotationProcessorTest extends AbstractAnnotationProcessorIntegrationTest<ImplementsSpecificInterfaceCheckAnnotationProcessor> {
 
-    public ImplementsSpecificInterfaceCheckAnnotationProcessorTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
-        super(annotationProcessorIntegrationTestConfiguration);
-    }
+public class ImplementsSpecificInterfaceCheckAnnotationProcessorTest {
 
-    @Override
-    protected ImplementsSpecificInterfaceCheckAnnotationProcessor getAnnotationProcessor() {
-        return new ImplementsSpecificInterfaceCheckAnnotationProcessor();
-    }
+
+    private CompileTestBuilder.CompilationTestBuilder compilationTestBuilder = CompileTestBuilder.compilationTest()
+            .addProcessors(ImplementsSpecificInterfaceCheckAnnotationProcessor.class);
 
     @Before
     public void init() {
         MessagerUtils.setPrintMessageCodes(true);
     }
 
-    @Parameterized.Parameters(name = "{index}: \"{0}\"")
-    public static List<Object[]> data() {
-
-        return Arrays.asList(new Object[][]{
-                {
-                        "Test valid usage : implements",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTest.java")
-                                .compilationShouldSucceed()
-                                .build()
-                },
-                {
-                        "Test invalid usage : extends ",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTestExtendsCase.java")
-                                .compilationShouldSucceed()
-                                .build()
-                },
-                {
-                        "Test invalid usage : non String parameter",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/InvalidUsageTest.java")
-                                .compilationShouldFail()
-                                .addMessageValidator()
-                                .setErrorChecks(CoreMatcherValidationMessages.IS_ASSIGNABLE_TO.getCode())
-                                .finishMessageValidator()
-                                .build()
-                },
-
-
-        });
-
+    @Test
+    public void testValidUsage_implements() {
+        compilationTestBuilder.addSources("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTest.java")
+                .compilationShouldSucceed()
+                .testCompilation();
     }
 
+    @Test
+    public void testValidUsage_extends() {
+        compilationTestBuilder.addSources("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTestExtendsCase.java")
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
 
     @Test
-    public void test() {
-        super.test();
+    public void testInvalidUsage_nonStringParameter() {
+        compilationTestBuilder.addSources("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/InvalidUsageTest.java")
+                .compilationShouldFail()
+                .expectedErrorMessages(CoreMatcherValidationMessages.IS_ASSIGNABLE_TO.getCode())
+                .testCompilation();
     }
 
 

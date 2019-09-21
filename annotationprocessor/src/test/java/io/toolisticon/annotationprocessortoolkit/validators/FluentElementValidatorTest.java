@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.validators;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.annotationprocessortoolkit.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
@@ -22,8 +22,7 @@ import java.util.List;
 /**
  * Unit test for {@link io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator}.
  */
-//@RunWith(Parameterized.class)
-public class FluentElementValidatorTest { //extends AbstractAnnotationProcessorUnitTest {
+public class FluentElementValidatorTest {
 
 
     @Before

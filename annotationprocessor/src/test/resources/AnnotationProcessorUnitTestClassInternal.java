@@ -1,7 +1,5 @@
 package io.toolisticon.annotationprocessor;
 
-import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation1;
-import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation2;
 import io.toolisticon.annotationprocessortoolkit.TestAnnotation;
 
 import java.util.Comparator;
@@ -12,7 +10,7 @@ import java.util.Map;
  * Test class for annotation processor tools.
  */
 @TestAnnotation
-public class AnnotationProcessorTestClass {
+public class AnnotationProcessorUnitTestClassInternal {
 
     private String privateField;
     protected String protectedField;
@@ -68,17 +66,11 @@ public class AnnotationProcessorTestClass {
         int y = 0;
     }
 
-    public AnnotationProcessorTestClass() {
+    public AnnotationProcessorUnitTestClassInternal() {
 
     }
 
-    public AnnotationProcessorTestClass(String withParameter) {
-
-    }
-
-    @FilterTestAnnotation1(value="YES")
-    @FilterTestAnnotation2
-    public synchronized void synchronizedMethod() {
+    public AnnotationProcessorUnitTestClassInternal(String withParameter) {
 
     }
 

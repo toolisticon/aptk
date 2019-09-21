@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.impl;
 
+import io.toolisticon.annotationprocessortoolkit.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation1;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.tools.AnnotationUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;

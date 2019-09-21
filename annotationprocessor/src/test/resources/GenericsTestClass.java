@@ -1,4 +1,4 @@
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.TestAnnotation;
 
 import java.util.Comparator;
 import java.util.HashMap;

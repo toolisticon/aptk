@@ -1,10 +1,11 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.annotationprocessortoolkit.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.compiletesting.CompileTestBuilder;
+import io.toolisticon.compiletesting.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -49,6 +50,7 @@ public class IsAttributeFieldMatcherTest {
 
         CompileTestBuilder
                 .unitTest()
+                .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override
                     protected void testCase(TypeElement element) {
@@ -72,6 +74,7 @@ public class IsAttributeFieldMatcherTest {
 
         CompileTestBuilder
                 .unitTest()
+                .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override
                     protected void testCase(TypeElement element) {
@@ -95,6 +98,7 @@ public class IsAttributeFieldMatcherTest {
 
         CompileTestBuilder
                 .unitTest()
+                .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override
                     protected void testCase(TypeElement element) {
@@ -118,6 +122,7 @@ public class IsAttributeFieldMatcherTest {
 
         CompileTestBuilder
                 .unitTest()
+                .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override
                     protected void testCase(TypeElement element) {
@@ -141,6 +146,7 @@ public class IsAttributeFieldMatcherTest {
 
         CompileTestBuilder
                 .unitTest()
+                .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
                 .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
                     @Override
                     protected void testCase(TypeElement element) {
