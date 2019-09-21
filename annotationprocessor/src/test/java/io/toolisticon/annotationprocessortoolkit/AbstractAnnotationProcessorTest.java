@@ -150,7 +150,7 @@ public class AbstractAnnotationProcessorTest {
     @Test
     public void createSupportedAnnotationSet_withParameters() {
 
-        MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(Override.class, Ignore.class), Matchers.contains(Override.class.getCanonicalName(), Ignore.class.getCanonicalName()));
+        MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(Override.class, Ignore.class), Matchers.containsInAnyOrder(Override.class.getCanonicalName(), Ignore.class.getCanonicalName()));
 
     }
 
@@ -158,7 +158,7 @@ public class AbstractAnnotationProcessorTest {
     public void createSupportedAnnotationSet_withNullParameter() {
 
         MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(null), Matchers.<String>empty());
-        MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(Override.class, null, Ignore.class), Matchers.contains(Override.class.getCanonicalName(), Ignore.class.getCanonicalName()));
+        MatcherAssert.assertThat(AbstractAnnotationProcessor.createSupportedAnnotationSet(Override.class, null, Ignore.class), Matchers.containsInAnyOrder(Override.class.getCanonicalName(), Ignore.class.getCanonicalName()));
 
     }
 
