@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
@@ -20,9 +21,6 @@
 
         <!-- CREATE A NO DEPENDENCY ARTIFACT -->
         <module>annotationprocessor_nodep</module>
-
-        <!-- test scope module -->
-        <module>testhelper</module>
 
     </modules>
 
@@ -86,8 +84,8 @@
 
         <java.version>1.6.0</java.version>
 
-        <spiap.version>0.5.1</spiap.version>
-        <compileTesting.version>0.2.0</compileTesting.version>
+        <spiap.version>0.7.0</spiap.version>
+        <compileTesting.version>0.6.0</compileTesting.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.12</junit.version>
@@ -96,7 +94,6 @@
         <lombok.version>1.18.2</lombok.version>
 
         <!-- plugin versions -->
-        <animal-sniffer-maven-plugin.version>1.16</animal-sniffer-maven-plugin.version>
         <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
         <maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
         <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
@@ -378,6 +375,10 @@
 
                                 <configuration>
 
+                                    <excludeDependencies>
+                                        <excludeDependency>io.toolisticon.compiletesting:*</excludeDependency>
+                                    </excludeDependencies>
+
                                     <signature>
                                         <groupId>org.codehaus.mojo.signature</groupId>
                                         <artifactId>java16</artifactId>
@@ -402,7 +403,7 @@
         <profile>
             <id>jdkgreaterthan8</id>
             <activation>
-                <jdk>[9,20)</jdk>
+                <jdk>[9,99)</jdk>
             </activation>
 
 
@@ -436,6 +437,9 @@
                                 </goals>
 
                                 <configuration>
+                                    <excludeDependencies>
+                                        <excludeDependency>io.toolisticon.compiletesting:*</excludeDependency>
+                                    </excludeDependencies>
 
                                     <signature>
                                         <groupId>org.codehaus.mojo.signature</groupId>
@@ -521,13 +525,6 @@
                 <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
                 <artifactId>templating</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-                <artifactId>testhelper</artifactId>
-                <version>${project.version}</version>
-                <scope>test</scope>
             </dependency>
 
             <dependency>

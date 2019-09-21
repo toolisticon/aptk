@@ -1,52 +1,35 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorIntegrationTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfiguration;
-import io.toolisticon.annotationprocessortoolkit.testhelper.integrationtest.AnnotationProcessorIntegrationTestConfigurationBuilder;
 import io.toolisticon.annotationprocessortoolkit.tools.generators.FileObjectUtilsTestAnnotationProcessor;
+import io.toolisticon.compiletesting.CompileTestBuilder;
 import io.toolisticon.compiletesting.JavaFileObjectUtils;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
-import java.util.Arrays;
-import java.util.List;
+import javax.tools.StandardLocation;
 
-@RunWith(Parameterized.class)
-public class FilerUtilsTest extends AbstractAnnotationProcessorIntegrationTest<FileObjectUtilsTestAnnotationProcessor> {
+public class FilerUtilsTest {
 
 
-    public FilerUtilsTest(String description, AnnotationProcessorIntegrationTestConfiguration annotationProcessorIntegrationTestConfiguration) {
-        super(annotationProcessorIntegrationTestConfiguration);
+    @Before
+    public void init() {
+        MessagerUtils.setPrintMessageCodes(true);
     }
 
-    @Override
-    protected FileObjectUtilsTestAnnotationProcessor getAnnotationProcessor() {
-        return new FileObjectUtilsTestAnnotationProcessor();
-    }
-
-    @Parameterized.Parameters(name = "{index}: \"{0}\"")
-    public static List<Object[]> data() {
-
-        return Arrays.asList(new Object[][]{
-                {
-                        "Test valid usage",
-                        AnnotationProcessorIntegrationTestConfigurationBuilder.createTestConfig()
-                                .setSourceFileToCompile("/testcases/generators/FilerUtilsTestClass.java")
-                                .compilationShouldSucceed()
-                                .javaFileObjectShouldMatch(JavaFileObjectUtils.readFromResource("/testcases/generators/expectedResult.txt"))
-                                .build()
-                },
-
-
-        });
-
-    }
+    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
+            .unitTest()
+            .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java"));
 
 
     @Test
-    public void test() {
-        super.test();
+    public void testValidUsage() {
+
+        unitTestBuilder.useProcessor(new FileObjectUtilsTestAnnotationProcessor())
+                .useSource(JavaFileObjectUtils.readFromResource("/testcases/generators/FilerUtilsTestClass.java"))
+                .compilationShouldSucceed()
+                .expectedFileObjectExists(StandardLocation.CLASS_OUTPUT, "", "testOutput.txt", JavaFileObjectUtils.readFromResource("/testcases/generators/expectedResult.txt"))
+                .testCompilation();
+
     }
 
 

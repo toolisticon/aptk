@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.tools.validator;
 
 import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation2;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.TestAnnotation;
 import io.toolisticon.annotationprocessortoolkit.tools.DummyValidatorMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByAnnotationMatcher;

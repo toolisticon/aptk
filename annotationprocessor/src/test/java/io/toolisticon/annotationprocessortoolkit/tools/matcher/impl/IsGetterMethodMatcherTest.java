@@ -1,32 +1,26 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+import io.toolisticon.annotationprocessortoolkit.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
+import io.toolisticon.compiletesting.CompileTestBuilder;
+import io.toolisticon.compiletesting.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Unit test for {@link IsInterfaceMatcher}.
  */
-@RunWith(Parameterized.class)
-public class IsGetterMethodMatcherTest extends AbstractAnnotationProcessorUnitTest {
+public class IsGetterMethodMatcherTest {
 
-    public IsGetterMethodMatcherTest(String message, AnnotationProcessorUnitTestConfiguration configuration) {
-        super(configuration);
-    }
 
     public static abstract class TestClass {
         public void getNoReturnType() {
@@ -73,6 +67,62 @@ public class IsGetterMethodMatcherTest extends AbstractAnnotationProcessorUnitTe
 
     }
 
+
+    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
+            .unitTest()
+            .useSource(JavaFileObjectUtils.readFromResource("/AnnotationClassAttributeTestClass.java"));
+
+
+    @Before
+    public void init() {
+        MessagerUtils.setPrintMessageCodes(true);
+    }
+
+    @Test
+    public void checkMatchingInterface() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+
+                TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestClass.class);
+
+
+                checkGetter(typeElement, "getNoReturnType", false);
+                checkGetter(typeElement, "getNonVisible", false);
+                checkGetter(typeElement, "getIsStatic", false);
+                checkGetter(typeElement, "getIsAbstract", false);
+                checkGetter(typeElement, "getValid", true);
+                checkGetter(typeElement, "getGetterValid", true);
+                checkGetter(typeElement, "hasGetterValid", true);
+                checkGetter(typeElement, "isGetterValid", true);
+                checkGetter(typeElement, "hasGetterInvalid", false);
+                checkGetter(typeElement, "isGetterInvalid", false);
+
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
+
+
+    @Test
+    public void checkNullValuedElement() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+
+                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_GETTER_METHOD.getMatcher().check(null));
+
+
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
+
+
     public static void checkGetter(TypeElement typeElement, String methodName, boolean expectedResult) {
 
         List<ExecutableElement> executableElements =
@@ -85,81 +135,6 @@ public class IsGetterMethodMatcherTest extends AbstractAnnotationProcessorUnitTe
 
         MatcherAssert.assertThat("methodName", CoreMatchers.IS_GETTER_METHOD.getMatcher().check(executableElements.get(0)), Matchers.is(expectedResult));
 
-    }
-
-    @Parameterized.Parameters(name = "{index}: {0}")
-    public static List<Object[]> data() {
-        return Arrays.asList(
-
-                new Object[][]{
-
-
-                        {
-                                "check : matching interface ",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(
-                                                new AbstractUnitTestAnnotationProcessorClass() {
-                                                    @Override
-                                                    protected void testCase(TypeElement element) {
-
-                                                        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(TestClass.class);
-
-
-                                                        checkGetter(typeElement, "getNoReturnType", false);
-                                                        checkGetter(typeElement, "getNonVisible", false);
-                                                        checkGetter(typeElement, "getIsStatic", false);
-                                                        checkGetter(typeElement, "getIsAbstract", false);
-                                                        checkGetter(typeElement, "getValid", true);
-                                                        checkGetter(typeElement, "getGetterValid", true);
-                                                        checkGetter(typeElement, "hasGetterValid", true);
-                                                        checkGetter(typeElement, "isGetterValid", true);
-                                                        checkGetter(typeElement, "hasGetterInvalid", false);
-                                                        checkGetter(typeElement, "isGetterInvalid", false);
-
-
-                                                    }
-
-                                                }
-                                        )
-                                        .build()
-
-
-                        },
-
-                        {
-                                "check : null valued element",
-                                AnnotationProcessorUnitTestConfigurationBuilder.createTestConfig()
-                                        .compilationShouldSucceed()
-                                        .setProcessor(
-                                                new AbstractUnitTestAnnotationProcessorClass() {
-                                                    @Override
-                                                    protected void testCase(TypeElement element) {
-
-
-                                                        MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_GETTER_METHOD.getMatcher().check(null));
-
-
-                                                    }
-
-                                                }
-                                        )
-                                        .build()
-
-
-                        },
-
-
-                }
-
-        );
-
-
-    }
-
-    @Test
-    public void test() {
-        super.test();
     }
 
 }

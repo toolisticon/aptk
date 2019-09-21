@@ -25,12 +25,6 @@
             <artifactId>templating</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-            <artifactId>testhelper</artifactId>
-        </dependency>
-
-
     </dependencies>
 
 

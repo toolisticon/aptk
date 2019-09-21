@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.test;
 
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
+import io.toolisticon.annotationprocessortoolkit.TestAnnotation;
 import lombok.Getter;
 
 
