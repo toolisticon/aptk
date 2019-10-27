@@ -1,9 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
 
-
-import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
-
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
@@ -58,23 +55,24 @@ public final class AnnotationUtils {
     /**
      * Gets the AnnotationValue with default "value" key.
      *
-     * @param annotationMirror     the annotation mirror to get the value from
+     * @param annotationMirror the annotation mirror to get the value from
      * @return the AnnotationValue,  or null if the AnnotationValue with passed key cannot be found
      */
-    public static AnnotationValue getAnnotationValueOfAttributeWithDefaults( AnnotationMirror annotationMirror) {
-        return getAnnotationValueOfAttributeWithDefaults( annotationMirror, "value");
+    public static AnnotationValue getAnnotationValueOfAttributeWithDefaults(AnnotationMirror annotationMirror) {
+        return getAnnotationValueOfAttributeWithDefaults(annotationMirror, "value");
     }
 
     /**
      * Get all mandatory attribute value names
+     *
      * @param annotationMirror the annotation mirror to get the mandatory attribute names from
      * @return an array containing all mandatory attribute names
      */
-    public static String[] getMandatoryAttributeValueNames( AnnotationMirror annotationMirror) {
+    public static String[] getMandatoryAttributeValueNames(AnnotationMirror annotationMirror) {
 
         List<String> result = new ArrayList<String>();
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-            if (entry.getKey().getDefaultValue() == null ) {
+            if (entry.getKey().getDefaultValue() == null) {
                 result.add(entry.getKey().getSimpleName().toString());
             }
         }
@@ -84,14 +82,15 @@ public final class AnnotationUtils {
 
     /**
      * Get all optional attribute value names
+     *
      * @param annotationMirror the annotation mirror to get the mandatory attribute names from
      * @return an array containing all mandatory attribute names
      */
-    public static String[] getOptionalAttributeValueNames( AnnotationMirror annotationMirror) {
+    public static String[] getOptionalAttributeValueNames(AnnotationMirror annotationMirror) {
 
         List<String> result = new ArrayList<String>();
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
-            if (entry.getKey().getDefaultValue() != null ) {
+            if (entry.getKey().getDefaultValue() != null) {
                 result.add(entry.getKey().getSimpleName().toString());
             }
         }
@@ -103,11 +102,11 @@ public final class AnnotationUtils {
      * Gets the AnnotationValue for the passed key.
      * Also implicitly set default values will be found.
      *
-     * @param annotationMirror     the annotation mirror to get the value from
-     * @param key                  the attribute key to search for
+     * @param annotationMirror the annotation mirror to get the value from
+     * @param key              the attribute key to search for
      * @return the AnnotationValue,  or null if the AnnotationValue with passed key cannot be found
      */
-    public static AnnotationValue getAnnotationValueOfAttributeWithDefaults( AnnotationMirror annotationMirror, String key) {
+    public static AnnotationValue getAnnotationValueOfAttributeWithDefaults(AnnotationMirror annotationMirror, String key) {
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getSimpleName().toString().equals(key)) {
                 return entry.getValue();
@@ -122,11 +121,11 @@ public final class AnnotationUtils {
      * This can be used to determine the type of an attribute.
      * This is very useful if you want to generate code that uses the annotation.
      *
-     * @param annotationMirror     the annotation mirror to get the value from
-     * @param key                  the attribute key to search for
+     * @param annotationMirror the annotation mirror to get the value from
+     * @param key              the attribute key to search for
      * @return the AnnotationValue,  or null if the AnnotationValue with passed key cannot be found
      */
-    public static ExecutableElement getExecutableElementForAnnotationAttributeName( AnnotationMirror annotationMirror, String key) {
+    public static ExecutableElement getExecutableElementForAnnotationAttributeName(AnnotationMirror annotationMirror, String key) {
 
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getSimpleName().toString().equals(key)) {
@@ -180,7 +179,7 @@ public final class AnnotationUtils {
      * @return the AnnotationMirror or null if it can't be found.
      */
     public static AnnotationMirror getAnnotationMirror(Element element, Class<? extends Annotation> clazz) {
-        return getAnnotationMirror(element, clazz.getName());
+        return getAnnotationMirror(element, clazz.getCanonicalName());
     }
 
     /**
