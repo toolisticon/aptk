@@ -253,8 +253,11 @@ public class AnnotationUtilsTest {
             @Override
             protected void testCase(TypeElement element) {
 
+                // precondition
                 AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, DefaultValueAnnotation.class);
+                MatcherAssert.assertThat(annotationMirror, Matchers.notNullValue());
 
+                // test
                 AnnotationValue value = AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror);
 
                 // shouldn't find nonexisting
@@ -278,8 +281,11 @@ public class AnnotationUtilsTest {
             @Override
             protected void testCase(TypeElement element) {
 
+                // precondition
                 AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, DefaultValueAnnotation.class);
+                MatcherAssert.assertThat(annotationMirror, Matchers.notNullValue());
 
+                // test
                 AnnotationValue value = AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror);
 
                 // shouldn't find nonexisting
@@ -302,7 +308,9 @@ public class AnnotationUtilsTest {
             @Override
             protected void testCase(TypeElement element) {
 
+                // precondition
                 AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, DefaultValueAnnotation.class);
+                MatcherAssert.assertThat(annotationMirror, Matchers.notNullValue());
 
                 String[] names = AnnotationUtils.getMandatoryAttributeValueNames(annotationMirror);
 
@@ -327,8 +335,11 @@ public class AnnotationUtilsTest {
             @Override
             protected void testCase(TypeElement element) {
 
+                // precondition
                 AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, DefaultValueAnnotation.class);
+                MatcherAssert.assertThat(annotationMirror, Matchers.notNullValue());
 
+                // test
                 String[] names = AnnotationUtils.getOptionalAttributeValueNames(annotationMirror);
 
                 // shouldn't find nonexisting
@@ -340,5 +351,31 @@ public class AnnotationUtilsTest {
                 .testCompilation();
     }
 
+    // --------------------------------------------
+    // -- getElementForAnnotationMirror
+    // --------------------------------------------
+
+    @Test
+    public void getElementForAnnotationMirror_getElement() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+
+                // precondition
+                AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, DefaultValueAnnotation.class);
+                MatcherAssert.assertThat(annotationMirror, Matchers.notNullValue());
+
+                // test
+                TypeElement result = (TypeElement) AnnotationUtils.getElementForAnnotationMirror(annotationMirror);
+
+                MatcherAssert.assertThat(result, Matchers.notNullValue());
+                MatcherAssert.assertThat(result.toString(), Matchers.is(DefaultValueAnnotation.class.getCanonicalName()));
+
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
 
 }

@@ -228,6 +228,191 @@ public class ElementUtils_CheckKindOfElementTest {
 
     }
 
+    // ---------------------------------------------
+    // -- isModule tests
+    // ---------------------------------------------
+
+    @Test
+    public void isModule_shouldMatch() {
+
+        ElementKind elementKind;
+        boolean expectedResult=true;
+        try {
+            elementKind = ElementKind.valueOf("MODULE");
+            Element element = Mockito.mock(Element.class);
+            Mockito.when(element.getKind()).thenReturn(elementKind);
+
+            MatcherAssert.assertThat("Should match", ElementUtils.CheckKindOfElement.isModule(element));
+
+        } catch (IllegalArgumentException e) {
+            // < java 9 ignore it
+            return;
+        }
+
+    }
+
+    @Test
+    public void isModule_shouldntMatch() {
+
+        Element element = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
+
+        MatcherAssert.assertThat("Shouldn't match", !ElementUtils.CheckKindOfElement.isModule(element));
+
+    }
+
+    @Test
+    public void isModule_shouldReturnFalseForNullValue() {
+
+        MatcherAssert.assertThat("Should return false with null valued parameter", !ElementUtils.CheckKindOfElement.isModule(null));
+
+    }
+
+    // ---------------------------------------------
+    // -- Convenience element checks
+    // ---------------------------------------------
+
+    // ---------------------------------------------
+    // -- isAnnotationAttribute tests
+    // ---------------------------------------------
 
 
+    @Test
+    public void isAnnotationAttribute_shouldMatch() {
+
+        Element element = Mockito.mock(Element.class);
+        Element enclosingElement = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.METHOD);
+        Mockito.when(element.getEnclosingElement()).thenReturn(enclosingElement);
+        Mockito.when(enclosingElement.getKind()).thenReturn(ElementKind.ANNOTATION_TYPE);
+
+        MatcherAssert.assertThat("Should match", ElementUtils.CheckKindOfElement.isAnnotationAttribute(element));
+
+    }
+
+    @Test
+    public void isAnnotationAttribute_shouldntMatch_noMethod() {
+
+        Element element = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
+
+        MatcherAssert.assertThat("Shouldn't match", !ElementUtils.CheckKindOfElement.isAnnotationAttribute(element));
+
+    }
+
+    @Test
+    public void isAnnotationAttribute_shouldntMatch_methodOnClass() {
+
+        Element element = Mockito.mock(Element.class);
+        Element enclosingElement = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.METHOD);
+        Mockito.when(element.getEnclosingElement()).thenReturn(enclosingElement);
+        Mockito.when(enclosingElement.getKind()).thenReturn(ElementKind.CLASS);
+
+        MatcherAssert.assertThat("Shouldn't match", !ElementUtils.CheckKindOfElement.isAnnotationAttribute(element));
+
+    }
+
+    @Test
+    public void isAnnotationAttribute_shouldReturnFalseForNullValue() {
+
+        MatcherAssert.assertThat("Should return false with null valued parameter", !ElementUtils.CheckKindOfElement.isAnnotationAttribute(null));
+
+    }
+
+    // ---------------------------------------------
+    // -- isAnnotationAttribute tests
+    // ---------------------------------------------
+
+
+    @Test
+    public void isMethodParameter_shouldMatch() {
+
+        Element element = Mockito.mock(Element.class);
+        Element enclosingElement = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PARAMETER);
+        Mockito.when(element.getEnclosingElement()).thenReturn(enclosingElement);
+        Mockito.when(enclosingElement.getKind()).thenReturn(ElementKind.METHOD);
+
+        MatcherAssert.assertThat("Should match", ElementUtils.CheckKindOfElement.isMethodParameter(element));
+
+    }
+
+    @Test
+    public void isMethodParameter_shouldntMatch_noParameter() {
+
+        Element element = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
+
+        MatcherAssert.assertThat("Shouldn't match", !ElementUtils.CheckKindOfElement.isMethodParameter(element));
+
+    }
+
+    @Test
+    public void isMethodParameter_shouldntMatch_paraeterOnConstructor() {
+
+        Element element = Mockito.mock(Element.class);
+        Element enclosingElement = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PARAMETER);
+        Mockito.when(element.getEnclosingElement()).thenReturn(enclosingElement);
+        Mockito.when(enclosingElement.getKind()).thenReturn(ElementKind.CONSTRUCTOR);
+
+        MatcherAssert.assertThat("Shouldn't match", !ElementUtils.CheckKindOfElement.isMethodParameter(element));
+
+    }
+
+    @Test
+    public void isMethodParameter_shouldReturnFalseForNullValue() {
+
+        MatcherAssert.assertThat("Should return false with null valued parameter", !ElementUtils.CheckKindOfElement.isMethodParameter(null));
+
+    }
+
+    // ---------------------------------------------
+    // -- isAnnotationAttribute tests
+    // ---------------------------------------------
+
+
+    @Test
+    public void isConstructorParameter_shouldMatch() {
+
+        Element element = Mockito.mock(Element.class);
+        Element enclosingElement = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PARAMETER);
+        Mockito.when(element.getEnclosingElement()).thenReturn(enclosingElement);
+        Mockito.when(enclosingElement.getKind()).thenReturn(ElementKind.CONSTRUCTOR);
+
+        MatcherAssert.assertThat("Should match", ElementUtils.CheckKindOfElement.isConstructorParameter(element));
+
+    }
+
+    @Test
+    public void isConstructorParameter_shouldntMatch_noMethod() {
+
+        Element element = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.CLASS);
+
+        MatcherAssert.assertThat("Shouldn't match", !ElementUtils.CheckKindOfElement.isConstructorParameter(element));
+
+    }
+
+    @Test
+    public void isConstructorParameter_shouldntMatch_parameterOnMethod() {
+
+        Element element = Mockito.mock(Element.class);
+        Element enclosingElement = Mockito.mock(Element.class);
+        Mockito.when(element.getKind()).thenReturn(ElementKind.PARAMETER);
+        Mockito.when(element.getEnclosingElement()).thenReturn(enclosingElement);
+        Mockito.when(enclosingElement.getKind()).thenReturn(ElementKind.METHOD);
+
+        MatcherAssert.assertThat("Shouldn't match", !ElementUtils.CheckKindOfElement.isConstructorParameter(element));
+
+    }
+
+    @Test
+    public void isConstructorParameter_shouldReturnFalseForNullValue() {
+
+        MatcherAssert.assertThat("Should return false with null valued parameter", !ElementUtils.CheckKindOfElement.isConstructorParameter(null));
+
+    }
 }

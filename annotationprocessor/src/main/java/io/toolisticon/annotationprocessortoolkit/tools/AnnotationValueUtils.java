@@ -678,7 +678,7 @@ public class AnnotationValueUtils {
 
 
     /**
-     * Checks if passed annotation value is an AnnotationValue.
+     * Checks if passed annotation value is an AnnotationValue array.
      *
      * @param annotationValue the value to check
      * @return true, if passed annotation is of type AnnotationValue, otherwise false
@@ -688,6 +688,12 @@ public class AnnotationValueUtils {
     }
 
 
+    /**
+     * Checks if annotation value is array of passed type.
+     * @param annotationValue the annotation value
+     * @param type the array type to check for
+     * @return true if annotation value is array of passed type, otherwise false
+     */
     public static boolean isAnnotationValueArray(AnnotationValue annotationValue, Class type) {
 
         return annotationValue != null && type != null
@@ -695,7 +701,12 @@ public class AnnotationValueUtils {
                 && isAnnotationValueArray((List<? extends AnnotationValue>) annotationValue.getValue(), type);
     }
 
-
+    /**
+     * Checks if passed AnnotationValue list represents array of passed type.
+     * @param annotationValues the annotation value list
+     * @param type the array type to check for
+     * @return true if annotation value is array of passed type, otherwise false
+     */
     public static boolean isAnnotationValueArray(List<? extends AnnotationValue> annotationValues, Class type) {
 
         return annotationValues != null && type != null

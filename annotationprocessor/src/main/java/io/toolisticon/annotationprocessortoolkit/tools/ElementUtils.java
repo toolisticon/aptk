@@ -34,6 +34,8 @@ public final class ElementUtils {
      */
     public static final class CheckKindOfElement {
 
+        private final static String KIND_MODULE = "MODULE";
+
         /**
          * Hidden constructor.
          */
@@ -134,6 +136,46 @@ public final class ElementUtils {
         }
 
         /**
+         * Checks if passed Element instance is of kind module
+         * @param e the element to check
+         * @return true if passed element is of kind module, otherwise false
+         */
+        public static boolean isModule(Element e) {
+            return (e != null && e.getKind().name().equals(KIND_MODULE));
+        }
+
+
+        /**
+         * Checks if passed Element instance is an annotation attribute.
+         * Element must be of ElementKind METHOD and enclosing Element must be of ElementKind ANNOTATION.
+         * @param e the element to check
+         * @return true if passed element represents annotation attribute, otherwise false
+         */
+        public static boolean isAnnotationAttribute(Element e) {
+            return (e != null && isMethod(e) && isAnnotation(e.getEnclosingElement()));
+        }
+
+        /**
+         * Checks if passed Element instance is an method parameter.
+         * Element must be of ElementKind PARAMETER and enclosing Element must be of ElementKind METHOD.
+         * @param e the element to check
+         * @return true if passed element represents a method parameter, otherwise false
+         */
+        public static boolean isMethodParameter(Element e) {
+            return (e != null && isParameter(e) && isMethod(e.getEnclosingElement()));
+        }
+
+        /**
+         * Checks if passed Element instance is a constructor parameter.
+         * Element must be of ElementKind PARAMETER and enclosing Element must be of ElementKind CONSTRUCTOR.
+         * @param e the element to check
+         * @return true if passed element represents a constructor parameter, otherwise false
+         */
+        public static boolean isConstructorParameter(Element e) {
+            return (e != null && isParameter(e) && isConstructor(e.getEnclosingElement()));
+        }
+
+        /**
          * Checks if passed Element instance is of a specific kind.
          *
          * @param e    the element to check
@@ -152,9 +194,9 @@ public final class ElementUtils {
     public static final class CastElement {
 
         // look up tables for the different kind of types
-        private static final Set<ElementKind> TYPE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM);
+        private static final Set<ElementKind> TYPE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM, ElementKind.ANNOTATION_TYPE);
         private static final Set<ElementKind> VARIABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PARAMETER, ElementKind.FIELD);
-        private static final Set<ElementKind> EXECUTABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD, ElementKind.ANNOTATION_TYPE);
+        private static final Set<ElementKind> EXECUTABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD);
         private static final Set<ElementKind> PACKAGE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PACKAGE);
 
 
@@ -395,12 +437,12 @@ public final class ElementUtils {
             return hasModifier(e, Modifier.ABSTRACT);
         }
 
-    /*
-     * Check if passed Element has default Modifier.
-     *
-     * @param e the element to check
-     * @return true if the passed element has the default modifier, otherwise false
-     */
+        /*
+         * Check if passed Element has default Modifier.
+         *
+         * @param e the element to check
+         * @return true if the passed element has the default modifier, otherwise false
+         */
         // Disabled until we move to Java 8
     /*
     public boolean hasDefaultModifier(Element e) {
@@ -491,12 +533,13 @@ public final class ElementUtils {
 
         /**
          * Gets the visibility modifier of an element.
+         *
          * @param element the element to check
          * @return the visibility modifierof an element or null for package privates
          */
-        public static Modifier getVisibilityModifier(Element element){
+        public static Modifier getVisibilityModifier(Element element) {
 
-            final Modifier[] modifiers = new Modifier[]{Modifier.PUBLIC,Modifier.PROTECTED, Modifier.PRIVATE};
+            final Modifier[] modifiers = new Modifier[]{Modifier.PUBLIC, Modifier.PROTECTED, Modifier.PRIVATE};
 
             for (Modifier modifier : modifiers) {
 

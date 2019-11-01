@@ -198,13 +198,36 @@ public final class AnnotationUtils {
         return null;
     }
 
+    /**
+     * Gets the element for an annotationMirror
+     *
+     * @param annotationMirror the annotation mirror
+     * @return the Element, or null if passed annotationMirror is null
+     */
+    public static Element getElementForAnnotationMirror(AnnotationMirror annotationMirror) {
+        return (annotationMirror != null ? annotationMirror.getAnnotationType().asElement() : null);
+    }
 
+    /**
+     * Gets class array attribute from annotations value attribute as a full qualified name.
+     *
+     * @param element        the annotated element
+     * @param annotationType the annotation type
+     * @return
+     */
     public static String[] getClassArrayAttributeFromAnnotationAsFqn(Element element, Class<? extends Annotation> annotationType) {
-
 
         return getClassArrayAttributeFromAnnotationAsFqn(element, annotationType, "value");
     }
 
+    /**
+     * Gets class array attribute from annotations attributeName attribute as a full qualified name.
+     *
+     * @param element        the annotated element
+     * @param annotationType the annotation type
+     * @param attributeName  the name of the attribute
+     * @return
+     */
     public static String[] getClassArrayAttributeFromAnnotationAsFqn(Element element, Class<? extends Annotation> annotationType, String attributeName) {
 
         TypeMirror[] typeMirrorArray = getClassArrayAttributeFromAnnotationAsTypeMirror(element, annotationType, attributeName);
