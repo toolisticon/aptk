@@ -18,6 +18,9 @@
         <module>example</module>
         <module>templating</module>
 
+        <!-- support for toolisticon compiletesting -->
+        <module>compiletesting</module>
+
         <!-- CREATE A NO DEPENDENCY ARTIFACT -->
         <module>annotationprocessor_nodep</module>
 
