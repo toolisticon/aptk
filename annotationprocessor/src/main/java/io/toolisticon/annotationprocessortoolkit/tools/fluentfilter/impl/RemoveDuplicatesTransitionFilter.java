@@ -14,11 +14,11 @@ public class RemoveDuplicatesTransitionFilter implements ElementBasedTransitionF
     @Override
     public List<Element> transition(List<? extends Element> elements) {
 
-        List<Element> filteredElements = new ArrayList<Element>();
+        List<Element> filteredElements = new ArrayList<>();
 
         if (elements != null) {
 
-            Set<Element> elementLookUpTable = new HashSet<Element>();
+            Set<Element> elementLookUpTable = new HashSet<>();
 
             for (Element element : elements) {
 

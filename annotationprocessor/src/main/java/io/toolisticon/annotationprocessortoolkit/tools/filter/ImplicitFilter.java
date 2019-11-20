@@ -39,7 +39,7 @@ public class ImplicitFilter<ELEMENT extends Element, VALIDATOR extends ImplicitV
      */
     public List<ELEMENT> filter(List<ELEMENT> toFilter, boolean invertFilter) {
 
-        List<ELEMENT> result = new ArrayList<ELEMENT>();
+        List<ELEMENT> result = new ArrayList<>();
 
         if (toFilter != null && validator != null) {
 

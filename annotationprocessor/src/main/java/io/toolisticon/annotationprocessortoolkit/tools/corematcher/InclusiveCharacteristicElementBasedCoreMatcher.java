@@ -12,7 +12,7 @@ import javax.lang.model.element.Element;
  */
 public class InclusiveCharacteristicElementBasedCoreMatcher<
         CHARACTERISTIC
-        > extends AbstractBaseCoreMatcher{
+        > extends AbstractBaseCoreMatcher {
 
     /**
      * The wrapped criteria matcher.
@@ -21,7 +21,8 @@ public class InclusiveCharacteristicElementBasedCoreMatcher<
 
     /**
      * The constructor.
-     * @param matcher the criteria matcher to use
+     *
+     * @param matcher                 the criteria matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
     public InclusiveCharacteristicElementBasedCoreMatcher(CriteriaMatcher<Element, CHARACTERISTIC> matcher, ValidationMessage defaultValidatorMessage) {
@@ -31,6 +32,7 @@ public class InclusiveCharacteristicElementBasedCoreMatcher<
 
     /**
      * Gets the wrapped criteria matcher.
+     *
      * @return the wrapped criteria matcher
      */
     public CriteriaMatcher<Element, CHARACTERISTIC> getMatcher() {
@@ -39,18 +41,20 @@ public class InclusiveCharacteristicElementBasedCoreMatcher<
 
     /**
      * Gets the validator for the wrapped criteria matcher.
+     *
      * @return the criteria validator instance
      */
     public InclusiveCriteriaElementValidator<Element, CHARACTERISTIC, CriteriaMatcher<Element, CHARACTERISTIC>> getValidator() {
-        return new InclusiveCriteriaElementValidator<Element, CHARACTERISTIC, CriteriaMatcher<Element, CHARACTERISTIC>>(matcher, this.getDefaultValidatorMessage());
+        return new InclusiveCriteriaElementValidator<>(matcher, this.getDefaultValidatorMessage());
     }
 
     /**
      * Gets the filter for the wrapped criteria matcher.
+     *
      * @return the criteria filter instance
      */
     public InclusiveCriteriaElementFilter<Element, CHARACTERISTIC, InclusiveCriteriaElementValidator<Element, CHARACTERISTIC, CriteriaMatcher<Element, CHARACTERISTIC>>> getFilter() {
-        return new InclusiveCriteriaElementFilter<Element, CHARACTERISTIC, InclusiveCriteriaElementValidator<Element, CHARACTERISTIC, CriteriaMatcher<Element, CHARACTERISTIC>>>(getValidator());
+        return new InclusiveCriteriaElementFilter<>(getValidator());
     }
 
 

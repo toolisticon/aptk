@@ -11,7 +11,7 @@ import javax.lang.model.element.Element;
  */
 public class ExclusiveCriteriaElementBasedCoreMatcher<
         CRITERIA
-        > extends AbstractBaseCoreMatcher{
+        > extends AbstractBaseCoreMatcher {
 
 
     /**
@@ -21,7 +21,8 @@ public class ExclusiveCriteriaElementBasedCoreMatcher<
 
     /**
      * The constructor.
-     * @param matcher the criteria matcher to use
+     *
+     * @param matcher                 the criteria matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
     public ExclusiveCriteriaElementBasedCoreMatcher(CriteriaMatcher<Element, CRITERIA> matcher, ValidationMessage defaultValidatorMessage) {
@@ -31,6 +32,7 @@ public class ExclusiveCriteriaElementBasedCoreMatcher<
 
     /**
      * Gets the wrapped criteria matcher.
+     *
      * @return the wrapped criteria matcher
      */
     public CriteriaMatcher<Element, CRITERIA> getMatcher() {
@@ -39,18 +41,20 @@ public class ExclusiveCriteriaElementBasedCoreMatcher<
 
     /**
      * Gets the validator for the wrapped criteria matcher.
+     *
      * @return the criteria validator instance
      */
     public ExclusiveCriteriaElementValidator<Element, CRITERIA, CriteriaMatcher<Element, CRITERIA>> getValidator() {
-        return new ExclusiveCriteriaElementValidator<Element, CRITERIA, CriteriaMatcher<Element, CRITERIA>>(matcher, this.getDefaultValidatorMessage());
+        return new ExclusiveCriteriaElementValidator<>(matcher, this.getDefaultValidatorMessage());
     }
 
     /**
      * Gets the filter for the wrapped criteria matcher.
+     *
      * @return the criteria filter instance
      */
     public ExclusiveCriteriaElementFilter<Element, CRITERIA, ExclusiveCriteriaElementValidator<Element, CRITERIA, CriteriaMatcher<Element, CRITERIA>>> getFilter() {
-        return new ExclusiveCriteriaElementFilter<Element, CRITERIA, ExclusiveCriteriaElementValidator<Element, CRITERIA, CriteriaMatcher<Element, CRITERIA>>>(getValidator());
+        return new ExclusiveCriteriaElementFilter<>(getValidator());
     }
 
 

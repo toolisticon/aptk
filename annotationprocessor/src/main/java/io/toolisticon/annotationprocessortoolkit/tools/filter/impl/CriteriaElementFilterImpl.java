@@ -26,9 +26,10 @@ public class CriteriaElementFilterImpl {
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches exactly one of the passed criteria, otherwise false.
      */
+    @SafeVarargs
     private static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> List<ELEMENT> filterByValidatorKind(CriteriaElementValidatorImpl.ValidatorKind validatorKind, MATCHER matcher, boolean invert, List<ELEMENT> elements, CRITERIA... criteriaToCheck) {
         if (elements == null || matcher == null) {
-            return new ArrayList<ELEMENT>();
+            return new ArrayList<>();
         }
 
         // always return true for null valued characteristics
@@ -36,7 +37,7 @@ public class CriteriaElementFilterImpl {
             if (!invert) {
                 return elements;
             } else {
-                return new ArrayList<ELEMENT>();
+                return new ArrayList<>();
             }
 
         }
@@ -48,7 +49,7 @@ public class CriteriaElementFilterImpl {
         }
 
 
-        List<ELEMENT> result = new ArrayList<ELEMENT>();
+        List<ELEMENT> result = new ArrayList<>();
 
         for (ELEMENT element : elements) {
 
@@ -76,6 +77,7 @@ public class CriteriaElementFilterImpl {
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches exactly one of the passed criteria, otherwise false.
      */
+    @SafeVarargs
     public static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> List<ELEMENT> filterByOneOf(MATCHER matcher, boolean invert, List<ELEMENT> elements, CRITERIA... criteriaToCheck) {
         return filterByValidatorKind(CriteriaElementValidatorImpl.ValidatorKind.HAS_ONE_OF, matcher, invert, elements, criteriaToCheck);
     }
@@ -92,6 +94,7 @@ public class CriteriaElementFilterImpl {
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches none of the passed criteria, otherwise false.
      */
+    @SafeVarargs
     public static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> List<ELEMENT> filterByNoneOf(MATCHER matcher, boolean invert, List<ELEMENT> elements, CRITERIA... criteriaToCheck) {
         return filterByValidatorKind(CriteriaElementValidatorImpl.ValidatorKind.HAS_NONE_OF, matcher, invert, elements, criteriaToCheck);
     }
@@ -108,6 +111,7 @@ public class CriteriaElementFilterImpl {
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches all of the passed criteria, otherwise false.
      */
+    @SafeVarargs
     public static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> List<ELEMENT> filterByAllOf(MATCHER matcher, boolean invert, List<ELEMENT> elements, CRITERIA... criteriaToCheck) {
         return filterByValidatorKind(CriteriaElementValidatorImpl.ValidatorKind.HAS_ALL_OF, matcher, invert, elements, criteriaToCheck);
     }
@@ -124,6 +128,7 @@ public class CriteriaElementFilterImpl {
      * @param <MATCHER>              The matcher type
      * @return true, if passed element matches at least one of the passed criteria, otherwise false.
      */
+    @SafeVarargs
     public static <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> List<ELEMENT> filterByAtLeastOneOf(MATCHER matcher, boolean invert, List<ELEMENT> elements, CRITERIA... characteristicsToCheck) {
         return filterByValidatorKind(CriteriaElementValidatorImpl.ValidatorKind.HAS_AT_LEAST_ONE_OF, matcher, invert, elements, characteristicsToCheck);
     }

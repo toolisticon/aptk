@@ -27,7 +27,8 @@ public class ExclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public boolean hasOneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final boolean hasOneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementValidatorImpl.INSTANCE.hasOneOf(matcher, element, criteriaToCheck);
 
@@ -40,7 +41,8 @@ public class ExclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public boolean hasNoneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final boolean hasNoneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementValidatorImpl.INSTANCE.hasNoneOf(matcher, element, criteriaToCheck);
 

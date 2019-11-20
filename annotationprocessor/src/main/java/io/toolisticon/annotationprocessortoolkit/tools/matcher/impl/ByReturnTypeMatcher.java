@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 

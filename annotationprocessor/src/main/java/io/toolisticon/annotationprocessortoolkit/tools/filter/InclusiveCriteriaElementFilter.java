@@ -29,7 +29,8 @@ public class InclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByOneOf(List<PARAM_ELEMENT> elements, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByOneOf(List<PARAM_ELEMENT> elements, CRITERIA... criteriaToCheck) {
 
         return filterByOneOf(elements, false, criteriaToCheck);
 
@@ -44,7 +45,8 @@ public class InclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByOneOf(List<PARAM_ELEMENT> elements, boolean invertFilter, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByOneOf(List<PARAM_ELEMENT> elements, boolean invertFilter, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementFilterImpl.filterByOneOf((CriteriaMatcher<PARAM_ELEMENT, CRITERIA>) validator.getMatcher(), invertFilter, elements, criteriaToCheck);
 
@@ -58,7 +60,8 @@ public class InclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByNoneOf(List<PARAM_ELEMENT> elements, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByNoneOf(List<PARAM_ELEMENT> elements, CRITERIA... criteriaToCheck) {
 
         return filterByNoneOf(elements, false, criteriaToCheck);
 
@@ -73,7 +76,8 @@ public class InclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByNoneOf(List<PARAM_ELEMENT> elements, boolean invertFilter, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByNoneOf(List<PARAM_ELEMENT> elements, boolean invertFilter, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementFilterImpl.filterByNoneOf((CriteriaMatcher<PARAM_ELEMENT, CRITERIA>) validator.getMatcher(), invertFilter, elements, criteriaToCheck);
 
@@ -86,7 +90,8 @@ public class InclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByAtLeastOneOf(List<PARAM_ELEMENT> elements, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByAtLeastOneOf(List<PARAM_ELEMENT> elements, CRITERIA... criteriaToCheck) {
 
         return filterByAtLeastOneOf(elements, false, criteriaToCheck);
 
@@ -101,7 +106,8 @@ public class InclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByAtLeastOneOf(List<PARAM_ELEMENT> elements, boolean invertFilter, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByAtLeastOneOf(List<PARAM_ELEMENT> elements, boolean invertFilter, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementFilterImpl.filterByAtLeastOneOf((CriteriaMatcher<PARAM_ELEMENT, CRITERIA>) validator.getMatcher(), invertFilter, elements, criteriaToCheck);
 
@@ -115,7 +121,8 @@ public class InclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByAllOf(List<PARAM_ELEMENT> elements, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByAllOf(List<PARAM_ELEMENT> elements, CRITERIA... criteriaToCheck) {
 
         return filterByAllOf(elements, false, criteriaToCheck);
 
@@ -130,7 +137,8 @@ public class InclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByAllOf(List<PARAM_ELEMENT> elements, boolean invertFilter, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <PARAM_ELEMENT extends ELEMENT> List<PARAM_ELEMENT> filterByAllOf(List<PARAM_ELEMENT> elements, boolean invertFilter, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementFilterImpl.filterByAllOf((CriteriaMatcher<PARAM_ELEMENT, CRITERIA>) validator.getMatcher(), invertFilter, elements, criteriaToCheck);
 

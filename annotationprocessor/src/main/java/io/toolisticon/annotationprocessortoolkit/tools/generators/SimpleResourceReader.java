@@ -76,7 +76,7 @@ public class SimpleResourceReader {
      */
     public List<String> readAsLines(boolean trimLines) throws IOException {
 
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         try {
 

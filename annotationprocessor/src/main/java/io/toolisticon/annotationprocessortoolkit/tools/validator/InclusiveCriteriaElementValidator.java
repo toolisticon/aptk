@@ -25,7 +25,8 @@ public class InclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public boolean hasOneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final boolean hasOneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementValidatorImpl.INSTANCE.hasOneOf(matcher, element, criteriaToCheck);
 
@@ -38,7 +39,8 @@ public class InclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      * @param criteriaToCheck the annotation types to check for
      * @return true if all passed annotationTypes are present
      */
-    public boolean hasNoneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final boolean hasNoneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementValidatorImpl.INSTANCE.hasNoneOf(matcher, element, criteriaToCheck);
 
@@ -51,7 +53,8 @@ public class InclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      * @param criteriaToCheck the criteria to check
      * @return true if all passed criteria are present, otherwise false
      */
-    public boolean hasAllOf(ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final boolean hasAllOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementValidatorImpl.INSTANCE.hasAllOf(matcher, element, criteriaToCheck);
 
@@ -64,7 +67,8 @@ public class InclusiveCriteriaElementValidator<ELEMENT extends Element, CRITERIA
      * @param criteriaToCheck the annotation types to check for
      * @return true if at least one of the criteria are present
      */
-    public boolean hasAtLeastOneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final boolean hasAtLeastOneOf(ELEMENT element, CRITERIA... criteriaToCheck) {
 
         return CriteriaElementValidatorImpl.INSTANCE.hasAtLeastOneOf(matcher, element, criteriaToCheck);
 

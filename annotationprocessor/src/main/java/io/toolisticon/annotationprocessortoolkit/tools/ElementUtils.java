@@ -137,6 +137,7 @@ public final class ElementUtils {
 
         /**
          * Checks if passed Element instance is of kind module
+         *
          * @param e the element to check
          * @return true if passed element is of kind module, otherwise false
          */
@@ -148,6 +149,7 @@ public final class ElementUtils {
         /**
          * Checks if passed Element instance is an annotation attribute.
          * Element must be of ElementKind METHOD and enclosing Element must be of ElementKind ANNOTATION.
+         *
          * @param e the element to check
          * @return true if passed element represents annotation attribute, otherwise false
          */
@@ -158,6 +160,7 @@ public final class ElementUtils {
         /**
          * Checks if passed Element instance is an method parameter.
          * Element must be of ElementKind PARAMETER and enclosing Element must be of ElementKind METHOD.
+         *
          * @param e the element to check
          * @return true if passed element represents a method parameter, otherwise false
          */
@@ -168,6 +171,7 @@ public final class ElementUtils {
         /**
          * Checks if passed Element instance is a constructor parameter.
          * Element must be of ElementKind PARAMETER and enclosing Element must be of ElementKind CONSTRUCTOR.
+         *
          * @param e the element to check
          * @return true if passed element represents a constructor parameter, otherwise false
          */
@@ -587,7 +591,7 @@ public final class ElementUtils {
          */
         public static List<Element> getFlattenedEnclosingElementsTree(Element element, boolean addRootElement, int maxDepth) {
 
-            List<Element> result = new ArrayList<Element>();
+            List<Element> result = new ArrayList<>();
 
             if (element == null) {
                 return result;
@@ -718,7 +722,7 @@ public final class ElementUtils {
         public static List<? extends Element> getEnclosedElementsByName(Element element, String... name) {
 
             if (element == null) {
-                return new ArrayList<Element>();
+                return new ArrayList<>();
             }
 
             return CoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), name);
@@ -735,7 +739,7 @@ public final class ElementUtils {
          */
         public static List<? extends Element> getEnclosedElementsByNameRegex(Element element, String... nameRegexes) {
 
-            List<Element> result = new ArrayList<Element>();
+            List<Element> result = new ArrayList<>();
 
             if (element != null && nameRegexes != null) {
 
@@ -773,7 +777,7 @@ public final class ElementUtils {
         public static List<? extends Element> getEnclosedElementsOfKind(Element element, ElementKind... kind) {
 
             if (element == null) {
-                return new ArrayList<Element>();
+                return new ArrayList<>();
             }
 
             return CoreMatchers.BY_ELEMENT_KIND.getFilter().filterByOneOf(element.getEnclosedElements(), kind);
@@ -791,7 +795,7 @@ public final class ElementUtils {
         public static List<? extends Element> getEnclosedElementsWithAllAnnotationsOf(Element element, Class<? extends Annotation>... annotations) {
 
             if (element == null) {
-                return new ArrayList<Element>();
+                return new ArrayList<>();
             }
 
             return CoreMatchers.BY_ANNOTATION.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
@@ -808,7 +812,7 @@ public final class ElementUtils {
         public static List<? extends Element> getEnclosedElementsWithAtLeastOneAnnotationOf(Element element, Class<? extends Annotation>... annotations) {
 
             if (element == null) {
-                return new ArrayList<Element>();
+                return new ArrayList<>();
             }
 
             return CoreMatchers.BY_ANNOTATION.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
@@ -835,7 +839,7 @@ public final class ElementUtils {
          * @return the flattened enclosed element tree of the passed element
          */
         public static List<Element> flattenEnclosedElementTree(Element element, boolean addRootElement, int maxDepth) {
-            List<Element> result = new ArrayList<Element>();
+            List<Element> result = new ArrayList<>();
 
             if (element == null) {
                 return result;
@@ -908,7 +912,7 @@ public final class ElementUtils {
 
             List<? extends TypeMirror> superTypeMirrors = TypeUtils.getTypes().directSupertypes(typeElement.asType());
 
-            List<TypeElement> superTypeElements = new ArrayList<TypeElement>();
+            List<TypeElement> superTypeElements = new ArrayList<>();
 
             for (TypeMirror superTypeMirror : superTypeMirrors) {
 
@@ -933,7 +937,7 @@ public final class ElementUtils {
 
 
             // this is not that performant, but i guess it's ok since it's only used at compile time.
-            List<TypeElement> superTypeElements = new ArrayList<TypeElement>();
+            List<TypeElement> superTypeElements = new ArrayList<>();
 
             for (TypeElement superType : superTypes) {
                 superTypeElements.add(superType);

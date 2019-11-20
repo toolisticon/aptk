@@ -78,8 +78,8 @@ public class Expression {
         if (operationIndex >= 0 && operationIndex < operationTypes.length) {
 
             // resolve one operand
-            List<Operand> newOperands = new ArrayList<Operand>(Arrays.asList(operands));
-            List<OperationType> newOperationTypes = new ArrayList<OperationType>(Arrays.asList(operationTypes));
+            List<Operand> newOperands = new ArrayList<>(Arrays.asList(operands));
+            List<OperationType> newOperationTypes = new ArrayList<>(Arrays.asList(operationTypes));
 
             // getOperands and operationType
             Operand operand1 = newOperands.get(operationIndex);

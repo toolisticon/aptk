@@ -23,12 +23,11 @@ public class IsTypeEqualMatcher implements CriteriaMatcher<Element, Class> {
      */
     @Override
     public boolean checkForMatchingCharacteristic(Element element, Class toCheckFor) {
-        return element == null || toCheckFor == null ? false :
-                TypeUtils.getTypes()
-                        .isSameType(
-                                element.asType(),
-                                TypeUtils.TypeRetrieval.getTypeMirror(toCheckFor.getCanonicalName())
-                        );
+        return element != null && toCheckFor != null && TypeUtils.getTypes()
+                .isSameType(
+                        element.asType(),
+                        TypeUtils.TypeRetrieval.getTypeMirror(toCheckFor.getCanonicalName())
+                );
 
     }
 

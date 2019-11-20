@@ -22,7 +22,8 @@ public class InclusiveCriteriaCoreMatcher<
 
     /**
      * The constructor.
-     * @param matcher the criteria matcher to use
+     *
+     * @param matcher                 the criteria matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
     public InclusiveCriteriaCoreMatcher(CriteriaMatcher<ELEMENT, CHARACTERISTIC> matcher, ValidationMessage defaultValidatorMessage) {
@@ -41,18 +42,20 @@ public class InclusiveCriteriaCoreMatcher<
 
     /**
      * Gets the validator for the wrapped criteria matcher.
+     *
      * @return the criteria validator instance
      */
     public InclusiveCriteriaElementValidator<ELEMENT, CHARACTERISTIC, CriteriaMatcher<ELEMENT, CHARACTERISTIC>> getValidator() {
-        return new InclusiveCriteriaElementValidator<ELEMENT, CHARACTERISTIC, CriteriaMatcher<ELEMENT, CHARACTERISTIC>>(matcher, this.getDefaultValidatorMessage());
+        return new InclusiveCriteriaElementValidator<>(matcher, this.getDefaultValidatorMessage());
     }
 
     /**
      * Gets the filter for the wrapped criteria matcher.
+     *
      * @return the criteria filter instance
      */
     public InclusiveCriteriaElementFilter<ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<ELEMENT, CHARACTERISTIC, CriteriaMatcher<ELEMENT, CHARACTERISTIC>>> getFilter() {
-        return new InclusiveCriteriaElementFilter<ELEMENT, CHARACTERISTIC, InclusiveCriteriaElementValidator<ELEMENT, CHARACTERISTIC, CriteriaMatcher<ELEMENT, CHARACTERISTIC>>>(getValidator());
+        return new InclusiveCriteriaElementFilter<>(getValidator());
     }
 
 

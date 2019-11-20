@@ -70,7 +70,7 @@ public final class AnnotationUtils {
      */
     public static String[] getMandatoryAttributeValueNames(AnnotationMirror annotationMirror) {
 
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getDefaultValue() == null) {
                 result.add(entry.getKey().getSimpleName().toString());
@@ -88,7 +88,7 @@ public final class AnnotationUtils {
      */
     public static String[] getOptionalAttributeValueNames(AnnotationMirror annotationMirror) {
 
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ProcessingEnvironmentUtils.getElements().getElementValuesWithDefaults(annotationMirror).entrySet()) {
             if (entry.getKey().getDefaultValue() != null) {
                 result.add(entry.getKey().getSimpleName().toString());
@@ -209,11 +209,11 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Gets class array attribute from annotations value attribute as a full qualified name.
+     * Gets class array attribute from annotations value attribute as an array of full qualified class names.
      *
      * @param element        the annotated element
      * @param annotationType the annotation type
-     * @return
+     * @return The full qualified class name array of the attribute
      */
     public static String[] getClassArrayAttributeFromAnnotationAsFqn(Element element, Class<? extends Annotation> annotationType) {
 
@@ -221,18 +221,17 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Gets class array attribute from annotations attributeName attribute as a full qualified name.
+     * Gets class array attribute from annotations attributeName attribute as an array of full qualified class names.
      *
      * @param element        the annotated element
      * @param annotationType the annotation type
      * @param attributeName  the name of the attribute
-     * @return
+     * @return The full qualified class name array of the attribute
      */
     public static String[] getClassArrayAttributeFromAnnotationAsFqn(Element element, Class<? extends Annotation> annotationType, String attributeName) {
 
         TypeMirror[] typeMirrorArray = getClassArrayAttributeFromAnnotationAsTypeMirror(element, annotationType, attributeName);
         String[] result = null;
-
 
         if (typeMirrorArray != null) {
 
@@ -247,10 +246,25 @@ public final class AnnotationUtils {
         return result;
     }
 
+    /**
+     * Gets class array attribute from annotations value attribute as an array of TypeMirrors.
+     *
+     * @param element        the annotated element
+     * @param annotationType the annotation type
+     * @return The full qualified class name array of the attribute
+     */
     public static TypeMirror[] getClassArrayAttributeFromAnnotationAsTypeMirror(Element element, Class<? extends Annotation> annotationType) {
         return getClassArrayAttributeFromAnnotationAsTypeMirror(element, annotationType, "value");
     }
 
+    /**
+     * Gets class array attribute from annotations attributeName attribute as an array of TypeMirrors.
+     *
+     * @param element        the annotated element
+     * @param annotationType the annotation type
+     * @param attributeName  the name of the attribute
+     * @return The full qualified class name array of the attribute
+     */
     public static TypeMirror[] getClassArrayAttributeFromAnnotationAsTypeMirror(Element element, Class<? extends Annotation> annotationType, String attributeName) {
 
         AnnotationMirror annotationMirror = getAnnotationMirror(element, annotationType);

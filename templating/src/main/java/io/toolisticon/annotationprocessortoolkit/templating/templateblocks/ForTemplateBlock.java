@@ -56,7 +56,7 @@ public class ForTemplateBlock implements TemplateBlock {
     @Override
     public String getContent(Map<String, Object> outerVariables) {
 
-        Map<String, Object> variables = new HashMap<String, Object>();
+        Map<String, Object> variables = new HashMap<>();
         variables.putAll(outerVariables);
 
         // get array or List

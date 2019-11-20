@@ -4,7 +4,6 @@ import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
 
 /**
  * Matcher for raw types.

@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Utility class which helps to handle different {@link AnnotationValue} related tasks.
  */
+@SuppressWarnings("unchekced")
 public class AnnotationValueUtils {
     /**
      * Hidden constructor.
@@ -690,8 +691,9 @@ public class AnnotationValueUtils {
 
     /**
      * Checks if annotation value is array of passed type.
+     *
      * @param annotationValue the annotation value
-     * @param type the array type to check for
+     * @param type            the array type to check for
      * @return true if annotation value is array of passed type, otherwise false
      */
     public static boolean isAnnotationValueArray(AnnotationValue annotationValue, Class type) {
@@ -703,8 +705,9 @@ public class AnnotationValueUtils {
 
     /**
      * Checks if passed AnnotationValue list represents array of passed type.
+     *
      * @param annotationValues the annotation value list
-     * @param type the array type to check for
+     * @param type             the array type to check for
      * @return true if annotation value is array of passed type, otherwise false
      */
     public static boolean isAnnotationValueArray(List<? extends AnnotationValue> annotationValues, Class type) {

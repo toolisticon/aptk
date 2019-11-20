@@ -204,7 +204,7 @@ public final class BeanUtils {
                 .applyFilter(CoreMatchers.BY_MODIFIER).filterByNoneOf(Modifier.STATIC)
                 .getResult();
 
-        List<AttributeResult> result = new ArrayList<AttributeResult>();
+        List<AttributeResult> result = new ArrayList<>();
 
         for (VariableElement field : fields) {
 

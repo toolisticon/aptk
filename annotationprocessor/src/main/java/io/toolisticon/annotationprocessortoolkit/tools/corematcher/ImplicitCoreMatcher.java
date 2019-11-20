@@ -11,7 +11,7 @@ import javax.lang.model.element.Element;
  */
 public class ImplicitCoreMatcher<
         ELEMENT extends Element
-        > extends AbstractBaseCoreMatcher{
+        > extends AbstractBaseCoreMatcher {
 
 
     /**
@@ -21,7 +21,8 @@ public class ImplicitCoreMatcher<
 
     /**
      * The constructor.
-     * @param matcher the implicit matcher to use
+     *
+     * @param matcher                 the implicit matcher to use
      * @param defaultValidatorMessage the default message to use with validator
      */
     public ImplicitCoreMatcher(ImplicitMatcher<ELEMENT> matcher, ValidationMessage defaultValidatorMessage) {
@@ -31,6 +32,7 @@ public class ImplicitCoreMatcher<
 
     /**
      * Gets the wrapped implicit matcher.
+     *
      * @return the wrapped implicit matcher
      */
     public ImplicitMatcher<ELEMENT> getMatcher() {
@@ -39,18 +41,20 @@ public class ImplicitCoreMatcher<
 
     /**
      * Gets the validator for the wrapped implicit matcher.
+     *
      * @return the implicit validator instance
      */
     public ImplicitValidator<ELEMENT, ImplicitMatcher<ELEMENT>> getValidator() {
-        return new ImplicitValidator<ELEMENT, ImplicitMatcher<ELEMENT>>(matcher, this.getDefaultValidatorMessage());
+        return new ImplicitValidator<>(matcher, this.getDefaultValidatorMessage());
     }
 
     /**
      * Gets the filter for the wrapped implicit matcher.
+     *
      * @return the criteria filter instance
      */
     public ImplicitFilter<ELEMENT, ImplicitValidator<ELEMENT, ImplicitMatcher<ELEMENT>>> getFilter() {
-        return new ImplicitFilter<ELEMENT, ImplicitValidator<ELEMENT, ImplicitMatcher<ELEMENT>>>(getValidator());
+        return new ImplicitFilter<>(getValidator());
     }
 
 

@@ -26,6 +26,7 @@ import javax.tools.Diagnostic;
 /**
  * Fluent element validator.
  */
+@SuppressWarnings("unchecked")
 public class FluentElementValidator<ELEMENT extends Element> {
 
     /**
@@ -79,7 +80,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * @param messagArgs
          * @return
          */
-        public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(String customMessage, Object... messagArgs) {
+        public final PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(String customMessage, Object... messagArgs) {
             return setCustomMessage(PlainValidationMessage.create(customMessage), messagArgs);
         }
 
@@ -101,7 +102,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * @param messagArgs
          * @return
          */
-        public PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(ValidationMessage customMessage, Object... messagArgs) {
+        public final PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(ValidationMessage customMessage, Object... messagArgs) {
             return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.setCustomMessage(customMessage, messagArgs);
         }
 
@@ -360,7 +361,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
             };
         }
 
-        public void setCustomMessage(ValidationMessage customMessage, Object... messageArgs) {
+        public final void setCustomMessage(ValidationMessage customMessage, Object... messageArgs) {
             this.customMessage = customMessage;
             this.messageArgs = messageArgs;
 
@@ -405,7 +406,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          *
          * @param validationResult the validation result
          */
-        protected void setValidationResult(boolean validationResult, ValidationMessage defaultMessage, Object... messsageParameter) {
+        protected final void setValidationResult(boolean validationResult, ValidationMessage defaultMessage, Object... messsageParameter) {
 
             if ((!validationResult && !inverted) || (validationResult && inverted)) {
                 fluentValidatorState.setAsFailedValidation();
@@ -533,7 +534,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
             this.validator = validator;
         }
 
-        public FluentElementValidator<ELEMENT> hasOneOf(CHARACTERISTIC... params) {
+        @SafeVarargs
+        public final FluentElementValidator<ELEMENT> hasOneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
                 setValidationResult(validator.hasOneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "one", params);
@@ -541,7 +543,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
             return FluentElementValidator.this;
         }
 
-        public FluentElementValidator<ELEMENT> hasNoneOf(CHARACTERISTIC... params) {
+        @SafeVarargs
+        public final FluentElementValidator<ELEMENT> hasNoneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
                 setValidationResult(validator.hasNoneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "none", params);
@@ -565,7 +568,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
             this.validator = validator;
         }
 
-        public FluentElementValidator<ELEMENT> hasOneOf(CHARACTERISTIC... params) {
+        @SafeVarargs
+        public final FluentElementValidator<ELEMENT> hasOneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
                 setValidationResult(validator.hasOneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "one", params);
@@ -573,7 +577,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
             return FluentElementValidator.this;
         }
 
-        public FluentElementValidator<ELEMENT> hasNoneOf(CHARACTERISTIC... params) {
+        @SafeVarargs
+        public final FluentElementValidator<ELEMENT> hasNoneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
                 setValidationResult(validator.hasNoneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "none", params);
@@ -581,7 +586,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
             return FluentElementValidator.this;
         }
 
-        public FluentElementValidator<ELEMENT> hasAtLeastOneOf(CHARACTERISTIC... params) {
+        @SafeVarargs
+        public final FluentElementValidator<ELEMENT> hasAtLeastOneOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
                 setValidationResult(validator.hasAtLeastOneOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "at least one", params);
@@ -589,7 +595,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
             return FluentElementValidator.this;
         }
 
-        public FluentElementValidator<ELEMENT> hasAllOf(CHARACTERISTIC... params) {
+        @SafeVarargs
+        public final FluentElementValidator<ELEMENT> hasAllOf(CHARACTERISTIC... params) {
             // just validate if element != null
             if (element != null) {
                 setValidationResult(validator.hasAllOf((VALIDATOR_ELEMENT) element, params), validator.getDefaultMessage(), isInverted() ? "not" : "", "all", params);
@@ -678,7 +685,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public FluentElementValidator<ELEMENT> applyValidator(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
 
-        return new ImplicitFluentValidator<ELEMENT>(coreMatcher.getValidator(), false).apply();
+        return new ImplicitFluentValidator<>(coreMatcher.getValidator(), false).apply();
 
     }
 
@@ -690,7 +697,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public FluentElementValidator<ELEMENT> applyInvertedValidator(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
 
-        return new ImplicitFluentValidator<ELEMENT>(coreMatcher.getValidator(), true).apply();
+        return new ImplicitFluentValidator<>(coreMatcher.getValidator(), true).apply();
 
     }
 
@@ -702,7 +709,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public FluentElementValidator<ELEMENT> applyValidator(ImplicitElementBasedCoreMatcher coreMatcher) {
 
-        return new ImplicitFluentValidator<Element>(coreMatcher.getValidator(), false).apply();
+        return new ImplicitFluentValidator<>(coreMatcher.getValidator(), false).apply();
 
     }
 
@@ -714,7 +721,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public FluentElementValidator<ELEMENT> applyInvertedValidator(ImplicitElementBasedCoreMatcher coreMatcher) {
 
-        return new ImplicitFluentValidator<Element>(coreMatcher.getValidator(), true).apply();
+        return new ImplicitFluentValidator<>(coreMatcher.getValidator(), true).apply();
 
     }
 
@@ -730,7 +737,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
 
-        return new InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA>(coreMatcher.getValidator(), false);
+        return new InclusiveCharacteristicFluentValidator<>(coreMatcher.getValidator(), false);
 
     }
 
@@ -742,7 +749,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
 
-        return new InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA>(coreMatcher.getValidator(), true);
+        return new InclusiveCharacteristicFluentValidator<>(coreMatcher.getValidator(), true);
 
     }
 
@@ -754,7 +761,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
 
-        return new InclusiveCharacteristicFluentValidator<Element, CRITERIA>(coreMatcher.getValidator(), false);
+        return new InclusiveCharacteristicFluentValidator<>(coreMatcher.getValidator(), false);
 
 
     }
@@ -767,7 +774,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
 
-        return new InclusiveCharacteristicFluentValidator<Element, CRITERIA>(coreMatcher.getValidator(), true);
+        return new InclusiveCharacteristicFluentValidator<>(coreMatcher.getValidator(), true);
 
     }
 
@@ -783,7 +790,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
 
-        return new ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA>(coreMatcher.getValidator(), false);
+        return new ExclusiveCharacteristicFluentValidator<>(coreMatcher.getValidator(), false);
 
     }
 
@@ -795,7 +802,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
 
-        return new ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA>(coreMatcher.getValidator(), true);
+        return new ExclusiveCharacteristicFluentValidator<>(coreMatcher.getValidator(), true);
 
     }
 
@@ -807,7 +814,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
 
-        return new ExclusiveCharacteristicFluentValidator<Element, CRITERIA>(coreMatcher.getValidator(), false);
+        return new ExclusiveCharacteristicFluentValidator<>(coreMatcher.getValidator(), false);
     }
 
     /**
@@ -818,7 +825,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      */
     public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
 
-        return new ExclusiveCharacteristicFluentValidator<Element, CRITERIA>(coreMatcher.getValidator(), true);
+        return new ExclusiveCharacteristicFluentValidator<>(coreMatcher.getValidator(), true);
 
     }
 
@@ -852,6 +859,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
         this.nextValidationContext.setCustomMessage(customMessage);
         return new PrepareApplyValidator<ELEMENT>();
     }
+
 
     public PrepareApplyValidator<ELEMENT> setCustomMessage(ValidationMessage customMessage, Object... messagArgs) {
         this.nextValidationContext.setCustomMessage(customMessage, messagArgs);
@@ -888,7 +896,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Executes passed command if validation was successful, issues messages afterwards.
      *
-     * @param command
+     * @param command the command
      */
     public void executeCommandAndIssueMessages(Command<ELEMENT> command) {
         executeCommand(command);
@@ -898,7 +906,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Executes passed command if validation was successful.
      *
-     * @param command
+     * @param command the command
      */
     public void executeCommand(Command<ELEMENT> command) {
         if (command != null && fluentValidatorState.getValidationResult()) {
@@ -910,7 +918,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Executes passed command if validation was successful, issues messages afterwards.
      *
-     * @param command
+     * @param command the command
      */
     public <RETURN_TYPE> RETURN_TYPE executeCommandAndIssueMessages(CommandWithReturnType<ELEMENT, RETURN_TYPE> command) {
         RETURN_TYPE result = executeCommand(command);
@@ -921,7 +929,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Executes passed command if validation was successful.
      *
-     * @param command
+     * @param command the command
      */
     public <RETURN_TYPE> RETURN_TYPE executeCommand(CommandWithReturnType<ELEMENT, RETURN_TYPE> command) {
         if (command != null && fluentValidatorState.getValidationResult()) {
@@ -938,7 +946,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * @return the FluentElementValidator instance
      */
     public static <E extends Element> FluentElementValidator<E> createFluentElementValidator(E element) {
-        return new FluentElementValidator<E>(element);
+        return new FluentElementValidator<>(element);
     }
 
 
