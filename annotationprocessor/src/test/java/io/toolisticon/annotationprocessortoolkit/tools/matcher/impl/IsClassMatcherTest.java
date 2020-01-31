@@ -62,7 +62,7 @@ public class IsClassMatcherTest {
             protected void testCase(TypeElement element) {
 
                 TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(IsClassMatcherTest.class);
-                List<? extends Element> enums = ElementUtils.AccessEnclosedElements.getEnclosedElementsOfKind(typeElement, ElementKind.ENUM);
+                List<Element> enums = ElementUtils.AccessEnclosedElements.getEnclosedElementsOfKind(typeElement, ElementKind.ENUM);
                 MatcherAssert.assertThat("Precondition: must have found a enum", enums.size() >= 1);
 
 
