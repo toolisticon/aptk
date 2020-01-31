@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
@@ -19,14 +18,14 @@ public class IsGetterMethodMatcher implements ImplicitMatcher<ExecutableElement>
             return false;
         }
 
-        if(!FluentElementValidator.createFluentElementValidator(element)
+        if (!FluentElementValidator.createFluentElementValidator(element)
                 .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC)
-                .applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.STATIC,Modifier.ABSTRACT)
+                .applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.STATIC, Modifier.ABSTRACT)
                 .applyValidator(CoreMatchers.HAS_NO_PARAMETERS)
                 .applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
                 .justValidate()
-                ) {
-           return false;
+        ) {
+            return false;
         }
 
         TypeMirror returnType = element.getReturnType();

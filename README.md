@@ -1,4 +1,4 @@
-# Annotation-Processor-Toolkit
+# Annotation-Processor-Toolkit (APTK)
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessortoolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessortoolkit-parent)
 [![Build Status](https://api.travis-ci.org/tobiasstamann/annotation-processor-toolkit.svg)](https://travis-ci.org/tobiasstamann/annotation-processor-toolkit)

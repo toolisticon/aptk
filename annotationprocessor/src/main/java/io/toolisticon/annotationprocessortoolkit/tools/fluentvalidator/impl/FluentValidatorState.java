@@ -17,7 +17,8 @@ public class FluentValidatorState {
 
     /**
      * Adds a message.
-     * @param validatorMessage
+     *
+     * @param validatorMessage the validator message
      */
     public void addMessage(FluentValidatorMessage validatorMessage) {
         this.validatorMessages.add(validatorMessage);

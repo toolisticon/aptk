@@ -41,8 +41,8 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
     IS_ANNOTATION_TYPE("CM_IS_ANNOTATION_TYPE", "Element must ${0} represent an annotation type"),
     IS_FIELD("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a field"),
     IS_PARAMETER("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a parameter"),
-    IS_PACKAGE("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a package"),;
-
+    IS_PACKAGE("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a package"),
+    ;
 
 
     /**
@@ -60,7 +60,7 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
      * @param code    the message code
      * @param message the message text
      */
-    private CoreMatcherValidationMessages(String code, String message) {
+    CoreMatcherValidationMessages(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -82,8 +82,6 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
     public String getMessage() {
         return message;
     }
-
-
 
 
 }

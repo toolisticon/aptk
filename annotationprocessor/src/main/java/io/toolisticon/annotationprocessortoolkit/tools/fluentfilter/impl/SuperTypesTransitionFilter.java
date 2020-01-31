@@ -15,7 +15,7 @@ public class SuperTypesTransitionFilter implements TransitionFilter<TypeElement,
     @Override
     public List<TypeElement> transition(List<TypeElement> elements) {
 
-        List<TypeElement> superTypeElements = new ArrayList<TypeElement>();
+        List<TypeElement> superTypeElements = new ArrayList<>();
 
         if (elements != null) {
 

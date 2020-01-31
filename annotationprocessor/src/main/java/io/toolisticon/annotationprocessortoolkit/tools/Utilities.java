@@ -55,6 +55,7 @@ public final class Utilities {
      * @param <T>
      * @return a Set that contains all varargs arguments or an empty Set if no varargs arguments have been used
      */
+    @SafeVarargs
     public static <T> Set<T> convertVarargsToSet(T... varargs) {
 
         return varargs != null ? new HashSet<T>(Arrays.asList(varargs)) : new HashSet<T>();
@@ -68,6 +69,7 @@ public final class Utilities {
      * @param <T>
      * @return a List that contains all varargs arguments or an empty List if no varargs arguments have been used
      */
+    @SafeVarargs
     public static <T> List<T> convertVarargsToList(T... varargs) {
 
         return varargs != null ? Arrays.asList(varargs) : new ArrayList<T>();
@@ -81,10 +83,12 @@ public final class Utilities {
      * @param <T>
      * @return a array that contains all varargs arguments or an array of length 0 if no varargs arguments have been used
      */
-    public static <T> T[] convertVarargsToArray(T... varargs) { final Object[] e =  {};
+    @SafeVarargs
+    public static <T> T[] convertVarargsToArray(T... varargs) {
+        final Object[] e = {};
 
         if (varargs == null) {
-            return (T[])new Object[0];
+            return (T[]) new Object[0];
         }
         return varargs;
 

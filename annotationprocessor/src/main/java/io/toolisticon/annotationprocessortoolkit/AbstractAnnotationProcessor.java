@@ -93,8 +93,9 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      * @param annotationTypes the annotation types to be added to the set
      * @return the set of supported annotations
      */
+    @SafeVarargs
     protected static Set<String> createSupportedAnnotationSet(Class<? extends Annotation>... annotationTypes) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
 
         if (annotationTypes != null) {
             for (Class<? extends Annotation> annotationType : annotationTypes) {
@@ -116,6 +117,7 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
      * @param <T>
      * @return
      */
+    @SafeVarargs
     public static <T> T[] wrapToArray(T... element) {
         return element;
     }

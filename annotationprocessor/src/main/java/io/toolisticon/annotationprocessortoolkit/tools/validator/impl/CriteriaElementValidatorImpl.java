@@ -15,12 +15,12 @@ public class CriteriaElementValidatorImpl {
         HAS_ONE_OF,
         HAS_NONE_OF,
         HAS_AT_LEAST_ONE_OF,
-        HAS_ALL_OF;
+        HAS_ALL_OF
     }
 
     public static CriteriaElementValidatorImpl INSTANCE = new CriteriaElementValidatorImpl();
 
-    protected CriteriaElementValidatorImpl() {
+    private CriteriaElementValidatorImpl() {
 
     }
 
@@ -38,7 +38,8 @@ public class CriteriaElementValidatorImpl {
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches the passed criteria related to the passed validator kind, otherwise false.
      */
-    public <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean validateByValidatorKind(ValidatorKind validatorKind, MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean validateByValidatorKind(ValidatorKind validatorKind, MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
 
         if (validatorKind == null) {
             return false;
@@ -72,7 +73,8 @@ public class CriteriaElementValidatorImpl {
      * @param <MATCHER>       The matcher type
      * @return true, if passed element matches exactly one of the passed criteria, otherwise false.
      */
-    public  <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasOneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasOneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
 
         if (element == null || matcher == null) {
             return false;
@@ -116,7 +118,8 @@ public class CriteriaElementValidatorImpl {
      * @return true, if passed element matches none of the passed criteria, otherwise false.
      */
 
-    public  <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasNoneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasNoneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
 
         if (element == null || matcher == null) {
             return false;
@@ -158,7 +161,8 @@ public class CriteriaElementValidatorImpl {
      * @return true, if passed element matches all of the passed criteria, otherwise false.
      */
 
-    public  <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasAllOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasAllOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
 
         if (element == null || matcher == null) {
             return false;
@@ -200,7 +204,8 @@ public class CriteriaElementValidatorImpl {
      * @return true, if passed element matches at least one of the passed criteria, otherwise false.
      */
 
-    public  <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasAtLeastOneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
+    @SafeVarargs
+    public final <ELEMENT extends Element, CRITERIA, MATCHER extends CriteriaMatcher<ELEMENT, CRITERIA>> boolean hasAtLeastOneOf(MATCHER matcher, ELEMENT element, CRITERIA... criteriaToCheck) {
 
         if (element == null || matcher == null) {
             return false;

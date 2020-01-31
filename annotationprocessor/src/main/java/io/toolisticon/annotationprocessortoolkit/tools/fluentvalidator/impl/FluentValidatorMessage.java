@@ -1,7 +1,6 @@
 package io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.impl;
 
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.corematcher.PlainValidationMessage;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -47,11 +46,11 @@ public class FluentValidatorMessage {
     public void issueMessage() {
 
         if (annotationMirror != null && annotationValue != null) {
-            MessagerUtils.getMessagerUtils().printMessage(element, annotationMirror, annotationValue, kind, message, args);
+            MessagerUtils.printMessage(element, annotationMirror, annotationValue, kind, message, args);
         } else if (annotationMirror != null) {
-            MessagerUtils.getMessagerUtils().printMessage(element, annotationMirror, kind, message, args);
+            MessagerUtils.printMessage(element, annotationMirror, kind, message, args);
         } else {
-            MessagerUtils.getMessagerUtils().printMessage(element, kind, message, args);
+            MessagerUtils.printMessage(element, kind, message, args);
         }
 
     }

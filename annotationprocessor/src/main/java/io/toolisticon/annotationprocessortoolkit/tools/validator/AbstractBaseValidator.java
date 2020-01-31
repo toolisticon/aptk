@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools.validator;
 
-import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.ValidationMessage;
 
 /**
@@ -16,12 +15,9 @@ public class AbstractBaseValidator {
     }
 
 
-
     public ValidationMessage getDefaultMessage() {
         return this.defaultMessage;
     }
-
-
 
 
 }

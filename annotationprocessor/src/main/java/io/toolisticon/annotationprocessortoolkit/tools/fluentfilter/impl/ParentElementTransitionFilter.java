@@ -12,7 +12,7 @@ public class ParentElementTransitionFilter implements ElementBasedTransitionFilt
     @Override
     public List<Element> transition(List<? extends Element> elements) {
 
-        List<Element> parentElements = new ArrayList<Element>();
+        List<Element> parentElements = new ArrayList<>();
 
         if (elements != null) {
 

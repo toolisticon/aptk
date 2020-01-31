@@ -39,7 +39,7 @@ public class IsElementBasedCoreMatcher<TARGET_ELEMENT extends Element> extends A
      * @return the implicit validator instance
      */
     public ImplicitValidator<Element, ImplicitMatcher<Element>> getValidator() {
-        return new ImplicitValidator<Element, ImplicitMatcher<Element>>(matcher,this.getDefaultValidatorMessage());
+        return new ImplicitValidator<>(matcher,this.getDefaultValidatorMessage());
     }
 
     /**
@@ -47,7 +47,7 @@ public class IsElementBasedCoreMatcher<TARGET_ELEMENT extends Element> extends A
      * @return the criteria filter instance
      */
     public ImplicitFilter<Element, ImplicitValidator<Element, ImplicitMatcher<Element>>> getFilter() {
-        return new ImplicitFilter<Element, ImplicitValidator<Element, ImplicitMatcher<Element>>>(getValidator());
+        return new ImplicitFilter<>(getValidator());
     }
 
 }

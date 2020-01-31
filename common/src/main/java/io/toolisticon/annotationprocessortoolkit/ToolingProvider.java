@@ -8,7 +8,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
 /**
- * Provides {@link ProcessEnvironment} tools.
+ * Provides {@link ProcessingEnvironment} tools.
  */
 public class ToolingProvider {
 

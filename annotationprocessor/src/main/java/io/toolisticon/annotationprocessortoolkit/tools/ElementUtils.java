@@ -137,6 +137,7 @@ public final class ElementUtils {
 
         /**
          * Checks if passed Element instance is of kind module
+         *
          * @param e the element to check
          * @return true if passed element is of kind module, otherwise false
          */
@@ -148,6 +149,7 @@ public final class ElementUtils {
         /**
          * Checks if passed Element instance is an annotation attribute.
          * Element must be of ElementKind METHOD and enclosing Element must be of ElementKind ANNOTATION.
+         *
          * @param e the element to check
          * @return true if passed element represents annotation attribute, otherwise false
          */
@@ -158,6 +160,7 @@ public final class ElementUtils {
         /**
          * Checks if passed Element instance is an method parameter.
          * Element must be of ElementKind PARAMETER and enclosing Element must be of ElementKind METHOD.
+         *
          * @param e the element to check
          * @return true if passed element represents a method parameter, otherwise false
          */
@@ -168,6 +171,7 @@ public final class ElementUtils {
         /**
          * Checks if passed Element instance is a constructor parameter.
          * Element must be of ElementKind PARAMETER and enclosing Element must be of ElementKind CONSTRUCTOR.
+         *
          * @param e the element to check
          * @return true if passed element represents a constructor parameter, otherwise false
          */
@@ -376,6 +380,17 @@ public final class ElementUtils {
          * @return a new list containing all elements of passed elementList
          */
         public static <T extends Element> List<T> castElementList(List<? extends Element> elementList, Class<T> typeToCastTo) {
+            return CastElement.<T>castElementList(elementList);
+        }
+
+        /**
+         * Casts a list of elements to a list of elements.
+         *
+         * @param elementList the list to be processed
+         * @param <T>         the return type
+         * @return a new list containing all elements of passed elementList
+         */
+        public static <T extends Element> List<T> castElementList(List<? extends Element> elementList) {
             List<T> result = new ArrayList<T>(elementList.size());
             for (Element enclosedElement : elementList) {
                 result.add((T) enclosedElement);
@@ -587,7 +602,7 @@ public final class ElementUtils {
          */
         public static List<Element> getFlattenedEnclosingElementsTree(Element element, boolean addRootElement, int maxDepth) {
 
-            List<Element> result = new ArrayList<Element>();
+            List<Element> result = new ArrayList<>();
 
             if (element == null) {
                 return result;
@@ -619,9 +634,10 @@ public final class ElementUtils {
          *
          * @param element     the element to be used as base
          * @param elementKind the element kind of the enclosing element to search for
+         * @param <T> the return type
          * @return the Element of the specific Element Kind if it could be found, otherwise null
          */
-        public static Element getFirstEnclosingElementOfKind(Element element, ElementKind elementKind) {
+        public static <T extends Element> T getFirstEnclosingElementOfKind(Element element, ElementKind elementKind) {
 
             if (element == null || elementKind == null) {
                 return null;
@@ -633,7 +649,7 @@ public final class ElementUtils {
 
 
                 if (currentParentElement.getKind() == elementKind) {
-                    return currentParentElement;
+                    return (T) currentParentElement;
                 }
 
                 // prepare next iteration
@@ -661,10 +677,10 @@ public final class ElementUtils {
             // does nothing except preventing instantiation
         }
 
-        public static List<? extends VariableElement> getEnclosedFields(TypeElement e) {
+        public static List<VariableElement> getEnclosedFields(TypeElement e) {
 
             List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.FIELD);
-            return CastElement.castElementList(enclosedElementsOfKind, VariableElement.class);
+            return CastElement.<VariableElement>castElementList(enclosedElementsOfKind);
 
         }
 
@@ -674,10 +690,10 @@ public final class ElementUtils {
          * @param e the element to search within
          * @return all methods of the passed element
          */
-        public static List<? extends ExecutableElement> getEnclosedMethods(TypeElement e) {
+        public static List<ExecutableElement> getEnclosedMethods(TypeElement e) {
 
             List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.METHOD);
-            return CastElement.castElementList(enclosedElementsOfKind, ExecutableElement.class);
+            return CastElement.<ExecutableElement>castElementList(enclosedElementsOfKind);
 
         }
 
@@ -688,10 +704,10 @@ public final class ElementUtils {
          * @param e the element to search within
          * @return all methods of the passed element
          */
-        public static List<? extends ExecutableElement> getEnclosedConstructors(TypeElement e) {
+        public static List<ExecutableElement> getEnclosedConstructors(TypeElement e) {
 
             List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.CONSTRUCTOR);
-            return CastElement.castElementList(enclosedElementsOfKind, ExecutableElement.class);
+            return CastElement.<ExecutableElement>castElementList(enclosedElementsOfKind);
 
         }
 
@@ -701,10 +717,10 @@ public final class ElementUtils {
          * @param e the element to search within
          * @return all methods of the passed element
          */
-        public static List<? extends TypeElement> getEnclosedTypes(TypeElement e) {
+        public static List<TypeElement> getEnclosedTypes(TypeElement e) {
 
             List<? extends Element> enclosedElementsOfKind = getEnclosedElementsOfKind(e, ElementKind.CLASS);
-            return CastElement.castElementList(enclosedElementsOfKind, TypeElement.class);
+            return CastElement.<TypeElement>castElementList(enclosedElementsOfKind);
 
         }
 
@@ -715,13 +731,13 @@ public final class ElementUtils {
          * @param name    the name to search for
          * @return the elements with matching name
          */
-        public static List<? extends Element> getEnclosedElementsByName(Element element, String... name) {
+        public static List<Element> getEnclosedElementsByName(Element element, String... name) {
 
             if (element == null) {
-                return new ArrayList<Element>();
+                return new ArrayList<>();
             }
 
-            return CoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), name);
+            return CastElement.castElementList(CoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), name), Element.class);
 
         }
 
@@ -733,9 +749,9 @@ public final class ElementUtils {
          * @return the elements with matching name
          * @throws {@link java.util.regex.PatternSyntaxException} if passed pattern is invalid
          */
-        public static List<? extends Element> getEnclosedElementsByNameRegex(Element element, String... nameRegexes) {
+        public static List<Element> getEnclosedElementsByNameRegex(Element element, String... nameRegexes) {
 
-            List<Element> result = new ArrayList<Element>();
+            List<Element> result = new ArrayList<>();
 
             if (element != null && nameRegexes != null) {
 
@@ -770,13 +786,13 @@ public final class ElementUtils {
          * @param kind    the kinds to filter
          * @return all enclosed element that are matching one of the passed kinds
          */
-        public static List<? extends Element> getEnclosedElementsOfKind(Element element, ElementKind... kind) {
+        public static <T extends Element> List<T> getEnclosedElementsOfKind(Element element, ElementKind... kind) {
 
             if (element == null) {
-                return new ArrayList<Element>();
+                return new ArrayList<>();
             }
 
-            return CoreMatchers.BY_ELEMENT_KIND.getFilter().filterByOneOf(element.getEnclosedElements(), kind);
+            return (List<T>) CoreMatchers.BY_ELEMENT_KIND.getFilter().filterByOneOf(element.getEnclosedElements(), kind);
 
         }
 
@@ -788,13 +804,13 @@ public final class ElementUtils {
          * @param annotations the annotations to filter by
          * @return the enclosed element that are annotated with ALL passed annotations.
          */
-        public static List<? extends Element> getEnclosedElementsWithAllAnnotationsOf(Element element, Class<? extends Annotation>... annotations) {
+        public static List<Element> getEnclosedElementsWithAllAnnotationsOf(Element element, Class<? extends Annotation>... annotations) {
 
             if (element == null) {
-                return new ArrayList<Element>();
+                return new ArrayList<>();
             }
 
-            return CoreMatchers.BY_ANNOTATION.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
+            return (List<Element>) CoreMatchers.BY_ANNOTATION.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
 
         }
 
@@ -805,13 +821,13 @@ public final class ElementUtils {
          * @param annotations the annotations to filter by
          * @return the enclosed element that are annotated with AT LEAST ONE of the passed annotations.
          */
-        public static List<? extends Element> getEnclosedElementsWithAtLeastOneAnnotationOf(Element element, Class<? extends Annotation>... annotations) {
+        public static List<Element> getEnclosedElementsWithAtLeastOneAnnotationOf(Element element, Class<? extends Annotation>... annotations) {
 
             if (element == null) {
-                return new ArrayList<Element>();
+                return new ArrayList<>();
             }
 
-            return CoreMatchers.BY_ANNOTATION.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
+            return (List<Element>) CoreMatchers.BY_ANNOTATION.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
 
         }
 
@@ -822,7 +838,7 @@ public final class ElementUtils {
          * @param addRootElement Defines if the passed element should be part of the result
          * @return the flattened enclosed element tree of the passed element
          */
-        public static List<? extends Element> flattenEnclosedElementTree(Element element, boolean addRootElement) {
+        public static List<Element> flattenEnclosedElementTree(Element element, boolean addRootElement) {
             return flattenEnclosedElementTree(element, addRootElement, Integer.MAX_VALUE);
         }
 
@@ -835,7 +851,7 @@ public final class ElementUtils {
          * @return the flattened enclosed element tree of the passed element
          */
         public static List<Element> flattenEnclosedElementTree(Element element, boolean addRootElement, int maxDepth) {
-            List<Element> result = new ArrayList<Element>();
+            List<Element> result = new ArrayList<>();
 
             if (element == null) {
                 return result;
@@ -908,7 +924,7 @@ public final class ElementUtils {
 
             List<? extends TypeMirror> superTypeMirrors = TypeUtils.getTypes().directSupertypes(typeElement.asType());
 
-            List<TypeElement> superTypeElements = new ArrayList<TypeElement>();
+            List<TypeElement> superTypeElements = new ArrayList<>();
 
             for (TypeMirror superTypeMirror : superTypeMirrors) {
 
@@ -933,7 +949,7 @@ public final class ElementUtils {
 
 
             // this is not that performant, but i guess it's ok since it's only used at compile time.
-            List<TypeElement> superTypeElements = new ArrayList<TypeElement>();
+            List<TypeElement> superTypeElements = new ArrayList<>();
 
             for (TypeElement superType : superTypes) {
                 superTypeElements.add(superType);

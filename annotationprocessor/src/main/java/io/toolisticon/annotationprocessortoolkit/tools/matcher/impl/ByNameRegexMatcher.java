@@ -29,7 +29,7 @@ public class ByNameRegexMatcher implements CriteriaMatcher<Element, String> {
      */
     @Override
     public String getStringRepresentationOfPassedCharacteristic(String toGetStringRepresentationFor) {
-        return toGetStringRepresentationFor != null ? toGetStringRepresentationFor : null;
+        return toGetStringRepresentationFor;
     }
 
 }

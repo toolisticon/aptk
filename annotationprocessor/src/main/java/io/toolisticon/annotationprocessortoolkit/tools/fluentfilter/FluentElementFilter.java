@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * Fluent Element Filter.
  */
+@SuppressWarnings("unchecked")
 public class FluentElementFilter<ELEMENT extends Element> {
 
 
@@ -69,8 +70,9 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @param criteria the criteria to be used for filtering
          * @return the FluentElementFilter instance
          */
-        public FluentElementFilter<ELEMENT> filterByOneOf(CRITERIA... criteria) {
-            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
+        @SafeVarargs
+        public final FluentElementFilter<ELEMENT> filterByOneOf(CRITERIA... criteria) {
+            return new FluentElementFilter<>((List<ELEMENT>) filter.filterByOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
         /**
@@ -80,8 +82,9 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @param criteria the criteria to be used for filtering
          * @return the FluentElementFilter instance
          */
-        public FluentElementFilter<ELEMENT> filterByNoneOf(CRITERIA... criteria) {
-            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByNoneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
+        @SafeVarargs
+        public final FluentElementFilter<ELEMENT> filterByNoneOf(CRITERIA... criteria) {
+            return new FluentElementFilter<>((List<ELEMENT>) filter.filterByNoneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
 
@@ -110,8 +113,9 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @param criteria the criteria to be used for filtering
          * @return the FluentElementFilter instance
          */
-        public FluentElementFilter<ELEMENT> filterByOneOf(CHARACTERISTIC... criteria) {
-            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
+        @SafeVarargs
+        public final FluentElementFilter<ELEMENT> filterByOneOf(CHARACTERISTIC... criteria) {
+            return new FluentElementFilter<>((List<ELEMENT>) filter.filterByOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
         /**
@@ -121,8 +125,9 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @param criteria the criteria to be used for filtering
          * @return the FluentElementFilter instance
          */
-        public FluentElementFilter<ELEMENT> filterByNoneOf(CHARACTERISTIC... criteria) {
-            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByNoneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
+        @SafeVarargs
+        public final FluentElementFilter<ELEMENT> filterByNoneOf(CHARACTERISTIC... criteria) {
+            return new FluentElementFilter<>((List<ELEMENT>) filter.filterByNoneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
         /**
@@ -132,8 +137,9 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @param criteria the criteria to be used for filtering
          * @return the FluentElementFilter instance
          */
-        public FluentElementFilter<ELEMENT> filterByAtLeastOneOf(CHARACTERISTIC... criteria) {
-            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByAtLeastOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
+        @SafeVarargs
+        public final FluentElementFilter<ELEMENT> filterByAtLeastOneOf(CHARACTERISTIC... criteria) {
+            return new FluentElementFilter<>((List<ELEMENT>) filter.filterByAtLeastOneOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
         /**
@@ -143,8 +149,9 @@ public class FluentElementFilter<ELEMENT extends Element> {
          * @param criteria the criteria to be used for filtering
          * @return the FluentElementFilter instance
          */
-        public FluentElementFilter<ELEMENT> filterByAllOf(CHARACTERISTIC... criteria) {
-            return new FluentElementFilter<ELEMENT>((List<ELEMENT>) filter.filterByAllOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
+        @SafeVarargs
+        public final FluentElementFilter<ELEMENT> filterByAllOf(CHARACTERISTIC... criteria) {
+            return new FluentElementFilter<>((List<ELEMENT>) filter.filterByAllOf((List<FILTER_ELEMENT>) elements, inverted, criteria));
         }
 
 
@@ -163,7 +170,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyFilter(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
 
-        return new FluentElementFilter<TARGET_ELEMENT>((List<TARGET_ELEMENT>) coreMatcher.getFilter().filter(elements));
+        return new FluentElementFilter<>((List<TARGET_ELEMENT>) coreMatcher.getFilter().filter(elements));
 
     }
 
@@ -175,7 +182,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
 
-        return new FluentElementFilter<ELEMENT>(coreMatcher.getFilter().filter(elements, true));
+        return new FluentElementFilter<>(coreMatcher.getFilter().filter(elements, true));
 
     }
 
@@ -188,7 +195,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
 
-        return new FluentElementFilter<TARGET_ELEMENT>((List<TARGET_ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements));
+        return new FluentElementFilter<>((List<TARGET_ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements));
 
 
     }
@@ -201,7 +208,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
 
-        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true));
+        return new FluentElementFilter<>((List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true));
 
     }
 
@@ -217,7 +224,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public FluentElementFilter<ELEMENT> applyFilter(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
 
-        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter(elements));
+        return new FluentElementFilter<>(coreMatcher.getFilter().filter(elements));
 
     }
 
@@ -229,7 +236,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public FluentElementFilter<ELEMENT> applyInvertedFilter(ImplicitCoreMatcher<ELEMENT> coreMatcher) {
 
-        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter(elements,true));
+        return new FluentElementFilter<>(coreMatcher.getFilter().filter(elements, true));
 
     }
 
@@ -241,7 +248,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public FluentElementFilter<ELEMENT> applyFilter(ImplicitElementBasedCoreMatcher coreMatcher) {
 
-        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements));
+        return new FluentElementFilter<>((List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements));
 
     }
 
@@ -253,7 +260,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public FluentElementFilter<ELEMENT> applyInvertedFilter(ImplicitElementBasedCoreMatcher coreMatcher) {
 
-        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true));
+        return new FluentElementFilter<>((List<ELEMENT>) coreMatcher.getFilter().filter((List<Element>) elements, true));
 
     }
 
@@ -269,7 +276,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <CRITERIA> InclusiveCriteriaFluentFilter<ELEMENT, CRITERIA> applyFilter(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
 
-        return new InclusiveCriteriaFluentFilter<ELEMENT, CRITERIA>(coreMatcher.getFilter(), false);
+        return new InclusiveCriteriaFluentFilter<>(coreMatcher.getFilter(), false);
 
     }
 
@@ -281,7 +288,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <CRITERIA> InclusiveCriteriaFluentFilter<ELEMENT, CRITERIA> applyInvertedFilter(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
 
-        return new InclusiveCriteriaFluentFilter<ELEMENT, CRITERIA>(coreMatcher.getFilter(), true);
+        return new InclusiveCriteriaFluentFilter<>(coreMatcher.getFilter(), true);
 
     }
 
@@ -293,7 +300,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <CRITERIA> InclusiveCriteriaFluentFilter<Element, CRITERIA> applyFilter(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
 
-        return new InclusiveCriteriaFluentFilter<Element, CRITERIA>(coreMatcher.getFilter(), false);
+        return new InclusiveCriteriaFluentFilter<>(coreMatcher.getFilter(), false);
 
 
     }
@@ -306,7 +313,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <CRITERIA> InclusiveCriteriaFluentFilter<Element, CRITERIA> applyInvertedFilter(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
 
-        return new InclusiveCriteriaFluentFilter<Element, CRITERIA>(coreMatcher.getFilter(), true);
+        return new InclusiveCriteriaFluentFilter<>(coreMatcher.getFilter(), true);
 
     }
 
@@ -322,7 +329,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <CHARACTERISTIC> ExclusiveCharacteristicFluentFilter<ELEMENT, CHARACTERISTIC> applyFilter(ExclusiveCriteriaCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
 
-        return new ExclusiveCharacteristicFluentFilter<ELEMENT, CHARACTERISTIC>(coreMatcher.getFilter(), false);
+        return new ExclusiveCharacteristicFluentFilter<>(coreMatcher.getFilter(), false);
 
     }
 
@@ -334,7 +341,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <CHARACTERISTIC> ExclusiveCharacteristicFluentFilter<ELEMENT, CHARACTERISTIC> applyInvertedFilter(ExclusiveCriteriaCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
 
-        return new ExclusiveCharacteristicFluentFilter<ELEMENT, CHARACTERISTIC>(coreMatcher.getFilter(), true);
+        return new ExclusiveCharacteristicFluentFilter<>(coreMatcher.getFilter(), true);
 
     }
 
@@ -346,7 +353,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <CHARACTERISTIC> ExclusiveCharacteristicFluentFilter<Element, CHARACTERISTIC> applyFilter(ExclusiveCriteriaElementBasedCoreMatcher<CHARACTERISTIC> coreMatcher) {
 
-        return new ExclusiveCharacteristicFluentFilter<Element, CHARACTERISTIC>(coreMatcher.getFilter(), false);
+        return new ExclusiveCharacteristicFluentFilter<>(coreMatcher.getFilter(), false);
 
 
     }
@@ -359,7 +366,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <CHARACTERISTIC> ExclusiveCharacteristicFluentFilter<Element, CHARACTERISTIC> applyInvertedFilter(ExclusiveCriteriaElementBasedCoreMatcher<CHARACTERISTIC> coreMatcher) {
 
-        return new ExclusiveCharacteristicFluentFilter<Element, CHARACTERISTIC>(coreMatcher.getFilter(), true);
+        return new ExclusiveCharacteristicFluentFilter<>(coreMatcher.getFilter(), true);
 
     }
 
@@ -375,7 +382,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyTransitionFilter(TransitionFilter<ELEMENT, TARGET_ELEMENT> transitionFilter) {
 
-        return new FluentElementFilter<TARGET_ELEMENT>(transitionFilter.transition(elements));
+        return new FluentElementFilter<>(transitionFilter.transition(elements));
 
     }
 
@@ -389,7 +396,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyTransitionFilter(ElementBasedTransitionFilter<TARGET_ELEMENT> transitionFilter) {
 
-        return new FluentElementFilter<TARGET_ELEMENT>(transitionFilter.transition(elements));
+        return new FluentElementFilter<>(transitionFilter.transition(elements));
 
     }
 
@@ -399,7 +406,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @return this instance
      */
     public FluentElementFilter<ELEMENT> removeDuplicates() {
-        return new FluentElementFilter<ELEMENT>((List<ELEMENT>) TransitionFilters.REMOVE_DUPLICATES_ELEMENTS.transition(elements));
+        return new FluentElementFilter<>((List<ELEMENT>) TransitionFilters.REMOVE_DUPLICATES_ELEMENTS.transition(elements));
     }
 
     /**
@@ -431,7 +438,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @return a list containing all results of executed commands
      */
     public <RETURN_TYPE> List<RETURN_TYPE> executeCommand(CommandWithReturnType<ELEMENT, RETURN_TYPE> command) {
-        List<RETURN_TYPE> resultList = new ArrayList<RETURN_TYPE>();
+        List<RETURN_TYPE> resultList = new ArrayList<>();
 
         if (command != null) {
 
@@ -514,7 +521,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @return the FluentElementFilter instance
      */
     public static <E extends Element> FluentElementFilter<E> createFluentElementFilter(List<E> elements) {
-        return new FluentElementFilter<E>(elements);
+        return new FluentElementFilter<>(elements);
     }
 
     /**
@@ -525,7 +532,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * @return the FluentElementFilter instance
      */
     public static <E extends Element> FluentElementFilter<E> createFluentElementFilter(E... elements) {
-        return new FluentElementFilter<E>(new ArrayList<E>(elements != null ? Arrays.asList(elements) : Collections.EMPTY_LIST));
+        return new FluentElementFilter<>(new ArrayList<E>(elements != null ? Arrays.asList(elements) : Collections.EMPTY_LIST));
     }
 
 

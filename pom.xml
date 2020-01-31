@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
@@ -81,13 +82,13 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <encoding>UTF-8</encoding>
 
-        <java.compile.source.version>1.6</java.compile.source.version>
-        <java.compile.target.version>1.6</java.compile.target.version>
+        <java.compile.source.version>1.7</java.compile.source.version>
+        <java.compile.target.version>1.7</java.compile.target.version>
 
-        <java.version>1.6.0</java.version>
+        <java.version>1.7</java.version>
 
         <spiap.version>0.7.0</spiap.version>
-        <compileTesting.version>0.6.0</compileTesting.version>
+        <compileTesting.version>0.7.0</compileTesting.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.12</junit.version>
@@ -144,7 +145,7 @@
                                     <version>[3.0.4,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>1.6</version>
+                                    <version>1.7</version>
                                 </requireJavaVersion>
                                 <bannedDependencies>
                                     <searchTransitive>false</searchTransitive>
@@ -361,7 +362,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>animal-sniffer-maven-plugin</artifactId>
-                        <version>1.16</version>
+                        <version>1.17</version>
 
 
                         <executions>
@@ -383,7 +384,7 @@
 
                                     <signature>
                                         <groupId>org.codehaus.mojo.signature</groupId>
-                                        <artifactId>java16</artifactId>
+                                        <artifactId>java17</artifactId>
                                         <version>1.0</version>
                                     </signature>
 
@@ -416,7 +417,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>animal-sniffer-maven-plugin</artifactId>
-                        <version>1.16</version>
+                        <version>1.18</version>
 
                         <configuration>
 
@@ -445,7 +446,7 @@
 
                                     <signature>
                                         <groupId>org.codehaus.mojo.signature</groupId>
-                                        <artifactId>java16</artifactId>
+                                        <artifactId>java17</artifactId>
                                         <version>1.0</version>
                                     </signature>
 

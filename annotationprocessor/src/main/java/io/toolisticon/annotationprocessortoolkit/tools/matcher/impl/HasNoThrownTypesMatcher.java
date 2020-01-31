@@ -11,7 +11,7 @@ public class HasNoThrownTypesMatcher implements ImplicitMatcher<ExecutableElemen
 
     @Override
     public boolean check(ExecutableElement element) {
-        return element != null ? element.getThrownTypes().size() == 0 : false;
+        return element != null && element.getThrownTypes().size() == 0;
     }
 
 }

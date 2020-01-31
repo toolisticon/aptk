@@ -1,6 +1,5 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.ImplicitMatcher;
 
 import javax.lang.model.element.ExecutableElement;
@@ -12,7 +11,7 @@ public class HasNoParametersMatcher implements ImplicitMatcher<ExecutableElement
 
     @Override
     public boolean check(ExecutableElement element) {
-        return element != null ? element.getParameters().size() == 0 : false;
+        return element != null && element.getParameters().size() == 0;
     }
 
 }

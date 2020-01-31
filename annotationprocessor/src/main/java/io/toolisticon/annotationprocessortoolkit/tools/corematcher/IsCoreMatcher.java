@@ -43,7 +43,7 @@ public class IsCoreMatcher<
      * @return the implicit validator instance
      */
     public ImplicitValidator<SOURCE_ELEMENT, ImplicitMatcher<SOURCE_ELEMENT>> getValidator() {
-        return new ImplicitValidator<SOURCE_ELEMENT, ImplicitMatcher<SOURCE_ELEMENT>>(matcher, this.getDefaultValidatorMessage());
+        return new ImplicitValidator<>(matcher, this.getDefaultValidatorMessage());
     }
 
     /**
@@ -51,7 +51,7 @@ public class IsCoreMatcher<
      * @return the criteria filter instance
      */
     public ImplicitFilter<SOURCE_ELEMENT, ImplicitValidator<SOURCE_ELEMENT, ImplicitMatcher<SOURCE_ELEMENT>>> getFilter() {
-        return new ImplicitFilter<SOURCE_ELEMENT, ImplicitValidator<SOURCE_ELEMENT, ImplicitMatcher<SOURCE_ELEMENT>>>(getValidator());
+        return new ImplicitFilter<>(getValidator());
     }
 
 
