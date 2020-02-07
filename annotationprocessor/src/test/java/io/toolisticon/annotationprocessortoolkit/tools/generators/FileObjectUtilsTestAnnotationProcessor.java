@@ -33,7 +33,7 @@ public class FileObjectUtilsTestAnnotationProcessor extends AbstractAnnotationPr
 
                 }
 
-                simpleResourceWriter.append(element.getSimpleName().toString() + "\n");
+                simpleResourceWriter.append(element.getSimpleName().toString() + System.lineSeparator());
 
             }
         } catch (Exception e) {
