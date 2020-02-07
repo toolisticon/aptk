@@ -1,8 +1,7 @@
 # Annotation-Processor-Toolkit (APTK)
 
-![Build Status](https://github.com/toolisticon/annotation-processor-toolkit/workflows/default/badge.svg)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessortoolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessortoolkit-parent)
-[![Build Status](https://api.travis-ci.org/toolisticon/annotation-processor-toolkit.svg)](https://travis-ci.org/toolisticon/annotation-processor-toolkit)
+![Build Status](https://github.com/toolisticon/annotation-processor-toolkit/workflows/default/badge.svg)
 [![codecov](https://codecov.io/gh/toolisticon/annotation-processor-toolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/toolisticon/annotation-processor-toolkit)
 
 # Why you should use this project?
