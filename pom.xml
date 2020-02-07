@@ -234,7 +234,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${maven-jacoco-maven-plugin.version}</version>
+                    <version>${jacoco-maven-plugin.version}</version>
                 </plugin>
 
                 <plugin>
