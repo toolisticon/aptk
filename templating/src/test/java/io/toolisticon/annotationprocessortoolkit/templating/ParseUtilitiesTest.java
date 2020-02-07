@@ -19,8 +19,8 @@ public class ParseUtilitiesTest {
     @Test
     public void readResourceToStringTest() throws Exception {
 
-        final String EXPECTED_RESULT = "ABC\n" +
-                "DEF\n" +
+        final String EXPECTED_RESULT = "ABC" + System.lineSeparator() +
+                "DEF" + System.lineSeparator() +
                 "HIJ";
 
         MatcherAssert.assertThat(ParseUtilities.readResourceToString("/ReadResourceToStringTest.txt"), Matchers.is(EXPECTED_RESULT));
