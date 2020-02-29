@@ -1,5 +1,6 @@
 abc
 value : 1
+include : 1
 8j
 abc
 def
@@ -8,6 +9,7 @@ def
 
 
 value : 2
+include : 2
 8j
 abc
 def
@@ -16,6 +18,7 @@ def
 
 
 value : 3
+include : 3
 8j
 abc
 def

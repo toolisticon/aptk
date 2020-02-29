@@ -2,6 +2,7 @@ package io.toolisticon.annotationprocessortoolkit.templating;
 
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.ForTemplateBlock;
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.IfTemplateBlock;
+import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.IncludeTemplateBlock;
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.PlainTextTemplateBlock;
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.StaticTemplateBlock;
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.TemplateBlockBinder;
@@ -9,10 +10,10 @@ import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.Templ
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.VariableTextTemplateBlock;
 
 import java.io.ByteArrayOutputStream;
-import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,6 +110,14 @@ public class ParseUtilities {
 
                     break;
                 }
+                case INCLUDE: {
+                    IncludeTemplateBlock includeTemplateBlock = new IncludeTemplateBlock(nextBlock.getAttributes());
+                    binder.addTemplateBlock(includeTemplateBlock);
+
+                    tmpTemplateString = nextBlock.getRemainingStringToBeProcessed();
+
+                    break;
+                }
                 case STATIC: {
 
 
@@ -137,6 +146,7 @@ public class ParseUtilities {
 
     /**
      * Get dynamic text block.
+     *
      * @param templateString the template string to parse
      * @return the ParseResult
      */
@@ -160,11 +170,12 @@ public class ParseUtilities {
 
     /**
      * Reads a resource file into a String
+     *
      * @param resourcefileName
      * @return the content of the resource file as a String
      * @throws IOException
      */
-    public static String readResourceToString(String resourcefileName) throws IOException{
+    public static String readResourceToString(String resourcefileName) throws IOException {
 
         InputStream inputStream = ParseUtilities.class.getResourceAsStream(resourcefileName);
         if (inputStream != null) {
@@ -208,6 +219,7 @@ public class ParseUtilities {
      * Allows better formatting of templates.
      * Removes all leading whitespaces
      * Remove trailing spaces up to last newline (remove newline then too ) or non space char
+     *
      * @param content
      * @return
      */
@@ -218,6 +230,37 @@ public class ParseUtilities {
         tmpContentString = tmpContentString.replaceAll("[ ]+$", "");
         return tmpContentString;
 
+    }
+
+    /**
+     * Pareses a string and creates a map containing attribute names and values.
+     * If an attribute is set more than once, the last attribute value will be included.
+     *
+     * @param attributeString the string to parse
+     * @return a map containing all key value pairs
+     */
+    public static Map<String, String> parseNamedAttributes(String attributeString) {
+
+        Map<String, String> attributeMap = new HashMap<>();
+        final String attributePatternString = "\\s*(\\w+)\\s*:\\s*'(.*?)'\\s*";
+
+        Pattern attributePattern = Pattern.compile("(" + attributePatternString + ")(?:,(\" + attributePatternString+ \"))*");
+
+        Matcher matcher = attributePattern.matcher(attributeString);
+        if (matcher.matches()) {
+
+            Pattern findPattern = Pattern.compile(attributePatternString);
+            Matcher findMatcher = findPattern.matcher(attributeString);
+
+            while (findMatcher.find()) {
+                String attributeName = findMatcher.group(1);
+                String attributeValue = findMatcher.group(2);
+
+                attributeMap.put(attributeName, attributeValue);
+            }
+
+        }
+        return attributeMap;
     }
 
 }
