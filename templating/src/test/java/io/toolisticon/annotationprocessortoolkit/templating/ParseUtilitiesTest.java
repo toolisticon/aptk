@@ -169,5 +169,16 @@ public class ParseUtilitiesTest {
 
     }
 
+    @Test
+    public void parseNamedAttributes_parseAttributes() {
+        String stringToParse = " abc : '/val1' , def : 'v.a.l2',hij:'val 3' ";
+
+        Map<String, String> map = ParseUtilities.parseNamedAttributes(stringToParse);
+
+        MatcherAssert.assertThat(map.get("abc"), Matchers.is("/val1"));
+        MatcherAssert.assertThat(map.get("def"), Matchers.is("v.a.l2"));
+        MatcherAssert.assertThat(map.get("hij"), Matchers.is("val 3"));
+
+    }
 
 }

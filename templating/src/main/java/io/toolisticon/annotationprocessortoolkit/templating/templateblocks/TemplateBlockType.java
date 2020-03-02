@@ -16,7 +16,8 @@ public enum TemplateBlockType {
     DYNAMIC_TEXT(true),
     STATIC(true, "static", false),
     FOR(true, "for", true),
-    IF(true, "if", true);
+    IF(true, "if", true),
+    INCLUDE(true,"include", true);
 
     private final boolean usedForBlockSearch;
     private final boolean isControlBlock;
