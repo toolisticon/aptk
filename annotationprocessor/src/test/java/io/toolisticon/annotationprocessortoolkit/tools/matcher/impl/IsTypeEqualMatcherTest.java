@@ -41,7 +41,7 @@ public class IsTypeEqualMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -57,7 +57,7 @@ public class IsTypeEqualMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -72,7 +72,7 @@ public class IsTypeEqualMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     public void checkNullValuedElementAndClass() {
@@ -88,7 +88,7 @@ public class IsTypeEqualMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     public void getStringRepresentationOfPassedCharacteristic_nullValue() {
@@ -102,7 +102,7 @@ public class IsTypeEqualMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     public void getStringRepresentationOfPassedCharacteristic_getSTringRepresentation() {
@@ -116,7 +116,7 @@ public class IsTypeEqualMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

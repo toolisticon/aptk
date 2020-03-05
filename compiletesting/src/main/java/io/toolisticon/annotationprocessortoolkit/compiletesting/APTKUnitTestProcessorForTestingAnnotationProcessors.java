@@ -1,18 +1,18 @@
 package io.toolisticon.annotationprocessortoolkit.compiletesting;
 
 import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
-import io.toolisticon.compiletesting.UnitTestProcessorForTestingAnnotationProcessors;
+import io.toolisticon.compiletesting.UnitTestForTestingAnnotationProcessors;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.Element;
 
 /**
  * Convenient unit test processor for testing annotation processors build with the APTK with toolisticon's compiletesting framework.
  *
  * @param <PROCESSOR> The processor under test. init method will be called and {@link ToolingProvider} will be set.
  */
-public abstract class APTKUnitTestProcessorForTestingAnnotationProcessors<PROCESSOR extends Processor> implements UnitTestProcessorForTestingAnnotationProcessors<PROCESSOR> {
+public abstract class APTKUnitTestProcessorForTestingAnnotationProcessors<PROCESSOR extends Processor, ELEMENT_TYPE extends Element> implements UnitTestForTestingAnnotationProcessors<PROCESSOR, ELEMENT_TYPE> {
 
     /**
      * The original unit test processor method. Contains logic to initialize the ToolingProvider.
@@ -20,17 +20,17 @@ public abstract class APTKUnitTestProcessorForTestingAnnotationProcessors<PROCES
      *
      * @param processor             The processor under test
      * @param processingEnvironment the processing environment
-     * @param typeElement           the default typeElement
+     * @param element               the default typeElement
      */
     @Override
-    public final void unitTest(PROCESSOR processor, ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
+    public final void unitTest(PROCESSOR processor, ProcessingEnvironment processingEnvironment, ELEMENT_TYPE element) {
 
         try {
             // do initializations
             ToolingProvider.setTooling(processingEnvironment);
 
             // propagate to unit test implementation
-            this.aptkUnitTest(processor, processingEnvironment, typeElement);
+            this.aptkUnitTest(processor, processingEnvironment, element);
 
         } finally {
             ToolingProvider.clearTooling();
@@ -45,5 +45,5 @@ public abstract class APTKUnitTestProcessorForTestingAnnotationProcessors<PROCES
      * @param processingEnvironment the processingEnvironment
      * @param typeElement           the element the underlying annotation processor is applied on
      */
-    public abstract void aptkUnitTest(PROCESSOR unit, ProcessingEnvironment processingEnvironment, TypeElement typeElement);
+    public abstract void aptkUnitTest(PROCESSOR unit, ProcessingEnvironment processingEnvironment, ELEMENT_TYPE typeElement);
 }

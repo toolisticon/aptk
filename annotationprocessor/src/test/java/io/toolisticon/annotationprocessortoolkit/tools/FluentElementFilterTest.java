@@ -57,7 +57,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -80,7 +80,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -100,7 +100,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -119,7 +119,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -139,7 +139,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     //--
@@ -165,7 +165,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -185,7 +185,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -206,7 +206,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -225,7 +225,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -247,7 +247,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -270,7 +270,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -290,7 +290,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -310,7 +310,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -330,7 +330,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -351,7 +351,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -379,7 +379,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -403,7 +403,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -424,7 +424,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -445,7 +445,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -466,7 +466,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -488,7 +488,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -510,7 +510,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -533,7 +533,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -553,7 +553,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -573,7 +573,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -593,7 +593,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -613,7 +613,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -634,7 +634,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -657,7 +657,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -677,7 +677,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -697,7 +697,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -717,7 +717,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -737,7 +737,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -765,7 +765,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -789,7 +789,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -809,7 +809,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -829,7 +829,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -851,7 +851,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -872,7 +872,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -889,7 +889,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -906,7 +906,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -923,7 +923,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -940,7 +940,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -957,7 +957,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -974,7 +974,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -991,7 +991,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1008,7 +1008,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1025,7 +1025,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1042,7 +1042,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1059,7 +1059,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1075,7 +1075,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1091,7 +1091,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1107,7 +1107,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1123,7 +1123,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1140,7 +1140,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1157,7 +1157,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -1175,7 +1175,7 @@ public class FluentElementFilterTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

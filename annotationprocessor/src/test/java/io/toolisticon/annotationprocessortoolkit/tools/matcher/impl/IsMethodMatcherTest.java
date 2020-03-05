@@ -52,7 +52,7 @@ public class IsMethodMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -67,7 +67,7 @@ public class IsMethodMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -82,7 +82,7 @@ public class IsMethodMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

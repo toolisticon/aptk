@@ -64,7 +64,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }
@@ -88,7 +88,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }
@@ -112,7 +112,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }
@@ -136,7 +136,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }
@@ -160,7 +160,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }

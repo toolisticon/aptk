@@ -55,7 +55,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -73,9 +73,9 @@ public class FluentElementValidatorTest {
                     }
                 })
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
                 .compilationShouldFail()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -95,7 +95,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -115,10 +115,10 @@ public class FluentElementValidatorTest {
                 })
 
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
 
                 .compilationShouldFail()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -137,7 +137,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -154,9 +154,9 @@ public class FluentElementValidatorTest {
 
                     }
                 })
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
                 .compilationShouldFail()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -172,7 +172,7 @@ public class FluentElementValidatorTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -190,9 +190,9 @@ public class FluentElementValidatorTest {
                     }
                 })
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
                 .compilationShouldFail()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -210,7 +210,7 @@ public class FluentElementValidatorTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -228,10 +228,10 @@ public class FluentElementValidatorTest {
                     }
                 })
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.IS_EXECUTABLE_ELEMENT.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.IS_EXECUTABLE_ELEMENT.getCode())
 
                 .compilationShouldFail()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -250,9 +250,9 @@ public class FluentElementValidatorTest {
                     }
                 })
                 .compilationShouldFail()
-                .expectedErrorMessages(CoreMatcherValidationMessages.IS_INTERFACE.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.IS_INTERFACE.getCode())
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -277,7 +277,7 @@ public class FluentElementValidatorTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -302,9 +302,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -327,7 +327,7 @@ public class FluentElementValidatorTest {
 
                 .compilationShouldSucceed()
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -348,9 +348,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -371,7 +371,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -393,9 +393,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -416,7 +416,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -438,9 +438,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -461,7 +461,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -483,9 +483,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -506,7 +506,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -528,9 +528,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.IS_EXECUTABLE_ELEMENT.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.IS_EXECUTABLE_ELEMENT.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -552,9 +552,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.IS_INTERFACE.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.IS_INTERFACE.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -580,7 +580,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -607,9 +607,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -634,7 +634,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -656,9 +656,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -679,7 +679,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -701,9 +701,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -724,7 +724,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -746,9 +746,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -769,7 +769,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -791,9 +791,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -814,7 +814,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -836,9 +836,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.IS_TYPE_ELEMENT.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.IS_TYPE_ELEMENT.getCode())
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -860,9 +860,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.IS_CLASS.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.IS_CLASS.getCode())
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -888,7 +888,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -914,9 +914,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -939,7 +939,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -961,9 +961,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -984,7 +984,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1006,9 +1006,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1029,7 +1029,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1051,9 +1051,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1074,7 +1074,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1096,9 +1096,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1119,7 +1119,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1141,9 +1141,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.IS_TYPE_ELEMENT.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.IS_TYPE_ELEMENT.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1165,9 +1165,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.IS_CLASS.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.IS_CLASS.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1193,7 +1193,7 @@ public class FluentElementValidatorTest {
                             }
                         }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1220,9 +1220,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "UPS")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "UPS")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1261,11 +1261,11 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedNoteMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "NOTE")
-                .expectedWarningMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "WARNING")
-                .expectedErrorMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "ERROR")
+                .expectNoteMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "NOTE")
+                .expectWarningMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "WARNING")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "ERROR")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1304,11 +1304,11 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedNoteMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "NOTE")
-                .expectedWarningMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "WARNING")
-                .expectedErrorMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "ERROR")
+                .expectNoteMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "NOTE")
+                .expectWarningMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "WARNING")
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode(), "ERROR")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1335,9 +1335,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1363,9 +1363,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1392,9 +1392,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1421,9 +1421,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1450,9 +1450,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1479,9 +1479,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1513,9 +1513,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1547,9 +1547,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1576,9 +1576,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1605,9 +1605,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1639,9 +1639,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1673,9 +1673,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1707,9 +1707,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1741,9 +1741,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1775,9 +1775,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1809,9 +1809,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1838,9 +1838,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1867,9 +1867,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1901,9 +1901,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1936,9 +1936,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1965,9 +1965,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -1994,9 +1994,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2028,9 +2028,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2062,9 +2062,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2091,9 +2091,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2125,9 +2125,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2159,9 +2159,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2188,9 +2188,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2215,9 +2215,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2242,9 +2242,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2274,9 +2274,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedNoteMessages("EXECUTED COMMAND")
+                .expectNoteMessagesThatContain("EXECUTED COMMAND")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2309,9 +2309,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedNoteMessages("EXECUTED COMMAND")
+                .expectNoteMessagesThatContain("EXECUTED COMMAND")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2336,7 +2336,7 @@ public class FluentElementValidatorTest {
                                   }
                               }
                 )
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2363,9 +2363,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2392,9 +2392,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("FAILURE")
+                .expectErrorMessagesThatContain("FAILURE")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2428,9 +2428,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("ERROR YES YES AGAIN!")
+                .expectErrorMessagesThatContain("ERROR YES YES AGAIN!")
 
-                .testCompilation();
+                .executeTest();
 
 
     }
@@ -2454,9 +2454,9 @@ public class FluentElementValidatorTest {
                         }
                 )
 
-                .expectedErrorMessages("ERROR!")
+                .expectErrorMessagesThatContain("ERROR!")
 
-                .testCompilation();
+                .executeTest();
 
 
     }

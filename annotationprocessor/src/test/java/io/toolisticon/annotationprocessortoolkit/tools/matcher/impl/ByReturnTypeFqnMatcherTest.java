@@ -56,7 +56,7 @@ public class ByReturnTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ByReturnTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -107,7 +107,7 @@ public class ByReturnTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -122,7 +122,7 @@ public class ByReturnTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -137,7 +137,7 @@ public class ByReturnTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 }

@@ -90,7 +90,7 @@ public class IsSetterMethodMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -107,7 +107,7 @@ public class IsSetterMethodMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

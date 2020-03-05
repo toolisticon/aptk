@@ -45,7 +45,7 @@ public class BeanUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -71,7 +71,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -93,7 +93,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -113,7 +113,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -134,7 +134,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -155,7 +155,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -175,7 +175,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -201,7 +201,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -222,7 +222,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -243,7 +243,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -269,7 +269,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -290,7 +290,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -311,7 +311,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -337,7 +337,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -358,7 +358,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -379,7 +379,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -413,7 +413,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -443,7 +443,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -470,7 +470,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -492,7 +492,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -516,7 +516,7 @@ public class BeanUtilsTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

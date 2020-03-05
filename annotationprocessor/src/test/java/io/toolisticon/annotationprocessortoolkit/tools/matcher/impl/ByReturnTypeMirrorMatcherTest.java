@@ -55,7 +55,7 @@ public class ByReturnTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -80,7 +80,7 @@ public class ByReturnTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ByReturnTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -122,7 +122,7 @@ public class ByReturnTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -138,7 +138,7 @@ public class ByReturnTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 }

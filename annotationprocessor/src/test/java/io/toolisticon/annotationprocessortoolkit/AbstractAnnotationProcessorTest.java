@@ -5,7 +5,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.UnitTestProcessor;
+import io.toolisticon.compiletesting.UnitTest;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -108,34 +108,33 @@ public class AbstractAnnotationProcessorTest {
     @Test
     public void fluentElementFilter_doFilterings() {
 
-        CompileTestBuilder.unitTest()
-                .useProcessor(new UnitTestProcessor() {
-                    @Override
-                    public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement1) {
+        CompileTestBuilder.unitTest().defineTest(new UnitTest<TypeElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement1) {
 
-                        // init processor tools and get element used for tests
-                        ToolingProvider.setTooling(processingEnvironment);
-                        Element element = TypeUtils.TypeRetrieval.getTypeElement(AnnotationProcessorUnitTestClass.class);
-
-
-                        List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
-                                .getResult();
-                        MatcherAssert.assertThat(result, Matchers.hasSize(8));
+                // init processor tools and get element used for tests
+                ToolingProvider.setTooling(processingEnvironment);
+                Element element = TypeUtils.TypeRetrieval.getTypeElement(AnnotationProcessorUnitTestClass.class);
 
 
-                        result = FluentElementFilter.createFluentElementFilter(
-                                element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
-                                .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
-                                .getResult();
-                        MatcherAssert.assertThat(result, Matchers.hasSize(1));
-                        MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
+                List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                        .getResult();
+                MatcherAssert.assertThat(result, Matchers.hasSize(8));
 
-                    }
-                })
+
+                result = FluentElementFilter.createFluentElementFilter(
+                        element.getEnclosedElements())
+                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                        .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
+                        .getResult();
+                MatcherAssert.assertThat(result, Matchers.hasSize(1));
+                MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));
+
+            }
+        })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 

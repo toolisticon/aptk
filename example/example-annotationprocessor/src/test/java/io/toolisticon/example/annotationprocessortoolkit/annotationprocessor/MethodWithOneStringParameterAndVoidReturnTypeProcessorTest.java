@@ -22,24 +22,24 @@ public class MethodWithOneStringParameterAndVoidReturnTypeProcessorTest {
     public void testValidUsage() {
         compilationTestBuilder.addSources("testcases/methodWithOneStringParameterAndVoidReturn/ValidUsageTest.java")
                 .compilationShouldSucceed()
-                .expectedNoteMessages("Start processing")
-                .testCompilation();
+                .expectNoteMessagesThatContain("Start processing")
+                .executeTest();
     }
 
     @Test
     public void testInvalidUsage_nonVoidReturnType() {
         compilationTestBuilder.addSources("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonVoidReturnType.java")
                 .compilationShouldFail()
-                .expectedErrorMessages(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
-                .testCompilation();
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.HAS_VOID_RETURN_TYPE.getCode())
+                .executeTest();
     }
 
     @Test
     public void testInvalidUsage_nonStringParameter() {
         compilationTestBuilder.addSources("testcases/methodWithOneStringParameterAndVoidReturn/InvalidUsageNonStringParameter.java")
                 .compilationShouldFail()
-                .expectedErrorMessages(CoreMatcherValidationMessages.BY_PARAMETER_TYPE.getCode())
-                .testCompilation();
+                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.BY_PARAMETER_TYPE.getCode())
+                .executeTest();
     }
 
 

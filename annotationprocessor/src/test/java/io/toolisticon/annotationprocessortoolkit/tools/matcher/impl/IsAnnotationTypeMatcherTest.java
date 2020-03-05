@@ -44,7 +44,7 @@ public class IsAnnotationTypeMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -60,7 +60,7 @@ public class IsAnnotationTypeMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -75,7 +75,7 @@ public class IsAnnotationTypeMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

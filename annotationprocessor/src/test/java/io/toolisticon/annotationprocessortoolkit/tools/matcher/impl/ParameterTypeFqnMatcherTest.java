@@ -55,7 +55,7 @@ public class ParameterTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ParameterTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

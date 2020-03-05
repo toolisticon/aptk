@@ -56,7 +56,7 @@ public class ByParameterTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ByParameterTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -105,7 +105,7 @@ public class ByParameterTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -120,7 +120,7 @@ public class ByParameterTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -136,7 +136,7 @@ public class ByParameterTypeMirrorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

@@ -102,7 +102,7 @@ public class IsGetterMethodMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -119,7 +119,7 @@ public class IsGetterMethodMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

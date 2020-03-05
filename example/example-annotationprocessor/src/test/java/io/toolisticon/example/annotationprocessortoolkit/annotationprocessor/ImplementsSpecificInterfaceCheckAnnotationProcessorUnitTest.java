@@ -3,12 +3,12 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
 import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.UnitTestProcessor;
+import io.toolisticon.compiletesting.UnitTest;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.Element;
 
 public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest {
 
@@ -17,9 +17,9 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest {
     public void testValidUsageWithAssignableParameters() {
 
         CompileTestBuilder.unitTest()
-                .useProcessor(new UnitTestProcessor() {
+                .defineTest(new UnitTest<Element>() {
                     @Override
-                    public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
+                    public void unitTest(ProcessingEnvironment processingEnvironment, Element typeElement) {
 
                         ImplementsSpecificInterfaceCheckAnnotationProcessor unit = new ImplementsSpecificInterfaceCheckAnnotationProcessor();
                         unit.init(processingEnvironment);
@@ -30,7 +30,7 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -38,9 +38,9 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest {
     public void testValidUsageWithNonAssignableParameters() {
 
         CompileTestBuilder.unitTest()
-                .useProcessor(new UnitTestProcessor() {
+                .defineTest(new UnitTest<Element>() {
                     @Override
-                    public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
+                    public void unitTest(ProcessingEnvironment processingEnvironment, Element typeElement) {
 
                         ImplementsSpecificInterfaceCheckAnnotationProcessor unit = new ImplementsSpecificInterfaceCheckAnnotationProcessor();
                         unit.init(processingEnvironment);
@@ -51,7 +51,7 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
