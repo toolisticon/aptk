@@ -289,8 +289,8 @@ public class ParseUtilities {
         for (String line : modelStringLines) {
             Pattern keyValueExtractionPattern = Pattern.compile("^\\s*(\\w+(?:[.]\\w+)*)\\s*[:]\\s*(.+)\\s*$");
 
-            // skip empty line
-            if (line.trim().isEmpty()) {
+            // skip empty line or comments starting with //
+            if (line.trim().isEmpty() || line.trim().startsWith("//")) {
                 continue;
             }
 

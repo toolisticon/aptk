@@ -236,7 +236,7 @@ public class ParseUtilitiesTest {
         outerModelModel.put("value1", "value_1");
         outerModelModel.put("value2", "value_2");
 
-        Map<String, Object> result = ParseUtilities.extractModelFromString(outerModel, "targetModel.targetValue1 : model.value1\r\n   \ntargetModel.targetValue2 : model.value2");
+        Map<String, Object> result = ParseUtilities.extractModelFromString(outerModel, "targetModel.targetValue1 : model.value1\r\n  \n  // a comment  \ntargetModel.targetValue2 : model.value2");
 
         // Check result
         MatcherAssert.assertThat(((Map<String, Object>) result.get("targetModel")).get("targetValue1").toString(), CoreMatchers.is("value_1"));

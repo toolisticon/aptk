@@ -181,11 +181,17 @@ Template based java source Resource file creation and source file creation is ve
 The framework provides a rudimentary templating mechanism which can be used to create resource and java source files.
 It supports dynamic text replacement and for and if control blocks.
 
-    !{if textArray != null}
-        !{for text:textArray}
+    !{if model.textArray != null}
+        !{for text:model.textArray}
             Dynamic text: ${text}<br />
         !{/for}
     !{/if}
+    !{include resource:'/templatToInclude.tpl'}
+        // define model for include
+        // maps expression result involving the outer model 
+        // to the include commands model 
+        model.text : model.obj1.text
+    !{/include}
 
 ### Sample code : Resource file creation
 
