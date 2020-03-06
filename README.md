@@ -186,7 +186,7 @@ It supports dynamic text replacement and for and if control blocks.
             Dynamic text: ${text}<br />
         !{/for}
     !{/if}
-    !{include resource:'/templatToInclude.tpl'}
+    !{include resource:'/templateToInclude.tpl'}
         // define model to use for processing of included template.
         model.text : model.obj1.text
     !{/include}
