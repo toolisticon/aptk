@@ -187,9 +187,7 @@ It supports dynamic text replacement and for and if control blocks.
         !{/for}
     !{/if}
     !{include resource:'/templatToInclude.tpl'}
-        // define model for include
-        // maps expression result involving the outer model 
-        // to the include commands model 
+        // define model to use for processing of included template.
         model.text : model.obj1.text
     !{/include}
 
