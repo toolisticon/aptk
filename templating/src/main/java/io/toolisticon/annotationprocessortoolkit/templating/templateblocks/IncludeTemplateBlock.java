@@ -17,13 +17,17 @@ public class IncludeTemplateBlock implements TemplateBlock {
     final static String ATTRIBUTE_NAME_RESOURCE = "resource";
     final static String ATTRIBUTE_NAME_MODEL = "model";
 
+
+    private final String modelDefinitionString;
+
+
     private final String modelAccessPath;
 
     private final String templateResource;
     private final String templateString;
 
 
-    public IncludeTemplateBlock(String attributeString) {
+    public IncludeTemplateBlock(String attributeString, String modelDefinitionString) {
 
         if (attributeString == null || attributeString.trim().isEmpty()) {
             throw new IllegalArgumentException("include command has no attribute string.");
@@ -35,14 +39,21 @@ public class IncludeTemplateBlock implements TemplateBlock {
         if (templateResource == null) {
             throw new IllegalArgumentException("you must set resource at include control block");
         }
-
-        modelAccessPath = attributeMap.get(ATTRIBUTE_NAME_MODEL);
-
         try {
             templateString = ParseUtilities.readResourceToString(templateResource);
         } catch (IOException e) {
             throw new IllegalArgumentException("Didn't found included template resource file : " + templateResource, e);
         }
+
+        modelAccessPath = attributeMap.get(ATTRIBUTE_NAME_MODEL);
+        this.modelDefinitionString = modelDefinitionString.trim();
+
+        if(!this.modelDefinitionString.isEmpty() && modelAccessPath != null) {
+            throw new IllegalArgumentException("INCLUDE: Please use either " + ATTRIBUTE_NAME_MODEL + " attribute or model configuration via INCLUDE command content block.");
+        }
+
+
+
 
     }
 
@@ -61,11 +72,17 @@ public class IncludeTemplateBlock implements TemplateBlock {
 
             model = new HashMap<>();
             model.put("model", values);
+        } else if (!this.modelDefinitionString.isEmpty()) {
+            model = ParseUtilities.extractModelFromString(variables, this.modelDefinitionString);
         } else {
             model = variables;
         }
 
         return TemplateProcessor.processTemplate(templateString, model);
+    }
+
+    public String getModelDefinitionString() {
+        return modelDefinitionString;
     }
 
     public String getTemplateResource() {

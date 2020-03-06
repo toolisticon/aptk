@@ -1,5 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.templating;
 
+import io.toolisticon.annotationprocessortoolkit.templating.exceptions.InvalidIncludeModelExpression;
+import io.toolisticon.annotationprocessortoolkit.templating.expressions.ExpressionParser;
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.ForTemplateBlock;
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.IfTemplateBlock;
 import io.toolisticon.annotationprocessortoolkit.templating.templateblocks.IncludeTemplateBlock;
@@ -111,7 +113,7 @@ public class ParseUtilities {
                     break;
                 }
                 case INCLUDE: {
-                    IncludeTemplateBlock includeTemplateBlock = new IncludeTemplateBlock(nextBlock.getAttributes());
+                    IncludeTemplateBlock includeTemplateBlock = new IncludeTemplateBlock(nextBlock.getAttributes(), nextBlock.getContent());
                     binder.addTemplateBlock(includeTemplateBlock);
 
                     tmpTemplateString = nextBlock.getRemainingStringToBeProcessed();
@@ -261,6 +263,88 @@ public class ParseUtilities {
 
         }
         return attributeMap;
+    }
+
+    /**
+     * Extracts model from String.
+     * String may contain key value pairs. One per line separated by ':'
+     *
+     * @param outerModel the outerModel
+     * @param modelString the model String to parse
+     * @return
+     */
+    public static Map<String, Object> extractModelFromString(Map<String, Object> outerModel, String modelString) {
+
+        if (outerModel == null) {
+            throw new IllegalArgumentException("passed outerModel must not be null");
+        }
+        if (modelString == null) {
+            throw new IllegalArgumentException("passed modelString must not be null");
+        }
+
+        Map<String, Object> result = new HashMap<>();
+
+        String[] modelStringLines = modelString.split("\\r{0,1}\\n");
+
+        for (String line : modelStringLines) {
+            Pattern keyValueExtractionPattern = Pattern.compile("^\\s*(\\w+(?:[.]\\w+)*)\\s*[:]\\s*(.+)\\s*$");
+
+            // skip empty line
+            if (line.trim().isEmpty()) {
+                continue;
+            }
+
+            Matcher matcher = keyValueExtractionPattern.matcher(line);
+
+            if (matcher.matches()) {
+
+                try {
+                    String key = matcher.group(1);
+                    String value = matcher.group(2);
+
+                    ParseUtilities.addKeyValuePair(outerModel, result, key, value);
+                } catch (Exception e) {
+                    throw new InvalidIncludeModelExpression("couldn't add get key/value pair for expression : " + line, e);
+                }
+
+            } else {
+                throw new InvalidIncludeModelExpression("key/value pair expression for generating a model isn't syntactically correct ( '<TARGET MODEL ACCESS PATH SEPARATED BY .>:<VALUE EXPRESSION>'): " + line);
+            }
+
+        }
+
+
+        return result;
+
+    }
+
+    static void addKeyValuePair(Map<String, Object> outerModel, Map<String, Object> modelToBuild, String key, String valueExpression) {
+
+        String[] keyAccessPath = key.split("[.]");
+        String valueKey = keyAccessPath[keyAccessPath.length - 1];
+
+        // First get target Map to put the value in
+        Map<String, Object> targetMap = modelToBuild;
+
+        for (int i = 0; i < keyAccessPath.length - 1; i++) {
+
+            Object accessChainObject = targetMap.get(keyAccessPath[i]);
+            if (accessChainObject == null) {
+                Map<String, Object> nextMap = new HashMap<>();
+                targetMap.put(keyAccessPath[i], nextMap);
+                targetMap = nextMap;
+            } else if (Map.class.isAssignableFrom(accessChainObject.getClass())) {
+                targetMap = (Map<String, Object>) accessChainObject;
+            } else {
+                throw new IllegalArgumentException("key path must not include Objects others than of type Map");
+            }
+
+        }
+
+        // Now resolve expression
+        targetMap.put(valueKey, ExpressionParser.parseExpression(valueExpression, outerModel).evaluateExpression().value());
+
+
     }
 
 }
