@@ -84,7 +84,7 @@ public class HasPublicNoargConstructorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -102,7 +102,7 @@ public class HasPublicNoargConstructorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -121,7 +121,7 @@ public class HasPublicNoargConstructorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -139,7 +139,7 @@ public class HasPublicNoargConstructorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -160,7 +160,7 @@ public class HasPublicNoargConstructorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -175,7 +175,7 @@ public class HasPublicNoargConstructorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -195,7 +195,7 @@ public class HasPublicNoargConstructorMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 }

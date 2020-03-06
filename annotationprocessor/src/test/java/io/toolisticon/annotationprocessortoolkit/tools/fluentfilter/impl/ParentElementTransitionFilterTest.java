@@ -74,7 +74,7 @@ public class ParentElementTransitionFilterTest {
         })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -106,7 +106,7 @@ public class ParentElementTransitionFilterTest {
         })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 

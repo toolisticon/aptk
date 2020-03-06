@@ -57,7 +57,7 @@ public class ByParameterTypeMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -82,7 +82,7 @@ public class ByParameterTypeMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ByParameterTypeMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -122,7 +122,7 @@ public class ByParameterTypeMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -139,7 +139,7 @@ public class ByParameterTypeMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 

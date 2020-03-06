@@ -43,7 +43,7 @@ public class IsAssignableToMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -60,7 +60,7 @@ public class IsAssignableToMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -79,7 +79,7 @@ public class IsAssignableToMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -94,7 +94,7 @@ public class IsAssignableToMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -109,7 +109,7 @@ public class IsAssignableToMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 }
 

@@ -42,7 +42,7 @@ public class IsInterfaceMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -59,7 +59,7 @@ public class IsInterfaceMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -74,7 +74,7 @@ public class IsInterfaceMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 }

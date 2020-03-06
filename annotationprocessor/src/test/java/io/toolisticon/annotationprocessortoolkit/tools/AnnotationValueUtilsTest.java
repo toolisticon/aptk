@@ -74,7 +74,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -111,7 +111,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -148,7 +148,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -185,7 +185,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -222,7 +222,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -259,7 +259,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -296,7 +296,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -332,7 +332,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -368,7 +368,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -404,7 +404,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -441,7 +441,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -483,7 +483,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -521,7 +521,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -557,7 +557,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -593,7 +593,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -629,7 +629,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -666,7 +666,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -702,7 +702,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -739,7 +739,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -776,7 +776,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -812,7 +812,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -865,7 +865,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -890,7 +890,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -930,7 +930,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -965,7 +965,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -1014,7 +1014,7 @@ public class AnnotationValueUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 

@@ -56,7 +56,7 @@ public class ByParameterTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -81,7 +81,7 @@ public class ByParameterTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ByParameterTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -121,7 +121,7 @@ public class ByParameterTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -136,7 +136,7 @@ public class ByParameterTypeFqnMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 }

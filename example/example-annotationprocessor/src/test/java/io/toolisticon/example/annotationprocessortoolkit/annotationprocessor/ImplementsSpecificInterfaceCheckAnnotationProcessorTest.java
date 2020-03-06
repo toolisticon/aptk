@@ -25,22 +25,22 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorTest {
     public void testValidUsage_implements() {
         compilationTestBuilder.addSources("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTest.java")
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
     public void testValidUsage_extends() {
         compilationTestBuilder.addSources("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTestExtendsCase.java")
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
     public void testInvalidUsage_nonStringParameter() {
         compilationTestBuilder.addSources("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/InvalidUsageTest.java")
                 .compilationShouldFail()
-                .expectErrorMessagesThatContain(CoreMatcherValidationMessages.IS_ASSIGNABLE_TO.getCode())
-                .executeTest();
+                .expectedErrorMessages(CoreMatcherValidationMessages.IS_ASSIGNABLE_TO.getCode())
+                .testCompilation();
     }
 
 

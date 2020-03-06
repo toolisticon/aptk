@@ -49,7 +49,7 @@ public class FluentValidatorMessageTest {
                     }
                 })
                 .compilationShouldFail()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -67,7 +67,7 @@ public class FluentValidatorMessageTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -85,7 +85,7 @@ public class FluentValidatorMessageTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -110,7 +110,7 @@ public class FluentValidatorMessageTest {
         })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -135,7 +135,7 @@ public class FluentValidatorMessageTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 

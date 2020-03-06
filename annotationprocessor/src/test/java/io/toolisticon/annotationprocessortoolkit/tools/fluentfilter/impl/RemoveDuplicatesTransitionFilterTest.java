@@ -44,7 +44,7 @@ public class RemoveDuplicatesTransitionFilterTest {
                         })
                 .useSource(JavaFileObjectUtils.readFromResource("/AnnotationClassAttributeTestClass.java"))
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 

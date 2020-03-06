@@ -49,7 +49,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -75,7 +75,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -101,7 +101,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -130,7 +130,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -157,7 +157,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -184,7 +184,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -210,7 +210,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -236,7 +236,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -262,7 +262,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -288,7 +288,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -313,7 +313,7 @@ public class GetAttributesCommandTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 

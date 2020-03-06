@@ -64,7 +64,7 @@ public class ElementUtils_AccessTypeHierarchyTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -95,7 +95,7 @@ public class ElementUtils_AccessTypeHierarchyTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -127,7 +127,7 @@ public class ElementUtils_AccessTypeHierarchyTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -157,7 +157,7 @@ public class ElementUtils_AccessTypeHierarchyTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -186,7 +186,7 @@ public class ElementUtils_AccessTypeHierarchyTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -210,7 +210,7 @@ public class ElementUtils_AccessTypeHierarchyTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 }

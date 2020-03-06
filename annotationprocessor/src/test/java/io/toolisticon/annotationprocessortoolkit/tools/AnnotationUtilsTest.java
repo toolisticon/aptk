@@ -67,7 +67,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -95,7 +95,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -123,7 +123,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -155,7 +155,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -182,7 +182,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -210,7 +210,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     @Test
@@ -237,7 +237,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -266,7 +266,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -294,7 +294,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     // --------------------------------------------
@@ -320,7 +320,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -348,7 +348,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
     // --------------------------------------------
@@ -375,7 +375,7 @@ public class AnnotationUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 }

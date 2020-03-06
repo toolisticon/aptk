@@ -52,7 +52,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -83,7 +83,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -109,7 +109,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -135,7 +135,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -164,7 +164,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -191,7 +191,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -218,7 +218,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -244,7 +244,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -270,7 +270,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -296,7 +296,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -322,7 +322,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -347,7 +347,7 @@ public class GetAttributesCommandWithInheritanceTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 

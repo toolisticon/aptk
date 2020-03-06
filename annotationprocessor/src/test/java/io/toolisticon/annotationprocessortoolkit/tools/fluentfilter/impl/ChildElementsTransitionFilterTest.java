@@ -78,7 +78,7 @@ public class ChildElementsTransitionFilterTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -115,7 +115,7 @@ public class ChildElementsTransitionFilterTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 

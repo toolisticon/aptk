@@ -63,7 +63,7 @@ public class ByGenericTypeMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
     }
 
 
@@ -99,7 +99,7 @@ public class ByGenericTypeMatcherTest {
 
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -136,7 +136,7 @@ public class ByGenericTypeMatcherTest {
 
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -181,7 +181,7 @@ public class ByGenericTypeMatcherTest {
 
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -229,7 +229,7 @@ public class ByGenericTypeMatcherTest {
 
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 

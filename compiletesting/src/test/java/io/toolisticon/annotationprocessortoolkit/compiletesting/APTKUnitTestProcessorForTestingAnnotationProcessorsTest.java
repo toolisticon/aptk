@@ -48,7 +48,7 @@ public class APTKUnitTestProcessorForTestingAnnotationProcessorsTest {
     @Test
     public void testIfToolingIsSetCorrectly() {
 
-        CompileTestBuilder.unitTest().defineTest(TestProcessor.class, new APTKUnitTestProcessorForTestingAnnotationProcessors<TestProcessor, TypeElement>() {
+        CompileTestBuilder.unitTest().useProcessor(TestProcessor.class, new APTKUnitTestProcessorForTestingAnnotationProcessors<TestProcessor>() {
             @Override
             public void aptkUnitTest(TestProcessor processor, ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
@@ -59,7 +59,7 @@ public class APTKUnitTestProcessorForTestingAnnotationProcessorsTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
 
         // check if init was called

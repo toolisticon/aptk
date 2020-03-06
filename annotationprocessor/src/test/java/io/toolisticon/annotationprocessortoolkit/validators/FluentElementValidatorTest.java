@@ -59,7 +59,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -87,7 +87,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldFail()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -115,7 +115,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -143,7 +143,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldFail()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -172,7 +172,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -200,7 +200,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldFail()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -229,7 +229,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -258,7 +258,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldFail()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -286,7 +286,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -314,7 +314,7 @@ public class FluentElementValidatorTest {
                 })
 
                 .compilationShouldFail()
-                .executeTest();
+                .testCompilation();
 
     }
 

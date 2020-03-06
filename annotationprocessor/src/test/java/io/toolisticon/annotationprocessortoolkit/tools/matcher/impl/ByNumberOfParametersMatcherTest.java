@@ -74,7 +74,7 @@ public class ByNumberOfParametersMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -104,7 +104,7 @@ public class ByNumberOfParametersMatcherTest {
 
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -134,7 +134,7 @@ public class ByNumberOfParametersMatcherTest {
 
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -159,7 +159,7 @@ public class ByNumberOfParametersMatcherTest {
 
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -176,7 +176,7 @@ public class ByNumberOfParametersMatcherTest {
 
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -194,7 +194,7 @@ public class ByNumberOfParametersMatcherTest {
 
         })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 

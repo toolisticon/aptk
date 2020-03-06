@@ -27,8 +27,8 @@ public class FilerUtilsTest {
         unitTestBuilder.useProcessor(new FileObjectUtilsTestAnnotationProcessor())
                 .useSource(JavaFileObjectUtils.readFromResource("/testcases/generators/FilerUtilsTestClass.java"))
                 .compilationShouldSucceed()
-                .expectThatFileObjectExists(StandardLocation.CLASS_OUTPUT, "", "testOutput.txt", JavaFileObjectUtils.readFromResource("/testcases/generators/expectedResult.txt"))
-                .executeTest();
+                .expectedFileObjectExists(StandardLocation.CLASS_OUTPUT, "", "testOutput.txt", JavaFileObjectUtils.readFromResource("/testcases/generators/expectedResult.txt"))
+                .testCompilation();
 
     }
 

@@ -88,7 +88,7 @@
         <java.version>1.7</java.version>
 
         <spiap.version>0.7.0</spiap.version>
-        <compileTesting.version>0.8.0</compileTesting.version>
+        <compileTesting.version>0.7.0</compileTesting.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.12</junit.version>

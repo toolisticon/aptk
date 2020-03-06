@@ -72,7 +72,7 @@ public class SuperTypesTransitionFilterTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 
@@ -104,7 +104,7 @@ public class SuperTypesTransitionFilterTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 

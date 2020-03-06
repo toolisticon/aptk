@@ -49,7 +49,7 @@ public class InclusiveCriteriaElementFilterTest {
                 })
                 .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java"))
                 .compilationShouldSucceed()
-                .executeTest();
+                .testCompilation();
 
     }
 }
