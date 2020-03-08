@@ -1,17 +1,55 @@
-name: Java CI
+name: release_on_master
 
-on: [release]
-
+on:
+  push:
+    branches:
+      - master
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      - uses: actions/checkout@v1
+
+      - name: Set up JDK 12
+        uses: actions/setup-java@v1
+        with:
+          java-version: 12
+
+      - name: Cache .m2
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Prepare mvnw
+        run: chmod +x ./mvnw
+
+      - name: Build
+        run: ./mvnw clean package
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1.0.2
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          file: target/site/jacoco-aggregate/jacoco.xml
+
+      - name: Import GPG Owner Trust
+        run: echo ${{secrets.GPG_OWNERTRUST}} | base64 --decode | gpg --import-ownertrust
+
+      - name: Import GPG key
+        run: echo ${{secrets.GPG_SECRET_KEYS}} | base64 --decode | gpg --import --no-tty --batch --yes
+
+      - name: Clean settings.xml
+        run: rm -rf ~/.m2/settings.xml
+
+      - name: Create settings.xml
+        uses: s4u/maven-settings-action@v1
+        with:
+          servers: '[{"id": "sonatype-nexus-staging", "username": "${{secrets.SONATYPE_USERNAME}}", "password": "${{secrets.SONATYPE_PASSWORD}}"}]'
+
+      - name: Deploy a new version to central
+        run: ./mvnw clean javadoc:jar source:jar deploy -B -DskipTests -Prelease -Dgpg.passphrase=${{secrets.GPG_PASSPHRASE}}
