@@ -29,8 +29,8 @@
 
     <parent>
         <groupId>io.toolisticon.maven</groupId>
-        <artifactId>maven-oss-parent</artifactId>
-        <version>0.7.0</version>
+        <artifactId>maven-oss-parent-for-github</artifactId>
+        <version>0.0.2</version>
     </parent>
 
 
