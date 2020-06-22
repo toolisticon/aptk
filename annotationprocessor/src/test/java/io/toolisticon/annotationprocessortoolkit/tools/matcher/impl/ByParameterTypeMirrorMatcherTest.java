@@ -43,7 +43,7 @@ public class ByParameterTypeMirrorMatcherTest {
                 // find field
                 List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
                 MatcherAssert.assertThat("Precondition: should have found one method", result.size() == 1);
-                MatcherAssert.assertThat("Precondition: dound method has to be of zype ExecutableElement", result.get(0) instanceof ExecutableElement);
+                MatcherAssert.assertThat("Precondition: found element has to be of type ExecutableElement", result.get(0) instanceof ExecutableElement);
 
                 ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
                 MatcherAssert.assertThat("Precondition: method must have 2 parameters", executableElement.getParameters().size() == 2);
@@ -52,6 +52,43 @@ public class ByParameterTypeMirrorMatcherTest {
 
 
                 MatcherAssert.assertThat("Should have found matching parameters", CoreMatchers.BY_PARAMETER_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(TypeUtils.TypeRetrieval.getTypeMirror(Boolean.class), TypeUtils.TypeRetrieval.getTypeMirror(String.class))));
+
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
+
+    private static class GenericTypeTestClass {
+
+        public void methodWithGenericParameter(List<Long> values, String secondParameter, int intValue, int[] intArray, List<Long>[] arrayWithGenerics) {
+
+        }
+
+    }
+
+    @Test
+    public void byParameterTypeMirrorMatcher_match_withGenericParameter() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+
+                // First get testclass
+                TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(GenericTypeTestClass.class);
+                MatcherAssert.assertThat("Precondition: should have found the  testclass", typeElement, Matchers.notNullValue());
+
+
+                // find field
+                List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(typeElement, "methodWithGenericParameter");
+                MatcherAssert.assertThat("Precondition: should have found one method", result.size() == 1);
+                MatcherAssert.assertThat("Precondition: found element has to be of type ExecutableElement", result.get(0) instanceof ExecutableElement);
+
+                ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
+                MatcherAssert.assertThat("Precondition: method must have 5 parameters", executableElement.getParameters().size() == 5);
+
+
+                MatcherAssert.assertThat("Should have found matching parameters", CoreMatchers.BY_PARAMETER_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(TypeUtils.TypeRetrieval.getTypeMirror(List.class), TypeUtils.TypeRetrieval.getTypeMirror(String.class), TypeUtils.TypeRetrieval.getTypeMirror(int.class), TypeUtils.TypeRetrieval.getTypeMirror(int[].class), TypeUtils.TypeRetrieval.getTypeMirror(List[].class))));
 
             }
         })

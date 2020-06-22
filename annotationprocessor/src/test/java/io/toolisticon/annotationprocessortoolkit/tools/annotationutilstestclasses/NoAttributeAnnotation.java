@@ -6,14 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Test annotation for a class annotation attribute.
+ * Annotation that doesn't have attributes.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.METHOD,ElementType.TYPE})
-public @interface ClassAttributeAnnotation {
-
-    Class<?> value() default Void.class;
-
-    Class<?> classAttribute() default Void.class;
-
+@Target(value = ElementType.TYPE)
+public @interface NoAttributeAnnotation {
 }

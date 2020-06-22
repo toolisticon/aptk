@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Utility class to handle bean related tasks
+ * Utility class to handle bean related tasks.
  */
 public final class BeanUtils {
 

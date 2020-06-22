@@ -95,9 +95,9 @@ public final class TypeUtils {
         /**
          * Checks whether passed {@link TypeMirror} is of passed {@link TypeKind}.
          *
-         * @param typeMirror
-         * @param kind
-         * @return
+         * @param typeMirror the TypeMirror to check
+         * @param kind       the TypeKind to check for
+         * @return true if passed TypeMirror  is of passedTypeKind, otherwise false
          */
         public static boolean isOfTypeKind(TypeMirror typeMirror, TypeKind kind) {
             return typeMirror != null && kind != null && kind.equals(typeMirror.getKind());
@@ -106,6 +106,33 @@ public final class TypeUtils {
 
     }
 
+    /**
+     * Utilit functions for type conversions.
+     */
+    public static final class TypeConversion {
+
+        /**
+         * Hidden Constructor.
+         */
+        private TypeConversion() {
+
+        }
+
+        /**
+         * Returns full qualified name of passed TypeMirror.
+         *
+         * @param typeMirror the TypeMirror to get FQN for
+         * @return the FQN
+         */
+        public static String convertToFqn(TypeMirror typeMirror) {
+
+            TypeMirror erasedTypeMirror = TypeUtils.getTypes().erasure(typeMirror);
+            return erasedTypeMirror.toString();
+
+        }
+
+
+    }
 
     public static final class TypeRetrieval {
 
@@ -118,8 +145,9 @@ public final class TypeUtils {
 
         /**
          * Gets a type element for a full qualified class name.
+         * Remember: There's no TypeElement for primitive types and arrays, in this case null will be returned.
          *
-         * @param fullQualifiedClassName
+         * @param fullQualifiedClassName the FQN if the class
          * @return the type element for the passed full qualified class name or null if type element can't be found
          */
         public static TypeElement getTypeElement(String fullQualifiedClassName) {
@@ -135,9 +163,10 @@ public final class TypeUtils {
 
         /**
          * Gets a type element for a TypeMirror.
+         * Remember: There's no TypeElement for primitive types and arrays, in this case null will be returned.
          *
-         * @param typeMirror
-         * @return the type element for the passed full qualified class name or null if type element can't be found
+         * @param typeMirror The TypeMirror to get the TypeElement for
+         * @return the type element for the passed full qualified class name or null if type element can't be found or passed TypeMirror represents no declared type (like primitives or arrays).
          */
         public static TypeElement getTypeElement(TypeMirror typeMirror) {
 
@@ -145,18 +174,25 @@ public final class TypeUtils {
                 return null;
             }
 
-            return getTypeElement(typeMirror.toString());
+            if (TypeUtils.CheckTypeKind.isDeclared(typeMirror)) {
+                DeclaredType declaredType = (DeclaredType) typeMirror;
+                return (TypeElement) declaredType.asElement();
+            }
+
+            return null;
 
         }
 
         /**
          * Gets a TypeMirror for a full qualified class name.
+         * This is done by resolving the corresponding TypeElement.
+         * This will return null for primitive types.
+         * Use alternative method that takes Class as parameter for primitives.
          *
-         * @param fullQualifiedClassName
+         * @param fullQualifiedClassName the fully qualified class name
          * @return the type mirror for the passed full qualified class name or null if corresponding type element can't be found
          */
         public static TypeMirror getTypeMirror(String fullQualifiedClassName) {
-
             TypeElement typeElement = getTypeElement(fullQualifiedClassName);
             return typeElement != null ? typeElement.asType() : null;
 
@@ -200,6 +236,16 @@ public final class TypeUtils {
         }
 
         /**
+         * Gets the erased {@link TypeMirror} for class.
+         *
+         * @param type the class to get the {@link TypeMirror} for
+         * @return The {@link TypeMirror} that is related with the passed class
+         */
+        public static TypeMirror getErasedTypeMirror(Class type) {
+            return ProcessingEnvironmentUtils.getTypes().erasure(getTypeMirror(type));
+        }
+
+        /**
          * Gets the {@link TypeMirror} for a passed primitive type.
          *
          * @param primitiveType the primitive type to get the type mirror for
@@ -233,7 +279,9 @@ public final class TypeUtils {
         }
     }
 
-
+    /**
+     * Utility functions to check TypeElements,TypeMirrors, Classes and FQNs for equality and assignability.
+     */
     public static final class TypeComparison {
 
         /**
@@ -250,7 +298,7 @@ public final class TypeUtils {
          * @param type        the class which typeElement must assignable to
          * @return true if typeElement is assignable to type otherwise false.
          */
-        public static boolean isAssignableTo(TypeElement typeElement, Class type) {
+        public static boolean isAssignableTo(TypeElement typeElement, Class<?> type) {
             return isAssignableTo(typeElement, ProcessingEnvironmentUtils.getElements().getTypeElement(type.getCanonicalName()).asType());
         }
 
@@ -276,6 +324,16 @@ public final class TypeUtils {
             return isAssignableTo(typeElement1, typeElement2.asType());
         }
 
+        /**
+         * Checks whether passed first {@link TypeMirror} is assignable to passed second {@link TypeMirror}.
+         *
+         * @param typeMirror1 the type mirror to check
+         * @param type        the type mirror which typeMirror1 must be assignable to
+         * @return true if typeMirror1 is assignable to typeMirror2 otherwise false.
+         */
+        public static boolean isAssignableTo(TypeMirror typeMirror1, Class<?> type) {
+            return isAssignableTo(typeMirror1, TypeRetrieval.getTypeMirror(type));
+        }
 
         /**
          * Checks whether passed first {@link TypeMirror} is assignable to passed second {@link TypeMirror}.
@@ -371,8 +429,8 @@ public final class TypeUtils {
          * Checks whether both TypeMirror parameters represent the same type.
          * Generic type attributes will be taken into account during the comparison.
          *
-         * @param typeMirror1
-         * @param typeMirror2
+         * @param typeMirror1 the first argument
+         * @param typeMirror2 the second argument
          * @return true if both TypeMirrors represent the same type
          */
         public static boolean isTypeEqual(TypeMirror typeMirror1, TypeMirror typeMirror2) {
@@ -395,8 +453,8 @@ public final class TypeUtils {
          * Checks whether both erased TypeMirror parameters represent the same type.
          * (== raw types are equal)
          *
-         * @param typeMirror1
-         * @param typeMirror2
+         * @param typeMirror1 the first TypeMirror argument
+         * @param typeMirror2 the second TypeMirror argument
          * @return true if both TypeMirrors represent the same type
          */
         public static boolean isErasedTypeEqual(TypeMirror typeMirror1, TypeMirror typeMirror2) {
@@ -406,7 +464,9 @@ public final class TypeUtils {
 
     }
 
-
+    /**
+     * Utility functions to check if TypeMirror represents an array and to check for the type of an array.
+     */
     public static final class Arrays {
 
         /**
@@ -429,7 +489,7 @@ public final class TypeUtils {
         /**
          * Gets the component type of an array TypeMirror.
          *
-         * @param typeMirror
+         * @param typeMirror the TypeMirror to check
          * @return returns the component TypeMirror of the passed array TypeMirror, returns null if passed TypeMirror isn't an array or null
          */
         public static TypeMirror getArraysComponentType(TypeMirror typeMirror) {
@@ -560,42 +620,91 @@ public final class TypeUtils {
     }
 
 
+    /**
+     * Utility functions to help to check for generic type parameters.
+     */
     public static final class Generics {
 
+        /**
+         * Creates a GenericType instance which can be used as an argument in utility functions to check for equality and assignability.
+         *
+         * @param rawType        the raw type
+         * @param typeParameters the typeParameters to use
+         * @param <T>            the generic type parameter
+         * @return the GenericType instance
+         */
         public static <T extends GenericTypeParameter> GenericType createGenericType(TypeMirror rawType, T... typeParameters) {
             return new GenericType(rawType, typeParameters);
         }
 
+        /**
+         * Creates a GenericType instance which can be used as an argument in utility functions to check for equality and assignability.
+         *
+         * @param rawType        the raw type
+         * @param typeParameters the typeParameters to use
+         * @param <T>            the generic type parameter
+         * @return the GenericType instance
+         */
         public static <T extends GenericTypeParameter> GenericType createGenericType(Class rawType, T... typeParameters) {
             return createGenericType(TypeRetrieval.getTypeMirror(rawType), typeParameters);
         }
 
+        /**
+         * Creates a GenericType instance which can be used as an argument in utility functions to check for equality and assignability.
+         *
+         * @param rawType        the raw type
+         * @param typeParameters the typeParameters to use
+         * @param <T>            the generic type parameter
+         * @return the GenericType instance
+         */
         public static <T extends GenericTypeParameter> GenericType createGenericType(String rawType, T... typeParameters) {
             return createGenericType(TypeRetrieval.getTypeMirror(rawType), typeParameters);
         }
 
-
+        /**
+         * Creates an extends wildcard type parameter.
+         *
+         * @param extendsBound the generic type
+         * @return the GenericTypeWildcard instance
+         */
         public static GenericTypeWildcard createWildcardWithExtendsBound(GenericType extendsBound) {
             return GenericTypeWildcard.createExtendsWildcard(extendsBound);
         }
 
+        /**
+         * Creates an super wildcard type parameter.
+         *
+         * @param superBound the generic type
+         * @return the GenericTypeWildcard instance
+         */
         public static GenericTypeWildcard createWildcardWithSuperBound(GenericType superBound) {
             return GenericTypeWildcard.createSuperWildcard(superBound);
         }
 
+        /**
+         * Creates an pure wildcard type parameter.
+         *
+         * @return the GenericTypeWildcard instance
+         */
         public static GenericTypeWildcard createPureWildcard() {
             return GenericTypeWildcard.createPureWildcard();
         }
 
 
-        public static <T extends GenericTypeParameter> boolean genericTypeEquals(TypeMirror typeMirror, GenericType genericType) {
+        /**
+         * Checks if passed TypeMirror matches passed GenericType.
+         *
+         * @param typeMirror  the TypeMirror to check
+         * @param genericType the GenericType to check
+         * @return true if typeMirror and genericType represents same generic type, otherwise false
+         */
+        public static boolean genericTypeEquals(TypeMirror typeMirror, GenericType genericType) {
 
             if (typeMirror == null || genericType == null) {
                 return false;
             }
 
             return compareGenericTypesRecursively(typeMirror, genericType);
-
 
         }
 
@@ -940,7 +1049,7 @@ public final class TypeUtils {
     /**
      * Gets the Types instance from {@link ToolingProvider}.
      *
-     * @return
+     * @return the Types instance .
      */
     public static Types getTypes() {
         return ProcessingEnvironmentUtils.getTypes();

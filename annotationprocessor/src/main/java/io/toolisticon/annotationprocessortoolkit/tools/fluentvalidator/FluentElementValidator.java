@@ -76,9 +76,9 @@ public class FluentElementValidator<ELEMENT extends Element> {
         /**
          * Set custom message.
          *
-         * @param customMessage
-         * @param messagArgs
-         * @return
+         * @param customMessage the custom message
+         * @param messagArgs    the message arguments
+         * @return the fluent validator instance
          */
         public final PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(String customMessage, Object... messagArgs) {
             return setCustomMessage(PlainValidationMessage.create(customMessage), messagArgs);
@@ -98,9 +98,9 @@ public class FluentElementValidator<ELEMENT extends Element> {
         /**
          * Set custom message.
          *
-         * @param customMessage
-         * @param messagArgs
-         * @return
+         * @param customMessage the custom message
+         * @param messagArgs    the message arguments
+         * @return the fluent validator instance
          */
         public final PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT> setCustomMessage(ValidationMessage customMessage, Object... messagArgs) {
             return (PrepareApplyValidator<PREPARE_VALIDATOR_ELEMENT>) FluentElementValidator.this.setCustomMessage(customMessage, messagArgs);
@@ -389,7 +389,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
     public abstract class AbstractFluentValidatorBase<VALIDATOR_ELEMENT extends Element, VALIDATOR extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, VALIDATOR>> {
 
 
-        private boolean inverted = false;
+        private boolean inverted;
 
         public AbstractFluentValidatorBase(final boolean inverted) {
             this.inverted = inverted;
@@ -504,7 +504,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
         public FluentElementValidator<ELEMENT> apply() {
 
 
-            boolean validationResult = false;
+            boolean validationResult;
 
             // just validate if element != null
             if (element != null) {
@@ -834,36 +834,36 @@ public class FluentElementValidator<ELEMENT extends Element> {
 
     public PrepareApplyValidator<ELEMENT> error() {
         this.nextValidationContext.setMessageScope(Diagnostic.Kind.ERROR);
-        return new PrepareApplyValidator<ELEMENT>();
+        return new PrepareApplyValidator<>();
     }
 
     public PrepareApplyValidator<ELEMENT> warning() {
         this.nextValidationContext.setMessageScope(Diagnostic.Kind.WARNING);
-        return new PrepareApplyValidator<ELEMENT>();
+        return new PrepareApplyValidator<>();
     }
 
     public PrepareApplyValidator<ELEMENT> note() {
         this.nextValidationContext.setMessageScope(Diagnostic.Kind.NOTE);
-        return new PrepareApplyValidator<ELEMENT>();
+        return new PrepareApplyValidator<>();
     }
 
     public PrepareApplyValidator<ELEMENT> setCustomMessage(String customMessage) {
         return setCustomMessage(PlainValidationMessage.create(customMessage));
     }
 
-    public PrepareApplyValidator<ELEMENT> setCustomMessage(String customMessage, Object... messagArgs) {
-        return setCustomMessage(PlainValidationMessage.create(customMessage), messagArgs);
+    public PrepareApplyValidator<ELEMENT> setCustomMessage(String customMessage, Object... messageArgs) {
+        return setCustomMessage(PlainValidationMessage.create(customMessage), messageArgs);
     }
 
     public PrepareApplyValidator<ELEMENT> setCustomMessage(ValidationMessage customMessage) {
         this.nextValidationContext.setCustomMessage(customMessage);
-        return new PrepareApplyValidator<ELEMENT>();
+        return new PrepareApplyValidator<>();
     }
 
 
-    public PrepareApplyValidator<ELEMENT> setCustomMessage(ValidationMessage customMessage, Object... messagArgs) {
-        this.nextValidationContext.setCustomMessage(customMessage, messagArgs);
-        return new PrepareApplyValidator<ELEMENT>();
+    public PrepareApplyValidator<ELEMENT> setCustomMessage(ValidationMessage customMessage, Object... messageArgs) {
+        this.nextValidationContext.setCustomMessage(customMessage, messageArgs);
+        return new PrepareApplyValidator<>();
     }
 
     // -------------------------------------------------------------

@@ -15,7 +15,7 @@ public class GenericType implements GenericTypeParameter {
      *
      * @param rawType        the raw type of the generic type
      * @param typeParameters the type parameters of the generic type (wildcards and generic types)
-     * @param <T>
+     * @param <T> The generic type parameter type
      */
     @SafeVarargs
     public <T extends GenericTypeParameter> GenericType(TypeMirror rawType, T... typeParameters) {

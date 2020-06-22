@@ -12,9 +12,6 @@ import javax.lang.model.element.TypeElement;
  */
 public class GetAttributesCommand implements CommandWithReturnType<TypeElement, AttributeResult[]> {
 
-    protected final static String[] GETTER_PREFIXES = {"get", "is", "has"};
-    protected final static String[] SETTER_PREFIXES = {"set"};
-
     public final static GetAttributesCommand INSTANCE = new GetAttributesCommand();
 
     @Override
