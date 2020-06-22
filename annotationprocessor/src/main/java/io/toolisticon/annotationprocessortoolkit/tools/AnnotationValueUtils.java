@@ -1,10 +1,14 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
+import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
+
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Types;
 import java.lang.reflect.Array;
 import java.util.List;
 
@@ -248,6 +252,16 @@ public class AnnotationValueUtils {
      */
     public static TypeMirror getClassValue(AnnotationValue annotationValue) {
         return getTypeMirrorValue(annotationValue);
+    }
+
+    /**
+     * Tries to get the annotationValues value as TypeMirror.
+     *
+     * @param annotationValue the value to get the value from.
+     * @return the annotationValues value casted as TypeMirror, or null if value has not the correct type.
+     */
+    public static String getClassValueAsFQN(AnnotationValue annotationValue) {
+        return ((TypeElement)ToolingProvider.getTooling().getTypes().asElement(getTypeMirrorValue(annotationValue))).getQualifiedName().toString();
     }
 
     /**

@@ -1,10 +1,10 @@
 package io.toolisticon.annotationprocessortoolkit.tools.matcher.impl;
 
-import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 
 /**
  * Matcher to check Parameters of ExecutableElement.
@@ -25,19 +25,18 @@ public class ByParameterTypeMatcher implements CriteriaMatcher<ExecutableElement
             return false;
         }
 
-        // cast to executable element for further checks
-        ExecutableElement executableElement = ElementUtils.CastElement.castToExecutableElement(element);
-
         // check if number of parameters is the same
-        if (executableElement.getParameters().size() != toCheckFor.length) {
+        if (element.getParameters().size() != toCheckFor.length) {
             return false;
         }
 
 
-        for (int i = 0; i < executableElement.getParameters().size(); i++) {
-            if (!executableElement.getParameters().get(i).asType().equals(
-                    TypeUtils.TypeRetrieval.getTypeMirror(toCheckFor[i]))
-                    ) {
+        for (int i = 0; i < element.getParameters().size(); i++) {
+
+            // must handle different cases
+            VariableElement parameterElement = element.getParameters().get(i);
+
+            if(!TypeUtils.TypeComparison.isErasedTypeEqual(parameterElement.asType(), TypeUtils.TypeRetrieval.getTypeMirror(toCheckFor[i]) )){
                 return false;
             }
         }
@@ -54,7 +53,7 @@ public class ByParameterTypeMatcher implements CriteriaMatcher<ExecutableElement
         if (toGetStringRepresentationFor != null) {
             StringBuilder stringBuilder = new StringBuilder("[");
             boolean isFirst = true;
-            for (Class element : toGetStringRepresentationFor) {
+            for (Class<?> element : toGetStringRepresentationFor) {
                 if (isFirst) {
                     isFirst = false;
                 } else {

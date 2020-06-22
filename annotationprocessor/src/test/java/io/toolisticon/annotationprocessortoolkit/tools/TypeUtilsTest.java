@@ -672,6 +672,22 @@ public class TypeUtilsTest {
     }
 
     @Test
+    public void typeUtils_TypeComparison_TETM_isAssignableTo_Class() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+
+                MatcherAssert.assertThat("type element should be detected as assignable to Object", TypeUtils.TypeComparison.isAssignableTo(element, Object.class));
+                MatcherAssert.assertThat("type element shouldn't be detected as assignable to InputStream", !TypeUtils.TypeComparison.isAssignableTo(element, InputStream.class));
+
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
+
+    @Test
     public void typeUtils_TypeComparison_TETM_isAssignableTo_TypeMirror() {
 
         unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {

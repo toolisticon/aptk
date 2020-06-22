@@ -377,7 +377,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * Applies transition filter.
      *
      * @param transitionFilter the transition filter to use
-     * @param <TARGET_ELEMENT>
+     * @param <TARGET_ELEMENT> the target elements type
      * @return the new FluentElementFilter instance based on transition filter result
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyTransitionFilter(TransitionFilter<ELEMENT, TARGET_ELEMENT> transitionFilter) {
@@ -391,7 +391,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * Applies transition filter.
      *
      * @param transitionFilter the transition filter to use
-     * @param <TARGET_ELEMENT>
+     * @param <TARGET_ELEMENT> the target elements type
      * @return the new FluentElementFilter instance based on transition filter result
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyTransitionFilter(ElementBasedTransitionFilter<TARGET_ELEMENT> transitionFilter) {

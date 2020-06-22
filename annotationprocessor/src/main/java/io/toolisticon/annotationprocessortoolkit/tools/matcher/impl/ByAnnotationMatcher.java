@@ -23,7 +23,7 @@ public class ByAnnotationMatcher implements CriteriaMatcher<Element, Class<? ext
      */
     @Override
     public boolean checkForMatchingCharacteristic(Element element, Class<? extends Annotation> toCheckFor) {
-        return element == null || toCheckFor == null ? false : element.getAnnotation(toCheckFor) != null;
+        return element != null && toCheckFor != null && element.getAnnotation(toCheckFor) != null;
     }
 
 }

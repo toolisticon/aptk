@@ -32,7 +32,7 @@ public final class Utilities {
             return null;
         }
 
-        Set<T> set = new HashSet<T>(array.length);
+        Set<T> set = new HashSet<>(array.length);
 
         for (T element : array) {
 
@@ -49,24 +49,24 @@ public final class Utilities {
 
 
     /**
-     * Creates a Set that is containing the varags arguments.
+     * Creates a Set that is containing the varargs arguments.
      *
      * @param varargs the elements to be added to the set
-     * @param <T>
+     * @param <T>     The arrays base type
      * @return a Set that contains all varargs arguments or an empty Set if no varargs arguments have been used
      */
     @SafeVarargs
     public static <T> Set<T> convertVarargsToSet(T... varargs) {
 
-        return varargs != null ? new HashSet<T>(Arrays.asList(varargs)) : new HashSet<T>();
+        return varargs != null ? new HashSet<>(Arrays.asList(varargs)) : new HashSet<T>();
 
     }
 
     /**
-     * Creates a List that is containing the varags arguments.
+     * Creates a List that is containing the varargs arguments.
      *
      * @param varargs the elements to be added to the list
-     * @param <T>
+     * @param <T>     the arrays base type
      * @return a List that contains all varargs arguments or an empty List if no varargs arguments have been used
      */
     @SafeVarargs
@@ -77,10 +77,10 @@ public final class Utilities {
     }
 
     /**
-     * Creates an array that is containing the varags arguments.
+     * Creates an array that is containing the varargs arguments.
      *
      * @param varargs the elements to be added to the array
-     * @param <T>
+     * @param <T> the arrays base type
      * @return a array that contains all varargs arguments or an array of length 0 if no varargs arguments have been used
      */
     @SafeVarargs
@@ -88,7 +88,7 @@ public final class Utilities {
         final Object[] e = {};
 
         if (varargs == null) {
-            return (T[]) new Object[0];
+            return (T[]) e;
         }
         return varargs;
 

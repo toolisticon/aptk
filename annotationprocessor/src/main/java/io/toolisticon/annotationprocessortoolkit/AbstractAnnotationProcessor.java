@@ -113,9 +113,9 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     /**
      * This method can be used to wrap elements to an array.
      *
-     * @param element
-     * @param <T>
-     * @return
+     * @param element the elements to be wrapped
+     * @param <T> the type of the elements
+     * @return the array containing al passed elements
      */
     @SafeVarargs
     public static <T> T[] wrapToArray(T... element) {

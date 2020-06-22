@@ -4,6 +4,7 @@ import io.toolisticon.annotationprocessortoolkit.AbstractUnitTestAnnotationProce
 import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassArrayAttributeAnnotation;
 import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassAttributeAnnotation;
 import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.DefaultValueAnnotation;
+import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.NoAttributeAnnotation;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.compiletesting.CompileTestBuilder;
@@ -18,6 +19,8 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -371,6 +374,151 @@ public class AnnotationUtilsTest {
 
                 MatcherAssert.assertThat(result, Matchers.notNullValue());
                 MatcherAssert.assertThat(result.toString(), Matchers.is(DefaultValueAnnotation.class.getCanonicalName()));
+
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
+
+    // --------------------------------------------
+    // -- getClassAttributeFromAnnotationAsTypeMirror
+    // -- and
+    // -- getClassAttributeFromAnnotationAsFqn
+    // --------------------------------------------
+
+    @ClassAttributeAnnotation(value = String.class, classAttribute = Long.class)
+    static class ClassAttributeTestcase_WithCorrectClassAttribute {
+
+    }
+
+    @DefaultValueAnnotation(mandatoryValue = 3L)
+    @NoAttributeAnnotation
+    static class ClassAttributeTestcase_NonClassAttribute {
+
+    }
+
+    @Test
+    public void getClassAttributeFromAnnotationAsTypeMirror_shouldGetClassAttributeSuccefully() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+
+                // precondition
+                TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(ClassAttributeTestcase_WithCorrectClassAttribute.class);
+                MatcherAssert.assertThat("PRECONDITION : TypeElement must exist", typeElement, Matchers.notNullValue());
+
+                // test - for value
+                TypeMirror result = AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(typeElement, ClassAttributeAnnotation.class);
+
+                MatcherAssert.assertThat(result, Matchers.notNullValue());
+                MatcherAssert.assertThat("Type must match String : " , TypeUtils.TypeComparison.isTypeEqual(result, String.class));
+
+                // test - for value
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(typeElement, ClassAttributeAnnotation.class,"classAttribute");
+
+                MatcherAssert.assertThat(result, Matchers.notNullValue());
+                MatcherAssert.assertThat("Type must match Long : " , TypeUtils.TypeComparison.isTypeEqual(result, Long.class));
+
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
+
+    @Test
+    public void getClassAttributeFromAnnotationAsTypeMirror_shouldReturnNullForNonMatchingClassAttributes() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+
+                // precondition
+                TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(ClassAttributeTestcase_WithCorrectClassAttribute.class);
+                MatcherAssert.assertThat("PRECONDITION : TypeElement must exist", typeElement, Matchers.notNullValue());
+
+                // test - no class based attribute
+                TypeMirror result = AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(typeElement, DefaultValueAnnotation.class);
+                MatcherAssert.assertThat(result, Matchers.nullValue());
+
+                // test - no class based attribute
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(typeElement, DefaultValueAnnotation.class, "mandatoryValue");
+                MatcherAssert.assertThat(result, Matchers.nullValue());
+
+                // test - annotation not found
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(typeElement, ClassArrayAttributeAnnotation.class);
+                MatcherAssert.assertThat(result, Matchers.nullValue());
+
+                // test - annotation doesn't take attributes
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(typeElement, NoAttributeAnnotation.class);
+                MatcherAssert.assertThat(result, Matchers.nullValue());
+
+
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
+
+
+
+
+    @Test
+    public void getClassAttributeFromAnnotationAsFqn_shouldGetClassAttributeSuccefully() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+
+                // precondition
+                TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(ClassAttributeTestcase_WithCorrectClassAttribute.class);
+                MatcherAssert.assertThat("PRECONDITION : TypeElement must exist", typeElement, Matchers.notNullValue());
+
+                // test - for value
+                String result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(typeElement, ClassAttributeAnnotation.class);
+
+                MatcherAssert.assertThat(result, Matchers.notNullValue());
+                MatcherAssert.assertThat("Type must match String : " , String.class.getCanonicalName().equals(result));
+
+                // test - for value
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(typeElement, ClassAttributeAnnotation.class,"classAttribute");
+
+                MatcherAssert.assertThat(result, Matchers.notNullValue());
+                MatcherAssert.assertThat("Type must match Long : " , Long.class.getCanonicalName().equals(result));
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
+
+    @Test
+    public void getClassAttributeFromAnnotationAsFqn_shouldReturnNullForNonMatchingClassAttributes() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+
+                // precondition
+                TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(ClassAttributeTestcase_WithCorrectClassAttribute.class);
+                MatcherAssert.assertThat("PRECONDITION : TypeElement must exist", typeElement, Matchers.notNullValue());
+
+                // test - no class based attribute
+                String result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(typeElement, DefaultValueAnnotation.class);
+                MatcherAssert.assertThat(result, Matchers.nullValue());
+
+                // test - no class based attribute
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(typeElement, DefaultValueAnnotation.class, "mandatoryValue");
+                MatcherAssert.assertThat(result, Matchers.nullValue());
+
+                // test - annotation not found
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(typeElement, ClassArrayAttributeAnnotation.class);
+                MatcherAssert.assertThat(result, Matchers.nullValue());
+
+                // test - annotation doesn't take attributes
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(typeElement, NoAttributeAnnotation.class);
+                MatcherAssert.assertThat(result, Matchers.nullValue());
+
 
             }
         })

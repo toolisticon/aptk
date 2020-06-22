@@ -9,7 +9,7 @@ import java.util.List;
 public class FluentValidatorState {
 
     private boolean validationResult = true;
-    private List<FluentValidatorMessage> validatorMessages = new ArrayList<FluentValidatorMessage>();
+    private List<FluentValidatorMessage> validatorMessages = new ArrayList<>();
 
     public FluentValidatorState() {
 

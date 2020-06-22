@@ -4,6 +4,7 @@ import io.toolisticon.annotationprocessortoolkit.AbstractUnitTestAnnotationProce
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
+import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.compiletesting.CompileTestBuilder;
 import io.toolisticon.compiletesting.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -12,6 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import java.util.List;
 
 
 /**
@@ -44,6 +47,42 @@ public class IsTypeEqualMatcherTest {
                 .testCompilation();
     }
 
+    public static class MatcherTestCases {
+
+        public int intType;
+        public int[] intArray;
+        public List<Long> genericType;
+        public List<Long>[] genericTypeArray;
+
+    }
+
+    public static VariableElement getField(TypeElement typeElement, String fieldName) {
+        return FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
+                .applyFilter(CoreMatchers.IS_FIELD)
+                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(fieldName)
+                .getResult().get(0);
+    }
+
+    @Test
+    public void checkMatchingEqualToCase_intValue() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+            @Override
+            protected void testCase(TypeElement element) {
+                TypeElement testcaseElement = TypeUtils.TypeRetrieval.getTypeElement(MatcherTestCases.class);
+
+
+                MatcherAssert.assertThat("Should return true for matching assignable to case (primitive) : ", CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intType"), int.class));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (array) : ", CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intArray"), int[].class));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type) : ", CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericType"), List.class));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type array) : ", CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericTypeArray"), List[].class));
+
+
+            }
+        })
+                .compilationShouldSucceed()
+                .testCompilation();
+    }
 
     @Test
     public void checkMismatchingAssignableToCase() {

@@ -5,7 +5,7 @@ import javax.lang.model.element.Element;
 /**
  * Matcher that checks if passed criteria is fulfilled
  */
-public interface CriteriaMatcher<E extends Element, T> extends BaseMatcher{
+public interface CriteriaMatcher<E extends Element, T> extends BaseMatcher<E>{
 
     /**
      * Applies matcher to element to determine if element matches a criteria or not.
