@@ -4,7 +4,7 @@
 
     <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
     <artifactId>annotationprocessortoolkit-parent</artifactId>
-    <version>0.14.2</version>
+    <version>0.14.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>annotationprocessortoolkit-parent</name>
