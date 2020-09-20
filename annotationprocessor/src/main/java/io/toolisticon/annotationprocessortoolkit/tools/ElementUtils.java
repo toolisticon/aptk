@@ -629,17 +629,17 @@ public final class ElementUtils {
         }
 
         /**
-         * Gets the fist enclosing element parent of a specific {@link ElementKind}.
+         * Gets the first enclosing element parent of specific {@link ElementKind}s.
          * Allows f.e. getting of enclosing class for passed method parameter element.
          *
          * @param element     the element to be used as base
-         * @param elementKind the element kind of the enclosing element to search for
+         * @param elementKinds the element kinds of the enclosing element to search for
          * @param <T> the return type
          * @return the Element of the specific Element Kind if it could be found, otherwise null
          */
-        public static <T extends Element> T getFirstEnclosingElementOfKind(Element element, ElementKind elementKind) {
+        public static <T extends Element> T getFirstEnclosingElementOfKind(Element element, ElementKind ... elementKinds) {
 
-            if (element == null || elementKind == null) {
+            if (element == null || elementKinds == null) {
                 return null;
             }
 
@@ -647,11 +647,12 @@ public final class ElementUtils {
 
             while (currentParentElement != null) {
 
-
-                if (currentParentElement.getKind() == elementKind) {
-                    return (T) currentParentElement;
+                // loop through all searched ElementKinds
+                for (ElementKind elementKind : elementKinds) {
+                    if (currentParentElement.getKind() == elementKind) {
+                        return (T) currentParentElement;
+                    }
                 }
-
                 // prepare next iteration
                 currentParentElement = currentParentElement.getEnclosingElement();
 

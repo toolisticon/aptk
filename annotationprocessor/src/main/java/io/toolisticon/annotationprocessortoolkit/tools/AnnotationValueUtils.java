@@ -8,7 +8,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Types;
 import java.lang.reflect.Array;
 import java.util.List;
 
@@ -261,7 +260,7 @@ public class AnnotationValueUtils {
      * @return the annotationValues value casted as TypeMirror, or null if value has not the correct type.
      */
     public static String getClassValueAsFQN(AnnotationValue annotationValue) {
-        return ((TypeElement)ToolingProvider.getTooling().getTypes().asElement(getTypeMirrorValue(annotationValue))).getQualifiedName().toString();
+        return ((TypeElement) ToolingProvider.getTooling().getTypes().asElement(getTypeMirrorValue(annotationValue))).getQualifiedName().toString();
     }
 
     /**
@@ -282,6 +281,22 @@ public class AnnotationValueUtils {
      */
     public static VariableElement getEnumValue(AnnotationValue annotationValue) {
         return !isEnum(annotationValue) ? null : (VariableElement) annotationValue.getValue();
+    }
+
+    /**
+     * Tries to get the annotation value as enum value.
+     *
+     * @param enumType        The enum Type
+     * @param annotationValue the value to get the value from.
+     * @param <T> The enum type
+     * @return the annotationValues value as enum value, or null if value has not the correct type.
+     */
+    public static <T extends Enum<T>> T getEnumValue(Class<T> enumType, AnnotationValue annotationValue) {
+
+        VariableElement enumValueElement = getEnumValue(annotationValue);
+
+        return enumValueElement != null ? Enum.valueOf(enumType, enumValueElement.getSimpleName().toString()) : null;
+
     }
 
     /**

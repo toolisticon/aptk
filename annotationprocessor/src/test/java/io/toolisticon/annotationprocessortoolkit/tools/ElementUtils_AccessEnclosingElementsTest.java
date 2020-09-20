@@ -219,6 +219,39 @@ public class ElementUtils_AccessEnclosingElementsTest {
     }
 
     @Test
+    public void getFirstEnclosingElementOfKind_validUsageWithSearchForMultipleElementKinds() {
+
+        // Prepare
+        Element parameterElement = Mockito.mock(VariableElement.class);
+        Element methodElement = Mockito.mock(ExecutableElement.class);
+        Element embeddedTypeElement = Mockito.mock(TypeElement.class);
+        Element typeElement = Mockito.mock(TypeElement.class);
+        Element packageElement = Mockito.mock(PackageElement.class);
+
+        Mockito.when(parameterElement.getKind()).thenReturn(ElementKind.PARAMETER);
+        Mockito.when(methodElement.getKind()).thenReturn(ElementKind.METHOD);
+        Mockito.when(embeddedTypeElement.getKind()).thenReturn(ElementKind.CLASS);
+        Mockito.when(typeElement.getKind()).thenReturn(ElementKind.CLASS);
+        Mockito.when(packageElement.getKind()).thenReturn(ElementKind.PACKAGE);
+
+
+        Mockito.when(parameterElement.getEnclosingElement()).thenReturn(methodElement);
+        Mockito.when(methodElement.getEnclosingElement()).thenReturn(embeddedTypeElement);
+        Mockito.when(embeddedTypeElement.getEnclosingElement()).thenReturn(typeElement);
+        Mockito.when(typeElement.getEnclosingElement()).thenReturn(packageElement);
+
+        // execute
+        Element result = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(parameterElement, ElementKind.PACKAGE, ElementKind.CLASS, ElementKind.INTERFACE);
+        MatcherAssert.assertThat(result, Matchers.is(embeddedTypeElement));
+
+        // execute
+        result = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(parameterElement, ElementKind.PACKAGE, ElementKind.INTERFACE);
+        MatcherAssert.assertThat(result, Matchers.is(packageElement));
+
+
+    }
+
+    @Test
     public void getFirstEnclosingElementOfKind_validUsageWithNoHit() {
 
         // Prepare
