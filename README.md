@@ -33,7 +33,7 @@ It also reduces the complexity of handling compile time and runtime model by sha
 - provides generic Element based filters, validator and matchers
 - provides fluent element validation and filtering api
 - provides support for template based creation of java source and resource files
-- compatible with all java versions >=6 (java >=9 compatibility since version 0.12.0)
+- compatible with all java versions >=7 (java >=9 compatibility since version 0.12.0)
 
 # How does it work?
 
@@ -49,14 +49,14 @@ This can be done by adding the following to your annotation processors pom.xml:
          <dependency>
              <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
              <artifactId>annotationprocessor</artifactId>
-             <version>0.14.0</version>
+             <version>0.14.2</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
         <dependency>
             <groupId>io.toolisticon.compiletesting</groupId>
             <artifactId>compiletesting</artifactId>
-            <version>0.7.0</version>
+            <version>0.8.0</version>
             <scope>test</scope>
         </dependency>
 
