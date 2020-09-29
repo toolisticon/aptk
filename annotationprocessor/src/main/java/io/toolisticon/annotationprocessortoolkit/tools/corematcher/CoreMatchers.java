@@ -11,6 +11,8 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByNumberOfPa
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeFqnMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByParameterTypeMirrorMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByQualifiedNameMatcher;
+import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByQualifiedNameRegexMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByRawTypeMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnTypeFqnMatcher;
 import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ByReturnTypeMatcher;
@@ -73,6 +75,17 @@ public class CoreMatchers {
      * Matcher to check if an Element name matches a specific regular expression.
      */
     public final static InclusiveCharacteristicElementBasedCoreMatcher<String> BY_REGEX_NAME = new InclusiveCharacteristicElementBasedCoreMatcher<>(new ByNameRegexMatcher(), CoreMatcherValidationMessages.BY_NAME_REGEX);
+
+    /**
+     * Matcher to check if an Element has a specific name.
+     */
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<String> BY_QUALIFIED_NAME = new ExclusiveCriteriaElementBasedCoreMatcher<>(new ByQualifiedNameMatcher(), CoreMatcherValidationMessages.BY_QUALIFIED_NAME);
+
+    /**
+     * Matcher to check if an Element name matches a specific regular expression.
+     */
+    public final static InclusiveCharacteristicElementBasedCoreMatcher<String> BY_REGEX_QUALIFIED_NAME = new InclusiveCharacteristicElementBasedCoreMatcher<>(new ByQualifiedNameRegexMatcher(), CoreMatcherValidationMessages.BY_QUALIFIED_NAME_REGEX);
+
 
 
     /**

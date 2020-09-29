@@ -5,7 +5,7 @@ import io.toolisticon.annotationprocessortoolkit.tools.matcher.CriteriaMatcher;
 import javax.lang.model.element.Element;
 
 /**
- * Class for checking for find matching elements by name.
+ * Class for checking for find matching elements by simple name.
  */
 public class ByNameMatcher implements CriteriaMatcher<Element, String> {
 

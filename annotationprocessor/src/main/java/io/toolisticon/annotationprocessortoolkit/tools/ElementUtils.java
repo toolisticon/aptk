@@ -297,6 +297,18 @@ public final class ElementUtils {
          * @return the casted element
          * @throws ClassCastException if passed Element can't be cast
          */
+        public static TypeElement castAnnotationType(Element e) {
+            return castToTypeElement(e);
+        }
+
+        /**
+         * Casts an element.
+         * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
+         *
+         * @param e the element to cast
+         * @return the casted element
+         * @throws ClassCastException if passed Element can't be cast
+         */
         public static VariableElement castParameter(Element e) {
             return castToVariableElement(e);
         }
@@ -312,6 +324,8 @@ public final class ElementUtils {
         public static VariableElement castField(Element e) {
             return castToVariableElement(e);
         }
+
+
 
         /**
          * Casts an element to TypeElement.
@@ -356,6 +370,18 @@ public final class ElementUtils {
          * @throws ClassCastException if passed Element can't be cast
          */
         public static ExecutableElement castMethod(Element e) {
+            return castToExecutableElement(e);
+        }
+
+        /**
+         * Casts an element.
+         * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
+         *
+         * @param e the element to cast
+         * @return the casted element
+         * @throws ClassCastException if passed Element can't be cast
+         */
+        public static ExecutableElement castAnnotationAttribute(Element e) {
             return castToExecutableElement(e);
         }
 
@@ -632,12 +658,12 @@ public final class ElementUtils {
          * Gets the first enclosing element parent of specific {@link ElementKind}s.
          * Allows f.e. getting of enclosing class for passed method parameter element.
          *
-         * @param element     the element to be used as base
+         * @param element      the element to be used as base
          * @param elementKinds the element kinds of the enclosing element to search for
-         * @param <T> the return type
+         * @param <T>          the return type
          * @return the Element of the specific Element Kind if it could be found, otherwise null
          */
-        public static <T extends Element> T getFirstEnclosingElementOfKind(Element element, ElementKind ... elementKinds) {
+        public static <T extends Element> T getFirstEnclosingElementOfKind(Element element, ElementKind... elementKinds) {
 
             if (element == null || elementKinds == null) {
                 return null;

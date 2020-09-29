@@ -7,6 +7,8 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
 
     BY_NAME("CM_BY_NAME", "Elements name must ${0} match ${1} of the following names: ${2}"),
     BY_NAME_REGEX("CM_BY_NAME_REGEX", "Elements name must ${0} match ${1} of the following regular expressions ${2}"),
+    BY_QUALIFIED_NAME("CM_BY_QUALIFIED_NAME", "Elements name must ${0} match ${1} of the following names: ${2}"),
+    BY_QUALIFIED_NAME_REGEX("CM_BY_QUALIFIED_NAME_REGEX", "Elements name must ${0} match ${1} of the following regular expressions ${2}"),
     BY_ANNOTATION("CM_BY_ANNOTATION", "Element must ${0} be annotated with ${1} of the following annotations: ${2}"),
     BY_ELEMENT_KIND("CM_BY_ELEMENT_KIND", "Element must ${0} have ${1} of the following element kinds: ${2}"),
     BY_GENERIC_TYPE("CM_BY_GENERIC_TYPE", "Element must ${0} be ${1} of the following generic types: ${2}"),

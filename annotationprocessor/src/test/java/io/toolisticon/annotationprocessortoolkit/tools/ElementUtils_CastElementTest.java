@@ -306,7 +306,7 @@ public class ElementUtils_CastElementTest {
     // ---------------------------------------
 
     @Test
-    public void casParameterTest() {
+    public void castParameterTest() {
 
         Element unit = Mockito.mock(VariableElement.class);
         MatcherAssert.assertThat(ElementUtils.CastElement.castParameter(unit), Matchers.notNullValue());
@@ -368,7 +368,7 @@ public class ElementUtils_CastElementTest {
     }
 
     // ---------------------------------------
-    // castConstructor  ----------------------
+    // cast Constructor  ---------------------
     // ---------------------------------------
 
     @Test
@@ -433,4 +433,69 @@ public class ElementUtils_CastElementTest {
         MatcherAssert.assertThat(ElementUtils.CastElement.castMethod(null), Matchers.nullValue());
     }
 
+    // ---------------------------------------
+    // cast Annotation Type  -----------------
+    // ---------------------------------------
+
+    @Test
+    public void castAnnotationTypeTest() {
+
+        Element unit = Mockito.mock(TypeElement.class);
+        MatcherAssert.assertThat(ElementUtils.CastElement.castAnnotationType(unit), Matchers.notNullValue());
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castAnnotationTypeTest_MustThrowErrorForVariableElement() {
+
+        Element unit = Mockito.mock(VariableElement.class);
+        ElementUtils.CastElement.castAnnotationType(unit);
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castAnnotationTypeTest_MustThrowErrorForExecutableElement() {
+
+        Element unit = Mockito.mock(ExecutableElement.class);
+        ElementUtils.CastElement.castAnnotationType(unit);
+
+    }
+
+    @Test
+    public void castAnnotationTypeTest_shouldHandleNullValuedParameterCorrectly() {
+        MatcherAssert.assertThat(ElementUtils.CastElement.castAnnotationType(null), Matchers.nullValue());
+    }
+
+    // ---------------------------------------
+    // cast Annotation Attribute  ------------
+    // ---------------------------------------
+
+    @Test
+    public void castAnnotationAttributeTest() {
+
+        Element unit = Mockito.mock(ExecutableElement.class);
+        MatcherAssert.assertThat(ElementUtils.CastElement.castAnnotationAttribute(unit), Matchers.notNullValue());
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castAnnotationAttributeTest_MustThrowErrorForVariableElement() {
+
+        Element unit = Mockito.mock(VariableElement.class);
+        ElementUtils.CastElement.castAnnotationAttribute(unit);
+
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void castAnnotationAttributeTest_MustThrowErrorForTypeElement() {
+
+        Element unit = Mockito.mock(TypeElement.class);
+        ElementUtils.CastElement.castAnnotationAttribute(unit);
+
+    }
+
+    @Test
+    public void castAnnotationAttributeTest_shouldHandleNullValuedParameterCorrectly() {
+        MatcherAssert.assertThat(ElementUtils.CastElement.castAnnotationAttribute(null), Matchers.nullValue());
+    }
 }
