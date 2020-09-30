@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessortoolkit.compiletesting;
 
 import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
-import io.toolisticon.compiletesting.UnitTestProcessorForTestingAnnotationProcessors;
+import io.toolisticon.cute.UnitTestProcessorForTestingAnnotationProcessors;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;

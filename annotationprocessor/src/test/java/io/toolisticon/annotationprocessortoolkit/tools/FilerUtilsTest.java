@@ -1,8 +1,8 @@
 package io.toolisticon.annotationprocessortoolkit.tools;
 
 import io.toolisticon.annotationprocessortoolkit.tools.generators.FileObjectUtilsTestAnnotationProcessor;
-import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.JavaFileObjectUtils;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.JavaFileObjectUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,8 +27,8 @@ public class FilerUtilsTest {
         unitTestBuilder.useProcessor(new FileObjectUtilsTestAnnotationProcessor())
                 .useSource(JavaFileObjectUtils.readFromResource("/testcases/generators/FilerUtilsTestClass.java"))
                 .compilationShouldSucceed()
-                .expectedFileObjectExists(StandardLocation.CLASS_OUTPUT, "", "testOutput.txt", JavaFileObjectUtils.readFromResource("/testcases/generators/expectedResult.txt"))
-                .testCompilation();
+                .expectThatFileObjectExists(StandardLocation.CLASS_OUTPUT, "", "testOutput.txt", JavaFileObjectUtils.readFromResource("/testcases/generators/expectedResult.txt"))
+                .executeTest();
 
     }
 

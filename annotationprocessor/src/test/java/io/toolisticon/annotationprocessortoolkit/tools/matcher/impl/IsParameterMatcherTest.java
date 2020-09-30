@@ -5,8 +5,8 @@ import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
-import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.JavaFileObjectUtils;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +55,7 @@ public class IsParameterMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -70,7 +70,7 @@ public class IsParameterMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -85,7 +85,7 @@ public class IsParameterMatcherTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 }

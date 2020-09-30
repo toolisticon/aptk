@@ -3,8 +3,8 @@ package io.toolisticon.annotationprocessortoolkit.tools;
 import io.toolisticon.annotationprocessortoolkit.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation1;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
-import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.JavaFileObjectUtils;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -56,7 +56,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -81,7 +81,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -98,7 +98,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -118,7 +118,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -138,7 +138,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -158,7 +158,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -181,7 +181,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -201,7 +201,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -221,7 +221,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -241,7 +241,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -261,7 +261,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -283,7 +283,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -304,7 +304,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -325,7 +325,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -347,7 +347,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -369,7 +369,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -395,7 +395,7 @@ public class ElementUtilsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

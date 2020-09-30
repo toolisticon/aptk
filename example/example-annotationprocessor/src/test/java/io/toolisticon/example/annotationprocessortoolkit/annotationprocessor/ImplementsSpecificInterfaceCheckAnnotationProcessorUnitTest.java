@@ -2,8 +2,8 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 
 import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
-import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.UnitTestProcessor;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.UnitTest;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest {
     public void testValidUsageWithAssignableParameters() {
 
         CompileTestBuilder.unitTest()
-                .useProcessor(new UnitTestProcessor() {
+                .defineTest(new UnitTest<TypeElement>() {
                     @Override
                     public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
@@ -30,7 +30,7 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -38,7 +38,7 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest {
     public void testValidUsageWithNonAssignableParameters() {
 
         CompileTestBuilder.unitTest()
-                .useProcessor(new UnitTestProcessor() {
+                .defineTest(new UnitTest<TypeElement>() {
                     @Override
                     public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
@@ -51,7 +51,7 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorUnitTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 

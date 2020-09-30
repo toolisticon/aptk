@@ -5,8 +5,8 @@ import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.TransitionFilters;
-import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.JavaFileObjectUtils;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -78,7 +78,7 @@ public class ChildElementsTransitionFilterTest {
                 })
 
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -115,7 +115,7 @@ public class ChildElementsTransitionFilterTest {
                 })
 
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 

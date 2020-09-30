@@ -1,8 +1,8 @@
-package io.toolisticon.annotationprocessortoolkit.compiletesting;
+package io.toolisticon.annotationprocessortoolkit.cute;
 
 import io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor;
 import io.toolisticon.annotationprocessortoolkit.ToolingProvider;
-import io.toolisticon.compiletesting.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilder;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -48,7 +48,7 @@ public class APTKUnitTestProcessorForTestingAnnotationProcessorsTest {
     @Test
     public void testIfToolingIsSetCorrectly() {
 
-        CompileTestBuilder.unitTest().useProcessor(TestProcessor.class, new APTKUnitTestProcessorForTestingAnnotationProcessors<TestProcessor>() {
+        CompileTestBuilder.unitTest().defineTest(TestProcessor.class, new APTKUnitTestProcessorForTestingAnnotationProcessors<TestProcessor,TypeElement>() {
             @Override
             public void aptkUnitTest(TestProcessor processor, ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
@@ -59,7 +59,7 @@ public class APTKUnitTestProcessorForTestingAnnotationProcessorsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
 
         // check if init was called

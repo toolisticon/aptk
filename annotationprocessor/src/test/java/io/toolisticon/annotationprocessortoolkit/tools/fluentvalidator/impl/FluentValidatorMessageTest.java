@@ -6,8 +6,8 @@ import io.toolisticon.annotationprocessortoolkit.tools.AnnotationUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.PlainValidationMessage;
-import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.JavaFileObjectUtils;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -49,7 +49,7 @@ public class FluentValidatorMessageTest {
                     }
                 })
                 .compilationShouldFail()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -67,7 +67,7 @@ public class FluentValidatorMessageTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -85,7 +85,7 @@ public class FluentValidatorMessageTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -110,7 +110,7 @@ public class FluentValidatorMessageTest {
         })
 
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
@@ -135,7 +135,7 @@ public class FluentValidatorMessageTest {
                 })
 
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 
