@@ -4,8 +4,8 @@ import io.toolisticon.annotationprocessortoolkit.AbstractUnitTestAnnotationProce
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
-import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.JavaFileObjectUtils;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -64,7 +64,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }
@@ -88,7 +88,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }
@@ -112,7 +112,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }
@@ -136,7 +136,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }
@@ -160,7 +160,7 @@ public class IsAttributeFieldMatcherTest {
 
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
         ;
 
     }

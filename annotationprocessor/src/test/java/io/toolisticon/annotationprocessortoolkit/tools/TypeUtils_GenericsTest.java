@@ -6,8 +6,8 @@ import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElemen
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericType;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeKind;
 import io.toolisticon.annotationprocessortoolkit.tools.generics.GenericTypeWildcard;
-import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.JavaFileObjectUtils;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -59,7 +59,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -80,7 +80,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -106,7 +106,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -131,7 +131,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -159,7 +159,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -187,7 +187,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -229,7 +229,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     // #######################
@@ -270,7 +270,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -307,7 +307,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -345,7 +345,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -380,7 +380,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -420,7 +420,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -457,7 +457,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -492,7 +492,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -531,7 +531,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -571,7 +571,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -610,7 +610,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -651,7 +651,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -687,7 +687,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -728,7 +728,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -767,7 +767,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -806,7 +806,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -848,7 +848,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -889,7 +889,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -923,7 +923,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -963,7 +963,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1001,7 +1001,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1039,7 +1039,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -1080,7 +1080,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -1120,7 +1120,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1153,7 +1153,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1193,7 +1193,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1223,7 +1223,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 
@@ -1254,7 +1254,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1286,7 +1286,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1318,7 +1318,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
@@ -1350,7 +1350,7 @@ public class TypeUtils_GenericsTest {
             }
         })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
 

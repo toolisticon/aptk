@@ -4,8 +4,8 @@ import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatchers;
 import io.toolisticon.annotationprocessortoolkit.tools.fluentfilter.FluentElementFilter;
-import io.toolisticon.compiletesting.CompileTestBuilder;
-import io.toolisticon.compiletesting.UnitTestProcessor;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.UnitTest;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -109,7 +109,7 @@ public class AbstractAnnotationProcessorTest {
     public void fluentElementFilter_doFilterings() {
 
         CompileTestBuilder.unitTest()
-                .useProcessor(new UnitTestProcessor() {
+                .defineTest(new UnitTest<TypeElement>() {
                     @Override
                     public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement1) {
 
@@ -135,7 +135,7 @@ public class AbstractAnnotationProcessorTest {
                     }
                 })
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
 
     }
 

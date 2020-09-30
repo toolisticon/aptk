@@ -19,8 +19,8 @@
         <module>example</module>
         <module>templating</module>
 
-        <!-- support for toolisticon compiletesting -->
-        <module>compiletesting</module>
+        <!-- support for toolisticon cute -->
+        <module>cute</module>
 
         <!-- CREATE A NO DEPENDENCY ARTIFACT -->
         <module>annotationprocessor_nodep</module>
@@ -88,7 +88,7 @@
         <java.version>1.7</java.version>
 
         <spiap.version>0.7.0</spiap.version>
-        <compileTesting.version>0.7.0</compileTesting.version>
+        <cute.version>0.9.0</cute.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.12</junit.version>
@@ -380,7 +380,7 @@
                                 <configuration>
 
                                     <excludeDependencies>
-                                        <excludeDependency>io.toolisticon.compiletesting:*</excludeDependency>
+                                        <excludeDependency>io.toolisticon.cute:*</excludeDependency>
                                     </excludeDependencies>
 
                                     <signature>
@@ -442,7 +442,7 @@
 
                                 <configuration>
                                     <excludeDependencies>
-                                        <excludeDependency>io.toolisticon.compiletesting:*</excludeDependency>
+                                        <excludeDependency>io.toolisticon.cute:*</excludeDependency>
                                     </excludeDependencies>
 
                                     <signature>
@@ -503,8 +503,8 @@
         </dependency>
 
         <dependency>
-            <groupId>io.toolisticon.compiletesting</groupId>
-            <artifactId>compiletesting</artifactId>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute</artifactId>
         </dependency>
 
     </dependencies>
@@ -546,9 +546,9 @@
             </dependency>
 
             <dependency>
-                <groupId>io.toolisticon.compiletesting</groupId>
-                <artifactId>compiletesting</artifactId>
-                <version>${compileTesting.version}</version>
+                <groupId>io.toolisticon.cute</groupId>
+                <artifactId>cute</artifactId>
+                <version>${cute.version}</version>
                 <scope>test</scope>
             </dependency>
 

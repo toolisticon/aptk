@@ -2,7 +2,7 @@ package io.toolisticon.example.annotationprocessortoolkit.annotationprocessor;
 
 import io.toolisticon.annotationprocessortoolkit.tools.MessagerUtils;
 import io.toolisticon.annotationprocessortoolkit.tools.corematcher.CoreMatcherValidationMessages;
-import io.toolisticon.compiletesting.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,22 +25,22 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessorTest {
     public void testValidUsage_implements() {
         compilationTestBuilder.addSources("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTest.java")
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
     public void testValidUsage_extends() {
         compilationTestBuilder.addSources("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/ValidUsageTestExtendsCase.java")
                 .compilationShouldSucceed()
-                .testCompilation();
+                .executeTest();
     }
 
     @Test
     public void testInvalidUsage_nonStringParameter() {
         compilationTestBuilder.addSources("testcases/implementsSpecificInterfaceCheckAnnotationProcessor/InvalidUsageTest.java")
                 .compilationShouldFail()
-                .expectedErrorMessages(CoreMatcherValidationMessages.IS_ASSIGNABLE_TO.getCode())
-                .testCompilation();
+                .expectErrorMessageThatContains(CoreMatcherValidationMessages.IS_ASSIGNABLE_TO.getCode())
+                .executeTest();
     }
 
 
