@@ -94,7 +94,7 @@
         <junit.version>4.12</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>2.28.2</mockito.version>
-        <lombok.version>1.18.2</lombok.version>
+        <lombok.version>1.18.14</lombok.version>
 
         <!-- plugin versions -->
         <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
