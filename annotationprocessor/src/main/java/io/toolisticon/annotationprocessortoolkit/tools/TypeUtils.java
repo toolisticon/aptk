@@ -93,6 +93,16 @@ public final class TypeUtils {
         }
 
         /**
+         * Checks whether passed TypeMirror represents a wildcard type.
+         *
+         * @param typeMirror the {@link TypeMirror} to check
+         * @return true if passed typeMirror represents a wildcard type, otherwise false
+         */
+        public static boolean isWildcard(TypeMirror typeMirror) {
+            return isOfTypeKind(typeMirror, TypeKind.WILDCARD);
+        }
+
+        /**
          * Checks whether passed {@link TypeMirror} is of passed {@link TypeKind}.
          *
          * @param typeMirror the TypeMirror to check

@@ -36,7 +36,7 @@ public class TypeUtils_CheckTypeKindTest {
     @Test
     public void testCheckTypeKind_isVoid_noVoidKind() {
 
-        MatcherAssert.assertThat("Should not detect void type kind", !TypeUtils.CheckTypeKind.isArray(getTypeMirrorMockOfKind(TypeKind.DECLARED)));
+        MatcherAssert.assertThat("Must return false for non matching kind", !TypeUtils.CheckTypeKind.isArray(getTypeMirrorMockOfKind(TypeKind.DECLARED)));
 
     }
 
@@ -64,7 +64,7 @@ public class TypeUtils_CheckTypeKindTest {
     public void testCheckTypeKind_isArray_noVoidKind() {
 
 
-        MatcherAssert.assertThat("Should not detect void type kind", !TypeUtils.CheckTypeKind.isArray(getTypeMirrorMockOfKind(TypeKind.DECLARED)));
+        MatcherAssert.assertThat("Must return false for non matching kind", !TypeUtils.CheckTypeKind.isArray(getTypeMirrorMockOfKind(TypeKind.DECLARED)));
 
     }
 
@@ -89,10 +89,10 @@ public class TypeUtils_CheckTypeKindTest {
     }
 
     @Test
-    public void testCheckTypeKind_isDeclared_noVoidKind() {
+    public void testCheckTypeKind_isDeclared_nonDeclaredKind() {
 
 
-        MatcherAssert.assertThat("Should not detect void type kind", !TypeUtils.CheckTypeKind.isDeclared(getTypeMirrorMockOfKind(TypeKind.EXECUTABLE)));
+        MatcherAssert.assertThat("Must return false for non matching kind", !TypeUtils.CheckTypeKind.isDeclared(getTypeMirrorMockOfKind(TypeKind.EXECUTABLE)));
 
     }
 
@@ -117,10 +117,10 @@ public class TypeUtils_CheckTypeKindTest {
     }
 
     @Test
-    public void testCheckTypeKind_isExecutable_noVoidKind() {
+    public void testCheckTypeKind_isExecutable_nonExecutableKind() {
 
 
-        MatcherAssert.assertThat("Should not detect void type kind", !TypeUtils.CheckTypeKind.isExecutable(getTypeMirrorMockOfKind(TypeKind.DECLARED)));
+        MatcherAssert.assertThat("Must return false for non matching kind", !TypeUtils.CheckTypeKind.isExecutable(getTypeMirrorMockOfKind(TypeKind.DECLARED)));
 
     }
 
@@ -128,6 +128,34 @@ public class TypeUtils_CheckTypeKindTest {
     public void testCheckTypeKind_isExecutable_nullSafety() {
 
         MatcherAssert.assertThat("Should return false for null valued parameter", !TypeUtils.CheckTypeKind.isExecutable(null));
+
+    }
+
+    // ---------------------------------------------
+    // -- isWildcard tests
+    // ---------------------------------------------
+
+
+    @Test
+    public void testCheckTypeKind_isWildcard() {
+
+
+        MatcherAssert.assertThat("Should detect void type kind", TypeUtils.CheckTypeKind.isWildcard(getTypeMirrorMockOfKind(TypeKind.WILDCARD)));
+
+    }
+
+    @Test
+    public void testCheckTypeKind_isWildcard_nonWildcardKind() {
+
+
+        MatcherAssert.assertThat("Must return false for non matching kind", !TypeUtils.CheckTypeKind.isWildcard(getTypeMirrorMockOfKind(TypeKind.DECLARED)));
+
+    }
+
+    @Test
+    public void testCheckTypeKind_isWildcard_nullSafety() {
+
+        MatcherAssert.assertThat("Should return false for null valued parameter", !TypeUtils.CheckTypeKind.isWildcard(null));
 
     }
 
