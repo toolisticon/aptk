@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
@@ -139,11 +141,28 @@ public class TypeMirrorWrapperTest {
         return mockTypeCheck(TypeMirror.class, typeKind);
     }
 
+    // ---------------------------------------------------------------
+    // -- getImports
+    // ---------------------------------------------------------------
 
     public static class ImportTest {
 
         @PassIn
         Map<? super Long, List<? extends Serializable>[]> field;
+
+    }
+
+    public static class ImportTest_NonGeneric {
+
+        @PassIn
+        String field;
+
+    }
+
+    public static class ImportTest_Primitive {
+
+        @PassIn
+        long field;
 
     }
 
@@ -161,8 +180,12 @@ public class TypeMirrorWrapperTest {
         }).executeTest();
     }
 
+    // ---------------------------------------------------------------
+    // -- getTypeDeclaration
+    // ---------------------------------------------------------------
+
     @Test
-    public void test_getTypeDeclaration() {
+    public void test_getTypeDeclaration_withTypeParameters() {
         CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(ImportTest.class, new UnitTest<VariableElement>() {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
@@ -174,6 +197,38 @@ public class TypeMirrorWrapperTest {
             }
         }).executeTest();
     }
+
+    @Test
+    public void test_getTypeDeclaration_withoutTypeParameters() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(ImportTest_NonGeneric.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
+
+                MatcherAssert.assertThat(typeDeclaration, Matchers.is("String"));
+
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_getTypeDeclaration_withPrimitive() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(ImportTest_Primitive.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
+
+                MatcherAssert.assertThat(typeDeclaration, Matchers.is("long"));
+
+            }
+        }).executeTest();
+    }
+
+    // ---------------------------------------------------------------
+    // -- hasTypeArguments
+    // ---------------------------------------------------------------
 
     public static class TypeArgumentsTest {
         @PassIn
@@ -196,5 +251,197 @@ public class TypeMirrorWrapperTest {
         }).executeTest();
     }
 
+
+    // ---------------------------------------------------------------
+    // -- getPackage
+    // ---------------------------------------------------------------
+
+    @PassIn
+    public static class PackageTest {
+
+    }
+
+    @Test
+    public void test_getPackage() {
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(PackageTest.class, new UnitTest<TypeElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), Matchers.is(PackageTest.class.getPackage().getName()));
+
+            }
+        }).executeTest();
+    }
+
+
+    public static class PackageTestOfArray {
+        @PassIn
+        PackageTest[] array;
+
+    }
+
+    @Test
+    public void test_getPackageOfArray() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(PackageTestOfArray.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), Matchers.is(PackageTest.class.getPackage().getName()));
+
+            }
+        }).executeTest();
+    }
+
+    public static class PackageTestOfPrimitive {
+        @PassIn
+        long[] array;
+
+    }
+
+    @Test
+    public void test_getPackageOfPrimitiveArray() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(PackageTestOfPrimitive.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), Matchers.nullValue());
+
+            }
+        }).executeTest();
+    }
+
+    // ---------------------------------------------------------------
+    // -- getTypeElement
+    // ---------------------------------------------------------------
+
+
+    @PassIn
+    public static class GetTypeElement {
+
+    }
+
+    @Test
+    public void test_getTypeElement() {
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(GetTypeElement.class, new UnitTest<TypeElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getTypeElement().getQualifiedName().toString(), Matchers.is(GetTypeElement.class.getCanonicalName()));
+
+            }
+        }).executeTest();
+    }
+
+
+    public static class GetTypeElement_ofPrimitive {
+        @PassIn
+        long primitive;
+    }
+
+    @Test
+    public void test_getTypeElement_ofPrimitive() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(GetTypeElement_ofPrimitive.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getTypeElement(), Matchers.nullValue());
+
+            }
+        }).executeTest();
+    }
+
+    // ---------------------------------------------------------------
+    // -- getSimpleName
+    // ---------------------------------------------------------------
+
+    @PassIn
+    public static class GetName {
+    }
+
+    public static class GetName_ofPrimitive {
+        @PassIn
+        long primitive;
+    }
+
+    public static class GetName_ofArray {
+        @PassIn
+        GetName[] array;
+    }
+
+    @Test
+    public void test_getSimpleName() {
+        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName.class, new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), Matchers.is(GetName.class.getSimpleName()));
+
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_getSimpleName_ofPrimitive() {
+        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName_ofPrimitive.class, new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), Matchers.is("long"));
+
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_getSimpleName_ofArray() {
+        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName_ofArray.class, new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), Matchers.is(GetName.class.getSimpleName()));
+
+            }
+        }).executeTest();
+    }
+
+    // ---------------------------------------------------------------
+    // -- getQualifiedName
+    // ---------------------------------------------------------------
+
+    @Test
+    public void test_getQualifiedName() {
+        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName.class, new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), Matchers.is(GetName.class.getCanonicalName()));
+
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_getQualifiedName_ofPrimitive() {
+        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName_ofPrimitive.class, new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), Matchers.is("long"));
+
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_getQualifiedName_ofArray() {
+        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName_ofArray.class, new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), Matchers.is(GetName.class.getCanonicalName()));
+
+            }
+        }).executeTest();
+    }
 
 }

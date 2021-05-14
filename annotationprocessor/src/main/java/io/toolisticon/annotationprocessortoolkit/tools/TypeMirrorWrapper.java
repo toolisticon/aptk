@@ -242,7 +242,7 @@ public class TypeMirrorWrapper {
     public static String getPackage(TypeMirror typeMirror) {
 
         if (isArray(typeMirror)) {
-            return getPackage(typeMirror);
+            return getPackage(new TypeMirrorWrapper(typeMirror).getComponentType());
         }
 
         if (isDeclared(typeMirror)) {
@@ -260,7 +260,7 @@ public class TypeMirrorWrapper {
     /**
      * Gets the qualified name of the wrapped TypeMirror.
      *
-     * @return the qualified name of the TypeMirror if wrapped TypeMirror is a DeclaredType, otherwise null.
+     * @return the qualified name of the TypeMirror if wrapped TypeMirror is a DeclaredType or the qualified name of the component type if wrapped TypeMirror is an Array or the simple name if for primitive types, otherwise null.
      */
     public String getQualifiedName() {
         return getQualifiedName(typeMirror);
@@ -270,16 +270,24 @@ public class TypeMirrorWrapper {
      * Gets the qualified name of the passed TypeMirror.
      *
      * @param typeMirror the TypeMirror to check
-     * @return the qualified name if passed TypeMirror is a DeclaredType, otherwise null.
+     * @return the qualified name of the TypeMirror if wrapped TypeMirror is a DeclaredType or the qualified name of the component type if wrapped TypeMirror is an Array or the simple name if for primitive types, otherwise null.
      */
     public static String getQualifiedName(TypeMirror typeMirror) {
-        return isDeclared(typeMirror) ? ((TypeElement) (getDeclaredType(typeMirror).asElement())).getQualifiedName().toString() : null;
+        if (isDeclared(typeMirror)) {
+            return ((TypeElement) (getDeclaredType(typeMirror).asElement())).getQualifiedName().toString();
+        } else if (isArray(typeMirror)) {
+            return getQualifiedName(getArrayType(typeMirror).getComponentType());
+        } else if (isPrimitive(typeMirror)) {
+            return typeMirror.toString();
+        }
+
+        return null;
     }
 
     /**
      * Gets the simple name of the wrapped TypeMirror.
      *
-     * @return the qualified name of the TypeMirror if wrapped TypeMirror is a DeclaredType, otherwise null.
+     * @return the simple name if passed TypeMirror is a DeclaredType or Primitive, the component types simple name for arrays, otherwise null.
      */
     public String getSimpleName() {
         return getSimpleName(typeMirror);
@@ -289,10 +297,19 @@ public class TypeMirrorWrapper {
      * Gets the simple name of the passed TypeMirror.
      *
      * @param typeMirror the TypeMirror to check
-     * @return the simple name if passed TypeMirror is a DeclaredType, otherwise null.
+     * @return the simple name if passed TypeMirror is a DeclaredType or Primitive, the component types simple name for arrays, otherwise null.
      */
     public static String getSimpleName(TypeMirror typeMirror) {
-        return isDeclared(typeMirror) ? ((TypeElement) (getDeclaredType(typeMirror).asElement())).getSimpleName().toString() : null;
+
+        if (isDeclared(typeMirror)) {
+            return ((TypeElement) (getDeclaredType(typeMirror).asElement())).getSimpleName().toString();
+        } else if (isArray(typeMirror)) {
+            return getSimpleName(getArrayType(typeMirror).getComponentType());
+        } else if (isPrimitive(typeMirror)) {
+            return typeMirror.toString();
+        }
+
+        return null;
     }
 
     public String getTypeDeclaration() {
