@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
         <artifactId>annotationprocessortoolkit-parent</artifactId>
-        <version>0.14.5-SNAPSHOT</version>
+        <version>0.14.5</version>
     </parent>
 
     <name>common</name>
