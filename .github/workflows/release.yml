@@ -31,12 +31,6 @@ jobs:
       - name: Build
         run: ./mvnw clean package
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1.0.2
-        with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          file: target/site/jacoco-aggregate/jacoco.xml
-
       - name: Import GPG Owner Trust
         run: echo ${{secrets.GPG_OWNERTRUST}} | base64 --decode | gpg --import-ownertrust
 
