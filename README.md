@@ -49,14 +49,14 @@ This can be done by adding the following to your annotation processors pom.xml:
          <dependency>
              <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
              <artifactId>annotationprocessor</artifactId>
-             <version>0.14.2</version>
+             <version>0.14.4</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
         <dependency>
-            <groupId>io.toolisticon.compiletesting</groupId>
-            <artifactId>compiletesting</artifactId>
-            <version>0.8.0</version>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute</artifactId>
+            <version>0.11.1</version>
             <scope>test</scope>
         </dependency>
 

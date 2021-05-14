@@ -69,7 +69,7 @@ public final class FilerUtils {
     }
 
     /**
-     * Creates a resource file resident in CLASS_OUTPUT in root package with give name.
+     * Creates a resource file resident in passed location in root package with give name.
      *
      * @param location            the location to write the file to.
      * @param targetPackage       the target package to use
@@ -84,7 +84,7 @@ public final class FilerUtils {
     }
 
     /**
-     * Creates a resource file resident in SOURCE_OUTPUT in root package with give name.
+     * Creates a resource file resident in CLASS_OUTPUT in root package with give name.
      *
      * @param fileName the file name to use
      * @return SimpleResourceWriter if it hasn't been created before.
