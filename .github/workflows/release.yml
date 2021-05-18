@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 9
-          server-id: ossrh
+          server-id: sonatype-nexus-staging
           server-username: OSS_CENTRAL_USERNAME # env variable for Maven Central
           server-password: OSS_CENTRAL_PASSWORD # env variable for Maven Central
 
