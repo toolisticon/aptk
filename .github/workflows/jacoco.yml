@@ -32,7 +32,7 @@ jobs:
         run: chmod +x ./mvnw
 
       - name: Build
-        run: ./mvnw clean package
+        run: ./mvnw verify jacoco:report-aggregate -B -q
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.2
