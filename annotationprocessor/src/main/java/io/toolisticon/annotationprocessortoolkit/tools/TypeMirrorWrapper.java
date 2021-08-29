@@ -206,6 +206,25 @@ public class TypeMirrorWrapper {
     }
 
     /**
+     * Gets the wrapped component type of TypeMirror representing an array
+     *
+     * @return The component TypeMirror when passed typeMirror represents an array, otherwise null.
+     */
+    public TypeMirrorWrapper getWrappedComponentType() {
+        return getWrappedComponentType(typeMirror);
+    }
+
+    /**
+     * Gets the wrapped Component type of TypeMirror representing an array
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return The component TypeMirror when passed typeMirror represents an array, otherwise null.
+     */
+    public static TypeMirrorWrapper getWrappedComponentType(TypeMirror typeMirror) {
+        return isArray(typeMirror) ? TypeMirrorWrapper.wrap(((ArrayType) typeMirror).getComponentType()) : null;
+    }
+
+    /**
      * Check if wrapped TypeMirror has TypeArguments
      *
      * @return true if wrapped TypeMirror is a DeclaredType and has type arguments, otherwise false.
@@ -312,10 +331,21 @@ public class TypeMirrorWrapper {
         return null;
     }
 
+    /**
+     * Gets the String containing the type declaration of wrapped TypeMirror.
+     *
+     * @return the type declaration String
+     */
     public String getTypeDeclaration() {
         return getTypeDeclaration(typeMirror);
     }
 
+    /**
+     * Gets the String containing the type declaration for passed TypeMirror.
+     *
+     * @param typeMirror the TypeMirror to get the declaration for
+     * @return the type declaration String
+     */
     public static String getTypeDeclaration(TypeMirror typeMirror) {
 
         if (isPrimitive(typeMirror)) {
@@ -371,18 +401,44 @@ public class TypeMirrorWrapper {
         return "";
     }
 
+    /**
+     * Returns a String that helps to instantiation of the Class represented by the passed TypeMirror.
+     *
+     * @return The instantiation String with Diamond operator if the type has type parameters
+     */
     public String getTypeInitializationWithDiamondOperator() {
         return getTypeInitializationWithDiamondOperator(typeMirror);
     }
 
+    /**
+     * Returns a String that helps to instantiation of the Class represented by the passed TypeMirror.
+     *
+     * @param typeMirror the TypeMirror to get the instantiation String for
+     * @return The instantiation String with Diamond operator if the type has type parameters
+     */
     public static String getTypeInitializationWithDiamondOperator(TypeMirror typeMirror) {
         return getSimpleName(typeMirror) + (hasTypeArguments(typeMirror) ? "<>" : "");
     }
 
+    /**
+     * TypeMirrors can contain references to multiple other classes as TypeParameters.
+     * This method returns all full qualified class names referenced by the TypeMirror.
+     * This is quite helpful to create java source codes with complex parameterized Types involved.
+     *
+     * @return A set containing all necessary imports. Doesn't contain references of java.lang package which is implicitly bound.
+     */
     public Set<String> getImports() {
         return getImports(typeMirror);
     }
 
+    /**
+     * TypeMirrors can contain references to multiple other classes as TypeParameters.
+     * This method returns all full qualified class names referenced by the TypeMirror.
+     * This is quite helpful to create java source codes with complex parameterized Types involved.
+     *
+     * @param typeMirror The TypeMirror to get the imports for
+     * @return A set containing all necessary imports. Doesn't contain references of java.lang package which is implicitly bound.
+     */
     public static Set<String> getImports(TypeMirror typeMirror) {
 
         // null value
@@ -434,8 +490,22 @@ public class TypeMirrorWrapper {
         return Collections.EMPTY_SET;
     }
 
+    /**
+     * Gets the TypeElement for a typeMirror.
+     *
+     * @return the TypeElement for a typeMirror or null for arrays and primitives (non DeclaredTypes)
+     */
     public TypeElement getTypeElement() {
         return getTypeElement(typeMirror);
+    }
+
+    /**
+     * Unwraps the wrapped TypeMirror instance.
+     *
+     * @return the wrapped TypeMirror instance
+     */
+    public TypeMirror unwrap() {
+        return this.typeMirror;
     }
 
     public static TypeElement getTypeElement(TypeMirror typeMirror) {
@@ -445,6 +515,12 @@ public class TypeMirrorWrapper {
         return null;
     }
 
+    /**
+     * Wraps a TypeMirror instance to provide some convenience methods
+     *
+     * @param typeMirror the TypeMirror to wrap
+     * @return The wrapped TypeMirror
+     */
     public static TypeMirrorWrapper wrap(TypeMirror typeMirror) {
         return new TypeMirrorWrapper(typeMirror);
     }

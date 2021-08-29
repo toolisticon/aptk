@@ -9,7 +9,7 @@
     <parent>
         <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
         <artifactId>annotationprocessortoolkit-parent</artifactId>
-        <version>0.14.5</version>
+        <version>0.14.6-SNAPSHOT</version>
     </parent>
 
     <name>cute</name>
