@@ -183,6 +183,18 @@ public final class AnnotationUtils {
     public static TypeMirror getClassAttributeFromAnnotationAsTypeMirror(Element element, Class<? extends Annotation> annotationType, String attributeName) {
 
         AnnotationMirror annotationMirror = getAnnotationMirror(element, annotationType);
+        return getClassAttributeFromAnnotationAsTypeMirror(annotationMirror, attributeName);
+
+    }
+
+    /**
+     * Gets the a TypeMirror of a Class based attribute from annotation.
+     *
+     * @param annotationMirror the annotation mirror to get the TypeMirror from
+     * @return the TypeMirror of the searched annotation value or null if annotation can't be found or attribute isn't of type class.
+     */
+    public static TypeMirror getClassAttributeFromAnnotationAsTypeMirror(AnnotationMirror annotationMirror, String attributeName) {
+
         if (annotationMirror == null) {
             return null;
         }
@@ -258,7 +270,21 @@ public final class AnnotationUtils {
      */
     public static String[] getClassArrayAttributeFromAnnotationAsFqn(Element element, Class<? extends Annotation> annotationType, String attributeName) {
 
-        TypeMirror[] typeMirrorArray = getClassArrayAttributeFromAnnotationAsTypeMirror(element, annotationType, attributeName);
+        AnnotationMirror annotationMirror = getAnnotationMirror(element, annotationType);
+        return getClassArrayAttributeFromAnnotationAsFqn(annotationMirror, attributeName);
+
+    }
+
+    /**
+     * Gets class array attribute from annotations attributeName attribute as an array of full qualified class names.
+     *
+     * @param annotationMirror the annotation type
+     * @param attributeName    the name of the attribute
+     * @return The full qualified class name array of the attribute
+     */
+    public static String[] getClassArrayAttributeFromAnnotationAsFqn(AnnotationMirror annotationMirror, String attributeName) {
+
+        TypeMirror[] typeMirrorArray = getClassArrayAttributeFromAnnotationAsTypeMirror(annotationMirror, attributeName);
         String[] result = null;
 
         if (typeMirrorArray != null) {
@@ -296,6 +322,19 @@ public final class AnnotationUtils {
     public static TypeMirror[] getClassArrayAttributeFromAnnotationAsTypeMirror(Element element, Class<? extends Annotation> annotationType, String attributeName) {
 
         AnnotationMirror annotationMirror = getAnnotationMirror(element, annotationType);
+        return getClassArrayAttributeFromAnnotationAsTypeMirror(annotationMirror, attributeName);
+
+    }
+
+    /**
+     * Gets class array attribute from annotations attributeName attribute as an array of TypeMirrors.
+     *
+     * @param annotationMirror the annotation mirror
+     * @param attributeName    the name of the attribute
+     * @return The full qualified class name array of the attribute
+     */
+    public static TypeMirror[] getClassArrayAttributeFromAnnotationAsTypeMirror(AnnotationMirror annotationMirror, String attributeName) {
+
         if (annotationMirror == null) {
             return null;
         }
@@ -308,6 +347,5 @@ public final class AnnotationUtils {
         }
 
     }
-
 
 }

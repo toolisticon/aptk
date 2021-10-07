@@ -49,8 +49,8 @@ public class IfTemplateBlock implements TemplateBlock {
         Expression expression = ExpressionParser.parseExpression(accessPath, outerVariables);
         Operand result = expression.evaluateExpression();
 
-        if (!Boolean.class.equals(result.getOperandsJavaType())) {
-            throw new InvalidExpressionResult("If statements expression '" + accessPath + "' must evaluate to Boolean" + (result.getOperandsJavaType() != null ? ", but is of type " + result.getOperandsJavaType().getCanonicalName() : ""));
+        if (!Boolean.class.equals(result.getOperandsJavaType()) && !boolean.class.equals(result.getOperandsJavaType())) {
+            throw new InvalidExpressionResult("If statements expression '" + accessPath + "' must evaluate to Boolean or boolean " + (result.getOperandsJavaType() != null ? ", but is of type " + result.getOperandsJavaType().getCanonicalName() : ""));
         }
 
         if ((Boolean) result.value()) {
