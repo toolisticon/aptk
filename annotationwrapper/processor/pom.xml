@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>annotationwrapper-processor</artifactId>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+        <artifactId>annotationwrapper-parent</artifactId>
+        <version>0.14.6-SNAPSHOT</version>
+    </parent>
+
+    <name>annotationwrapper-processor</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <artifactId>annotationwrapper-api</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <artifactId>annotationprocessor</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <artifactId>cute</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.spiap</groupId>
+            <artifactId>spiap-api</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.toolisticon.spiap</groupId>
+            <artifactId>spiap-processor</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute</artifactId>
+        </dependency>
+
+
+    </dependencies>
+
+
+    <build>
+
+        <plugins>
+
+
+            <!--
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+
+
+                        <configuration>
+
+
+
+
+
+                            <relocations>
+                                <relocation>
+                                    <pattern>io.toolisticon.annotationprocessortoolkit</pattern>
+                                    <excludes>
+                                        <exclude>io.toolisticon.annotationprocessortoolkit.wrapper.*</exclude>
+                                    </excludes>
+                                    <shadedPattern>
+                                        io.toolisticon.annotationprocessortoolkit.wrapper_3rdparty.io.toolisticon.annotationprocessortoolkit.tools
+                                    </shadedPattern>
+                                </relocation>
+                            </relocations>
+
+                        </configuration>
+
+                    </execution>
+                </executions>
+
+
+            </plugin>
+            -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration combine.children="append">
+                    <verbose>true</verbose>
+                    <source>${java.compile.source.version}</source>
+                    <target>${java.compile.target.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.toolisticon.spiap</groupId>
+                            <artifactId>spiap-processor</artifactId>
+                            <version>${spiap.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+
+    </build>
+
+
+</project>

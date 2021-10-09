@@ -19,6 +19,9 @@
         <module>example</module>
         <module>templating</module>
 
+        <!-- wrapper processor -->
+        <module>annotationwrapper</module>
+
         <!-- support for toolisticon cute -->
         <module>cute</module>
 
@@ -87,7 +90,7 @@
 
         <java.version>1.7</java.version>
 
-        <spiap.version>0.7.0</spiap.version>
+        <spiap.version>0.8.0</spiap.version>
         <cute.version>0.11.1</cute.version>
 
         <!-- versions of test dependencies -->
