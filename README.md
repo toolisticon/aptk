@@ -28,6 +28,7 @@ This project supports you by providing utilities that allow you to develop annot
 It also reduces the complexity of handling compile time and runtime model by shading common pitfalls behind it's api.
 
 # Features
+- provides processor for generating wrapper classes for accessing annotation attributes 
 - provides support for Class conversion from runtime to compile time model (Class / FQN to Element and TypeMirror)
 - provides support for accessing the compile time element tree
 - provides generic Element based filters, validator and matchers
@@ -97,6 +98,16 @@ This can be done by adding the following to your annotation processors pom.xml:
 Please check our example provided in the github.
 
 # Examples
+
+## Annotation Wrapper
+Reading attribute values can be very complicated if it comes to annotation type or Class based attributes.
+In this case you are often forced to read the attribute values via the AnnotationMirror api.
+Additionally you usually have to create some kind of class to store those annotation configurations of the annotation.
+
+The APTK provides an annotation processor that generates wrapper classes that allow you to access like if you are accessing the annotation directly.
+Only difference is that Class type based attributes will be accessible as FQN String, TypeMirror or TypeMirrorWrapper.
+Annotation type based attributes will be also wrapped to ease access.
+Please check [annotation wrapper processor](annotationwrapper) for further information.
 
 ## Enhanced utility support
 Java itself provides some tools to support you to build annotation processors. 
