@@ -1,8 +1,8 @@
-# Annotation-Processor-Toolkit (APTK)
+# APTK - The Annotation Processor Toolkit 
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessortoolkit-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.annotationprocessortoolkit/annotationprocessortoolkit-parent)
-![Build Status](https://github.com/toolisticon/annotation-processor-toolkit/workflows/default/badge.svg)
-[![codecov](https://codecov.io/gh/toolisticon/annotation-processor-toolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/toolisticon/annotation-processor-toolkit)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.aptk/aptk-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.aptk/aptk-parent)
+![Build Status](https://github.com/toolisticon/aptk/workflows/default/badge.svg)
+[![codecov](https://codecov.io/gh/toolisticon/aptk/branch/master/graph/badge.svg)](https://codecov.io/gh/toolisticon/aptk)
 
 # Why you should use this project?
 
@@ -48,9 +48,9 @@ This can be done by adding the following to your annotation processors pom.xml:
      <dependencies>
 
          <dependency>
-             <groupId>io.toolisticon.aptkio.toolisticon.aptk</groupId>
-             <artifactId>annotationprocessor</artifactId>
-             <version>0.14.4</version>
+             <groupId>io.toolisticon.aptk</groupId>
+             <artifactId>tools</artifactId>
+             <version>0.15.0</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
@@ -90,46 +90,11 @@ This can be done by adding the following to your annotation processors pom.xml:
                                      </shadedPattern>
                                  </relocation>
                              </relocations>
+
                          </configuration>
                      </execution>
                  </executions>
-
-                            <createDependencyReducedPom>true</createDependencyReducedPom>
-
-                            <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
-                                    <resource>.txt</resource>
-                                </transformer>
-                            </transformers>
-
-                            <relocations>
-                                <relocation>
-                                    <pattern>io.toolisticon.aptk.tools</pattern>
-                                    <shadedPattern>
-                                        io.toolisticon.aptk.annotationwrapper._3rdparty.io.toolisticon.aptk.tools
-                                    </shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>io.toolisticon.aptk.common</pattern>
-                                    <shadedPattern>
-                                        io.toolisticon.aptk.annotationwrapper._3rdparty.io.toolisticon.aptk.common
-                                    </shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>io.toolisticon.aptk.templating</pattern>
-                                    <shadedPattern>
-                                        io.toolisticon.aptk.annotationwrapper._3rdparty.io.toolisticon.aptk.templating
-                                    </shadedPattern>
-                                </relocation>
-                            </relocations>
-
-                        </configuration>
-
-                    </execution>
-                </executions>
              </plugin>
-
          </plugins>
      </build>
 ```
@@ -263,6 +228,15 @@ It supports dynamic text replacement and for and if control blocks.
     }
 ```
 
+# Recent Changes
+Unfortunately some incompatible changes have to be introduced with version 0.15.0 as preparation for Release 1.0.0:
+
+- Maven GroupId has changed to *io.toolisticon.aptk*
+- Main artifactId name has changed from *annotationprocessor* to *tools*
+- Base package name has changed to *io.toolisticon.aptk*
+- AbstractAnnotationProcessor class has been relocated to *io.toolisticon.aptk.tools*
+- ToolingProvider class has been relocated to *io.toolisticon.aptk.common*
+
 
 # Projects using this toolkit library
 
@@ -292,6 +266,7 @@ The likelihood of a pull request being used rises with the following properties:
 - You have used a feature branch.
 - You have included a test that demonstrates the functionality added or fixed.
 - You adhered to the [code conventions](http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html).
+
 
 ## Contributions
 
