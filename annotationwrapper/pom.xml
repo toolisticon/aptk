@@ -9,8 +9,8 @@
     <name>annotationwrapper-parent</name>
 
     <parent>
-        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-        <artifactId>annotationprocessortoolkit-parent</artifactId>
+        <groupId>io.toolisticon.aptk</groupId>
+        <artifactId>aptk-parent</artifactId>
         <version>0.14.7-SNAPSHOT</version>
     </parent>
 
@@ -54,21 +54,22 @@
 
             <!-- internal -->
             <dependency>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>annotationwrapper-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>annotationwrapper-processor</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>cute</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>

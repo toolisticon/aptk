@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+        <groupId>io.toolisticon.aptk</groupId>
         <artifactId>annotationwrapper-parent</artifactId>
         <version>0.14.7-SNAPSHOT</version>
     </parent>
@@ -16,38 +16,34 @@
 
     <dependencies>
 
+        <!-- runtime dependencies -->
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>annotationwrapper-api</artifactId>
         </dependency>
 
-
+        <!-- shaded artifacts - set to provided -->
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-            <artifactId>annotationprocessor</artifactId>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>tools</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-            <artifactId>cute</artifactId>
-        </dependency>
-
+        <!-- dependencies just used during compilation -->
         <dependency>
             <groupId>io.toolisticon.spiap</groupId>
             <artifactId>spiap-api</artifactId>
         </dependency>
 
-
-        <dependency>
-            <groupId>io.toolisticon.spiap</groupId>
-            <artifactId>spiap-processor</artifactId>
-        </dependency>
-
+        <!-- Test dependencies -->
         <dependency>
             <groupId>io.toolisticon.cute</groupId>
             <artifactId>cute</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>cute</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -56,8 +52,6 @@
 
         <plugins>
 
-
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -71,18 +65,40 @@
 
                         <configuration>
 
+                            <artifactSet>
+                                <includes>
+                                    <include>io.toolisticon.aptk:tools</include>
+                                    <include>io.toolisticon.aptk:common</include>
+                                    <include>io.toolisticon.aptk:templating</include>
+                                </includes>
+                            </artifactSet>
 
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
 
-
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+                                    <resource>.txt</resource>
+                                </transformer>
+                            </transformers>
 
                             <relocations>
                                 <relocation>
-                                    <pattern>io.toolisticon.annotationprocessortoolkit</pattern>
-                                    <excludes>
-                                        <exclude>io.toolisticon.annotationprocessortoolkit.wrapper.*</exclude>
-                                    </excludes>
+                                    <pattern>io.toolisticon.aptk.tools</pattern>
                                     <shadedPattern>
-                                        io.toolisticon.annotationprocessortoolkit.wrapper_3rdparty.io.toolisticon.annotationprocessortoolkit.tools
+                                        io.toolisticon.aptk.annotationwrapper._3rdparty.io.toolisticon.aptk.tools
+                                    </shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.toolisticon.aptk.common</pattern>
+                                    <shadedPattern>
+                                        io.toolisticon.aptk.annotationwrapper._3rdparty.io.toolisticon.aptk.common
+                                    </shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.toolisticon.aptk.templating</pattern>
+                                    <shadedPattern>
+                                        io.toolisticon.aptk.annotationwrapper._3rdparty.io.toolisticon.aptk.templating
                                     </shadedPattern>
                                 </relocation>
                             </relocations>
@@ -94,7 +110,7 @@
 
 
             </plugin>
-            -->
+
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration combine.children="append">

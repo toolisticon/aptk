@@ -1,7 +1,7 @@
 @AnnotationWrapper(value = {TestAnnotation.class},automaticallyWrapEmbeddedAnnotations = false)
-package io.toolisticon.annotationprocessortoolkit.wrapper.test;
+package io.toolisticon.aptk.wrapper.test;
 
-import io.toolisticon.annotationprocessortoolkit.wrapper.api.AnnotationWrapper;
+import io.toolisticon.aptk.annotationwrapper.api.AnnotationWrapper;
 
 
 

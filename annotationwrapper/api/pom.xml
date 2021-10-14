@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+        <groupId>io.toolisticon.aptk</groupId>
         <artifactId>annotationwrapper-parent</artifactId>
         <version>0.14.7-SNAPSHOT</version>
     </parent>
