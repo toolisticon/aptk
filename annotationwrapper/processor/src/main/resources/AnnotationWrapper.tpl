@@ -15,9 +15,9 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
-import io.toolisticon.annotationprocessortoolkit.tools.AnnotationUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.TypeMirrorWrapper;
-import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
+import io.toolisticon.aptk.tools.AnnotationUtils;
+import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.TypeUtils;
 
 
 /**

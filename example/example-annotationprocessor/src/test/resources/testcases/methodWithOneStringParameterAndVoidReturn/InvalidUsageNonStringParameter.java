@@ -1,6 +1,6 @@
-package io.toolisticon.example.annotationprocessortoolkit;
+package io.toolisticon.aptk.example.annotationprocessor;
 
-import io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
+import io.toolisticon.aptk.example.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
 
 public class InvalidUsageNonStringParameter {
 

@@ -1,6 +1,6 @@
-package io.toolisticon.annotationprocessortoolkit.test;
+package io.toolisticon.aptk.test;
 
-import io.toolisticon.annotationprocessortoolkit.TestAnnotation;
+import io.toolisticon.aptk.tools.TestAnnotation;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

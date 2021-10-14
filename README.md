@@ -48,7 +48,7 @@ This can be done by adding the following to your annotation processors pom.xml:
      <dependencies>
 
          <dependency>
-             <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+             <groupId>io.toolisticon.aptkio.toolisticon.aptk</groupId>
              <artifactId>annotationprocessor</artifactId>
              <version>0.14.4</version>
          </dependency>
@@ -77,18 +77,57 @@ This can be done by adding the following to your annotation processors pom.xml:
                              <goal>shade</goal>
                          </goals>
                          <configuration>
+
+                             <!-- remove shaded dependencies from pom.xml -->
+                             <createDependencyReducedPom>true</createDependencyReducedPom>
+                             
                              <!-- need to relocate used 3rd party dependencies and their transitive dependencies -->
                              <relocations>
                                  <relocation>
-                                     <pattern>io.toolisticon.annotationprocessortoolkit</pattern>
+                                     <pattern>io.toolisticon.aptkio.toolisticon.aptk</pattern>
                                      <shadedPattern>
-                                         your.projects.base.package._3rdparty.io.toolisticon.annotationprocessortoolkit
+                                         your.projects.base.package._3rdparty.io.toolisticon.aptk
                                      </shadedPattern>
                                  </relocation>
                              </relocations>
                          </configuration>
                      </execution>
                  </executions>
+
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+                                    <resource>.txt</resource>
+                                </transformer>
+                            </transformers>
+
+                            <relocations>
+                                <relocation>
+                                    <pattern>io.toolisticon.aptk.tools</pattern>
+                                    <shadedPattern>
+                                        io.toolisticon.aptk.annotationwrapper._3rdparty.io.toolisticon.aptk.tools
+                                    </shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.toolisticon.aptk.common</pattern>
+                                    <shadedPattern>
+                                        io.toolisticon.aptk.annotationwrapper._3rdparty.io.toolisticon.aptk.common
+                                    </shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.toolisticon.aptk.templating</pattern>
+                                    <shadedPattern>
+                                        io.toolisticon.aptk.annotationwrapper._3rdparty.io.toolisticon.aptk.templating
+                                    </shadedPattern>
+                                </relocation>
+                            </relocations>
+
+                        </configuration>
+
+                    </execution>
+                </executions>
              </plugin>
 
          </plugins>

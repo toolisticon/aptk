@@ -69,6 +69,7 @@
                 <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
                 <artifactId>cute</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>

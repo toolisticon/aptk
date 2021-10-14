@@ -1,14 +1,14 @@
-package io.toolisticon.annotationprocessortoolkit;
+package io.toolisticon.aptk;
 
 import com.google.testing.compile.JavaFileObjects;
-import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
-import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
-import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
-import io.toolisticon.annotationprocessortoolkit.validators.FluentTypeElementValidator;
+import io.toolisticon.aptk.filter.FluentElementFilter;
+import io.toolisticon.aptk.testhelper.AbstractAnnotationProcessorUnitTest;
+import io.toolisticon.aptk.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.aptk.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import io.toolisticon.aptk.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+import io.toolisticon.aptk.tools.ElementUtils;
+import io.toolisticon.aptk.tools.characteristicsfilter.Filters;
+import io.toolisticon.aptk.validators.FluentTypeElementValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;

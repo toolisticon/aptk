@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessor;
 
-import io.toolisticon.annotationprocessortoolkit.TestAnnotation;
+import io.toolisticon.aptk.tools.TestAnnotation;
 
 import java.util.Comparator;
 import java.util.List;

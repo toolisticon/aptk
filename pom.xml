@@ -220,7 +220,7 @@
                     <extensions>true</extensions>
                     <configuration>
                         <instructions>
-                            <Export-Package>io.toolisticon.annotationprocessortoolkit</Export-Package>
+                            <Export-Package>io.toolisticon.aptk</Export-Package>
                         </instructions>
                     </configuration>
                     <version>${maven-bundle-plugin.version}</version>

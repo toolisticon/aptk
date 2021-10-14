@@ -1,8 +1,8 @@
-package io.toolisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
+package io.toolisticon.aptk.tools.characteristicsvalidator;
 
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ParameterTypeFqnMatcher;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ParameterTypeMatcher;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.RawTypeMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.ParameterTypeFqnMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.ParameterTypeMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.RawTypeMatcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -24,14 +24,14 @@ public class ValidatorTest {
     @Test
     public void testModifierValidator() {
 
-        MatcherAssert.assertThat(Validators.MODIFIER_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.MODIFIER_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.MODIFIER_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.MODIFIER_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testModifierValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator()).getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.MODIFIER_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Modifier>) Validators.InAndExclusiveElementValidators.getModifierValidator()).getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.MODIFIER_MATCHER.getMatcher()));
 
     }
 
@@ -42,14 +42,14 @@ public class ValidatorTest {
     @Test
     public void testAnnotationValidator() {
 
-        MatcherAssert.assertThat(Validators.ANNOTATION_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.ANNOTATION_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.ANNOTATION_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.ANNOTATION_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testAnnotationValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class<? extends Annotation>>) Validators.InAndExclusiveElementValidators.getAnnotationValidator()).getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.ANNOTATION_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<Class<? extends Annotation>>) Validators.InAndExclusiveElementValidators.getAnnotationValidator()).getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.ANNOTATION_MATCHER.getMatcher()));
 
     }
 
@@ -60,14 +60,14 @@ public class ValidatorTest {
     @Test
     public void testNameValidator() {
 
-        MatcherAssert.assertThat(Validators.NAME_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.NAME_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.NAME_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.NAME_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testNameValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String>) Validators.InAndExclusiveElementValidators.getNameValidator()).getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.NAME_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String>) Validators.InAndExclusiveElementValidators.getNameValidator()).getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.NAME_MATCHER.getMatcher()));
 
     }
 
@@ -78,14 +78,14 @@ public class ValidatorTest {
     @Test
     public void testRegexNameValidator() {
 
-        MatcherAssert.assertThat(Validators.REGEX_NAME_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.REGEX_NAME_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.REGEX_NAME_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.REGEX_NAME_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testRegexNameValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String>) Validators.InAndExclusiveElementValidators.getRegexNameValidator()).getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.REGEX_NAME_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<String>) Validators.InAndExclusiveElementValidators.getRegexNameValidator()).getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.REGEX_NAME_MATCHER.getMatcher()));
 
     }
 
@@ -96,14 +96,14 @@ public class ValidatorTest {
     @Test
     public void testElementKindValidator() {
 
-        MatcherAssert.assertThat(Validators.ELEMENT_KIND_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.ELEMENT_KIND_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(Validators.ELEMENT_KIND_VALIDATOR.getValidator().getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.ELEMENT_KIND_MATCHER.getMatcher()));
 
     }
 
     @Test
     public void testElementKindValidator_GetValidatorByMethod() {
 
-        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<ElementKind>) Validators.InAndExclusiveElementValidators.getElementKindValidator()).getMatcher(), Matchers.is(io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matchers.ELEMENT_KIND_MATCHER.getMatcher()));
+        MatcherAssert.assertThat(((GenericElementCharacteristicValidator<ElementKind>) Validators.InAndExclusiveElementValidators.getElementKindValidator()).getMatcher(), Matchers.is(io.toolisticon.aptk.tools.characteristicsmatcher.Matchers.ELEMENT_KIND_MATCHER.getMatcher()));
 
     }
 

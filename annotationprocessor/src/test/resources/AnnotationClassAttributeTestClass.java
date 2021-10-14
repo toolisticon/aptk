@@ -1,9 +1,9 @@
 package io.toolisticon.annotationprocessor;
 
-import io.toolisticon.annotationprocessortoolkit.TestAnnotation;
-import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassArrayAttributeAnnotation;
-import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.ClassAttributeAnnotation;
-import io.toolisticon.annotationprocessortoolkit.tools.annotationutilstestclasses.DefaultValueAnnotation;
+import io.toolisticon.aptk.tools.TestAnnotation;
+import io.toolisticon.aptk.tools.annotationutilstestclasses.ClassArrayAttributeAnnotation;
+import io.toolisticon.aptk.tools.annotationutilstestclasses.ClassAttributeAnnotation;
+import io.toolisticon.aptk.tools.annotationutilstestclasses.DefaultValueAnnotation;
 
 /**
  * Test class for annotation processor tools.

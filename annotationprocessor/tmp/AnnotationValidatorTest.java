@@ -1,9 +1,9 @@
-package io.toolisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
+package io.toolisticon.aptk.tools.characteristicsvalidator;
 
-import io.toolisticon.annotationprocessortoolkit.FilterTestAnnotation2;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.TestAnnotation;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.AnnotationMatcher;
-import io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matcher;
+import io.toolisticon.aptk.FilterTestAnnotation2;
+import io.toolisticon.aptk.testhelper.unittest.TestAnnotation;
+import io.toolisticon.aptk.tools.matcher.impl.AnnotationMatcher;
+import io.toolisticon.aptk.tools.characteristicsmatcher.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.mockito.Mockito;

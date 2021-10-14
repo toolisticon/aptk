@@ -1,6 +1,6 @@
-package io.toolisticon.annotationprocessortoolkit;
+package io.toolisticon.aptk;
 
-import io.toolisticon.annotationprocessortoolkit.validators.AbstractFluentValidator;
+import io.toolisticon.aptk.validators.AbstractFluentValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;

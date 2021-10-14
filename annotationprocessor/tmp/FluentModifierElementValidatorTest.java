@@ -1,16 +1,16 @@
-package io.toolisticon.annotationprocessortoolkit;
+package io.toolisticon.aptk;
 
 import com.google.testing.compile.JavaFileObjects;
-import io.toolisticon.annotationprocessortoolkit.filter.FluentElementFilter;
-import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
-import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.characteristicsfilter.Filters;
-import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator;
-import io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentValidators;
-import io.toolisticon.annotationprocessortoolkit.validators.FluentModifierElementValidator;
+import io.toolisticon.aptk.filter.FluentElementFilter;
+import io.toolisticon.aptk.testhelper.AbstractAnnotationProcessorUnitTest;
+import io.toolisticon.aptk.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.aptk.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import io.toolisticon.aptk.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+import io.toolisticon.aptk.tools.ElementUtils;
+import io.toolisticon.aptk.tools.characteristicsfilter.Filters;
+import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
+import io.toolisticon.aptk.tools.fluentvalidator.FluentValidators;
+import io.toolisticon.aptk.validators.FluentModifierElementValidator;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Unit test for {@link io.toolisticon.annotationprocessortoolkit.tools.fluentvalidator.FluentElementValidator}.
+ * Unit test for {@link io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator}.
  */
 @RunWith(Parameterized.class)
 public class FluentModifierElementValidatorTest extends AbstractAnnotationProcessorUnitTest {

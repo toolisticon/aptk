@@ -65,9 +65,9 @@
 
                             <relocations>
                                 <relocation>
-                                    <pattern>io.toolisticon.annotationprocessortoolkit</pattern>
+                                    <pattern>io.toolisticon.aptk</pattern>
                                     <shadedPattern>
-                                        io.toolisticon.example.annotationprocessortoolkit.annotationprocessor._3rdparty.io.toolisticon.annotationprocessortoolkit
+                                        io.toolisticon.example.annotationprocessortoolkit.annotationprocessor._3rdparty.io.toolisticon.aptk
                                     </shadedPattern>
                                 </relocation>
 

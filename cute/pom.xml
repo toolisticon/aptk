@@ -59,7 +59,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>io.toolisticon.annotationprocessortoolkit.cute</Export-Package>
+                        <Export-Package>io.toolisticon.aptk.cute</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>

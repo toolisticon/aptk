@@ -1,4 +1,4 @@
-package io.toolisticon.annotationprocessortoolkit.wrapper.test;
+package io.toolisticon.aptk.wrapper.test;
 
 public enum TestEnum {
     ONE, TWO, THREE;

@@ -1,11 +1,11 @@
-package io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher;
+package io.toolisticon.aptk.tools.characteristicsmatcher;
 
-import io.toolisticon.annotationprocessortoolkit.testhelper.AbstractAnnotationProcessorUnitTest;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
-import io.toolisticon.annotationprocessortoolkit.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
-import io.toolisticon.annotationprocessortoolkit.tools.ElementUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ParameterTypeMatcher;
+import io.toolisticon.aptk.testhelper.AbstractAnnotationProcessorUnitTest;
+import io.toolisticon.aptk.testhelper.unittest.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.aptk.testhelper.unittest.AnnotationProcessorUnitTestConfiguration;
+import io.toolisticon.aptk.testhelper.unittest.AnnotationProcessorUnitTestConfigurationBuilder;
+import io.toolisticon.aptk.tools.ElementUtils;
+import io.toolisticon.aptk.tools.matcher.impl.ParameterTypeMatcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

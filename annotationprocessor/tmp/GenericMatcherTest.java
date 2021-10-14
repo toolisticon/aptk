@@ -1,4 +1,4 @@
-package io.toolisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
+package io.toolisticon.aptk.tools.characteristicsvalidator;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;

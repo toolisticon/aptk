@@ -1,7 +1,7 @@
-package io.toolisticon.annotationprocessortoolkit.tools.characteristicsvalidator;
+package io.toolisticon.aptk.tools.characteristicsvalidator;
 
-import io.toolisticon.annotationprocessortoolkit.tools.characteristicsmatcher.Matcher;
-import io.toolisticon.annotationprocessortoolkit.tools.matcher.impl.ModifierMatcher;
+import io.toolisticon.aptk.tools.characteristicsmatcher.Matcher;
+import io.toolisticon.aptk.tools.matcher.impl.ModifierMatcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.mockito.Mockito;
