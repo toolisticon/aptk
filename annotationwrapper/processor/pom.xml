@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+        <groupId>io.toolisticon.aptk</groupId>
         <artifactId>annotationwrapper-parent</artifactId>
         <version>0.14.7-SNAPSHOT</version>
     </parent>
@@ -18,14 +18,14 @@
 
         <!-- runtime dependencies -->
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>annotationwrapper-api</artifactId>
         </dependency>
 
         <!-- shaded artifacts - set to provided -->
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-            <artifactId>annotationprocessor</artifactId>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>tools</artifactId>
         </dependency>
 
         <!-- dependencies just used during compilation -->
@@ -41,7 +41,7 @@
         </dependency>
 
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>cute</artifactId>
         </dependency>
 
@@ -67,9 +67,9 @@
 
                             <artifactSet>
                                 <includes>
-                                    <include>io.toolisticon.annotationprocessortoolkit:annotationprocessor</include>
-                                    <include>io.toolisticon.annotationprocessortoolkit:common</include>
-                                    <include>io.toolisticon.annotationprocessortoolkit:templating</include>
+                                    <include>io.toolisticon.aptk:tools</include>
+                                    <include>io.toolisticon.aptk:common</include>
+                                    <include>io.toolisticon.aptk:templating</include>
                                 </includes>
                             </artifactSet>
 

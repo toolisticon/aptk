@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+        <groupId>io.toolisticon.aptk</groupId>
         <artifactId>annotationwrapper-parent</artifactId>
         <version>0.14.7-SNAPSHOT</version>
     </parent>
@@ -15,17 +15,8 @@
     <name>annotationwrapper-integrationTest</name>
 
 
-    <dependencyManagement>
-
-    </dependencyManagement>
-
-
     <build>
 
-        <pluginManagement>
-
-
-        </pluginManagement>
 
         <plugins>
 
@@ -38,7 +29,7 @@
                     <target>${java.compile.target.version}</target>
                     <annotationProcessorPaths>
                         <path>
-                            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+                            <groupId>io.toolisticon.aptk</groupId>
                             <artifactId>annotationwrapper-processor</artifactId>
                             <version>${project.version}</version>
                         </path>
@@ -99,17 +90,17 @@
     <dependencies>
 
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>annotationwrapper-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-            <artifactId>annotationprocessor</artifactId>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>tools</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>cute</artifactId>
         </dependency>
 

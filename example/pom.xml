@@ -5,8 +5,8 @@
     <packaging>pom</packaging>
 
     <parent>
-        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-        <artifactId>annotationprocessortoolkit-parent</artifactId>
+        <groupId>io.toolisticon.aptk</groupId>
+        <artifactId>aptk-parent</artifactId>
         <version>0.14.7-SNAPSHOT</version>
     </parent>
 
@@ -24,13 +24,13 @@
         <dependencies>
 
             <dependency>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>example-annotations</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>example-annotationprocessor</artifactId>
                 <version>${project.version}</version>
                 <scope>provided</scope>
@@ -79,17 +79,6 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Export-Package>io.toolisticon.example.annotationprocessortoolkit</Export-Package>
-                    </instructions>
                 </configuration>
             </plugin>
 

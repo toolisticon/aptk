@@ -2,32 +2,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>annotationprocessor_nodep</artifactId>
-    <packaging>bundle</packaging>
+    <artifactId>aptk_nodep</artifactId>
+    <packaging>jar</packaging>
 
     <parent>
-        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-        <artifactId>annotationprocessortoolkit-parent</artifactId>
+        <groupId>io.toolisticon.aptk</groupId>
+        <artifactId>aptk-parent</artifactId>
         <version>0.14.7-SNAPSHOT</version>
     </parent>
 
-    <name>annotationprocessor_nodep</name>
+    <name>aptk_nodep</name>
 
 
     <dependencies>
 
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-            <artifactId>annotationprocessor</artifactId>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>tools</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>common</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>templating</artifactId>
         </dependency>
 
@@ -48,6 +48,11 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+
+                        <configuration>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                        </configuration>
+
                     </execution>
                 </executions>
             </plugin>
