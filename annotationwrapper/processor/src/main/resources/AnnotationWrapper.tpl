@@ -21,7 +21,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
 
 
 /**
- * Wrapper class to read attribute values from Annotation {@see ${atw.simpleName}}.
+ * Wrapper class to read attribute values from Annotation ${atw.simpleName}.
  */
 !{if state.usePublicVisibility}public !{/if}class ${atw.simpleName}Wrapper {
 
@@ -31,6 +31,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
     /**
      * Private constructor.
      * Used to read annotation from Element.
+     * @param annotatedElement the annotated Element to annotated with this wrapper annotation
      */
     private ${atw.simpleName}Wrapper (Element annotatedElement) {
         this.annotatedElement = annotatedElement;
@@ -40,6 +41,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
     /**
      * Private constructor.
      * Mainly used for embedded annotations.
+     * @param annotationMirror the AnnotationMirror to wrap
      */
     private ${atw.simpleName}Wrapper (AnnotationMirror annotationMirror) {
         this.annotatedElement = null;
@@ -219,6 +221,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
 
     /**
      * Checks if passed element is annotated with this wrapper annotation type : ${atw.simpleName}
+     * @param element The element to check for wrapped annotation type
      * @return true, if passed element is annotated with ${atw.simpleName} annotation, otherwise false
      */
     public static boolean isAnnotated(Element element) {
@@ -227,7 +230,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
 
      /**
       * Gets the AnnotationMirror from passed element for this wrappers annotation type and creates a wrapper instance.
-      *
+      * @param element The element to read the annotations from
       * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
       */
     public static ${atw.simpleName}Wrapper wrapAnnotationOfElement(Element element) {
@@ -237,7 +240,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
     /**
      * Wraps an AnnotationMirror.
      * Throws an IllegalArgumentException if passed AnnotationMirror type doesn't match the wrapped annotation type.
-     *
+     * @param annotationMirror The AnnotationMirror to wrap
      * @return The wrapper instance
      */
     public static ${atw.simpleName}Wrapper wrapAnnotationMirror(AnnotationMirror annotationMirror) {
