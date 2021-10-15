@@ -1,8 +1,7 @@
-package io.toolisticon.example.annotationprocessortoolkit;
+package io.toolisticon.aptk.example.annotationprocessor;
 
-import io.toolisticon.example.annotationprocessortoolkit.annotations.ImplementsSpecificInterfaceCheckAnnotation;
-import io.toolisticon.example.annotationprocessortoolkit.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation;
-import io.toolisticon.example.annotationprocessortoolkit.annotations.SpecificInterface;
+import io.toolisticon.aptk.example.annotations.ImplementsSpecificInterfaceCheckAnnotation;
+import io.toolisticon.aptk.example.annotations.SpecificInterface;
 
 @ImplementsSpecificInterfaceCheckAnnotation
 public class ValidUsageTest implements SpecificInterface{

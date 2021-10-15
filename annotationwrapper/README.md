@@ -15,7 +15,7 @@ First please add the processor to your processors compiler configuration:
         <target>${java.compile.target.version}</target>
         <annotationProcessorPaths>
             <path>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.aptkio.toolisticon.aptk</groupId>
                 <artifactId>annotationwrapper-processor</artifactId>
                 <version>${aptk.version}</version>
             </path>
@@ -29,7 +29,7 @@ It's also required to bind the APTK as dependency:
 <!-- Maven example -->    
 
 <dependency>
-    <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+    <groupId>io.toolisticon.aptkio.toolisticon.aptk</groupId>
     <artifactId>annotationprocessor</artifactId>
     <version>${aptk.version}</version>
 </dependency>   
@@ -40,7 +40,7 @@ Then you need to add the *AnnotationWrapper* configuration to your processor pac
 @AnnotationWrapper(value = {YourAnnotation1.class, YourAnnotation2.class})
 package your.custompackage;
 
-import io.toolisticon.annotationprocessortoolkit.wrapper.api.AnnotationWrapper;
+import AnnotationWrapper;
 ```
 - Generated wrapper classes will have package private visibility by default - this can be changed to public by using the *AnnotationWrapper.usePublicVisibility* attribute.
 - By default wrapper classes of all referenced annotation types will be created automatically - this can be deactivated by using the *AnnotationWrapper.automaticallyWrapEmbeddedAnnotations* attribute.
@@ -49,7 +49,7 @@ import io.toolisticon.annotationprocessortoolkit.wrapper.api.AnnotationWrapper;
 
 For annotation *TestAnnotation*:
 ```java
-package io.toolisticon.annotationprocessortoolkit.wrapper.test;
+package io.toolisticon.aptk.wrapper.test;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -68,26 +68,19 @@ public @interface PrettyExample {
 
 the processor will generate the following wrapper class:
 ```java
-package io.toolisticon.annotationprocessortoolkit.wrapper.test;
-import io.toolisticon.annotationprocessortoolkit.wrapper.test.PrettyExample;
-import io.toolisticon.annotationprocessortoolkit.wrapper.test.EmbeddedAnnotation;
+package io.toolisticon.aptk.wrapper.test;
+import io.toolisticon.aptk.wrapper.test.PrettyExample;
+import EmbeddedAnnotation;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
-import io.toolisticon.annotationprocessortoolkit.tools.AnnotationUtils;
-import io.toolisticon.annotationprocessortoolkit.tools.TypeMirrorWrapper;
-import io.toolisticon.annotationprocessortoolkit.tools.TypeUtils;
+import AnnotationUtils;
+import TypeMirrorWrapper;
+import TypeUtils;
 
 
 /**

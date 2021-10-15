@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>example-usecase</artifactId>
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
 
     <parent>
-        <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+        <groupId>io.toolisticon.aptk</groupId>
         <artifactId>example-parent</artifactId>
-        <version>0.14.6</version>
+        <version>0.15.0</version>
     </parent>
 
     <name>example-usecase</name>
@@ -16,12 +16,12 @@
     <dependencies>
 
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>example-annotations</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>example-annotationprocessor</artifactId>
             <scope>provided</scope>
         </dependency>

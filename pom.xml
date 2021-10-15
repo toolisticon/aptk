@@ -2,20 +2,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-    <artifactId>annotationprocessortoolkit-parent</artifactId>
-    <version>0.14.6</version>
+    <groupId>io.toolisticon.aptk</groupId>
+    <artifactId>aptk-parent</artifactId>
+    <version>0.15.0</version>
     <packaging>pom</packaging>
 
-    <name>annotationprocessortoolkit-parent</name>
-    <description>Please refer to https://github.com/toolisticon/annotation-processor-toolkit</description>
-    <url>https://github.com/toolisticon/annotation-processor-toolkit</url>
+    <name>aptk-parent</name>
+    <description>Please refer to https://github.com/toolisticon/aptk</description>
+    <url>https://github.com/toolisticon/aptk</url>
 
     <modules>
 
         <!-- modules -->
         <module>common</module>
-        <module>annotationprocessor</module>
+        <module>tools</module>
         <module>example</module>
         <module>templating</module>
 
@@ -26,7 +26,7 @@
         <module>cute</module>
 
         <!-- CREATE A NO DEPENDENCY ARTIFACT -->
-        <module>annotationprocessor_nodep</module>
+        <module>tools_nodep</module>
 
     </modules>
 
@@ -69,14 +69,14 @@
 
 
     <issueManagement>
-        <url>https://github.com/toolisticon/annotation-processor-toolkit/issues</url>
+        <url>https://github.com/toolisticon/aptk/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:git@github.com:toolisticon/annotation-processor-toolkit.git</connection>
-        <developerConnection>scm:git:git@github.com:toolisticon/annotation-processor-toolkit.git</developerConnection>
-        <url>git@github.com:toolisticon/annotation-processor-toolkit.git</url>
+        <connection>scm:git:git@github.com:toolisticon/aptk.git</connection>
+        <developerConnection>scm:git:git@github.com:toolisticon/aptk.git</developerConnection>
+        <url>git@github.com:toolisticon/aptk.git</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -157,7 +157,7 @@
                                         <exclude>*</exclude>
                                     </excludes>
                                     <includes>
-                                        <include>io.toolisticon.annotationprocessortoolkit:*</include>
+                                        <include>io.toolisticon.aptk:*</include>
                                         <include>*:*:*:*:test:*</include>
                                         <include>*:*:*:*:provided:*</include>
                                     </includes>
@@ -175,11 +175,6 @@
                 <configuration>
                     <repoToken>${COVERALL_TOKEN}</repoToken>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -212,18 +207,6 @@
                         <source>${java.compile.source.version}</source>
                         <target>${java.compile.target.version}</target>
                     </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.felix</groupId>
-                    <artifactId>maven-bundle-plugin</artifactId>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <instructions>
-                            <Export-Package>io.toolisticon.annotationprocessortoolkit</Export-Package>
-                        </instructions>
-                    </configuration>
-                    <version>${maven-bundle-plugin.version}</version>
                 </plugin>
 
                 <plugin>
@@ -517,19 +500,19 @@
 
             <!-- internal -->
             <dependency>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
-                <artifactId>annotationprocessor</artifactId>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.toolisticon.annotationprocessortoolkit</groupId>
+                <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>templating</artifactId>
                 <version>${project.version}</version>
             </dependency>
