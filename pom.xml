@@ -4,7 +4,7 @@
 
     <groupId>io.toolisticon.aptk</groupId>
     <artifactId>aptk-parent</artifactId>
-    <version>0.15.0</version>
+    <version>0.15.1</version>
     <packaging>pom</packaging>
 
     <name>aptk-parent</name>
@@ -24,9 +24,6 @@
 
         <!-- support for toolisticon cute -->
         <module>cute</module>
-
-        <!-- CREATE A NO DEPENDENCY ARTIFACT -->
-        <module>tools_nodep</module>
 
     </modules>
 
@@ -104,6 +101,7 @@
         <maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
         <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
         <maven-processor-plugin.version>2.2.4</maven-processor-plugin.version>
+        <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
 
