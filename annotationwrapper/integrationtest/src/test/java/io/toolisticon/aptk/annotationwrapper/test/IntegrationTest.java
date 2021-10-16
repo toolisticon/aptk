@@ -6,6 +6,7 @@ import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -102,6 +103,22 @@ public class IntegrationTest {
                 TestDefaultsAnnotationWrapper wrappedAnnotation = TestDefaultsAnnotationWrapper.wrapAnnotationOfElement(typeElement);
                 MatcherAssert.assertThat(wrappedAnnotation.withDefaultIsDefaultValue(), Matchers.is(true));
                 MatcherAssert.assertThat(wrappedAnnotation.withoutDefaultIsDefaultValue(), Matchers.is(false));
+            }
+        })
+                .compilationShouldSucceed()
+                .executeTest();
+    }
+
+    @Test
+    public void testCustomCodeForwarding(){
+        unitTestBuilder.defineTestWithPassedInElement(TestUsage.class, new APTKUnitTestProcessor<TypeElement>() {
+            @Override
+            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
+
+                // single attribute values
+                TestAnnotationWrapper wrappedAnnotation = TestAnnotationWrapper.wrapAnnotationOfElement(typeElement);
+                MatcherAssert.assertThat(wrappedAnnotation.forwardedMethod("yes"), Matchers.is("it worked : " + "yes"));
+
             }
         })
                 .compilationShouldSucceed()

@@ -81,6 +81,15 @@ public final class TypeUtils {
             return isOfTypeKind(typeMirror, TypeKind.DECLARED);
         }
 
+        /**
+         * Checks whether passed TypeMirror represents a type variable.
+         *
+         * @param typeMirror the {@link TypeMirror} to check
+         * @return true if passed typeMirror has typevar TypeKind, otherwise false
+         */
+        public static boolean isTypeVar(TypeMirror typeMirror) {
+            return isOfTypeKind(typeMirror, TypeKind.TYPEVAR);
+        }
 
         /**
          * Checks whether passed TypeMirror represents an executable method, constructor or a (static) init block.
