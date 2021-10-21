@@ -1,10 +1,10 @@
 package io.toolisticon.aptk.tools;
 
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
 import io.toolisticon.aptk.tools.annotationutilstestclasses.ClassArrayAttributeAnnotation;
 import io.toolisticon.aptk.tools.annotationutilstestclasses.ClassAttributeAnnotation;
 import io.toolisticon.aptk.tools.annotationutilstestclasses.DefaultValueAnnotation;
 import io.toolisticon.aptk.tools.annotationutilstestclasses.NoAttributeAnnotation;
+import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
@@ -411,13 +411,13 @@ public class AnnotationUtilsTest {
                 TypeMirror result = AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(typeElement, ClassAttributeAnnotation.class);
 
                 MatcherAssert.assertThat(result, Matchers.notNullValue());
-                MatcherAssert.assertThat("Type must match String : " , TypeUtils.TypeComparison.isTypeEqual(result, String.class));
+                MatcherAssert.assertThat("Type must match String : ", TypeUtils.TypeComparison.isTypeEqual(result, String.class));
 
                 // test - for value
-                result = AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(typeElement, ClassAttributeAnnotation.class,"classAttribute");
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(typeElement, ClassAttributeAnnotation.class, "classAttribute");
 
                 MatcherAssert.assertThat(result, Matchers.notNullValue());
-                MatcherAssert.assertThat("Type must match Long : " , TypeUtils.TypeComparison.isTypeEqual(result, Long.class));
+                MatcherAssert.assertThat("Type must match Long : ", TypeUtils.TypeComparison.isTypeEqual(result, Long.class));
 
             }
         })
@@ -460,8 +460,6 @@ public class AnnotationUtilsTest {
     }
 
 
-
-
     @Test
     public void getClassAttributeFromAnnotationAsFqn_shouldGetClassAttributeSuccefully() {
 
@@ -477,13 +475,25 @@ public class AnnotationUtilsTest {
                 String result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(typeElement, ClassAttributeAnnotation.class);
 
                 MatcherAssert.assertThat(result, Matchers.notNullValue());
-                MatcherAssert.assertThat("Type must match String : " , String.class.getCanonicalName().equals(result));
+                MatcherAssert.assertThat("Type must match String : ", String.class.getCanonicalName().equals(result));
 
                 // test - for value
-                result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(typeElement, ClassAttributeAnnotation.class,"classAttribute");
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(typeElement, ClassAttributeAnnotation.class, "classAttribute");
 
                 MatcherAssert.assertThat(result, Matchers.notNullValue());
-                MatcherAssert.assertThat("Type must match Long : " , Long.class.getCanonicalName().equals(result));
+                MatcherAssert.assertThat("Type must match Long : ", Long.class.getCanonicalName().equals(result));
+
+                // test - for value
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(AnnotationUtils.getAnnotationMirror(typeElement, ClassAttributeAnnotation.class));
+
+                MatcherAssert.assertThat(result, Matchers.notNullValue());
+                MatcherAssert.assertThat("Type must match String : ", String.class.getCanonicalName().equals(result));
+
+                // test - for value
+                result = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(AnnotationUtils.getAnnotationMirror(typeElement, ClassAttributeAnnotation.class), "classAttribute");
+
+                MatcherAssert.assertThat(result, Matchers.notNullValue());
+                MatcherAssert.assertThat("Type must match Long : ", Long.class.getCanonicalName().equals(result));
             }
         })
                 .compilationShouldSucceed()

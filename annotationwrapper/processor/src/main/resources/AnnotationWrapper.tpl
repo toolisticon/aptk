@@ -219,7 +219,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
 !{/if}
 !{/for}!{for customCodeClass : atw.customCodeClasses}!{for customCodeMethod : customCodeClass.customMethods}
     public ${customCodeMethod.methodDeclarationString}{
-        return ${customCodeMethod.forwardCall};
+        ${customCodeMethod.forwardCall};
     }
 
 !{/for}!{/for}

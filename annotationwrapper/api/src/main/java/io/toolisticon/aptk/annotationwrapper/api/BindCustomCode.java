@@ -10,8 +10,16 @@ import java.lang.annotation.Annotation;
  */
 public @interface BindCustomCode {
 
+    /**
+     * Adds annotation to create wrapper class with custom code in it's api.
+     * @return The annotation to wrap
+     */
     Class<? extends Annotation> annotation();
 
+    /**
+     * An array containing classes that should be scanned for methods annotated with {@link CustomCodeMethod} annotation.
+     * @return The classes to scan
+     */
     Class<?>[] customCodeClass();
 
 }

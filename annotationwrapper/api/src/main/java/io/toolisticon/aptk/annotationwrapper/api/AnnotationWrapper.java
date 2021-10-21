@@ -24,7 +24,8 @@ public @interface AnnotationWrapper {
 
 
     /**
-     * Bind custom code into the api
+     * Bind custom code into the api.
+     *
      * @return
      */
     BindCustomCode[] bindCustomCode() default {};

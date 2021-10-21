@@ -367,7 +367,9 @@ public class TypeMirrorWrapper {
      */
     public static String getTypeDeclaration(TypeMirror typeMirror) {
 
-        if (isPrimitive(typeMirror)) {
+        if (typeMirror.getKind() == TypeKind.VOID) {
+            return "void";
+        } else if (isPrimitive(typeMirror)) {
             return typeMirror.toString();
         } else if (isArray(typeMirror)) {
             return getTypeDeclaration(getComponentType(typeMirror)) + "[]";

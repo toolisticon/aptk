@@ -1,14 +1,17 @@
 package io.toolisticon.aptk.annotationwrapper.processor;
 
 import io.toolisticon.aptk.annotationwrapper.api.AnnotationWrapper;
+import io.toolisticon.aptk.annotationwrapper.api.CustomCodeMethod;
 import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.AnnotationUtils;
+import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.FilerUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
+import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.aptk.tools.generators.SimpleJavaWriter;
 import io.toolisticon.spiap.api.Service;
 
@@ -24,6 +27,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
@@ -482,16 +486,26 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
     public static class CustomCodeClass {
 
-        final List<CustomCodeClassMethod> customMethods = new ArrayList<>();
+        private final TypeElement typeElement;
+        private final List<CustomCodeClassMethod> customMethods = new ArrayList<>();
 
         public CustomCodeClass(TypeElement typeElement) {
 
+            this.typeElement = typeElement;
+
             List<ExecutableElement> methods = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
                     .applyFilter(CoreMatchers.IS_METHOD)
-                    .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.STATIC)
-                    .applyInvertedFilter(CoreMatchers.HAS_NO_PARAMETERS).getResult();
+                    .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(CustomCodeMethod.class)
+                    .getResult();
 
             for (ExecutableElement method : methods) {
+
+                if(!FluentElementValidator.createFluentElementValidator(method)
+                        .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.STATIC)
+                        .applyInvertedValidator(CoreMatchers.HAS_NO_PARAMETERS)
+                        .validateAndIssueMessages()){
+                    continue;
+                }
 
                 // Check if firstParameter matches Wrapper type - skip for now
 
@@ -501,6 +515,10 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
             }
 
+        }
+
+        public TypeElement getTypeElement() {
+            return typeElement;
         }
 
         public Set<String> getImports() {
@@ -591,6 +609,10 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         public String getForwardCall() {
             StringBuilder result = new StringBuilder();
 
+            if (this.executableElement.getReturnType().getKind() != TypeKind.VOID) {
+                result.append("return ");
+            }
+
             // First add TypeName
             result.append(this.executableElement.getEnclosingElement().getSimpleName().toString());
             result.append(".");
@@ -642,6 +664,8 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         }
 
 
+
+
     }
 
     /**
@@ -673,7 +697,49 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         AnnotationToWrap annotationToWrap = new AnnotationToWrap(annotationToCreateWrapperFor, annotationAttributes, state.customCodeClassMappings.get(annotationToCreateWrapperFor));
 
+        // validate
+        validate(state, annotationToWrap);
+
         createClass(state, annotationToWrap);
+
+    }
+
+    public boolean validate(State state, AnnotationToWrap annotationToWrap) {
+
+        boolean returnValue = true;
+
+        for (CustomCodeClass customCodeClass : annotationToWrap.getCustomCodeClasses()) {
+
+            // Check if Wrapper and Custom Code are in same package
+            returnValue = returnValue & FluentElementValidator.createFluentElementValidator(customCodeClass.getTypeElement())
+                    .applyValidator(CoreMatchers.BY_PACKAGE_NAME)
+                    .hasOneOf(state.getPackageName())
+                    .validateAndIssueMessages();
+
+            for (CustomCodeClassMethod customCodeClassMethod : customCodeClass.getCustomMethods()){
+
+                // check if method is visible (Enclosing type and method)
+                returnValue = returnValue & FluentElementValidator.createFluentElementValidator(customCodeClassMethod.executableElement)
+                        .applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.PRIVATE)
+                        .validateAndIssueMessages();
+
+                // Check if firstParameter matches Wrapper type
+                if (customCodeClassMethod.executableElement.getParameters().size() == 0) {
+                    // Write error message
+                    returnValue = false;
+                    continue;
+                }
+
+                if (!(annotationToWrap.getSimpleName() +"Wrapper").equals(customCodeClassMethod.executableElement.getParameters().get(0).asType().toString())){
+                    MessagerUtils.error(customCodeClassMethod.executableElement.getParameters().get(0), AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, (annotationToWrap.getSimpleName() +"Wrapper"));
+                    returnValue =false;
+                }
+
+
+            }
+        }
+
+        return returnValue;
 
     }
 

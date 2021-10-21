@@ -3,6 +3,7 @@ package io.toolisticon.aptk.annotationwrapper.processor;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessorForTestingAnnotationProcessors;
 import io.toolisticon.aptk.tools.MessagerUtils;
+import io.toolisticon.aptk.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
@@ -67,11 +68,50 @@ public class AnnotationWrapperProcessorTest {
         CompileTestBuilder.compilationTest()
                 .addProcessors(AnnotationWrapperProcessor.class)
                 .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCode/package-info.java", "testcase/withCustomCode/CustomCodeClass.java")
-                .expectThatJavaFileObjectExists(StandardLocation.SOURCE_OUTPUT, "io.toolisticon.aptk.wrapper.test.TestAnnotationWrapper", JavaFileObject.Kind.SOURCE, CoreGeneratedFileObjectMatchers.createContainsSubstringsMatcher("String shouldWork(String arg1)"))
+                .expectThatJavaFileObjectExists(StandardLocation.SOURCE_OUTPUT, "io.toolisticon.aptk.wrapper.test.TestAnnotationWrapper", JavaFileObject.Kind.SOURCE, CoreGeneratedFileObjectMatchers.createContainsSubstringsMatcher("String shouldWork(String arg1)","void shouldWorkWithVoidReturnValue(String arg1)"))
                 .compilationShouldSucceed()
                 .executeTest();
     }
 
+    @Test
+    public void test_wrapperCreation_withCustomCode_withWrongFirstParameterType() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCodeButWrongFirstParameter/package-info.java", "testcase/withCustomCodeButWrongFirstParameter/CustomCodeClass.java")
+                .expectErrorMessage().thatContains(AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE.getCode())
+                .compilationShouldFail()
+                .executeTest();
+    }
+
+    @Test
+    public void test_wrapperCreation_withCustomCode_wrongFirstParameterType() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCodeButWrongFirstParameter/package-info.java", "testcase/withCustomCodeButWrongFirstParameter/CustomCodeClass.java")
+                .expectErrorMessage().thatContains(AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE.getCode())
+                .compilationShouldFail()
+                .executeTest();
+    }
+
+    @Test
+    public void test_wrapperCreation_withCustomCode_nonStaticMethod() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCodeButNonStaticMethod/package-info.java", "testcase/withCustomCodeButNonStaticMethod/CustomCodeClass.java")
+                .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "static")
+                .compilationShouldFail()
+                .executeTest();
+    }
+
+    @Test
+    public void test_wrapperCreation_withCustomCode_notVisibleMethod() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCodeButNotVisibleMethod/package-info.java", "testcase/withCustomCodeButNotVisibleMethod/CustomCodeClass.java")
+                .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "private")
+                .compilationShouldFail()
+                .executeTest();
+    }
 
     @Test
     public void test_() {
@@ -647,7 +687,7 @@ public class AnnotationWrapperProcessorTest {
                         String forwardCall = unit.getForwardCall();
                         String methodDeclarationString = unit.getMethodDeclarationString();
 
-                        MatcherAssert.assertThat(forwardCall, Matchers.is("CustomCodeClassMethodTestClass.wtf(this, list, type, anotherOne, map)"));
+                        MatcherAssert.assertThat(forwardCall, Matchers.is("return CustomCodeClassMethodTestClass.wtf(this, list, type, anotherOne, map)"));
                         MatcherAssert.assertThat(methodDeclarationString, Matchers.is("<T, X>T wtf(List<X> list, X type, String anotherOne, Map<? extends T, X> map)"));
 
                     }

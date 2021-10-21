@@ -118,7 +118,7 @@ public class IntegrationTest {
                 // single attribute values
                 TestAnnotationWrapper wrappedAnnotation = TestAnnotationWrapper.wrapAnnotationOfElement(typeElement);
                 MatcherAssert.assertThat(wrappedAnnotation.forwardedMethod("yes"), Matchers.is("it worked : " + "yes"));
-
+                wrappedAnnotation.forwardedMethodWithNoReturnValue("yes");
             }
         })
                 .compilationShouldSucceed()
