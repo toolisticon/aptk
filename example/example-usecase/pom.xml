@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>example-parent</artifactId>
-        <version>0.15.3</version>
+        <version>0.15.4-SNAPSHOT</version>
     </parent>
 
     <name>example-usecase</name>
