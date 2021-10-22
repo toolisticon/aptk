@@ -10,11 +10,13 @@ import io.toolisticon.aptk.tools.matcher.impl.ByModifierMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByNameMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByNameRegexMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByNumberOfParametersMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.ByPackageNameMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByParameterTypeFqnMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByParameterTypeMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByParameterTypeMirrorMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByQualifiedNameMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByQualifiedNameRegexMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.ByRawTypeFqnMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByRawTypeMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByReturnTypeFqnMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByReturnTypeMatcher;
@@ -24,6 +26,7 @@ import io.toolisticon.aptk.tools.matcher.impl.HasNoThrownTypesMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.HasPublicNoargConstructorMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.HasVoidReturnTypeMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsAnnotationTypeMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.IsAssignableToFqnMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsAssignableToMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsAttributeFieldMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsClassMatcher;
@@ -39,6 +42,7 @@ import io.toolisticon.aptk.tools.matcher.impl.IsPackageMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsParameterMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsSetterMethodMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsTypeElementMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.IsTypeEqualFqnMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsTypeEqualMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsVariableElementMatcher;
 
@@ -116,6 +120,16 @@ public class CoreMatchers {
      */
     public final static ExclusiveCriteriaElementBasedCoreMatcher<Class> BY_RAW_TYPE = new ExclusiveCriteriaElementBasedCoreMatcher<>(new ByRawTypeMatcher(), CoreMatcherValidationMessages.BY_RAW_TYPE);
 
+    /**
+     * Matcher to check if an TypeElement matches a specific generic type.
+     */
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<String> BY_RAW_TYPE_FQN = new ExclusiveCriteriaElementBasedCoreMatcher<>(new ByRawTypeFqnMatcher(), CoreMatcherValidationMessages.BY_RAW_TYPE);
+
+
+    /**
+     * Matcher to check if an ExecutableElement has specific parameter types
+     */
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<String> BY_PACKAGE_NAME = new ExclusiveCriteriaElementBasedCoreMatcher<>(new ByPackageNameMatcher(), CoreMatcherValidationMessages.BY_PACKAGE_NAME);
 
     /**
      * Matcher to check if an ExecutableElement has specific parameter types
@@ -165,6 +179,15 @@ public class CoreMatchers {
      */
     public final static ExclusiveCriteriaElementBasedCoreMatcher<Class> IS_TYPE_EQUAL = new ExclusiveCriteriaElementBasedCoreMatcher<>(new IsTypeEqualMatcher(), CoreMatcherValidationMessages.IS_TYPE_EQUAL);
 
+    /**
+     * Matcher to check if an Element is assignable to a specific type
+     */
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<String> IS_ASSIGNABLE_TO_FQN = new ExclusiveCriteriaElementBasedCoreMatcher<>(new IsAssignableToFqnMatcher(), CoreMatcherValidationMessages.IS_ASSIGNABLE_TO);
+
+    /**
+     * Matcher to check if an Element is assignable to a specific type
+     */
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<String> IS_TYPE_EQUAL_FQN = new ExclusiveCriteriaElementBasedCoreMatcher<>(new IsTypeEqualFqnMatcher(), CoreMatcherValidationMessages.IS_TYPE_EQUAL);
 
     // ---------------------------------------------------------------------------------
     // -- IMPLICIT CORE MATCHER

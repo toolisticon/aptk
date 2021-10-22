@@ -115,7 +115,7 @@ public class ModelPathResolver {
                 } catch (NoSuchMethodException e) {
                     // can be ignored - because it's guaranteed that the method exists
                 } catch (Exception e) {
-                    throw new InvalidPathException("Path '\" + path + \"' cannot be resolved. Cannot invoke getter method of token '" + currentPathToken + "'", e);
+                    throw new InvalidPathException("Path '" + path + "' cannot be resolved. Cannot invoke getter method of token '" + currentPathToken + "'", e);
                 }
 
 

@@ -22,6 +22,14 @@ public @interface AnnotationWrapper {
      */
     Class<? extends Annotation>[] value();
 
+
+    /**
+     * Bind custom code into the api.
+     *
+     * @return
+     */
+    BindCustomCode[] bindCustomCode() default {};
+
     /**
      * Configures to generate wrappers for all embedded annotations as well.
      * Defaults to true.

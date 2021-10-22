@@ -54,6 +54,25 @@ public class TypeMirrorWrapper {
     }
 
     /**
+     * Checks if wrapped TypeMirror is a TypeVar type.
+     *
+     * @return true if wrapped TypeMirror is a TypeVar, otherwise false
+     */
+    public boolean isTypeVar() {
+        return isTypeVar(typeMirror);
+    }
+
+    /**
+     * Checks if wrapped TypeMirror is a primitive type.
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return true if wrapped TypeMirror is TypeVar, otherwise false
+     */
+    public static boolean isTypeVar(TypeMirror typeMirror) {
+        return TypeUtils.CheckTypeKind.isTypeVar(typeMirror);
+    }
+
+    /**
      * Gets wrapped TypeMirror as a PrimitiveType
      *
      * @return the wrapped TypeMirror cast to a PrimitiveType, or null if TypeMirror does not represent a primitive type.
@@ -348,10 +367,14 @@ public class TypeMirrorWrapper {
      */
     public static String getTypeDeclaration(TypeMirror typeMirror) {
 
-        if (isPrimitive(typeMirror)) {
+        if (typeMirror.getKind() == TypeKind.VOID) {
+            return "void";
+        } else if (isPrimitive(typeMirror)) {
             return typeMirror.toString();
         } else if (isArray(typeMirror)) {
             return getTypeDeclaration(getComponentType(typeMirror)) + "[]";
+        } else if (isTypeVar(typeMirror)) {
+            return typeMirror.toString();
         } else if (isDeclared(typeMirror)) {
 
             /*-

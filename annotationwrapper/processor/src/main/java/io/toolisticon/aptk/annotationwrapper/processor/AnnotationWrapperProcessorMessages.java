@@ -4,7 +4,8 @@ import io.toolisticon.aptk.tools.corematcher.ValidationMessage;
 
 public enum AnnotationWrapperProcessorMessages implements ValidationMessage {
 
-    ERROR_CANT_CREATE_WRAPPER("ANNOTATION_WRAPPER_ERROR_001", "Can't create wrapper class for Annotation ${0}");
+    ERROR_CANT_CREATE_WRAPPER("ANNOTATION_WRAPPER_ERROR_001", "Can't create wrapper class for Annotation ${0}"),
+    ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE("ANNOTATION_WRAPPER_ERROR_001", "The first parameter of a custom code method for an annotation wrapper must be of the annotation wrapper type ${0}");
 
     /**
      * the message code.

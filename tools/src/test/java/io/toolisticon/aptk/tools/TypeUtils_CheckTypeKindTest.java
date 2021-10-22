@@ -104,6 +104,34 @@ public class TypeUtils_CheckTypeKindTest {
     }
 
     // ---------------------------------------------
+    // -- isTypeVar tests
+    // ---------------------------------------------
+
+
+    @Test
+    public void testCheckTypeKind_isTypeVar() {
+
+
+        MatcherAssert.assertThat("Should detect void type kind", TypeUtils.CheckTypeKind.isTypeVar(getTypeMirrorMockOfKind(TypeKind.TYPEVAR)));
+
+    }
+
+    @Test
+    public void testCheckTypeKind_isTypeVar_nonTypeVarKind() {
+
+
+        MatcherAssert.assertThat("Must return false for non matching kind", !TypeUtils.CheckTypeKind.isTypeVar(getTypeMirrorMockOfKind(TypeKind.EXECUTABLE)));
+
+    }
+
+    @Test
+    public void testCheckTypeKind_isTypeVar_nullSafety() {
+
+        MatcherAssert.assertThat("Should return false for null valued parameter", !TypeUtils.CheckTypeKind.isTypeVar(null));
+
+    }
+
+    // ---------------------------------------------
     // -- isExecutable tests
     // ---------------------------------------------
 

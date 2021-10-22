@@ -163,6 +163,35 @@ public final class AnnotationUtils {
     }
 
     /**
+     * Gets the a FQN of a Class based attribute from annotation.
+     *
+     * @param annotationMirror        the AnnotationMirror to get the attribute from.
+     * @param attributeName the name of the attribute to get
+     * @return the FQN of the searched annotation value or null if annotation can't be found or attribute isn't of type class.
+     */
+    public static String getClassAttributeFromAnnotationAsFqn(AnnotationMirror annotationMirror, String attributeName) {
+
+        TypeMirror typeMirror = getClassAttributeFromAnnotationAsTypeMirror(annotationMirror, attributeName);
+
+        // type erasure isn't necessary here since Class based attributes are always not parameterized
+        return typeMirror != null ? typeMirror.toString() : null;
+    }
+
+    /**
+     * Gets the a FQN of a Class based attribute from annotation.
+     *
+     * @param annotationMirror  the AnnotationMirror to get the value attribute from.
+     * @return the FQN of the searched annotation value or null if annotation can't be found or attribute isn't of type class.
+     */
+    public static String getClassAttributeFromAnnotationAsFqn(AnnotationMirror annotationMirror) {
+
+        TypeMirror typeMirror = getClassAttributeFromAnnotationAsTypeMirror(annotationMirror, "value");
+
+        // type erasure isn't necessary here since Class based attributes are always not parameterized
+        return typeMirror != null ? typeMirror.toString() : null;
+    }
+
+    /**
      * Gets the a TypeMirror of a Class based "value" attribute from annotation.
      *
      * @param element        the element to get the annotation for.

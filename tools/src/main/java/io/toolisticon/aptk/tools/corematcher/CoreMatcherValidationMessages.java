@@ -13,6 +13,7 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
     BY_ELEMENT_KIND("CM_BY_ELEMENT_KIND", "Element must ${0} have ${1} of the following element kinds: ${2}"),
     BY_GENERIC_TYPE("CM_BY_GENERIC_TYPE", "Element must ${0} be ${1} of the following generic types: ${2}"),
     BY_MODIFIER("CM_BY_MODIFIER", "Element must ${0} have ${1} of the following modifiers: ${2}"),
+    BY_PACKAGE_NAME("CM_BY_PACKAGE_NAME", "(enclosing) PackageElement must ${0} have ${1} of the following qualified names: ${2}"),
     BY_PARAMETER_TYPE("CM_BY_PARAMETER_TYPE", "Element must ${0} have  ${1} of the following parameter type sets: ${2}"),
     BY_PARAMETER_TYPE_FQN("CM_BY_PARAMETER_TYPE_FQN", "Element must ${0} have  ${1} of the following parameter type sets: ${2}"),
     BY_PARAMETER_TYPE_MIRROR("CM_BY_PARAMETER_TYPE_MIRROR", "Element must ${0} have  ${1} of the following parameter type sets: ${2}"),
