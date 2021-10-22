@@ -18,9 +18,9 @@ import java.util.List;
 
 
 /**
- * Unit test for {@link IsTypeEqualMatcher}.
+ * Unit test for {@link IsTypeEqualFqnMatcher}.
  */
-public class IsTypeEqualMatcherTest {
+public class IsTypeEqualFqnMatcherTest {
 
 
     private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
@@ -39,7 +39,7 @@ public class IsTypeEqualMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return true for matching assignable to case : ", CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(String.class), String.class));
+                MatcherAssert.assertThat("Should return true for matching assignable to case : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(String.class), String.class.getCanonicalName()));
 
             }
         })
@@ -72,10 +72,10 @@ public class IsTypeEqualMatcherTest {
                 TypeElement testcaseElement = TypeUtils.TypeRetrieval.getTypeElement(MatcherTestCases.class);
 
 
-                MatcherAssert.assertThat("Should return true for matching assignable to case (primitive) : ", CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intType"), int.class));
-                MatcherAssert.assertThat("Should return true for matching assignable to case (array) : ", CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intArray"), int[].class));
-                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type) : ", CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericType"), List.class));
-                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type array) : ", CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericTypeArray"), List[].class));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (primitive) : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intType"), int.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (array) : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intArray"), int[].class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type) : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericType"), List.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type array) : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericTypeArray"), List[].class.getCanonicalName()));
 
 
             }
@@ -91,7 +91,7 @@ public class IsTypeEqualMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(Object.class), String.class));
+                MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(Object.class), String.class.getCanonicalName()));
 
             }
         })
@@ -106,7 +106,7 @@ public class IsTypeEqualMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(String.class), Object.class));
+                MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(String.class), Object.class.getCanonicalName()));
 
             }
         })
@@ -120,9 +120,9 @@ public class IsTypeEqualMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(null, String.class));
-                MatcherAssert.assertThat("Should return false for null valued assignable to class : ", !CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(element, null));
-                MatcherAssert.assertThat("Should return false for null valued element and assignable to class : ", !CoreMatchers.IS_TYPE_EQUAL.getMatcher().checkForMatchingCharacteristic(null, null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(null, String.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return false for null valued assignable to class : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(element, null));
+                MatcherAssert.assertThat("Should return false for null valued element and assignable to class : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(null, null));
 
             }
         })
@@ -136,7 +136,7 @@ public class IsTypeEqualMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.IS_TYPE_EQUAL.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
+                MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
 
             }
         })
@@ -150,7 +150,7 @@ public class IsTypeEqualMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should have created valid string representation", CoreMatchers.IS_TYPE_EQUAL.getMatcher().getStringRepresentationOfPassedCharacteristic(String.class), Matchers.is("java.lang.String"));
+                MatcherAssert.assertThat("Should have created valid string representation", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(String.class.getCanonicalName()), Matchers.is("java.lang.String"));
 
             }
         })

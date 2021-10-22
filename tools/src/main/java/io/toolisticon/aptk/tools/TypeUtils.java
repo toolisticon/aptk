@@ -13,6 +13,8 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Types;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Utility class and wrapper for / of {@link Types}.
@@ -81,6 +83,15 @@ public final class TypeUtils {
             return isOfTypeKind(typeMirror, TypeKind.DECLARED);
         }
 
+        /**
+         * Checks whether passed TypeMirror represents a type variable.
+         *
+         * @param typeMirror the {@link TypeMirror} to check
+         * @return true if passed typeMirror has typevar TypeKind, otherwise false
+         */
+        public static boolean isTypeVar(TypeMirror typeMirror) {
+            return isOfTypeKind(typeMirror, TypeKind.TYPEVAR);
+        }
 
         /**
          * Checks whether passed TypeMirror represents an executable method, constructor or a (static) init block.
@@ -193,16 +204,39 @@ public final class TypeUtils {
 
         }
 
+        private static Set<String> primitiveTypeNameSet = new HashSet<>();
+        static {
+            primitiveTypeNameSet.add("short");
+            primitiveTypeNameSet.add("int");
+            primitiveTypeNameSet.add("long");
+            primitiveTypeNameSet.add("float");
+            primitiveTypeNameSet.add("double");
+            primitiveTypeNameSet.add("char");
+            primitiveTypeNameSet.add("byte");
+            primitiveTypeNameSet.add("boolean");
+        }
+
         /**
          * Gets a TypeMirror for a full qualified class name.
-         * This is done by resolving the corresponding TypeElement.
-         * This will return null for primitive types.
-         * Use alternative method that takes Class as parameter for primitives.
          *
          * @param fullQualifiedClassName the fully qualified class name
-         * @return the type mirror for the passed full qualified class name or null if corresponding type element can't be found
+         * @return the type mirror for the passed full qualified class name or null if passed TypeMirror is null
          */
         public static TypeMirror getTypeMirror(String fullQualifiedClassName) {
+
+            if (fullQualifiedClassName == null) {
+                return null;
+            }
+
+            if (primitiveTypeNameSet.contains(fullQualifiedClassName)) {
+                return ProcessingEnvironmentUtils.getTypes().getPrimitiveType(TypeKind.valueOf(fullQualifiedClassName.toUpperCase()));
+            }
+
+            // handle array
+            if (fullQualifiedClassName.endsWith("[]")) {
+                return ProcessingEnvironmentUtils.getTypes().getArrayType(getTypeMirror(fullQualifiedClassName.substring(0, fullQualifiedClassName.length() - 2)));
+            }
+
             TypeElement typeElement = getTypeElement(fullQualifiedClassName);
             return typeElement != null ? typeElement.asType() : null;
 

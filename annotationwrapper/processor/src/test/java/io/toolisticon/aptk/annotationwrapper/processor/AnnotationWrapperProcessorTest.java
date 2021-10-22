@@ -3,10 +3,12 @@ package io.toolisticon.aptk.annotationwrapper.processor;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessorForTestingAnnotationProcessors;
 import io.toolisticon.aptk.tools.MessagerUtils;
+import io.toolisticon.aptk.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
+import io.toolisticon.cute.matchers.CoreGeneratedFileObjectMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -19,11 +21,13 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Unit test for {@link AnnotationWrapperProcessor}.
@@ -59,6 +63,55 @@ public class AnnotationWrapperProcessorTest {
                 .executeTest();
     }
 
+    @Test
+    public void test_wrapperCreation_withCustomCode() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCode/package-info.java", "testcase/withCustomCode/CustomCodeClass.java")
+                .expectThatJavaFileObjectExists(StandardLocation.SOURCE_OUTPUT, "io.toolisticon.aptk.wrapper.test.TestAnnotationWrapper", JavaFileObject.Kind.SOURCE, CoreGeneratedFileObjectMatchers.createContainsSubstringsMatcher("String shouldWork(String arg1)","void shouldWorkWithVoidReturnValue(String arg1)"))
+                .compilationShouldSucceed()
+                .executeTest();
+    }
+
+    @Test
+    public void test_wrapperCreation_withCustomCode_withWrongFirstParameterType() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCodeButWrongFirstParameter/package-info.java", "testcase/withCustomCodeButWrongFirstParameter/CustomCodeClass.java")
+                .expectErrorMessage().thatContains(AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE.getCode())
+                .compilationShouldFail()
+                .executeTest();
+    }
+
+    @Test
+    public void test_wrapperCreation_withCustomCode_wrongFirstParameterType() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCodeButWrongFirstParameter/package-info.java", "testcase/withCustomCodeButWrongFirstParameter/CustomCodeClass.java")
+                .expectErrorMessage().thatContains(AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE.getCode())
+                .compilationShouldFail()
+                .executeTest();
+    }
+
+    @Test
+    public void test_wrapperCreation_withCustomCode_nonStaticMethod() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCodeButNonStaticMethod/package-info.java", "testcase/withCustomCodeButNonStaticMethod/CustomCodeClass.java")
+                .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "static")
+                .compilationShouldFail()
+                .executeTest();
+    }
+
+    @Test
+    public void test_wrapperCreation_withCustomCode_notVisibleMethod() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java", "testcase/common/EmbeddedAnnotation.java", "testcase/common/TestEnum.java", "testcase/withCustomCodeButNotVisibleMethod/package-info.java", "testcase/withCustomCodeButNotVisibleMethod/CustomCodeClass.java")
+                .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "private")
+                .compilationShouldFail()
+                .executeTest();
+    }
 
     @Test
     public void test_() {
@@ -79,7 +132,7 @@ public class AnnotationWrapperProcessorTest {
             @Override
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
-                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>());
+                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>(), new ArrayList<AnnotationWrapperProcessor.CustomCodeClass>());
 
                 MatcherAssert.assertThat(unit.getSimpleName(), Matchers.is(UnitTestAnnotation.class.getSimpleName()));
 
@@ -95,7 +148,7 @@ public class AnnotationWrapperProcessorTest {
             @Override
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
-                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>());
+                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>(), new ArrayList<AnnotationWrapperProcessor.CustomCodeClass>());
 
                 MatcherAssert.assertThat(unit.getQualifiedName(), Matchers.is(UnitTestAnnotation.class.getCanonicalName()));
 
@@ -119,7 +172,7 @@ public class AnnotationWrapperProcessorTest {
 
                 List<AnnotationWrapperProcessor.AnnotationAttribute> attributes = Arrays.asList(attribute1, attribute2);
 
-                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), attributes);
+                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), attributes, new ArrayList<AnnotationWrapperProcessor.CustomCodeClass>());
 
                 MatcherAssert.assertThat(unit.getImports(), Matchers.containsInAnyOrder(UnitTestAnnotation.class.getCanonicalName(), Serializable.class.getCanonicalName(), Collections.class.getCanonicalName()));
 
@@ -141,7 +194,7 @@ public class AnnotationWrapperProcessorTest {
 
         List<AnnotationWrapperProcessor.AnnotationAttribute> attributes = Arrays.asList(attribute1, attribute2);
 
-        AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), attributes);
+        AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), attributes, new ArrayList<AnnotationWrapperProcessor.CustomCodeClass>());
 
         MatcherAssert.assertThat(unit.getAttributes(), Matchers.is(attributes));
 
@@ -169,6 +222,7 @@ public class AnnotationWrapperProcessorTest {
         Class<?>[] typeArrayAttribute();
 
         UnitTestEmbeddedAnnotation[] annotationArrayAttribute();
+
     }
 
     @interface UnitTestEmbeddedAnnotation {
@@ -611,5 +665,35 @@ public class AnnotationWrapperProcessorTest {
                 .applyFilter(CoreMatchers.IS_METHOD)
                 .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(name)
                 .getResult().get(0);
+    }
+
+
+    static class CustomCodeClassMethodTestClass {
+
+        @PassIn
+        public static <T extends Serializable, X extends InputStream> T wtf(String dropFirst, List<X> list, X type, String anotherOne, Map<? extends T, X> map) {
+            return null;
+        }
+
+    }
+
+    @Test
+    public void test_CustomCodeClassMethod() {
+        CompileTestBuilder.unitTest().<ExecutableElement>defineTestWithPassedInElement(CustomCodeClassMethodTestClass.class, new APTKUnitTestProcessor<ExecutableElement>() {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, ExecutableElement element) {
+
+                        AnnotationWrapperProcessor.CustomCodeClassMethod unit = new AnnotationWrapperProcessor.CustomCodeClassMethod(element);
+                        String forwardCall = unit.getForwardCall();
+                        String methodDeclarationString = unit.getMethodDeclarationString();
+
+                        MatcherAssert.assertThat(forwardCall, Matchers.is("return CustomCodeClassMethodTestClass.wtf(this, list, type, anotherOne, map)"));
+                        MatcherAssert.assertThat(methodDeclarationString, Matchers.is("<T, X>T wtf(List<X> list, X type, String anotherOne, Map<? extends T, X> map)"));
+
+                    }
+                }
+        )
+                .compilationShouldSucceed()
+                .executeTest();
     }
 }

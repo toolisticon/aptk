@@ -8,7 +8,7 @@ import javax.annotation.processing.Processor;
 import javax.lang.model.element.Element;
 
 /**
- * Convenient unit test processor for testing annotation processors build with the APTK with toolisticon's compiletesting framework.
+ * Convenient unit test processor for testing annotation processors build with the APTK with toolisticon's cute framework.
  *
  * @param <PROCESSOR> The processor under test. init method will be called and {@link ToolingProvider} will be set.
  */
@@ -17,21 +17,21 @@ public abstract class APTKUnitTestProcessorForTestingAnnotationProcessors<PROCES
 
     /**
      * The original unit test processor method. Contains logic to initialize the ToolingProvider.
-     * Will be called by compiletesting framework. Propagates call to aptkUnitTest method after initializations.
+     * Will be called by cute framework. Propagates call to aptkUnitTest method after initializations.
      *
      * @param processor             The processor under test
      * @param processingEnvironment the processing environment
-     * @param typeElement           the default typeElement
+     * @param element               the passed in element
      */
     @Override
-    public final void unitTest(PROCESSOR processor, ProcessingEnvironment processingEnvironment, ELEMENT_TYPE typeElement) {
+    public final void unitTest(PROCESSOR processor, ProcessingEnvironment processingEnvironment, ELEMENT_TYPE element) {
 
         try {
             // do initializations
             ToolingProvider.setTooling(processingEnvironment);
 
             // propagate to unit test implementation
-            this.aptkUnitTest(processor, processingEnvironment, typeElement);
+            this.aptkUnitTest(processor, processingEnvironment, element);
 
         } finally {
             ToolingProvider.clearTooling();

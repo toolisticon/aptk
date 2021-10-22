@@ -476,6 +476,14 @@ public class TypeUtilsTest {
             protected void testCase(TypeElement element) {
 
                 MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("io.toolisticon.annotationprocessor.AnnotationProcessorTestClass"), Matchers.is(element.asType()));
+                MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("int").getKind(), Matchers.is(TypeKind.INT));
+                MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("long").getKind(), Matchers.is(TypeKind.LONG));
+                MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("short").getKind(), Matchers.is(TypeKind.SHORT));
+                MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("float").getKind(), Matchers.is(TypeKind.FLOAT));
+                MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("double").getKind(), Matchers.is(TypeKind.DOUBLE));
+                MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("byte").getKind(), Matchers.is(TypeKind.BYTE));
+                MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("boolean").getKind(), Matchers.is(TypeKind.BOOLEAN));
+                MatcherAssert.assertThat(TypeUtils.TypeRetrieval.getTypeMirror("char").getKind(), Matchers.is(TypeKind.CHAR));
 
             }
         })

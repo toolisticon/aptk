@@ -217,7 +217,12 @@ import io.toolisticon.aptk.tools.TypeUtils;
         return AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror,"${attribute.name}") == null;
     }
 !{/if}
-!{/for}
+!{/for}!{for customCodeClass : atw.customCodeClasses}!{for customCodeMethod : customCodeClass.customMethods}
+    public ${customCodeMethod.methodDeclarationString}{
+        ${customCodeMethod.forwardCall};
+    }
+
+!{/for}!{/for}
 
     /**
      * Checks if passed element is annotated with this wrapper annotation type : ${atw.simpleName}
