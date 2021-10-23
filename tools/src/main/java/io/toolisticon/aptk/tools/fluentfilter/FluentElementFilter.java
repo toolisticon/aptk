@@ -10,10 +10,10 @@ import io.toolisticon.aptk.tools.corematcher.InclusiveCharacteristicElementBased
 import io.toolisticon.aptk.tools.corematcher.InclusiveCriteriaCoreMatcher;
 import io.toolisticon.aptk.tools.corematcher.IsCoreMatcher;
 import io.toolisticon.aptk.tools.corematcher.IsElementBasedCoreMatcher;
+import io.toolisticon.aptk.tools.filter.ExclusiveCriteriaElementFilter;
 import io.toolisticon.aptk.tools.filter.InclusiveCriteriaElementFilter;
 import io.toolisticon.aptk.tools.fluentfilter.impl.ElementBasedTransitionFilter;
 import io.toolisticon.aptk.tools.fluentfilter.impl.TransitionFilter;
-import io.toolisticon.aptk.tools.filter.ExclusiveCriteriaElementFilter;
 import io.toolisticon.aptk.tools.matcher.CriteriaMatcher;
 import io.toolisticon.aptk.tools.validator.ExclusiveCriteriaElementValidator;
 import io.toolisticon.aptk.tools.validator.InclusiveCriteriaElementValidator;
@@ -93,8 +93,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
     /**
      * Validator step for inclusive characteristics validators.
      *
-     * @param <FILTER_ELEMENT>
-     * @param <CHARACTERISTIC>
+     * @param <FILTER_ELEMENT> The filters element type
+     * @param <CHARACTERISTIC> The characteristic type
      */
     public class InclusiveCriteriaFluentFilter<FILTER_ELEMENT extends Element, CHARACTERISTIC> {
 
@@ -165,7 +165,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * Applies is filter.
      * Changes generic type of fluent filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <TARGET_ELEMENT> The target element type
      * @return the FluentElementFilter instance
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyFilter(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
@@ -177,7 +178,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
     /**
      * Applies inverted is filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <TARGET_ELEMENT> The target element type
      * @return the FluentElementFilter instance
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
@@ -190,7 +192,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * Applies is element based filter.
      * Changes generic type of fluent filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <TARGET_ELEMENT> The target element type
      * @return the FluentElementFilter instance
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<TARGET_ELEMENT> applyFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
@@ -203,7 +206,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
     /**
      * Applies inverted implicit element based filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <TARGET_ELEMENT> The target element type
      * @return the FluentElementFilter instance
      */
     public <TARGET_ELEMENT extends Element> FluentElementFilter<ELEMENT> applyInvertedFilter(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
@@ -272,6 +276,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * Applies inclusive criteria filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  The criteria type
      * @return the FluentElementFilter instance
      */
     public <CRITERIA> InclusiveCriteriaFluentFilter<ELEMENT, CRITERIA> applyFilter(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -284,6 +289,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * Applies inverted inclusive criteria filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  The criteria type
      * @return the FluentElementFilter instance
      */
     public <CRITERIA> InclusiveCriteriaFluentFilter<ELEMENT, CRITERIA> applyInvertedFilter(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -296,6 +302,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * Applies inclusive criteria element based filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  The criteria type
      * @return the FluentElementFilter instance
      */
     public <CRITERIA> InclusiveCriteriaFluentFilter<Element, CRITERIA> applyFilter(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -309,6 +316,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
      * Applies inverted inclusive element based criteria filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  The criteria type
      * @return the FluentElementFilter instance
      */
     public <CRITERIA> InclusiveCriteriaFluentFilter<Element, CRITERIA> applyInvertedFilter(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -324,7 +332,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
     /**
      * Applies exclusive criteria filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <CHARACTERISTIC> The criteria type
      * @return the FluentElementFilter instance
      */
     public <CHARACTERISTIC> ExclusiveCharacteristicFluentFilter<ELEMENT, CHARACTERISTIC> applyFilter(ExclusiveCriteriaCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
@@ -336,7 +345,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
     /**
      * Applies inverted exclusive criteria filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <CHARACTERISTIC> The criteria type
      * @return the FluentElementFilter instance
      */
     public <CHARACTERISTIC> ExclusiveCharacteristicFluentFilter<ELEMENT, CHARACTERISTIC> applyInvertedFilter(ExclusiveCriteriaCoreMatcher<ELEMENT, CHARACTERISTIC> coreMatcher) {
@@ -348,7 +358,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
     /**
      * Applies exclusive criteria element based filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <CHARACTERISTIC> The criteria type
      * @return the FluentElementFilter instance
      */
     public <CHARACTERISTIC> ExclusiveCharacteristicFluentFilter<Element, CHARACTERISTIC> applyFilter(ExclusiveCriteriaElementBasedCoreMatcher<CHARACTERISTIC> coreMatcher) {
@@ -361,7 +372,8 @@ public class FluentElementFilter<ELEMENT extends Element> {
     /**
      * Applies inverted exclusive element based criteria filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <CHARACTERISTIC> The criteria type
      * @return the FluentElementFilter instance
      */
     public <CHARACTERISTIC> ExclusiveCharacteristicFluentFilter<Element, CHARACTERISTIC> applyInvertedFilter(ExclusiveCriteriaElementBasedCoreMatcher<CHARACTERISTIC> coreMatcher) {

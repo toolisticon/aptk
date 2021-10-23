@@ -1,17 +1,24 @@
 package io.toolisticon.aptk.templating.expressions.operands;
 
-
+/**
+ * Abstract base class for operand
+ * @param <T> The operands type
+ */
 public abstract class Operand<T> {
 
 
-
+    /**
+     * NoArg Constructor.
+     */
     public Operand() {
-
 
     }
 
 
-
+    /**
+     * Gets the operands type.
+     * @return the operands type
+     */
     public abstract OperandType getOperandType();
 
 
@@ -26,7 +33,7 @@ public abstract class Operand<T> {
     /**
      * Gets the value of the operand
      *
-     * @return
+     * @return the value of the operand
      */
     public abstract T value();
 

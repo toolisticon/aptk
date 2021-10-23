@@ -152,6 +152,7 @@ public final class AnnotationUtils {
      *
      * @param element        the element to get the annotation for.
      * @param annotationType the annotation type to get the FQN from
+     * @param attributeName  the name of the attribute to get
      * @return the FQN of the searched annotation value or null if annotation can't be found or attribute isn't of type class.
      */
     public static String getClassAttributeFromAnnotationAsFqn(Element element, Class<? extends Annotation> annotationType, String attributeName) {
@@ -165,8 +166,8 @@ public final class AnnotationUtils {
     /**
      * Gets the a FQN of a Class based attribute from annotation.
      *
-     * @param annotationMirror        the AnnotationMirror to get the attribute from.
-     * @param attributeName the name of the attribute to get
+     * @param annotationMirror the AnnotationMirror to get the attribute from.
+     * @param attributeName    the name of the attribute to get
      * @return the FQN of the searched annotation value or null if annotation can't be found or attribute isn't of type class.
      */
     public static String getClassAttributeFromAnnotationAsFqn(AnnotationMirror annotationMirror, String attributeName) {
@@ -180,7 +181,7 @@ public final class AnnotationUtils {
     /**
      * Gets the a FQN of a Class based attribute from annotation.
      *
-     * @param annotationMirror  the AnnotationMirror to get the value attribute from.
+     * @param annotationMirror the AnnotationMirror to get the value attribute from.
      * @return the FQN of the searched annotation value or null if annotation can't be found or attribute isn't of type class.
      */
     public static String getClassAttributeFromAnnotationAsFqn(AnnotationMirror annotationMirror) {
@@ -207,6 +208,7 @@ public final class AnnotationUtils {
      *
      * @param element        the element to get the annotation for.
      * @param annotationType the annotation type to get the TypeMirror from
+     * @param attributeName  the name of the attribute to get
      * @return the TypeMirror of the searched annotation value or null if annotation can't be found or attribute isn't of type class.
      */
     public static TypeMirror getClassAttributeFromAnnotationAsTypeMirror(Element element, Class<? extends Annotation> annotationType, String attributeName) {
@@ -220,6 +222,7 @@ public final class AnnotationUtils {
      * Gets the a TypeMirror of a Class based attribute from annotation.
      *
      * @param annotationMirror the annotation mirror to get the TypeMirror from
+     * @param attributeName    the name of the attribute to get
      * @return the TypeMirror of the searched annotation value or null if annotation can't be found or attribute isn't of type class.
      */
     public static TypeMirror getClassAttributeFromAnnotationAsTypeMirror(AnnotationMirror annotationMirror, String attributeName) {

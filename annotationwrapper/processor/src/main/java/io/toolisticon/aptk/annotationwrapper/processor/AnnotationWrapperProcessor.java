@@ -192,7 +192,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
     }
 
     /**
-     * Stores the configuration done in the {@see AnnotationToWrap} annotation.
+     * Stores the configuration done in the {@link AnnotationToWrap} annotation.
      * <p>
      * In fact this is exactly a good example reason why this processor is needed.
      */
@@ -265,7 +265,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Gets all imports needed by the annotation.
          *
-         * @return
+         * @return the import stings
          */
         public List<String> getImports() {
             List<String> imports = new ArrayList<>();
@@ -317,7 +317,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Gets the attributes name
          *
-         * @return
+         * @return the attribute name
          */
         public String getName() {
             return attribute.getSimpleName().toString();
@@ -330,7 +330,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Checks whether attribute is a primitive type or a String or not
          *
-         * @return
+         * @return true if attribute is a primitive or String (array) type, otherwise false
          */
         public boolean isPrimitiveOrString() {
 
@@ -363,7 +363,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Checks whether attribute is enum type or not
          *
-         * @return
+         * @return true if attribute is of type enum or enum array, otherwise false
          */
         public boolean isEnum() {
 
@@ -378,7 +378,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Checks whether attribute is of type Class or not
          *
-         * @return
+         * @return true if attribute is of type Class or Class array, otherwise false
          */
         public boolean isClass() {
 
@@ -393,7 +393,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Checks whether attribute is an annotation type or not
          *
-         * @return
+         * @return true if attribute is annotation type (array), otherwise false
          */
         public boolean isAnnotationType() {
 
@@ -408,7 +408,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Checks if annotation type has an annotation wrapper implementation
          *
-         * @return
+         * @return true if attribute type can be represented by an annotation wrapper type
          */
         public boolean isWrappedAnnotationType() {
             return isAnnotationType() && state.containsAnnotationToBeWrapped(TypeMirrorWrapper.wrap(this.attribute.getReturnType()).getQualifiedName());
@@ -417,7 +417,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Gets the wrapped annotation name
          *
-         * @return
+         * @return the AnnotationWrapper type fqn for attribute
          */
         public String getTargetWrapperAnnotationName() {
             return state.getWrapperName(TypeMirrorWrapper.wrap(this.attribute.getReturnType()).getQualifiedName());
@@ -426,7 +426,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Checks if attribute is optional
          *
-         * @return
+         * @return true if attribute is optional, otherwise false
          */
         public boolean isOptional() {
             return this.attribute.getDefaultValue() != null;
@@ -484,11 +484,18 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
     }
 
+    /**
+     * Class to weave custom code into annotation wrapper.
+     */
     public static class CustomCodeClass {
 
         private final TypeElement typeElement;
         private final List<CustomCodeClassMethod> customMethods = new ArrayList<>();
 
+        /**
+         * The constructor.
+         * @param typeElement The TypeElement that contains the custom code
+         */
         public CustomCodeClass(TypeElement typeElement) {
 
             this.typeElement = typeElement;
@@ -517,6 +524,10 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         }
 
+        /**
+         * Get the TypeElement that contains the custom code methods to bind.
+         * @return the Type element
+         */
         public TypeElement getTypeElement() {
             return typeElement;
         }
@@ -538,6 +549,9 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         }
     }
 
+    /**
+     * Class representing custom code methods
+     */
     public static class CustomCodeClassMethod {
 
         private final ExecutableElement executableElement;

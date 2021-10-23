@@ -326,7 +326,6 @@ public final class ElementUtils {
         }
 
 
-
         /**
          * Casts an element to TypeElement.
          *
@@ -402,7 +401,7 @@ public final class ElementUtils {
          *
          * @param elementList  the list to be processed
          * @param typeToCastTo the Element sub class to cast to
-         * @param <T>
+         * @param <T>          The expected target element type
          * @return a new list containing all elements of passed elementList
          */
         public static <T extends Element> List<T> castElementList(List<? extends Element> elementList, Class<T> typeToCastTo) {
@@ -774,7 +773,7 @@ public final class ElementUtils {
          * @param element     the element to search within
          * @param nameRegexes the regular expressions used for name matching
          * @return the elements with matching name
-         * @throws {@link java.util.regex.PatternSyntaxException} if passed pattern is invalid
+         * @throws java.util.regex.PatternSyntaxException if passed pattern is invalid
          */
         public static List<Element> getEnclosedElementsByNameRegex(Element element, String... nameRegexes) {
 
@@ -811,6 +810,7 @@ public final class ElementUtils {
          *
          * @param element the element to search within
          * @param kind    the kinds to filter
+         * @param <T>     The expected enclosed element kind
          * @return all enclosed element that are matching one of the passed kinds
          */
         public static <T extends Element> List<T> getEnclosedElementsOfKind(Element element, ElementKind... kind) {

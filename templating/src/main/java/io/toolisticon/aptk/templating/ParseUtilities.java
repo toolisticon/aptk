@@ -19,7 +19,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Parse utilities.
+ */
 public class ParseUtilities {
 
     /**
@@ -173,9 +175,9 @@ public class ParseUtilities {
     /**
      * Reads a resource file into a String
      *
-     * @param resourcefileName
+     * @param resourcefileName the resource file name
      * @return the content of the resource file as a String
-     * @throws IOException
+     * @throws IOException if resource file can't be loaded
      */
     public static String readResourceToString(String resourcefileName) throws IOException {
 
@@ -195,7 +197,7 @@ public class ParseUtilities {
      *
      * @param stream the inputStream to use
      * @return The String read from the inputStreams
-     * @throws IOException
+     * @throws IOException if input stream can't be read
      */
     public static String readFromInputStream(InputStream stream) throws IOException {
 
@@ -222,8 +224,8 @@ public class ParseUtilities {
      * Removes all leading whitespaces
      * Remove trailing spaces up to last newline (remove newline then too ) or non space char
      *
-     * @param content
-     * @return
+     * @param content The string to be trimmed
+     * @return The trimmed content String
      */
     public static String trimContentString(String content) {
 
@@ -271,7 +273,7 @@ public class ParseUtilities {
      *
      * @param outerModel the outerModel
      * @param modelString the model String to parse
-     * @return
+     * @return the model map extracted from string
      */
     public static Map<String, Object> extractModelFromString(Map<String, Object> outerModel, String modelString) {
 

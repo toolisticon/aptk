@@ -105,23 +105,23 @@ public final class MessagerUtils {
 
 
     public static void error(Element e, AnnotationMirror a, ValidationMessage message, Object... args) {
-        printMessage(e,a, Diagnostic.Kind.ERROR, message, args);
+        printMessage(e, a, Diagnostic.Kind.ERROR, message, args);
     }
 
     public static void warning(Element e, AnnotationMirror a, ValidationMessage message, Object... args) {
-        printMessage(e,a, Diagnostic.Kind.WARNING, message, args);
+        printMessage(e, a, Diagnostic.Kind.WARNING, message, args);
     }
 
     public static void mandatoryWarning(Element e, AnnotationMirror a, ValidationMessage message, Object... args) {
-        printMessage(e,a, Diagnostic.Kind.MANDATORY_WARNING, message, args);
+        printMessage(e, a, Diagnostic.Kind.MANDATORY_WARNING, message, args);
     }
 
     public static void info(Element e, AnnotationMirror a, ValidationMessage message, Object... args) {
-        printMessage(e,a, Diagnostic.Kind.NOTE, message, args);
+        printMessage(e, a, Diagnostic.Kind.NOTE, message, args);
     }
 
     public static void other(Element e, AnnotationMirror a, ValidationMessage message, Object... args) {
-        printMessage(e,a, Diagnostic.Kind.OTHER, message, args);
+        printMessage(e, a, Diagnostic.Kind.OTHER, message, args);
     }
 
     // -------------------------------------------------------------------
@@ -153,23 +153,23 @@ public final class MessagerUtils {
     // -------------------------------------------------------------------
 
     public static void error(Element e, AnnotationMirror a, AnnotationValue v, ValidationMessage message, Object... args) {
-        printMessage(e, a, v, Diagnostic.Kind.ERROR,message, args);
+        printMessage(e, a, v, Diagnostic.Kind.ERROR, message, args);
     }
 
     public static void warning(Element e, AnnotationMirror a, AnnotationValue v, ValidationMessage message, Object... args) {
-        printMessage(e, a, v, Diagnostic.Kind.WARNING,message, args);
+        printMessage(e, a, v, Diagnostic.Kind.WARNING, message, args);
     }
 
     public static void mandatoryWarning(Element e, AnnotationMirror a, AnnotationValue v, ValidationMessage message, Object... args) {
-        printMessage(e, a, v, Diagnostic.Kind.MANDATORY_WARNING,message, args);
+        printMessage(e, a, v, Diagnostic.Kind.MANDATORY_WARNING, message, args);
     }
 
     public static void info(Element e, AnnotationMirror a, AnnotationValue v, ValidationMessage message, Object... args) {
-        printMessage(e, a, v, Diagnostic.Kind.NOTE,message, args);
+        printMessage(e, a, v, Diagnostic.Kind.NOTE, message, args);
     }
 
     public static void other(Element e, AnnotationMirror a, AnnotationValue v, ValidationMessage message, Object... args) {
-        printMessage(e, a, v, Diagnostic.Kind.OTHER,message, args);
+        printMessage(e, a, v, Diagnostic.Kind.OTHER, message, args);
     }
 
     // -------------------------------------------------------------------
@@ -177,15 +177,15 @@ public final class MessagerUtils {
     // -------------------------------------------------------------------
 
     public static void printMessage(Element e, Diagnostic.Kind kind, String message, Object... args) {
-        printMessage(e,  kind, PlainValidationMessage.create(message),  args);
+        printMessage(e, kind, PlainValidationMessage.create(message), args);
     }
 
     public static void printMessage(Element e, AnnotationMirror a, Diagnostic.Kind kind, String message, Object... args) {
-        printMessage(e, a,  kind, PlainValidationMessage.create(message),  args);
+        printMessage(e, a, kind, PlainValidationMessage.create(message), args);
     }
 
     public static void printMessage(Element e, AnnotationMirror a, AnnotationValue v, Diagnostic.Kind kind, String message, Object... args) {
-        printMessage(e, a, v, kind, PlainValidationMessage.create(message),  args);
+        printMessage(e, a, v, kind, PlainValidationMessage.create(message), args);
     }
 
     // -------------------------------------------------------------------
@@ -205,7 +205,6 @@ public final class MessagerUtils {
     }
 
 
-
     public static Messager getMessager() {
         return ProcessingEnvironmentUtils.getMessager();
     }
@@ -221,7 +220,7 @@ public final class MessagerUtils {
      * Argument placeholder with the following format '${index}'
      * (f.E. ${0} for the first argument) can be placed inside the message string to be replaced by the passed arguments.
      * The placeholders will be replaced by the return value of the toString method invoked on passed arguments.
-     * <p/>
+     * <p>
      * This approach is much more faulty tolerant as using  String.format.
      *
      * @param message           the message str with placeholders for the passed arguments
@@ -249,7 +248,7 @@ public final class MessagerUtils {
      * Argument placeholder with the following format '${index}'
      * (f.E. ${0} for the first argument) can be placed inside the message string to be replaced by the passed arguments.
      * The placeholders will be replaced by the return value of the toString method invoked on passed arguments.
-     * <p/>
+     * <p>
      * This approach is much more faulty tolerant as using  String.format.
      *
      * @param message           the ValidationMessage with placeholders for the passed arguments
@@ -259,7 +258,7 @@ public final class MessagerUtils {
     public static String createMessage(ValidationMessage message, Object... messageParameters) {
 
         // use custom message
-        String result = (printMessageCodes && message.getCode() != null && !message.getCode().isEmpty() ? "[" + message.getCode() + "] : " : "" )
+        String result = (printMessageCodes && message.getCode() != null && !message.getCode().isEmpty() ? "[" + message.getCode() + "] : " : "")
                 + message.getMessage();
 
         if (messageParameters != null) {
@@ -273,9 +272,9 @@ public final class MessagerUtils {
 
     }
 
-    protected static String argToString(Object arg){
+    protected static String argToString(Object arg) {
 
-        if(arg == null) {
+        if (arg == null) {
 
             return "<NULL>";
 
@@ -284,8 +283,8 @@ public final class MessagerUtils {
             StringBuilder stringBuilder = new StringBuilder("[");
             boolean first = true;
 
-            for (Object argument : (Object[])arg) {
-                if(first) {
+            for (Object argument : (Object[]) arg) {
+                if (first) {
                     first = false;
                 } else {
                     stringBuilder.append(", ");
@@ -305,8 +304,8 @@ public final class MessagerUtils {
             StringBuilder stringBuilder = new StringBuilder("[");
             boolean first = true;
 
-            for (Object argument : (Collection)arg) {
-                if(first) {
+            for (Object argument : (Collection) arg) {
+                if (first) {
                     first = false;
                 } else {
                     stringBuilder.append(", ");

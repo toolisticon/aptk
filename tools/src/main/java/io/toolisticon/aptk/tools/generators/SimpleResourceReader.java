@@ -25,7 +25,7 @@ public class SimpleResourceReader {
      * Read resource manually line by line.
      *
      * @return the current line from reader
-     * @throws IOException
+     * @throws IOException if line couldn't be read
      */
     public String readLine() throws IOException {
         return this.foReader.readLine();
@@ -35,7 +35,7 @@ public class SimpleResourceReader {
      * Reads the whole file or remaining resource to a String.
      *
      * @return the content of the resource file starting from the current reader position
-     * @throws IOException
+     * @throws IOException if string couldn't be read
      */
     public String readAsString() throws IOException {
 
@@ -60,7 +60,7 @@ public class SimpleResourceReader {
      * Reads the whole resource into a list of lines.
      *
      * @return the content as a line by line array of the resource file starting from the current reader position
-     * @throws IOException
+     * @throws IOException if lines couldn't be read
      */
     public List<String> readAsLines() throws IOException {
         return readAsLines(false);
@@ -70,9 +70,9 @@ public class SimpleResourceReader {
     /**
      * Reads the whole resource into a list of lines.
      *
-     * @param trimLines defines wether or not lines should be trimmed
+     * @param trimLines defines whether or not lines should be trimmed
      * @return the content as a line by line array of the resource file starting from the current reader position
-     * @throws IOException
+     * @throws IOException if lines couldn't be read
      */
     public List<String> readAsLines(boolean trimLines) throws IOException {
 
@@ -101,8 +101,8 @@ public class SimpleResourceReader {
     /**
      * Reads the resource into Properties.
      *
-     * @return
-     * @throws IOException
+     * @return the properties
+     * @throws IOException if properties couldn't be read
      */
     public Properties readAsProperties() throws IOException {
 
@@ -119,7 +119,7 @@ public class SimpleResourceReader {
     /**
      * Closes the underlying reader.
      *
-     * @throws IOException
+     * @throws IOException if underlying reader couldn't be closed
      */
     public void close() throws IOException {
         this.foReader.close();

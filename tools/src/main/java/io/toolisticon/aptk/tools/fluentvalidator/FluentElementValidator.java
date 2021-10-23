@@ -1,7 +1,5 @@
 package io.toolisticon.aptk.tools.fluentvalidator;
 
-import io.toolisticon.aptk.tools.fluentvalidator.impl.FluentValidatorMessage;
-import io.toolisticon.aptk.tools.fluentvalidator.impl.FluentValidatorState;
 import io.toolisticon.aptk.tools.command.Command;
 import io.toolisticon.aptk.tools.command.CommandWithReturnType;
 import io.toolisticon.aptk.tools.corematcher.ExclusiveCriteriaCoreMatcher;
@@ -14,6 +12,8 @@ import io.toolisticon.aptk.tools.corematcher.IsCoreMatcher;
 import io.toolisticon.aptk.tools.corematcher.IsElementBasedCoreMatcher;
 import io.toolisticon.aptk.tools.corematcher.PlainValidationMessage;
 import io.toolisticon.aptk.tools.corematcher.ValidationMessage;
+import io.toolisticon.aptk.tools.fluentvalidator.impl.FluentValidatorMessage;
+import io.toolisticon.aptk.tools.fluentvalidator.impl.FluentValidatorState;
 import io.toolisticon.aptk.tools.matcher.CriteriaMatcher;
 import io.toolisticon.aptk.tools.matcher.ImplicitMatcher;
 import io.toolisticon.aptk.tools.validator.ExclusiveCriteriaElementValidator;
@@ -110,7 +110,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies is validator.
          * Changes generic type of fluent validator.
          *
-         * @param coreMatcher the implicit core matcher to use
+         * @param coreMatcher      the implicit core matcher to use
+         * @param <TARGET_ELEMENT> The target element type
          * @return the FluentElementValidator instance
          */
         public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
@@ -122,7 +123,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
         /**
          * Applies inverted is filter.
          *
-         * @param coreMatcher the implicit core matcher to use
+         * @param <TARGET_ELEMENT> The target element type
+         * @param coreMatcher      the implicit core matcher to use
          * @return the FluentElementValidator instance
          */
         public <TARGET_ELEMENT extends Element> FluentElementValidator<ELEMENT> isNot(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
@@ -135,7 +137,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies is element based filter.
          * Changes generic type of fluent filter.
          *
-         * @param coreMatcher the implicit core matcher to use
+         * @param coreMatcher      the implicit core matcher to use
+         * @param <TARGET_ELEMENT> The target element type
          * @return the FluentElementValidator instance
          */
         public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
@@ -148,7 +151,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
         /**
          * Applies inverted implicit element based filter.
          *
-         * @param coreMatcher the implicit core matcher to use
+         * @param coreMatcher      the implicit core matcher to use
+         * @param <TARGET_ELEMENT> The target element type
          * @return the FluentElementValidator instance
          */
         public <TARGET_ELEMENT extends Element> FluentElementValidator<ELEMENT> isNot(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
@@ -217,6 +221,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies inclusive criteria filter.
          *
          * @param coreMatcher the implicit core matcher to use
+         * @param <CRITERIA>  the criteria type
          * @return the FluentElementValidator instance
          */
         public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -229,6 +234,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies inverted inclusive criteria filter.
          *
          * @param coreMatcher the implicit core matcher to use
+         * @param <CRITERIA>  the criteria type
          * @return the FluentElementValidator instance
          */
         public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -241,6 +247,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies inclusive criteria element based filter.
          *
          * @param coreMatcher the implicit core matcher to use
+         * @param <CRITERIA>  the criteria type
          * @return the FluentElementValidator instance
          */
         public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -254,6 +261,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies inverted inclusive element based criteria filter.
          *
          * @param coreMatcher the implicit core matcher to use
+         * @param <CRITERIA>  the criteria type
          * @return the FluentElementValidator instance
          */
         public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -270,6 +278,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies exclusive criteria filter.
          *
          * @param coreMatcher the implicit core matcher to use
+         * @param <CRITERIA>  the criteria type
          * @return the FluentElementValidator instance
          */
         public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -282,6 +291,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies inverted exclusive criteria filter.
          *
          * @param coreMatcher the implicit core matcher to use
+         * @param <CRITERIA>  the criteria type
          * @return the FluentElementValidator instance
          */
         public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -294,6 +304,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies exclusive criteria element based filter.
          *
          * @param coreMatcher the implicit core matcher to use
+         * @param <CRITERIA>  the criteria type
          * @return the FluentElementValidator instance
          */
         public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -308,6 +319,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
          * Applies inverted exclusive element based criteria filter.
          *
          * @param coreMatcher the implicit core matcher to use
+         * @param <CRITERIA>  the criteria type
          * @return the FluentElementValidator instance
          */
         public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -383,8 +395,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * The base class for all validators.
      *
-     * @param <VALIDATOR_ELEMENT>
-     * @param <VALIDATOR>
+     * @param <VALIDATOR_ELEMENT> the validator element type
+     * @param <VALIDATOR>         the validator type
      */
     public abstract class AbstractFluentValidatorBase<VALIDATOR_ELEMENT extends Element, VALIDATOR extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, VALIDATOR>> {
 
@@ -404,7 +416,9 @@ public class FluentElementValidator<ELEMENT extends Element> {
         /**
          * Sets the validation result depending on inverted state and validation result.
          *
-         * @param validationResult the validation result
+         * @param validationResult  the validation result
+         * @param defaultMessage    the default message
+         * @param messsageParameter the message parameter values
          */
         protected final void setValidationResult(boolean validationResult, ValidationMessage defaultMessage, Object... messsageParameter) {
 
@@ -433,7 +447,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Validator step for implicit validators.
      *
-     * @param <VALIDATOR_ELEMENT>
+     * @param <VALIDATOR_ELEMENT> the validators element type
      */
     public class ImplicitFluentValidator<VALIDATOR_ELEMENT extends Element> extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, ImplicitFluentValidator<VALIDATOR_ELEMENT>> {
 
@@ -458,7 +472,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Validator step for is validators.
      *
-     * @param <VALIDATOR_ELEMENT>
+     * @param <VALIDATOR_ELEMENT> the validators element type
      */
     public class IsFluentValidator<VALIDATOR_ELEMENT extends Element, TARGET_ELEMENT extends Element> extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, IsFluentValidator<VALIDATOR_ELEMENT, TARGET_ELEMENT>> {
 
@@ -490,7 +504,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Validator step for inverted is validators.
      *
-     * @param <VALIDATOR_ELEMENT>
+     * @param <VALIDATOR_ELEMENT> The validators element type
      */
     public class InvertedIsFluentValidator<VALIDATOR_ELEMENT extends Element, TARGET_ELEMENT extends Element> extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, InvertedIsFluentValidator<VALIDATOR_ELEMENT, TARGET_ELEMENT>> {
 
@@ -522,8 +536,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Validator step for exlusive characteristics validators.
      *
-     * @param <VALIDATOR_ELEMENT>
-     * @param <CHARACTERISTIC>
+     * @param <VALIDATOR_ELEMENT> the validators element type
+     * @param <CHARACTERISTIC>    The characteristics type
      */
     public class ExclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT extends Element, CHARACTERISTIC> extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, ExclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT, CHARACTERISTIC>> {
 
@@ -556,8 +570,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Validator step for inclusive characteristics validators.
      *
-     * @param <VALIDATOR_ELEMENT>
-     * @param <CHARACTERISTIC>
+     * @param <VALIDATOR_ELEMENT> the validators element type
+     * @param <CHARACTERISTIC>    The characteristics type
      */
     public class InclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT extends Element, CHARACTERISTIC> extends AbstractFluentValidatorBase<VALIDATOR_ELEMENT, InclusiveCharacteristicFluentValidator<VALIDATOR_ELEMENT, CHARACTERISTIC>> {
 
@@ -626,7 +640,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies is validator.
      * Changes generic type of fluent validator.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <TARGET_ELEMENT> The target element type
      * @return the FluentElementValidator instance
      */
     public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
@@ -638,7 +653,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Applies inverted is filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <TARGET_ELEMENT> The target element type
      * @return the FluentElementValidator instance
      */
     public <TARGET_ELEMENT extends Element> FluentElementValidator<ELEMENT> isNot(IsCoreMatcher<ELEMENT, TARGET_ELEMENT> coreMatcher) {
@@ -651,7 +667,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies is element based filter.
      * Changes generic type of fluent filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <TARGET_ELEMENT> The target element type
      * @return the FluentElementValidator instance
      */
     public <TARGET_ELEMENT extends Element> FluentElementValidator<TARGET_ELEMENT> is(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
@@ -664,7 +681,8 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Applies inverted implicit element based filter.
      *
-     * @param coreMatcher the implicit core matcher to use
+     * @param coreMatcher      the implicit core matcher to use
+     * @param <TARGET_ELEMENT> The target element type
      * @return the FluentElementValidator instance
      */
     public <TARGET_ELEMENT extends Element> FluentElementValidator<ELEMENT> isNot(IsElementBasedCoreMatcher<TARGET_ELEMENT> coreMatcher) {
@@ -733,6 +751,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies inclusive criteria filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  the criteria type
      * @return the FluentElementValidator instance
      */
     public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -745,6 +764,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies inverted inclusive criteria filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  the criteria type
      * @return the FluentElementValidator instance
      */
     public <CRITERIA> InclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(InclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -757,6 +777,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies inclusive criteria element based filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  the criteria type
      * @return the FluentElementValidator instance
      */
     public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -770,6 +791,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies inverted inclusive element based criteria filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  the criteria type
      * @return the FluentElementValidator instance
      */
     public <CRITERIA> InclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(InclusiveCharacteristicElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -786,6 +808,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies exclusive criteria filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  the criteria type
      * @return the FluentElementValidator instance
      */
     public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -798,6 +821,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies inverted exclusive criteria filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  the criteria type
      * @return the FluentElementValidator instance
      */
     public <CRITERIA> ExclusiveCharacteristicFluentValidator<ELEMENT, CRITERIA> applyInvertedValidator(ExclusiveCriteriaCoreMatcher<ELEMENT, CRITERIA> coreMatcher) {
@@ -810,6 +834,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies exclusive criteria element based filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  the criteria type
      * @return the FluentElementValidator instance
      */
     public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -821,6 +846,7 @@ public class FluentElementValidator<ELEMENT extends Element> {
      * Applies inverted exclusive element based criteria filter.
      *
      * @param coreMatcher the implicit core matcher to use
+     * @param <CRITERIA>  the criteria type
      * @return the FluentElementValidator instance
      */
     public <CRITERIA> ExclusiveCharacteristicFluentValidator<Element, CRITERIA> applyInvertedValidator(ExclusiveCriteriaElementBasedCoreMatcher<CRITERIA> coreMatcher) {
@@ -918,7 +944,9 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Executes passed command if validation was successful, issues messages afterwards.
      *
-     * @param command the command
+     * @param command       the command
+     * @param <RETURN_TYPE> return type
+     * @return the result of the command
      */
     public <RETURN_TYPE> RETURN_TYPE executeCommandAndIssueMessages(CommandWithReturnType<ELEMENT, RETURN_TYPE> command) {
         RETURN_TYPE result = executeCommand(command);
@@ -929,7 +957,9 @@ public class FluentElementValidator<ELEMENT extends Element> {
     /**
      * Executes passed command if validation was successful.
      *
-     * @param command the command
+     * @param command       the command
+     * @param <RETURN_TYPE> return type
+     * @return the result of the command
      */
     public <RETURN_TYPE> RETURN_TYPE executeCommand(CommandWithReturnType<ELEMENT, RETURN_TYPE> command) {
         if (command != null && fluentValidatorState.getValidationResult()) {

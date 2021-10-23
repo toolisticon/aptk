@@ -2,7 +2,7 @@ package io.toolisticon.aptk.tools.generics;
 
 /**
  * This class represents a wildcard based type parameter.
- * <p/>
+ * <p>
  * It may define extends and super wildcards or a pure wildcard.
  */
 public final class GenericTypeWildcard implements GenericTypeParameter {
@@ -12,7 +12,7 @@ public final class GenericTypeWildcard implements GenericTypeParameter {
 
     /**
      * Constructor for a wildcard.
-     * <p/>
+     * <p>
      * Either superBound or extendsBound may not be null, because it's not possible to define both bounds in Java.
      * If both superBound and extendsBound are null then a pure wildcard is used.
      *
@@ -44,7 +44,7 @@ public final class GenericTypeWildcard implements GenericTypeParameter {
 
     /**
      * Convenience method to check if this instance represents a pure wildcard.
-     * <p/>
+     * <p>
      * This corresponds to neither super nor extends bounds are set.
      *
      * @return true if this instance represents a pure wildcard, otherwise false
@@ -92,6 +92,7 @@ public final class GenericTypeWildcard implements GenericTypeParameter {
     /**
      * Creates a extends wildcard.
      *
+     * @param extendsBound the extends boundary type
      * @return the extends wildcard instance
      */
     public static GenericTypeWildcard createExtendsWildcard(GenericType extendsBound) {
@@ -101,12 +102,19 @@ public final class GenericTypeWildcard implements GenericTypeParameter {
     /**
      * Creates a super wildcard.
      *
+     * @param superBound the super boundary type
      * @return the super wildcard instance
      */
     public static GenericTypeWildcard createSuperWildcard(GenericType superBound) {
         return createWildcard(superBound, null);
     }
 
+    /**
+     * Creates a  wildcard.
+     * @param superBound the super boundary type
+     * @param extendsBound the extends boundary type
+     * @return the generic wildcard instance
+     */
     private static GenericTypeWildcard createWildcard(GenericType superBound, GenericType extendsBound) {
         return new GenericTypeWildcard(superBound, extendsBound);
     }

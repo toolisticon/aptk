@@ -1,10 +1,10 @@
 package io.toolisticon.aptk.templating.expressions.operands;
 
-import io.toolisticon.aptk.templating.expressions.operations.OperationType;
 import io.toolisticon.aptk.templating.expressions.Expression;
+import io.toolisticon.aptk.templating.expressions.operations.OperationType;
 
 /**
- * Created by tobiasstamann on 06.10.17.
+ * A factory class for creating Operands.
  */
 public class OperandFactory {
 
@@ -18,10 +18,11 @@ public class OperandFactory {
     /**
      * Factory class for the creation of Operands.
      *
-     * @param operandType      the detected operand type
-     * @param expressionString the operands string representation parsed from expressions string
-     * @param expression       Just used for OperandType EXPRESSION
-     * @return
+     * @param operandType                the detected operand type
+     * @param expressionString           the operands string representation parsed from expressions string
+     * @param unaryOperationsToBeApplied The unary operations to be applied
+     * @param expression                 Just used for OperandType EXPRESSION
+     * @return the operand
      */
     public static Operand createOperand(OperandType operandType, String expressionString, OperationType[] unaryOperationsToBeApplied, Expression expression) {
 
@@ -76,10 +77,24 @@ public class OperandFactory {
     }
 
 
+    /**
+     * Creates an Operation result.
+     *
+     * @param type  The type
+     * @param value The value
+     * @return the operation result
+     */
     public static OperationResultOperand createOperationResult(Class type, Object value) {
         return new OperationResultOperand(type, value);
     }
 
+    /**
+     * Creates a unary wrapper operand
+     *
+     * @param operand       The operand
+     * @param operationType the unary operation type
+     * @return the wrapped unary operation operand
+     */
     public static UnaryOperationWrapperOperand createUnaryOperand(Operand operand, OperationType operationType) {
         return new UnaryOperationWrapperOperand(operand, operationType);
     }

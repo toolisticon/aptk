@@ -4,6 +4,8 @@ import javax.lang.model.element.Element;
 
 /**
  * Matcher for an implicit criteria.
+ *
+ * @param <E> The Element type of the matcher
  */
 public interface ImplicitMatcher<E extends Element> extends BaseMatcher<E> {
 

@@ -2,7 +2,7 @@ package io.toolisticon.aptk.tools.generics;
 
 /**
  * Type parameters in generic classes can contain two different kind of declaration: Generic types or wildcards.
- * <p/>
+ * <p>
  * This interface is helping to determine the two different kinds.
  */
 public interface GenericTypeParameter {
