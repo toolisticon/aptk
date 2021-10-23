@@ -20,11 +20,9 @@
 
         <plugins>
 
-
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration combine.children="append">
-                    <verbose>true</verbose>
+                <configuration>
                     <source>${java.compile.source.version}</source>
                     <target>${java.compile.target.version}</target>
                     <annotationProcessorPaths>
@@ -82,13 +80,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
 
         </plugins>
 

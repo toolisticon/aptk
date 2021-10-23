@@ -113,8 +113,7 @@
 
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration combine.children="append">
-                    <verbose>true</verbose>
+                <configuration>
                     <source>${java.compile.source.version}</source>
                     <target>${java.compile.target.version}</target>
                     <annotationProcessorPaths>
