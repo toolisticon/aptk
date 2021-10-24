@@ -9,7 +9,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>annotationwrapper-parent</artifactId>
-        <version>0.15.4</version>
+        <version>0.15.5-SNAPSHOT</version>
     </parent>
 
     <name>annotationwrapper-integrationTest</name>
