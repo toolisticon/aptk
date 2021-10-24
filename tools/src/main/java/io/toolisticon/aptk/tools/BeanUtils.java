@@ -96,12 +96,12 @@ public final class BeanUtils {
     }
 
     /**
-     * Checks if typeElement has a sole default noargs constructor.
-     * <p/>
+     * Checks if typeElement has a sole default no-args constructor.
+     * <p>
      * Internally calls isDefaultNoargConstructor.
      * See that method description for detailed overview of checked criteria.
      *
-     * @param typeElement
+     * @param typeElement the type element
      * @return true
      */
     public static boolean hasDefaultNoargsConstructor(TypeElement typeElement) {
@@ -123,7 +123,7 @@ public final class BeanUtils {
 
     /**
      * Checks whether an ExecutableElement is a default noargs constructor.
-     * <p/>
+     * <p>
      * Checks if
      * <ul>
      * <li>executable element is public constructor without parameters</li>
@@ -133,8 +133,8 @@ public final class BeanUtils {
      * <li>constructor has same visibility modifier like it's type</li>
      * </ul>
      *
-     * @param element
-     * @return
+     * @param element The executable element to check
+     * @return true if passes executable element is constructor, otherwise false
      */
     public static boolean isDefaultNoargConstructor(ExecutableElement element) {
 
@@ -315,7 +315,7 @@ public final class BeanUtils {
     /**
      * Get the getters method name.
      *
-     * @param field
+     * @param field The field
      * @return the getters method name or null if field has no getter
      */
     public static String getGetterMethodName(VariableElement field) {
@@ -363,7 +363,7 @@ public final class BeanUtils {
      *
      * @param field       the fields VariableElement
      * @param typeElement the TypeElement
-     * @return
+     * @return true if field has a getter method, otherwise false
      */
     protected static boolean checkHasGetterMethod(VariableElement field, TypeElement typeElement) {
 

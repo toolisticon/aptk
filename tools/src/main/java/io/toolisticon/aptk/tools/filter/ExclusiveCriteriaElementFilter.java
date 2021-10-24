@@ -28,6 +28,7 @@ public class ExclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      *
      * @param elements        the element to check
      * @param criteriaToCheck the annotation types to check for
+     * @param <PARAM_ELEMENT> The element type
      * @return true if all passed annotationTypes are present
      */
     @SafeVarargs
@@ -44,6 +45,7 @@ public class ExclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param elements        the element to check
      * @param invertFilter    invert filter or not
      * @param criteriaToCheck the annotation types to check for
+     * @param <PARAM_ELEMENT> The element type
      * @return true if all passed annotationTypes are present
      */
     @SafeVarargs
@@ -59,6 +61,7 @@ public class ExclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      *
      * @param elements        the element to check
      * @param criteriaToCheck the annotation types to check for
+     * @param <PARAM_ELEMENT> The element type
      * @return true if all passed annotationTypes are present
      */
     @SafeVarargs
@@ -75,6 +78,7 @@ public class ExclusiveCriteriaElementFilter<ELEMENT extends Element, CRITERIA, V
      * @param elements        the element to check
      * @param invertFilter    invert filter or not
      * @param criteriaToCheck the annotation types to check for
+     * @param <PARAM_ELEMENT>  The element type
      * @return true if all passed annotationTypes are present
      */
     @SafeVarargs

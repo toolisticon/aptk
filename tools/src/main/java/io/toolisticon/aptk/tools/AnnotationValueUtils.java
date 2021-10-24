@@ -329,7 +329,7 @@ public class AnnotationValueUtils {
      * Gets value as a TypeMirror array for Class array based annotation attributes.
      *
      * @param annotationValue the annotation value
-     * @return
+     * @return The TypeMirror array
      */
     public static TypeMirror[] getTypeAttributeValueArray(AnnotationValue annotationValue) {
         return getTypeAttributeValueArray(getArrayValue(annotationValue));
@@ -339,7 +339,7 @@ public class AnnotationValueUtils {
      * Gets value as a TypeMirror array for Class array based annotation attributes.
      *
      * @param annotationValues the annotation values to be converted to a TypeMirror array
-     * @return
+     * @return The TypeMirror array
      */
     public static TypeMirror[] getTypeAttributeValueArray(List<? extends AnnotationValue> annotationValues) {
         TypeMirror[] result = new TypeMirror[annotationValues.size()];
@@ -395,7 +395,7 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get long value array from annotation value.
      *
-     * @param annotationValues
+     * @param annotationValues the annotation values
      * @return the long array containing the attributes's values, or null if passed attributes list is null
      */
     public static Long[] getLongValueArray(List<? extends AnnotationValue> annotationValues) {
@@ -419,8 +419,8 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get integer value array from annotation value.
      *
-     * @param annotationValues
-     * @return the integer array containing the attributes's values, or null if passed attributes list is null
+     * @param annotationValues the annotation values
+     * @return the integer array containing the attributes values, or null if passed attributes list is null
      */
     public static Integer[] getIntegerValueArray(List<? extends AnnotationValue> annotationValues) {
         if (annotationValues == null || !isAnnotationValueArray(annotationValues, Integer.class)) {
@@ -443,7 +443,7 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get double value array from annotation value.
      *
-     * @param annotationValues
+     * @param annotationValues The annotation Values
      * @return the double array containing the annotationValues's values, or null if passed annotationValues list is null
      */
     public static Double[] getDoubleValueArray(List<? extends AnnotationValue> annotationValues) {
@@ -467,7 +467,7 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get float value array from annotation value.
      *
-     * @param annotationValues
+     * @param annotationValues the annotation values
      * @return the float array containing the attributes's values, or null if passed attributes list is null
      */
     public static Float[] getFloatValueArray(List<? extends AnnotationValue> annotationValues) {
@@ -491,7 +491,7 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get boolean value array from annotation value.
      *
-     * @param annotationValues
+     * @param annotationValues the annotation values
      * @return the boolean array containing the attributes's values, or null if passed attributes list is null
      */
     public static Boolean[] getBooleanValueArray(List<? extends AnnotationValue> annotationValues) {
@@ -515,7 +515,7 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get char value array from annotation value.
      *
-     * @param annotationValues
+     * @param annotationValues the annotation values
      * @return the char array containing the attributes's values, or null if passed attributes list is null
      */
     public static Character[] getCharValueArray(List<? extends AnnotationValue> annotationValues) {
@@ -539,7 +539,7 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get String value array from annotation value.
      *
-     * @param annotationValues
+     * @param annotationValues the annotation values
      * @return the String array containing the attributes's values, or null if passed attributes list is null
      */
     public static String[] getStringValueArray(List<? extends AnnotationValue> annotationValues) {
@@ -564,7 +564,7 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get enum value array from annotation value.
      *
-     * @param annotationValues
+     * @param annotationValues the annotation values
      * @return the enum array containing the attributes's values, or null if passed attributes list is null
      */
     public static VariableElement[] getEnumValueArray(List<? extends AnnotationValue> annotationValues) {
@@ -588,7 +588,7 @@ public class AnnotationValueUtils {
     /**
      * Convenience method to get annotation value array from annotation value.
      *
-     * @param annotationValues
+     * @param annotationValues the annotation values
      * @return the annotation array containing the annotationValues's values, or null if passed annotationValues list is null
      */
     public static AnnotationMirror[] getAnnotationValueArray(List<? extends AnnotationValue> annotationValues) {

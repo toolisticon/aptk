@@ -6,7 +6,7 @@ import java.util.Set;
 
 /**
  * Operands need to be normalized to be able to execute them.
- * <p/>
+ * <p>
  * For example we need to normalize all operands to Long for decimal addition operation.
  */
 public enum InternalOperandTypeForCalculations {
@@ -19,14 +19,30 @@ public enum InternalOperandTypeForCalculations {
 
     private final Class[] supportedTypes;
 
+    /**
+     * Constructor.
+     *
+     * @param supportedTypes The supported types of the operand
+     */
     InternalOperandTypeForCalculations(Class... supportedTypes) {
         this.supportedTypes = supportedTypes;
     }
 
+    /**
+     * Returns all supported types.
+     *
+     * @return the supported types of the operand
+     */
     public Class[] getSupportedTypes() {
         return this.supportedTypes;
     }
 
+    /**
+     * Checks if passed class is supported by operand
+     *
+     * @param type the type to check
+     * @return true if type is supported, otherwise false
+     */
     public boolean isSupportedType(Class type) {
 
         if (type == null) {
@@ -36,12 +52,18 @@ public enum InternalOperandTypeForCalculations {
         return getSupportedOperandModeClasses(this).contains(type);
     }
 
-    public static Set<Class> getSupportedOperandModeClasses(InternalOperandTypeForCalculations... internalOperandTypeForCalculationses) {
+    /**
+     * Gets the supported operand type
+     *
+     * @param internalOperandTypeForCalculations the operand types for calculation
+     * @return A Set containing all supported Operand
+     */
+    public static Set<Class> getSupportedOperandModeClasses(InternalOperandTypeForCalculations... internalOperandTypeForCalculations) {
         Set<Class> set = new HashSet<Class>();
 
-        if (internalOperandTypeForCalculationses != null) {
-            for (InternalOperandTypeForCalculations internalOperandTypeForCalculations : internalOperandTypeForCalculationses) {
-                set.addAll(Arrays.asList(internalOperandTypeForCalculations.getSupportedTypes()));
+        if (internalOperandTypeForCalculations != null) {
+            for (InternalOperandTypeForCalculations internalOperandTypeForCalculation : internalOperandTypeForCalculations) {
+                set.addAll(Arrays.asList(internalOperandTypeForCalculation.getSupportedTypes()));
             }
         }
 
@@ -51,8 +73,8 @@ public enum InternalOperandTypeForCalculations {
     /**
      * Gets the operand mode for a java type.
      *
-     * @param operand
-     * @return
+     * @param operand the operand
+     * @return The internal operand type for passed operand
      */
     public static InternalOperandTypeForCalculations getOperationModeForOperand(Operand operand) {
 

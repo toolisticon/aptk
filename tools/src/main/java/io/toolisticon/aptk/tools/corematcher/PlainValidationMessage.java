@@ -2,7 +2,7 @@ package io.toolisticon.aptk.tools.corematcher;
 
 /**
  * Plain validation message.
- * <p/>
+ * <p>
  * Can be used to create ValidationMessage with message String and optional code.
  */
 public class PlainValidationMessage implements ValidationMessage {
@@ -10,7 +10,12 @@ public class PlainValidationMessage implements ValidationMessage {
     private final String code;
     private final String message;
 
-
+    /**
+     * Internal constructor.
+     *
+     * @param code    The massage code
+     * @param message The message string
+     */
     private PlainValidationMessage(String code, String message) {
         this.code = code;
         this.message = message;

@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Parser to paarse an expressions String.
+ * Parser to parse an expressions String.
  */
 public class ExpressionParser {
 
@@ -164,7 +164,7 @@ public class ExpressionParser {
      *
      * @param expressionString the expressions string
      * @param index            the current processing index
-     * @return
+     * @return the next operation type result
      */
     public static OperationTypeSearchResult getOperationType(String expressionString, int index) {
 

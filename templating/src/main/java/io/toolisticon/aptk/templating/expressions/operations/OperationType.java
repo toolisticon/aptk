@@ -544,7 +544,7 @@ public enum OperationType {
 
     /**
      * This method is used to do some base checks that must be done before most operations.
-     * <p/>
+     * <p>
      * This includes checks for number of operands(mandatory) and supportedTypeCheck(optional) and null checks
      * for operation type, operands (mandatory) and operand values (optional).
      *
@@ -597,8 +597,8 @@ public enum OperationType {
     /**
      * Converts an operand to a String value by using it's toString method.
      *
-     * @param operand
-     * @return
+     * @param operand the operand
+     * @return The operands string representation
      */
     protected String convertToString(Operand operand) {
 
@@ -612,8 +612,8 @@ public enum OperationType {
     /**
      * Used to convert decimal and floating point numbers to a Double value.
      *
-     * @param operand
-     * @return
+     * @param operand the operand
+     * @return The operand converted to a Double value, or null if conversion is not possible.
      */
     protected Double convertToDouble(Operand operand) {
 
@@ -641,8 +641,8 @@ public enum OperationType {
     /**
      * Used to convert decimal numbers to a Long value.
      *
-     * @param operand
-     * @return
+     * @param operand the operand
+     * @return The operand converted into a Long value, or null if conversion is not possible.
      */
     protected Long convertToLong(Operand operand) {
 

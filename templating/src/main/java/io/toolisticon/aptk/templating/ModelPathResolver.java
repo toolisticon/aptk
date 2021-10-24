@@ -49,7 +49,7 @@ public class ModelPathResolver {
      * This method can be used to get model from ThreadLocal.
      *
      * @param path the path to resolve
-     * @return
+     * @return The resolved model path result
      */
     public static ResolvedModelPathResult resolveModelPath(String path) {
         return resolveModelPath(modelMapThreadLocal.get(), path);
@@ -61,7 +61,7 @@ public class ModelPathResolver {
      *
      * @param model the model
      * @param path  the path to resolve
-     * @return
+     * @return The resolved model path result
      */
     public static ResolvedModelPathResult resolveModelPath(Map<String, Object> model, String path) {
 

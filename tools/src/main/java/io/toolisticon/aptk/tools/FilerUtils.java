@@ -27,6 +27,7 @@ public final class FilerUtils {
      * @param targetPackage the target package
      * @param fileName      the file name of the resource to be opened
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
+     * @throws IOException if resource couldn't be read
      */
     public static SimpleResourceReader getResource(String fileName, String targetPackage) throws IOException {
         return getResource(StandardLocation.SOURCE_OUTPUT, targetPackage, fileName);
@@ -39,6 +40,7 @@ public final class FilerUtils {
      * @param targetPackage    the target package
      * @param fileName         the file name of the resource to be opened
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
+     * @throws IOException if resource couldn't be read
      */
     public static SimpleResourceReader getResource(StandardLocation standardLocation, String targetPackage, String fileName) throws IOException {
         return new SimpleResourceReader(ProcessingEnvironmentUtils.getFiler().getResource(standardLocation, targetPackage != null ? targetPackage : "", fileName));
@@ -49,6 +51,7 @@ public final class FilerUtils {
      *
      * @param fileName the file name of the resource to be opened
      * @return SimpleResourceReader if resource exists and can be read (== not opened for writing)
+     * @throws IOException if resource couldn't be read
      */
     public static SimpleResourceReader getResource(String fileName) throws IOException {
         return getResource("", fileName);
@@ -61,7 +64,7 @@ public final class FilerUtils {
      * @param fileName            the file name to use
      * @param originatingElements the originating elements responsible for resource file creation.
      * @return SimpleResourceWriter if it hasn't been created before.
-     * @throws IOException
+     * @throws IOException                                if resource couldn't be created
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
     public static SimpleResourceWriter createResource(String targetPackage, String fileName, Element... originatingElements) throws IOException {
@@ -76,7 +79,7 @@ public final class FilerUtils {
      * @param fileName            the file name to use
      * @param originatingElements the originating elements responsible for resource file creation.
      * @return SimpleResourceWriter if it hasn't been created before.
-     * @throws IOException
+     * @throws IOException                                if resource couldn't be created
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
     public static SimpleResourceWriter createResource(StandardLocation location, String targetPackage, String fileName, Element... originatingElements) throws IOException {
@@ -88,11 +91,11 @@ public final class FilerUtils {
      *
      * @param fileName the file name to use
      * @return SimpleResourceWriter if it hasn't been created before.
-     * @throws IOException
+     * @throws IOException                                if resource couldn't be created
      * @throws javax.annotation.processing.FilerException if the same pathname has already been created
      */
     public static SimpleResourceWriter createResource(String fileName) throws IOException {
-        return createResource("",fileName);
+        return createResource("", fileName);
     }
 
 

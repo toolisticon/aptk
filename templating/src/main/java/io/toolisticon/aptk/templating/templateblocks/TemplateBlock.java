@@ -18,6 +18,7 @@ public interface TemplateBlock {
     /**
      * Gets string representation for this template block.
      *
+     * @param variables the variables used for processing the content block
      * @return the string representation of this block.
      */
     String getContent(Map<String, Object> variables);

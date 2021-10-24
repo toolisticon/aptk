@@ -43,7 +43,7 @@ jobs:
         run: ./mvnw clean package
 
       - name: Deploy a new version to central
-        run: ./mvnw clean javadoc:jar source:jar deploy -B -DskipTests -Prelease -Dgpg.keyname=${{secrets.GPG_KEYNAME}} -Dgpg.passphrase="${{secrets.GPG_PASSPHRASE}}"
+        run: ./mvnw clean install javadoc:jar source:jar deploy -B -DskipTests -Prelease -Dgpg.keyname=${{secrets.GPG_KEYNAME}} -Dgpg.passphrase="${{secrets.GPG_PASSPHRASE}}"
         env:
           OSS_CENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           OSS_CENTRAL_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
