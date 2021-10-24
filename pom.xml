@@ -4,7 +4,7 @@
 
     <groupId>io.toolisticon.aptk</groupId>
     <artifactId>aptk-parent</artifactId>
-    <version>0.15.4-SNAPSHOT</version>
+    <version>0.15.4</version>
     <packaging>pom</packaging>
 
     <name>aptk-parent</name>
