@@ -107,20 +107,37 @@ import io.toolisticon.aptk.tools.TypeUtils;
     public ${attribute.targetWrapperAnnotationName} ${attribute.name}() {
         return ${attribute.targetWrapperAnnotationName}.wrapAnnotationMirror((AnnotationMirror)(AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue()));
     }
-!{/if}!{/if}!{/if}!{if attribute.isArray}!{if attribute.isPrimitiveOrString}
+!{/if}!{/if}!{/if}!{if attribute.isArray}!{if attribute.isPrimitiveArrayType}
    /**
     * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
     * @return the attribute value
     */
    public ${attribute.wrappedTypeMirror.getTypeDeclaration} ${attribute.name}() {
 
-       List<${attribute.getComponentAttributeType}> result = new ArrayList<>();
-       for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
-            result.add((${attribute.getComponentAttributeType})value.getValue());
+       List<AnnotationValue> values = (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue();
+
+       ${attribute.getComponentAttributeType}[] result = new ${attribute.getComponentAttributeType}[values.size()];
+
+       for(int i=0 ; i < values.size() ; i++) {
+            result[i] = (${attribute.getBoxedType})values.get(i).getValue();
        }
 
-       return result.toArray(new ${attribute.getComponentAttributeType}[result.size()]);
+       return result;
    }
+!{/if}!{if attribute.isStringArrayType}
+         /**
+          * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
+          * @return the attribute value
+          */
+         public String[] ${attribute.name}() {
+
+             List<String> result = new ArrayList<>();
+             for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
+                  result.add((String)value.getValue());
+             }
+
+             return result.toArray(new String[result.size()]);
+         }
 !{/if}!{if attribute.isEnum}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.

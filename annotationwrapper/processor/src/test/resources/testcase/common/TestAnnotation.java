@@ -11,17 +11,33 @@ import java.lang.annotation.Target;
 @Documented
 public @interface TestAnnotation {
 
+    char charAttribute() default 'X';
+
     String stringAttribute();
+
+    int intAttribute();
 
     long longAttribute();
 
+    float floatAttribute() default 0.0f;
+
     double doubleAttribute();
+
+    boolean booleanAttribute() default false;
 
     Class<?> typeAttribute();
 
     TestEnum enumAttribute();
 
     EmbeddedAnnotation annotationAttribute();
+
+
+    int[] intArrayAttribute() default{};
+    long[] longArrayAttribute() default{};
+    float[] floatArrayAttribute() default{};
+    double[] doubleArrayAttribute() default{};
+    boolean[] booleanArrayAttribute() default{};
+    char[] charArrayAttribute() default {};
 
     String[] stringArrayAttribute() default {};
 

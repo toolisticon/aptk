@@ -4,7 +4,6 @@ import io.toolisticon.aptk.annotationwrapper.api.AnnotationWrapper;
 import io.toolisticon.aptk.annotationwrapper.api.CustomCodeMethod;
 import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.AnnotationUtils;
-import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.FilerUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
@@ -27,7 +26,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
@@ -361,6 +359,95 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         }
 
         /**
+         * Checks whether attribute is a primitive Array
+         *
+         * @return true if attribute is a primitive, otherwise false
+         */
+        public boolean isPrimitiveArrayType() {
+
+            TypeMirror returnType = attribute.getReturnType();
+            if (!isArray()) {
+                return false;
+            }
+
+            returnType = ((ArrayType) returnType).getComponentType();
+
+
+            // check for primitives
+            switch (returnType.getKind()) {
+                case INT:
+                case BYTE:
+                case LONG:
+                case CHAR:
+                case FLOAT:
+                case DOUBLE:
+                case BOOLEAN:
+                case SHORT:
+                    return true;
+
+            }
+
+            return false;
+
+        }
+
+        /**
+         * Checks whether attribute is a primitive Array
+         *
+         * @return true if attribute is a primitive, otherwise false
+         */
+        public String getBoxedType() {
+
+            TypeMirror returnType = attribute.getReturnType();
+            if (isArray()) {
+                returnType = ((ArrayType) returnType).getComponentType();
+            }
+
+
+            // check for primitives
+            switch (returnType.getKind()) {
+                case INT:
+                    return Integer.class.getSimpleName();
+                case BYTE:
+                    return Byte.class.getSimpleName();
+                case LONG:
+                    return Long.class.getSimpleName();
+                case CHAR:
+                    return Character.class.getSimpleName();
+                case FLOAT:
+                    return Float.class.getSimpleName();
+                case DOUBLE:
+                    return Double.class.getSimpleName();
+                case BOOLEAN:
+                    return Boolean.class.getSimpleName();
+                case SHORT:
+                    return Short.class.getSimpleName();
+
+            }
+
+            return null;
+
+        }
+
+        /**
+         * Checks whether attribute is a primitive Array
+         *
+         * @return true if attribute is a primitive, otherwise false
+         */
+        public boolean isStringArrayType() {
+
+            TypeMirror returnType = attribute.getReturnType();
+            if (!isArray()) {
+                return false;
+            }
+
+            returnType = ((ArrayType) returnType).getComponentType();
+
+            return returnType.getKind().equals(TypeKind.DECLARED) && String.class.getCanonicalName().equals(returnType.toString());
+
+        }
+
+        /**
          * Checks whether attribute is enum type or not
          *
          * @return true if attribute is of type enum or enum array, otherwise false
@@ -494,6 +581,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         /**
          * The constructor.
+         *
          * @param typeElement The TypeElement that contains the custom code
          */
         public CustomCodeClass(TypeElement typeElement) {
@@ -507,10 +595,10 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
             for (ExecutableElement method : methods) {
 
-                if(!FluentElementValidator.createFluentElementValidator(method)
+                if (!FluentElementValidator.createFluentElementValidator(method)
                         .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.STATIC)
                         .applyInvertedValidator(CoreMatchers.HAS_NO_PARAMETERS)
-                        .validateAndIssueMessages()){
+                        .validateAndIssueMessages()) {
                     continue;
                 }
 
@@ -526,6 +614,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         /**
          * Get the TypeElement that contains the custom code methods to bind.
+         *
          * @return the Type element
          */
         public TypeElement getTypeElement() {
@@ -678,8 +767,6 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         }
 
 
-
-
     }
 
     /**
@@ -730,7 +817,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
                     .hasOneOf(state.getPackageName())
                     .validateAndIssueMessages();
 
-            for (CustomCodeClassMethod customCodeClassMethod : customCodeClass.getCustomMethods()){
+            for (CustomCodeClassMethod customCodeClassMethod : customCodeClass.getCustomMethods()) {
 
                 // check if method is visible (Enclosing type and method)
                 returnValue = returnValue & FluentElementValidator.createFluentElementValidator(customCodeClassMethod.executableElement)
@@ -744,9 +831,9 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
                     continue;
                 }
 
-                if (!(annotationToWrap.getSimpleName() +"Wrapper").equals(customCodeClassMethod.executableElement.getParameters().get(0).asType().toString())){
-                    MessagerUtils.error(customCodeClassMethod.executableElement.getParameters().get(0), AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, (annotationToWrap.getSimpleName() +"Wrapper"));
-                    returnValue =false;
+                if (!(annotationToWrap.getSimpleName() + "Wrapper").equals(customCodeClassMethod.executableElement.getParameters().get(0).asType().toString())) {
+                    MessagerUtils.error(customCodeClassMethod.executableElement.getParameters().get(0), AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, (annotationToWrap.getSimpleName() + "Wrapper"));
+                    returnValue = false;
                 }
 
 
