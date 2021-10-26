@@ -23,9 +23,9 @@ import io.toolisticon.aptk.tools.TypeUtils;
 /**
  * Wrapper class to read attribute values from Annotation ${atw.simpleName}.
  */
-!{if state.usePublicVisibility}public !{/if}class ${atw.simpleName}Wrapper {
+!{if state.usePublicVisibility}public !{/if}class ${atw.simpleName}Wrapper <T extends Element>{
 
-    private final Element annotatedElement;
+    private final T annotatedElement;
     private final AnnotationMirror annotationMirror;
 
     /**
@@ -33,7 +33,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Used to read annotation from Element.
      * @param annotatedElement the annotated Element to annotated with this wrapper annotation
      */
-    private ${atw.simpleName}Wrapper (Element annotatedElement) {
+    private ${atw.simpleName}Wrapper (T annotatedElement) {
         this.annotatedElement = annotatedElement;
         this.annotationMirror = AnnotationUtils.getAnnotationMirror(annotatedElement, ${atw.simpleName}.class);
     }
@@ -41,12 +41,27 @@ import io.toolisticon.aptk.tools.TypeUtils;
     /**
      * Private constructor.
      * Mainly used for embedded annotations.
+     * @param element the element related with the passed annotationMirror
      * @param annotationMirror the AnnotationMirror to wrap
      */
-    private ${atw.simpleName}Wrapper (AnnotationMirror annotationMirror) {
-        this.annotatedElement = null;
+    private ${atw.simpleName}Wrapper (T element, AnnotationMirror annotationMirror) {
+        this.annotatedElement = element;
         this.annotationMirror = annotationMirror;
     }
+
+    /**
+     * Gets the element on which the wrapped annotation is used.
+     */
+    public T _annotatedElement() {
+        return this.annotatedElement;
+    }
+
+    /**
+     * Gets the wrapped AnnotationMirror.
+     */
+     public AnnotationMirror _annotationMirror() {
+        return this.annotationMirror;
+     }
 
 !{for attribute : atw.attributes}
 !{if !attribute.isArray}!{if attribute.isPrimitiveOrString}
@@ -104,8 +119,8 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
-    public ${attribute.targetWrapperAnnotationName} ${attribute.name}() {
-        return ${attribute.targetWrapperAnnotationName}.wrapAnnotationMirror((AnnotationMirror)(AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue()));
+    public ${attribute.targetWrapperAnnotationName}<T> ${attribute.name}() {
+        return ${attribute.targetWrapperAnnotationName}.wrap(this.annotatedElement, (AnnotationMirror)(AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue()));
     }
 !{/if}!{/if}!{/if}!{if attribute.isArray}!{if attribute.isPrimitiveArrayType}
    /**
@@ -214,10 +229,10 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
-    public ${attribute.targetWrapperAnnotationName}[] ${attribute.name}() {
+    public ${attribute.targetWrapperAnnotationName}<T>[] ${attribute.name}() {
         List<${attribute.targetWrapperAnnotationName}> result = new ArrayList<>();
         for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
-            result.add( ${attribute.targetWrapperAnnotationName}.wrapAnnotationMirror((AnnotationMirror)value.getValue()));
+            result.add( ${attribute.targetWrapperAnnotationName}.wrap(this.annotatedElement, (AnnotationMirror)value.getValue()));
         }
 
         return result.toArray(new ${attribute.targetWrapperAnnotationName}[result.size()]);
@@ -253,20 +268,33 @@ import io.toolisticon.aptk.tools.TypeUtils;
      /**
       * Gets the AnnotationMirror from passed element for this wrappers annotation type and creates a wrapper instance.
       * @param element The element to read the annotations from
+      * @param <ELEMENT_TYPE> the type of annotated element
       * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
       */
-    public static ${atw.simpleName}Wrapper wrapAnnotationOfElement(Element element) {
-        return isAnnotated(element) ? new ${atw.simpleName}Wrapper(element) : null;
+    public static <ELEMENT_TYPE extends Element> ${atw.simpleName}Wrapper<ELEMENT_TYPE> wrap(ELEMENT_TYPE element) {
+        return isAnnotated(element) ? new ${atw.simpleName}Wrapper<ELEMENT_TYPE>(element) : null;
     }
 
     /**
      * Wraps an AnnotationMirror.
      * Throws an IllegalArgumentException if passed AnnotationMirror type doesn't match the wrapped annotation type.
-     * @param annotationMirror The AnnotationMirror to wrap
+     * @param annotationMirror The element annotated with the annotation to wrap
      * @return The wrapper instance
      */
-    public static ${atw.simpleName}Wrapper wrapAnnotationMirror(AnnotationMirror annotationMirror) {
-        return new ${atw.simpleName}Wrapper(annotationMirror);
+    public static ${atw.simpleName}Wrapper<Element> wrap(AnnotationMirror annotationMirror) {
+        return new ${atw.simpleName}Wrapper<Element>(null, annotationMirror);
+    }
+
+   /**
+     * Wraps an AnnotationMirror.
+     * Throws an IllegalArgumentException if passed AnnotationMirror type doesn't match the wrapped annotation type.
+     * @param element the element bound to the usage of passed AnnotationMirror
+     * @param annotationMirror The AnnotationMirror to wrap
+     * @param <ELEMENT_TYPE> the type of annotated element
+     * @return The wrapper instance
+     */
+    public static <ELEMENT_TYPE extends Element> ${atw.simpleName}Wrapper<ELEMENT_TYPE> wrap(ELEMENT_TYPE element, AnnotationMirror annotationMirror) {
+        return new ${atw.simpleName}Wrapper<ELEMENT_TYPE>(element, annotationMirror);
     }
 
 }

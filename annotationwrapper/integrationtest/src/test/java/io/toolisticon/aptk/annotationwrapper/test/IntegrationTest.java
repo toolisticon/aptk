@@ -6,7 +6,6 @@ import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -53,10 +52,22 @@ public class IntegrationTest {
             @Override
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
+                TestAnnotationWrapper<TypeElement> testAnnotationWrapper = TestAnnotationWrapper.wrap(typeElement);
+
+                // check if element is returned correctly
+                MatcherAssert.assertThat(testAnnotationWrapper._annotatedElement(), Matchers.is(typeElement));
+                MatcherAssert.assertThat(testAnnotationWrapper.annotationAttribute()._annotatedElement(), Matchers.is(typeElement));
+
+
                 // single attribute values
-                TestAnnotationWrapper testAnnotationWrapper = TestAnnotationWrapper.wrapAnnotationOfElement(typeElement);
+
+                MatcherAssert.assertThat(testAnnotationWrapper.charAttribute(), Matchers.is('X'));
                 MatcherAssert.assertThat(testAnnotationWrapper.stringAttribute(), Matchers.is("WTF"));
+                MatcherAssert.assertThat(testAnnotationWrapper.floatAttribute(), Matchers.is(0.0f));
                 MatcherAssert.assertThat(testAnnotationWrapper.doubleAttribute(), Matchers.is(1.0));
+                MatcherAssert.assertThat(testAnnotationWrapper.shortAttribute(), Matchers.is((short) 0));
+                MatcherAssert.assertThat(testAnnotationWrapper.byteAttribute(), Matchers.is((byte) 0));
+                MatcherAssert.assertThat(testAnnotationWrapper.intAttribute(), Matchers.is(0));
                 MatcherAssert.assertThat(testAnnotationWrapper.longAttribute(), Matchers.is(1L));
                 MatcherAssert.assertThat(testAnnotationWrapper.enumAttribute(), Matchers.is(TestEnum.TWO));
                 MatcherAssert.assertThat(testAnnotationWrapper.typeAttributeAsFqn(), Matchers.is(String.class.getCanonicalName()));
@@ -66,7 +77,17 @@ public class IntegrationTest {
                 MatcherAssert.assertThat(testAnnotationWrapper.annotationAttribute().value(), Matchers.is(1L));
 
                 // array based attribute values
+                MatcherAssert.assertThat(testAnnotationWrapper.charArrayAttribute().length, Matchers.is(0));
                 MatcherAssert.assertThat(testAnnotationWrapper.stringArrayAttribute(), Matchers.arrayContaining("1", "2", "3"));
+
+                MatcherAssert.assertThat(testAnnotationWrapper.intArrayAttribute().length, Matchers.is(0));
+                MatcherAssert.assertThat(testAnnotationWrapper.longArrayAttribute().length, Matchers.is(0));
+                MatcherAssert.assertThat(testAnnotationWrapper.shortArrayAttribute().length, Matchers.is(0));
+                MatcherAssert.assertThat(testAnnotationWrapper.byteArrayAttribute().length, Matchers.is(0));
+                MatcherAssert.assertThat(testAnnotationWrapper.floatArrayAttribute().length, Matchers.is(0));
+                MatcherAssert.assertThat(testAnnotationWrapper.doubleArrayAttribute().length, Matchers.is(0));
+                MatcherAssert.assertThat(testAnnotationWrapper.booleanArrayAttribute().length, Matchers.is(0));
+
                 MatcherAssert.assertThat(testAnnotationWrapper.typeArrayAttributeAsFqn(), Matchers.arrayContaining(Long.class.getCanonicalName(), String.class.getCanonicalName()));
                 TypeMirror[] typeMirrorArray = testAnnotationWrapper.typeArrayAttributeAsTypeMirror();
                 MatcherAssert.assertThat(typeMirrorArray[0].toString(), Matchers.is(Long.class.getCanonicalName()));
@@ -100,7 +121,7 @@ public class IntegrationTest {
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
                 // single attribute values
-                TestDefaultsAnnotationWrapper wrappedAnnotation = TestDefaultsAnnotationWrapper.wrapAnnotationOfElement(typeElement);
+                TestDefaultsAnnotationWrapper wrappedAnnotation = TestDefaultsAnnotationWrapper.wrap(typeElement);
                 MatcherAssert.assertThat(wrappedAnnotation.withDefaultIsDefaultValue(), Matchers.is(true));
                 MatcherAssert.assertThat(wrappedAnnotation.withoutDefaultIsDefaultValue(), Matchers.is(false));
             }
@@ -110,13 +131,13 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testCustomCodeForwarding(){
+    public void testCustomCodeForwarding() {
         unitTestBuilder.defineTestWithPassedInElement(TestUsage.class, new APTKUnitTestProcessor<TypeElement>() {
             @Override
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
                 // single attribute values
-                TestAnnotationWrapper wrappedAnnotation = TestAnnotationWrapper.wrapAnnotationOfElement(typeElement);
+                TestAnnotationWrapper wrappedAnnotation = TestAnnotationWrapper.wrap(typeElement);
                 MatcherAssert.assertThat(wrappedAnnotation.forwardedMethod("yes"), Matchers.is("it worked : " + "yes"));
                 wrappedAnnotation.forwardedMethodWithNoReturnValue("yes");
             }
