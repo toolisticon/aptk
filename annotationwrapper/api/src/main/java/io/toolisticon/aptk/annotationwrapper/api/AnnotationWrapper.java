@@ -28,7 +28,7 @@ public @interface AnnotationWrapper {
      *
      * @return
      */
-    BindCustomCode[] bindCustomCode() default {};
+    Class[] bindCustomCode() default {};
 
     /**
      * Configures to generate wrappers for all embedded annotations as well.

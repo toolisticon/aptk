@@ -36,8 +36,13 @@ public class TypeMirrorWrapperTest {
     */
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_nullValuedWrapper() {
-        TypeMirrorWrapper.wrap(null);
+    public void test_nullValuedWrapper_TypeMirror() {
+        TypeMirrorWrapper.wrap((TypeMirror) null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_nullValuedWrapper_fqn() {
+        TypeMirrorWrapper.wrap((String) null);
     }
 
     @Test

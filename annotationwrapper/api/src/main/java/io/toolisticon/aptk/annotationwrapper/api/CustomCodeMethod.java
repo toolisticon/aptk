@@ -1,5 +1,6 @@
 package io.toolisticon.aptk.annotationwrapper.api;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,4 +16,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CustomCodeMethod {
+    /** The annotation to which the code method should be bound with. */
+    Class<? extends Annotation> value();
 }

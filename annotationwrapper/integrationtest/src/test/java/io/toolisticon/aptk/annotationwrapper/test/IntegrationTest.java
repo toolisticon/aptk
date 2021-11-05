@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
@@ -52,11 +53,11 @@ public class IntegrationTest {
             @Override
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
-                TestAnnotationWrapper<TypeElement> testAnnotationWrapper = TestAnnotationWrapper.wrap(typeElement);
+                TestAnnotationWrapper testAnnotationWrapper = TestAnnotationWrapper.wrap(typeElement);
 
                 // check if element is returned correctly
-                MatcherAssert.assertThat(testAnnotationWrapper._annotatedElement(), Matchers.is(typeElement));
-                MatcherAssert.assertThat(testAnnotationWrapper.annotationAttribute()._annotatedElement(), Matchers.is(typeElement));
+                MatcherAssert.assertThat(testAnnotationWrapper._annotatedElement(), Matchers.is((Element) typeElement));
+                MatcherAssert.assertThat(testAnnotationWrapper.annotationAttribute()._annotatedElement(), Matchers.is((Element)typeElement));
 
 
                 // single attribute values
@@ -140,6 +141,8 @@ public class IntegrationTest {
                 TestAnnotationWrapper wrappedAnnotation = TestAnnotationWrapper.wrap(typeElement);
                 MatcherAssert.assertThat(wrappedAnnotation.forwardedMethod("yes"), Matchers.is("it worked : " + "yes"));
                 wrappedAnnotation.forwardedMethodWithNoReturnValue("yes");
+                wrappedAnnotation.autoDetectedMethod("yes");
+
             }
         })
                 .compilationShouldSucceed()

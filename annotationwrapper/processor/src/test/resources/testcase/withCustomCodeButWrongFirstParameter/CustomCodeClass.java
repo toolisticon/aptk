@@ -1,11 +1,12 @@
 package io.toolisticon.aptk.wrapper.test;
 
 import io.toolisticon.aptk.annotationwrapper.api.CustomCodeMethod;
+import io.toolisticon.cute.TestAnnotation;
 
 public class CustomCodeClass {
 
-    @CustomCodeMethod
-    public static String shouldntWork( String arg1) {
+    @CustomCodeMethod(TestAnnotation.class)
+    public static String shouldntWork(String arg1) {
         return "yes " + arg1;
     }
 
