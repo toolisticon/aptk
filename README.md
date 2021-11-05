@@ -50,7 +50,7 @@ This can be done by adding the following to your annotation processors pom.xml:
          <dependency>
              <groupId>io.toolisticon.aptk</groupId>
              <artifactId>tools</artifactId>
-             <version>0.15.0</version>
+             <version>0.16.0</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->

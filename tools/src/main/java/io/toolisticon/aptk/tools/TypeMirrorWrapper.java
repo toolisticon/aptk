@@ -547,4 +547,14 @@ public class TypeMirrorWrapper {
     public static TypeMirrorWrapper wrap(TypeMirror typeMirror) {
         return new TypeMirrorWrapper(typeMirror);
     }
+
+    /**
+     * Gets and Wraps a TypeMirror instance for a fully qualified name to provide some convenience methods
+     *
+     * @param fqn the fully qualified name of the type
+     * @return The wrapped TypeMirror
+     */
+    public static TypeMirrorWrapper wrap(String fqn) {
+        return wrap(TypeUtils.TypeRetrieval.getTypeMirror(fqn));
+    }
 }

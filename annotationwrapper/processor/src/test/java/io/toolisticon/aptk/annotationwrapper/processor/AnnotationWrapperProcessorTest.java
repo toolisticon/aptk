@@ -132,7 +132,7 @@ public class AnnotationWrapperProcessorTest {
             @Override
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
-                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>(), new ArrayList<AnnotationWrapperProcessor.CustomCodeClass>());
+                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>(), new AnnotationWrapperProcessor.AnnotationWrapperCustomCode(UnitTestAnnotation.class.getCanonicalName()));
 
                 MatcherAssert.assertThat(unit.getSimpleName(), Matchers.is(UnitTestAnnotation.class.getSimpleName()));
 
@@ -148,7 +148,7 @@ public class AnnotationWrapperProcessorTest {
             @Override
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
-                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>(), new ArrayList<AnnotationWrapperProcessor.CustomCodeClass>());
+                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>(), new AnnotationWrapperProcessor.AnnotationWrapperCustomCode(UnitTestAnnotation.class.getCanonicalName()));
 
                 MatcherAssert.assertThat(unit.getQualifiedName(), Matchers.is(UnitTestAnnotation.class.getCanonicalName()));
 
@@ -172,7 +172,7 @@ public class AnnotationWrapperProcessorTest {
 
                 List<AnnotationWrapperProcessor.AnnotationAttribute> attributes = Arrays.asList(attribute1, attribute2);
 
-                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), attributes, new ArrayList<AnnotationWrapperProcessor.CustomCodeClass>());
+                AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), attributes, new AnnotationWrapperProcessor.AnnotationWrapperCustomCode(UnitTestAnnotation.class.getCanonicalName()));
 
                 MatcherAssert.assertThat(unit.getImports(), Matchers.containsInAnyOrder(UnitTestAnnotation.class.getCanonicalName(), Serializable.class.getCanonicalName(), Collections.class.getCanonicalName()));
 
@@ -194,7 +194,7 @@ public class AnnotationWrapperProcessorTest {
 
         List<AnnotationWrapperProcessor.AnnotationAttribute> attributes = Arrays.asList(attribute1, attribute2);
 
-        AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), attributes, new ArrayList<AnnotationWrapperProcessor.CustomCodeClass>());
+        AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(UnitTestAnnotation.class.getCanonicalName(), attributes, new AnnotationWrapperProcessor.AnnotationWrapperCustomCode(UnitTestAnnotation.class.getCanonicalName()));
 
         MatcherAssert.assertThat(unit.getAttributes(), Matchers.is(attributes));
 

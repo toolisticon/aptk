@@ -45,9 +45,47 @@ import AnnotationWrapper;
 - Generated wrapper classes will have package private visibility by default - this can be changed to public by using the *AnnotationWrapper.usePublicVisibility* attribute.
 - By default wrapper classes of all referenced annotation types will be created automatically - this can be deactivated by using the *AnnotationWrapper.automaticallyWrapEmbeddedAnnotations* attribute.
 
+## Extending Wrapper Api
+It's possible to extend the wrapper by custom code methods.
+
+Custom Code methods must be annotated with the *CustomCodeMethod* annotation:
+```java
+package io.toolisticon.aptk.annotationwrapper.test;
+
+import io.toolisticon.aptk.annotationwrapper.api.CustomCodeMethod;
+
+public class CustomCodeClass {
+
+    @CustomCodeMethod(TestAnnotation.class)
+    public static String forwardedMethod(TestAnnotationWrapper testAnnotationWrapper, String firstArg) {
+        testAnnotationWrapper.enumAttribute();
+        return "it worked : " + firstArg;
+    }
+
+}
+```
+The annotation takes the targetted annotation type as value attribute.
+The annotation must be placed on methods:
+- that are non private and static
+- must have the targetted annotation wrapper type as first attribute, only the following parameters will later be used in wrapper Api
+
+The custom code classes can be registered in two ways:
+- will be picked up automatically if the custom code class is in same package as the targeted wrapper.
+- can be defined explicitly in the *AnnotationWrapper* annotation via the *bindCustomCode* attribute. 
+
+```java
+@AnnotationWrapper(
+        value = {TestAnnotation.class, TestDefaultsAnnotation.class, PrettyExample.class},
+        bindCustomCode = {CustomCodeClass.class},
+        automaticallyWrapEmbeddedAnnotations = true)
+package io.toolisticon.aptk.annotationwrapper.test;
+
+import io.toolisticon.aptk.annotationwrapper.api.AnnotationWrapper;
+```
+
 ##Example
 
-For annotation *TestAnnotation*:
+For annotation *PrettyExample*:
 ```java
 package io.toolisticon.aptk.wrapper.test;
 
@@ -66,25 +104,45 @@ public @interface PrettyExample {
 }
 ```
 
+and *EmbeddedAnnotation*:
+````java
+package io.toolisticon.aptk.annotationwrapper.test;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface EmbeddedAnnotation {
+    long value();
+}
+````
+
 the processor will generate the following wrapper class:
 ```java
-package io.toolisticon.aptk.wrapper.test;
-import io.toolisticon.aptk.wrapper.test.PrettyExample;
-import EmbeddedAnnotation;
+package io.toolisticon.aptk.annotationwrapper.test;
+import io.toolisticon.aptk.annotationwrapper.test.PrettyExample;
+import io.toolisticon.aptk.annotationwrapper.test.EmbeddedAnnotation;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
-import AnnotationUtils;
-import TypeMirrorWrapper;
-import TypeUtils;
+import io.toolisticon.aptk.tools.AnnotationUtils;
+import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.TypeUtils;
 
 
 /**
- * Wrapper class to read attribute values from Annotation {@see PrettyExample}.
+ * Wrapper class to read attribute values from Annotation PrettyExample.
  */
 class PrettyExampleWrapper {
 
@@ -94,6 +152,7 @@ class PrettyExampleWrapper {
     /**
      * Private constructor.
      * Used to read annotation from Element.
+     * @param annotatedElement the annotated Element to annotated with this wrapper annotation
      */
     private PrettyExampleWrapper (Element annotatedElement) {
         this.annotatedElement = annotatedElement;
@@ -103,11 +162,27 @@ class PrettyExampleWrapper {
     /**
      * Private constructor.
      * Mainly used for embedded annotations.
+     * @param element the element related with the passed annotationMirror
+     * @param annotationMirror the AnnotationMirror to wrap
      */
-    private PrettyExampleWrapper (AnnotationMirror annotationMirror) {
-        this.annotatedElement = null;
+    private PrettyExampleWrapper (Element element, AnnotationMirror annotationMirror) {
+        this.annotatedElement = element;
         this.annotationMirror = annotationMirror;
     }
+
+    /**
+     * Gets the element on which the wrapped annotation is used.
+     */
+    public Element _annotatedElement() {
+        return this.annotatedElement;
+    }
+
+    /**
+     * Gets the wrapped AnnotationMirror.
+     */
+     public AnnotationMirror _annotationMirror() {
+        return this.annotationMirror;
+     }
 
     /**
      * Gets the PrettyExample.aStringBasedValue from wrapped annotation.
@@ -209,7 +284,7 @@ class PrettyExampleWrapper {
      * @return the attribute value
      */
     public EmbeddedAnnotationWrapper annotationTypeBasedAttribute() {
-        return EmbeddedAnnotationWrapper.wrapAnnotationMirror((AnnotationMirror)(AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "annotationTypeBasedAttribute").getValue()));
+        return EmbeddedAnnotationWrapper.wrap(this.annotatedElement, (AnnotationMirror)(AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "annotationTypeBasedAttribute").getValue()));
     }
 
 
@@ -218,6 +293,7 @@ class PrettyExampleWrapper {
 
     /**
      * Checks if passed element is annotated with this wrapper annotation type : PrettyExample
+     * @param element The element to check for wrapped annotation type
      * @return true, if passed element is annotated with PrettyExample annotation, otherwise false
      */
     public static boolean isAnnotated(Element element) {
@@ -226,29 +302,59 @@ class PrettyExampleWrapper {
 
      /**
       * Gets the AnnotationMirror from passed element for this wrappers annotation type and creates a wrapper instance.
-      *
+      * @param element The element to read the annotations from
       * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
       */
-    public static PrettyExampleWrapper wrapAnnotationOfElement(Element element) {
+    public static PrettyExampleWrapper wrap(Element element) {
         return isAnnotated(element) ? new PrettyExampleWrapper(element) : null;
     }
 
     /**
      * Wraps an AnnotationMirror.
      * Throws an IllegalArgumentException if passed AnnotationMirror type doesn't match the wrapped annotation type.
-     *
+     * @param annotationMirror The element annotated with the annotation to wrap
      * @return The wrapper instance
      */
-    public static PrettyExampleWrapper wrapAnnotationMirror(AnnotationMirror annotationMirror) {
-        return new PrettyExampleWrapper(annotationMirror);
+    public static PrettyExampleWrapper wrap(AnnotationMirror annotationMirror) {
+        return new PrettyExampleWrapper(null, annotationMirror);
     }
 
+   /**
+     * Wraps an AnnotationMirror.
+     * Throws an IllegalArgumentException if passed AnnotationMirror type doesn't match the wrapped annotation type.
+     * @param element the element bound to the usage of passed AnnotationMirror
+     * @param annotationMirror The AnnotationMirror to wrap
+     * @return The wrapper instance
+     */
+    public static PrettyExampleWrapper wrap(Element element, AnnotationMirror annotationMirror) {
+        return new PrettyExampleWrapper(element, annotationMirror);
+    }
+
+}
 }
 ```
 
 So reading of the type attribute is quite easy:
 ```java
-PrettyExampleWrapper.wrap(element).typeBasedAttributeAsTypeMirror();
+PrettyExampleWrapper wrapper = PrettyExampleWrapper.wrap(element);
+
+// access annotated element
+Element annotatedElement = wrapper._annotatedElement();
+
+// access annotation mirror
+AnnotationMirror annotationMirror = wrapper._annotationMirror();
+
+// read type based attributes
+TypeMirror typeMirror = wrapper.typeBasedAttributeAsTypeMirror();
+TypeMirrorWrapper typeMirrorWrapper = wrapper.typeBasedAttributeAsTypeMirrorWrapper();
+String fqn = wrapper.typeBasedAttributeAsFqn();
+
+// read array based attribute
+String[] fqns = wrapper.typeArrayBasedAttributeAsFqn();
+
+// access annotation type based attributes
+EmbeddedAnnotationWrapper embeddedAnnotationWrapper = wrapper.annotationTypeBasedAttribute();
+long value = embeddedAnnotationWrapper.value();
 ```
 
-As you can see reading of complex annotation hierarchies will be very easy.
+As you can see reading of values and complex annotation hierarchies will be a very easy thing to do.

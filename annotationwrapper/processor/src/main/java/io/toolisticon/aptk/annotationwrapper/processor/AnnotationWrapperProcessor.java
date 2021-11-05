@@ -4,6 +4,7 @@ import io.toolisticon.aptk.annotationwrapper.api.AnnotationWrapper;
 import io.toolisticon.aptk.annotationwrapper.api.CustomCodeMethod;
 import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.AnnotationUtils;
+import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.FilerUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
@@ -59,9 +60,17 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
      */
     public static class State {
 
+        final static String WRAPPER_SUFFIX = "Wrapper";
+
         final PackageElement packageElement;
         final Set<String> annotationsToBeWrapped = new HashSet<>();
-        final Map<String, List<CustomCodeClass>> customCodeClassMappings = new HashMap<>();
+        final String[] customCodeClasses;
+        final Map<String, AnnotationWrapperCustomCode> annotationWrapperCustomCode = new HashMap<>();
+        final Map<String, List<CustomCodeClassMethod>> customCodeClassMethodMappings = new HashMap<>();
+        final Map<String, String> annotationNameToWrapperSimpleNameMap = new HashMap();
+        final Map<String, String> wrapperSimpleNameToFqn = new HashMap<>();
+        final Map<String, String> wrapperAnnotationFqnToAnnotationFqnNameMap = new HashMap();
+        final Map<String, String> annotationFqnToWrapperAnnotationFqnNameMap = new HashMap();
         final boolean usePublicVisibility;
         final boolean automaticallyWrapEmbeddedAnnotations;
 
@@ -79,26 +88,58 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(packageElement, AnnotationWrapper.class);
             usePublicVisibility = (Boolean) AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "usePublicVisibility").getValue();
             automaticallyWrapEmbeddedAnnotations = (Boolean) AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "automaticallyWrapEmbeddedAnnotations").getValue();
-
-            // handle custom code classes
-            List<AnnotationMirror> bindCustomCodeAnnotationMirrors = (List<AnnotationMirror>) AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "bindCustomCode").getValue();
-            for (AnnotationMirror bindCustomCodeAnnotationMirror : bindCustomCodeAnnotationMirrors) {
-                String bindCustomCodeAnnotationFqn = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(bindCustomCodeAnnotationMirror, "annotation");
-                this.annotationsToBeWrapped.add(bindCustomCodeAnnotationFqn);
-                List<CustomCodeClass> customCodeClasses = new ArrayList<>();
-                for (TypeMirror typeMirror : AnnotationUtils.getClassArrayAttributeFromAnnotationAsTypeMirror(bindCustomCodeAnnotationMirror, "customCodeClass")) {
-                    if (TypeUtils.CheckTypeKind.isDeclared(typeMirror)) {
-                        customCodeClasses.add(new CustomCodeClass(TypeUtils.TypeRetrieval.getTypeElement(typeMirror)));
-                    }
-                }
-                customCodeClassMappings.put(bindCustomCodeAnnotationFqn, customCodeClasses);
-            }
+            customCodeClasses = AnnotationUtils.getClassArrayAttributeFromAnnotationAsFqn(annotationMirror, "bindCustomCode");
 
             // now recursively add all embedded annotations
             if (automaticallyWrapEmbeddedAnnotations) {
                 for (String annotationFqn : new ArrayList<>(annotationsToBeWrapped)) {
                     recursivelyAddAnnotations(annotationFqn);
                 }
+            }
+
+            // now create the wrapper names look up maps
+            for (String annotationToBeWrapped : annotationsToBeWrapped) {
+                TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(annotationToBeWrapped);
+                String annotationWrapperSimpleName = typeElement.getSimpleName().toString() + WRAPPER_SUFFIX;
+                String annotationWrapperFqn = typeElement.getQualifiedName().toString() + WRAPPER_SUFFIX;
+
+                annotationNameToWrapperSimpleNameMap.put(annotationToBeWrapped, annotationWrapperSimpleName);
+                wrapperAnnotationFqnToAnnotationFqnNameMap.put(annotationWrapperFqn, annotationToBeWrapped);
+                annotationFqnToWrapperAnnotationFqnNameMap.put(annotationToBeWrapped, annotationWrapperFqn);
+                wrapperSimpleNameToFqn.put(annotationWrapperSimpleName, annotationWrapperFqn);
+                annotationWrapperCustomCode.put(annotationWrapperFqn, new AnnotationWrapperCustomCode(annotationWrapperFqn));
+            }
+
+            // first scan for all CustomCodeClasses in Package
+            List<ExecutableElement> customCodeMethods = FluentElementFilter.createFluentElementFilter(
+                    ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree(packageElement, false)
+            ).applyFilter(CoreMatchers.IS_METHOD)
+                    .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(CustomCodeMethod.class)
+                    .getResult();
+
+            for (ExecutableElement customClassMethod : customCodeMethods) {
+                addCustomCodeMethod(customClassMethod);
+            }
+
+
+            // handle custom code classes set via the annotation attribute
+            for (String customCodeClass : customCodeClasses) {
+
+                // Need to filter out all classes in package which have already been picked up
+                if (packageElement.getQualifiedName().toString().equals(TypeMirrorWrapper.wrap(customCodeClass).getPackage())) {
+                    // is in package so skip
+                    continue;
+                }
+
+                TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(customCodeClass);
+                List<ExecutableElement> ccMethods = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
+                        .applyFilter(CoreMatchers.IS_METHOD)
+                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(CustomCodeMethod.class)
+                        .getResult();
+                for (ExecutableElement customClassMethod : ccMethods) {
+                    addCustomCodeMethod(customClassMethod);
+                }
+
             }
 
 
@@ -130,6 +171,36 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         }
 
+        private void addCustomCodeMethod(ExecutableElement customClassMethod) {
+
+            // validate
+            if (!FluentElementValidator.createFluentElementValidator(customClassMethod)
+                    .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.STATIC)
+                    .applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.PRIVATE)
+                    .applyInvertedValidator(CoreMatchers.HAS_NO_PARAMETERS)
+                    .validateAndIssueMessages()) {
+                return;
+            }
+
+
+            VariableElement firstParameter = customClassMethod.getParameters().get(0);
+            String ccmWrapperSimpleName = firstParameter.asType().toString();
+
+            if (!wrapperSimpleNameToFqn.containsKey(ccmWrapperSimpleName)) {
+                MessagerUtils.error(firstParameter, AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, ccmWrapperSimpleName);
+                return;
+            }
+
+            // Must find first parameter
+            String annotation = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(customClassMethod, CustomCodeMethod.class);
+            String wrapperFqn = annotationFqnToWrapperAnnotationFqnNameMap.get(annotation);
+
+            if (wrapperFqn != null) {
+                annotationWrapperCustomCode.get(wrapperFqn).addCustomCodeMethod(customClassMethod);
+            }
+
+        }
+
         /**
          * Gets the PackageElement used during wrapper generation
          *
@@ -152,12 +223,20 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             return annotationsToBeWrapped;
         }
 
+        public AnnotationWrapperCustomCode getAnnotationWrapperCustomCode(String annotationName) {
+            return annotationWrapperCustomCode.get(annotationFqnToWrapperAnnotationFqnNameMap.get(annotationName));
+        }
+
         public boolean containsAnnotationToBeWrapped(String annotationFqn) {
             return annotationsToBeWrapped.contains(annotationFqn);
         }
 
         public String getWrapperName(String annotationFqn) {
-            return TypeMirrorWrapper.wrap(TypeUtils.TypeRetrieval.getTypeMirror(annotationFqn)).getSimpleName() + "Wrapper";
+            return annotationNameToWrapperSimpleNameMap.get(annotationFqn);
+        }
+
+        public String getFQWrapperName(String annotationFqn) {
+            return wrapperAnnotationFqnToAnnotationFqnNameMap.get(annotationFqn);
         }
 
         public boolean isUsePublicVisibility() {
@@ -209,19 +288,19 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         /**
          * Custom code classes. Used to extend api.
          */
-        final List<CustomCodeClass> customCodeClasses;
+        final AnnotationWrapperCustomCode annotationWrapperCustomCode;
 
         /**
          * The constructor
          *
-         * @param annotationFqn     the fully qualified name of the annotation
-         * @param attributes        The attributes of the annotation
-         * @param customCodeClasses custom code classes to extend the wrappers api
+         * @param annotationFqn               the fully qualified name of the annotation
+         * @param attributes                  The attributes of the annotation
+         * @param annotationWrapperCustomCode custom code methods to extend the wrappers api
          */
-        AnnotationToWrap(String annotationFqn, List<AnnotationAttribute> attributes, List<CustomCodeClass> customCodeClasses) {
+        AnnotationToWrap(String annotationFqn, List<AnnotationAttribute> attributes, AnnotationWrapperCustomCode annotationWrapperCustomCode) {
             this.annotationFqn = annotationFqn;
             this.attributes = attributes;
-            this.customCodeClasses = customCodeClasses != null ? customCodeClasses : Collections.EMPTY_LIST;
+            this.annotationWrapperCustomCode = annotationWrapperCustomCode;
         }
 
         /**
@@ -234,12 +313,12 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         }
 
         /**
-         * Gets all custom code classes
+         * Gets custom code.
          *
          * @return
          */
-        public List<CustomCodeClass> getCustomCodeClasses() {
-            return customCodeClasses;
+        public AnnotationWrapperCustomCode getAnnotationWrapperCustomCode() {
+            return annotationWrapperCustomCode;
         }
 
         /**
@@ -280,11 +359,9 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             }
 
             // now add all imports of wrappers
-            for (CustomCodeClass customCodeClass : this.customCodeClasses) {
-                for (String importString : customCodeClass.getImports()) {
-                    if (importString != null && !importString.startsWith("java.lang")) {
-                        imports.add(importString);
-                    }
+            for (String importString : annotationWrapperCustomCode.getImports()) {
+                if (importString != null && !importString.startsWith("java.lang")) {
+                    imports.add(importString);
                 }
             }
 
@@ -574,51 +651,29 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
     /**
      * Class to weave custom code into annotation wrapper.
      */
-    public static class CustomCodeClass {
+    public static class AnnotationWrapperCustomCode {
 
-        private final TypeElement typeElement;
+        private final String annotationWrapperFQN;
         private final List<CustomCodeClassMethod> customMethods = new ArrayList<>();
 
         /**
          * The constructor.
          *
-         * @param typeElement The TypeElement that contains the custom code
+         * @param annotationWrapperFQN the annotations fqn
          */
-        public CustomCodeClass(TypeElement typeElement) {
+        public AnnotationWrapperCustomCode(String annotationWrapperFQN) {
 
-            this.typeElement = typeElement;
-
-            List<ExecutableElement> methods = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                    .applyFilter(CoreMatchers.IS_METHOD)
-                    .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(CustomCodeMethod.class)
-                    .getResult();
-
-            for (ExecutableElement method : methods) {
-
-                if (!FluentElementValidator.createFluentElementValidator(method)
-                        .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.STATIC)
-                        .applyInvertedValidator(CoreMatchers.HAS_NO_PARAMETERS)
-                        .validateAndIssueMessages()) {
-                    continue;
-                }
-
-                // Check if firstParameter matches Wrapper type - skip for now
-
-                // check if method is visible (Enclosing type and method)
-
-                customMethods.add(new CustomCodeClassMethod(method));
-
-            }
+            this.annotationWrapperFQN = annotationWrapperFQN;
 
         }
 
         /**
-         * Get the TypeElement that contains the custom code methods to bind.
+         * Get the annotation wrapper fqn.
          *
          * @return the Type element
          */
-        public TypeElement getTypeElement() {
-            return typeElement;
+        public String getAnnotationWrapperFqn() {
+            return this.annotationWrapperFQN;
         }
 
         public Set<String> getImports() {
@@ -633,6 +688,12 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         }
 
+        public void addCustomCodeMethod(ExecutableElement customCodeClassMethodExecutableElement) {
+
+
+            this.customMethods.add(new CustomCodeClassMethod(customCodeClassMethodExecutableElement));
+        }
+
         public List<CustomCodeClassMethod> getCustomMethods() {
             return customMethods;
         }
@@ -643,10 +704,14 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
      */
     public static class CustomCodeClassMethod {
 
-        private final ExecutableElement executableElement;
+        private final TypeElement customCodeClassTypeElement;
+        private final ExecutableElement customCodeMethodExecutableElement;
 
-        public CustomCodeClassMethod(ExecutableElement executableElement) {
-            this.executableElement = executableElement;
+        public CustomCodeClassMethod(ExecutableElement customCodeMethodExecutableElement) {
+            this.customCodeClassTypeElement = ElementUtils.AccessEnclosingElements.<TypeElement>getFirstEnclosingElementOfKind(customCodeMethodExecutableElement, ElementKind.CLASS);
+            this.customCodeMethodExecutableElement = customCodeMethodExecutableElement;
+
+
         }
 
         public String getMethodDeclarationString() {
@@ -654,12 +719,12 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             StringBuilder result = new StringBuilder();
 
             // First add the type parameters
-            if (this.executableElement.getTypeParameters().size() > 0) {
+            if (this.customCodeMethodExecutableElement.getTypeParameters().size() > 0) {
                 result.append("<");
 
                 // TODO: has to be changed with Java 8
                 boolean first = true;
-                for (TypeParameterElement typeParameterElement : this.executableElement.getTypeParameters()) {
+                for (TypeParameterElement typeParameterElement : this.customCodeMethodExecutableElement.getTypeParameters()) {
 
                     if (first) {
                         first = false;
@@ -674,16 +739,16 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             }
 
             // Now add return type
-            result.append(TypeMirrorWrapper.wrap(this.executableElement.getReturnType()).getTypeDeclaration());
+            result.append(TypeMirrorWrapper.wrap(this.customCodeMethodExecutableElement.getReturnType()).getTypeDeclaration());
             result.append(" ");
 
             // add method name
-            result.append(executableElement.getSimpleName());
+            result.append(customCodeMethodExecutableElement.getSimpleName());
 
             result.append("(");
 
 
-            List<? extends VariableElement> variableElementSubList = executableElement.getParameters().subList(1, executableElement.getParameters().size());
+            List<? extends VariableElement> variableElementSubList = customCodeMethodExecutableElement.getParameters().subList(1, customCodeMethodExecutableElement.getParameters().size());
             boolean first = true;
             for (VariableElement variableElement : variableElementSubList) {
 
@@ -712,22 +777,22 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         public String getForwardCall() {
             StringBuilder result = new StringBuilder();
 
-            if (this.executableElement.getReturnType().getKind() != TypeKind.VOID) {
+            if (this.customCodeMethodExecutableElement.getReturnType().getKind() != TypeKind.VOID) {
                 result.append("return ");
             }
 
             // First add TypeName
-            result.append(this.executableElement.getEnclosingElement().getSimpleName().toString());
+            result.append(this.customCodeMethodExecutableElement.getEnclosingElement().getSimpleName().toString());
             result.append(".");
 
             // add method name
-            result.append(executableElement.getSimpleName());
+            result.append(customCodeMethodExecutableElement.getSimpleName());
 
             result.append("(");
 
-            if (executableElement.getParameters().size() > 1) {
+            if (customCodeMethodExecutableElement.getParameters().size() > 1) {
 
-                List<? extends VariableElement> variableElementSubList = executableElement.getParameters().subList(1, executableElement.getParameters().size());
+                List<? extends VariableElement> variableElementSubList = customCodeMethodExecutableElement.getParameters().subList(1, customCodeMethodExecutableElement.getParameters().size());
 
                 result.append("this");
 
@@ -749,12 +814,15 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         public Set<String> getImports() {
             Set<String> imports = new HashSet<>();
 
+            // Must add the custom code class
+            imports.add(customCodeClassTypeElement.getQualifiedName().toString());
+
             // Must add return type
-            imports.addAll(TypeMirrorWrapper.getImports(this.executableElement.getReturnType()));
+            imports.addAll(TypeMirrorWrapper.getImports(this.customCodeMethodExecutableElement.getReturnType()));
 
             // Must add parameter types
             boolean firstParameter = true;
-            for (VariableElement parameter : executableElement.getParameters()) {
+            for (VariableElement parameter : customCodeMethodExecutableElement.getParameters()) {
                 if (firstParameter) {
                     firstParameter = false;
                     continue;
@@ -796,51 +864,9 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         }
 
-        AnnotationToWrap annotationToWrap = new AnnotationToWrap(annotationToCreateWrapperFor, annotationAttributes, state.customCodeClassMappings.get(annotationToCreateWrapperFor));
-
-        // validate
-        validate(state, annotationToWrap);
+        AnnotationToWrap annotationToWrap = new AnnotationToWrap(annotationToCreateWrapperFor, annotationAttributes, state.getAnnotationWrapperCustomCode(annotationToCreateWrapperFor));
 
         createClass(state, annotationToWrap);
-
-    }
-
-    public boolean validate(State state, AnnotationToWrap annotationToWrap) {
-
-        boolean returnValue = true;
-
-        for (CustomCodeClass customCodeClass : annotationToWrap.getCustomCodeClasses()) {
-
-            // Check if Wrapper and Custom Code are in same package
-            returnValue = returnValue & FluentElementValidator.createFluentElementValidator(customCodeClass.getTypeElement())
-                    .applyValidator(CoreMatchers.BY_PACKAGE_NAME)
-                    .hasOneOf(state.getPackageName())
-                    .validateAndIssueMessages();
-
-            for (CustomCodeClassMethod customCodeClassMethod : customCodeClass.getCustomMethods()) {
-
-                // check if method is visible (Enclosing type and method)
-                returnValue = returnValue & FluentElementValidator.createFluentElementValidator(customCodeClassMethod.executableElement)
-                        .applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.PRIVATE)
-                        .validateAndIssueMessages();
-
-                // Check if firstParameter matches Wrapper type
-                if (customCodeClassMethod.executableElement.getParameters().size() == 0) {
-                    // Write error message
-                    returnValue = false;
-                    continue;
-                }
-
-                if (!(annotationToWrap.getSimpleName() + "Wrapper").equals(customCodeClassMethod.executableElement.getParameters().get(0).asType().toString())) {
-                    MessagerUtils.error(customCodeClassMethod.executableElement.getParameters().get(0), AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, (annotationToWrap.getSimpleName() + "Wrapper"));
-                    returnValue = false;
-                }
-
-
-            }
-        }
-
-        return returnValue;
 
     }
 
