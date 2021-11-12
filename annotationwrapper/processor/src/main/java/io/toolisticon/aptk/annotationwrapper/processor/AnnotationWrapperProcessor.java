@@ -243,6 +243,10 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             return usePublicVisibility;
         }
 
+        public String getVisibilityModifier() {
+            return usePublicVisibility ? "public " : "";
+        }
+
     }
 
     @Override
@@ -710,8 +714,6 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         public CustomCodeClassMethod(ExecutableElement customCodeMethodExecutableElement) {
             this.customCodeClassTypeElement = ElementUtils.AccessEnclosingElements.<TypeElement>getFirstEnclosingElementOfKind(customCodeMethodExecutableElement, ElementKind.CLASS);
             this.customCodeMethodExecutableElement = customCodeMethodExecutableElement;
-
-
         }
 
         public String getMethodDeclarationString() {
@@ -789,12 +791,10 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             result.append(customCodeMethodExecutableElement.getSimpleName());
 
             result.append("(");
+            result.append("this");
 
             if (customCodeMethodExecutableElement.getParameters().size() > 1) {
-
                 List<? extends VariableElement> variableElementSubList = customCodeMethodExecutableElement.getParameters().subList(1, customCodeMethodExecutableElement.getParameters().size());
-
-                result.append("this");
 
                 // TODO: has to be changed with Java 8
                 for (VariableElement parameter : variableElementSubList) {

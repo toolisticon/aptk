@@ -114,6 +114,17 @@ public final class TypeUtils {
         }
 
         /**
+         * Checks whether passed TypeMirror has ERROR kind.
+         * This can be the case for currently not existing generated types.
+         *
+         * @param typeMirror the {@link TypeMirror} to check
+         * @return true if passed typeMirror represents an ERROR type, otherwise false
+         */
+        public static boolean isError(TypeMirror typeMirror) {
+            return isOfTypeKind(typeMirror, TypeKind.ERROR);
+        }
+
+        /**
          * Checks whether passed {@link TypeMirror} is of passed {@link TypeKind}.
          *
          * @param typeMirror the TypeMirror to check

@@ -196,6 +196,25 @@ public class TypeMirrorWrapper {
     }
 
     /**
+     * Checks if wrapped TypeMirror is of kind ERROR.
+     *
+     * @return true if wrapped TypeMirror is of kind ERROR, otherwise false
+     */
+    public boolean isErrorType() {
+        return isErrorType(typeMirror);
+    }
+
+    /**
+     * Checks if wrapped TypeMirror is of kind ERROR.
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return true if wrapped TypeMirror is of kind ERROR, otherwise false
+     */
+    public static boolean isErrorType(TypeMirror typeMirror) {
+        return TypeUtils.CheckTypeKind.isError(typeMirror);
+    }
+
+    /**
      * Gets wrapped TypeMirror as a DeclaredType
      *
      * @param typeMirror the TypeMirror to check
@@ -421,7 +440,7 @@ public class TypeMirrorWrapper {
             }
         }
 
-        return "";
+        return typeMirror.toString();
     }
 
     /**
