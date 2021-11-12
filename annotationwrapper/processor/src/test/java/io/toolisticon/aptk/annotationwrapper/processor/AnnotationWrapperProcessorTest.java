@@ -114,6 +114,27 @@ public class AnnotationWrapperProcessorTest {
     }
 
     @Test
+    public void test_wrapperCreation_withCustomCode_referencingGeneratedClass() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(AnnotationWrapperProcessor.class)
+                .addSources("testcase/common/TestAnnotation.java",
+                        "testcase/common/EmbeddedAnnotation.java",
+                        "testcase/common/TestEnum.java",
+                        "testcase/withCustomCodeReferencingGeneratedType/TestAnnotation2.java",
+                        "testcase/withCustomCodeReferencingGeneratedType/package-info.java",
+                        "testcase/withCustomCodeReferencingGeneratedType/CustomCodeClass.java",
+                        "testcase/withCustomCodeReferencingGeneratedType/otherTest/package-info.java",
+                        "testcase/withCustomCodeReferencingGeneratedType/otherTest/TestAnnotation3.java"
+
+                )
+                .expectThatJavaFileObjectExists(StandardLocation.SOURCE_OUTPUT, "io.toolisticon.aptk.wrapper.test.TestAnnotationWrapper", JavaFileObject.Kind.SOURCE)
+                .expectThatJavaFileObjectExists(StandardLocation.SOURCE_OUTPUT, "io.toolisticon.aptk.wrapper.test.TestAnnotation2Wrapper", JavaFileObject.Kind.SOURCE)
+                .expectThatJavaFileObjectExists(StandardLocation.SOURCE_OUTPUT, "io.toolisticon.aptk.wrapper.othertest.TestAnnotation3Wrapper", JavaFileObject.Kind.SOURCE)
+                .compilationShouldSucceed()
+                .executeTest();
+    }
+
+    @Test
     public void test_() {
         CompileTestBuilder.unitTest().<AnnotationWrapperProcessor, TypeElement>defineTestWithPassedInElement(AnnotationWrapperProcessor.class, UnitTestAnnotation.class, new APTKUnitTestProcessorForTestingAnnotationProcessors<AnnotationWrapperProcessor, TypeElement>() {
             @Override

@@ -23,7 +23,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
 /**
  * Wrapper class to read attribute values from Annotation ${atw.simpleName}.
  */
-!{if state.usePublicVisibility}public !{/if}class ${atw.simpleName}Wrapper {
+${state.visibilityModifier}class ${atw.simpleName}Wrapper {
 
     private final Element annotatedElement;
     private final AnnotationMirror annotationMirror;
@@ -52,14 +52,14 @@ import io.toolisticon.aptk.tools.TypeUtils;
     /**
      * Gets the element on which the wrapped annotation is used.
      */
-    public Element _annotatedElement() {
+    ${state.visibilityModifier}Element _annotatedElement() {
         return this.annotatedElement;
     }
 
     /**
      * Gets the wrapped AnnotationMirror.
      */
-     public AnnotationMirror _annotationMirror() {
+     ${state.visibilityModifier}AnnotationMirror _annotationMirror() {
         return this.annotationMirror;
      }
 
@@ -69,7 +69,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
-    public ${attribute.attributeType} ${attribute.name}() {
+    ${state.visibilityModifier}${attribute.attributeType} ${attribute.name}() {
         return (${attribute.attributeType})AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue();
     }
 !{/if}!{if attribute.isEnum}
@@ -77,7 +77,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
-    public ${attribute.attributeType} ${attribute.name}() {
+    ${state.visibilityModifier}${attribute.attributeType} ${attribute.name}() {
         VariableElement enumValue = ((VariableElement)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue());
         return ${attribute.attributeType}.valueOf(enumValue.getSimpleName().toString());
     }
@@ -86,7 +86,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
      */
-    public TypeMirror ${attribute.name}AsTypeMirror() {
+    ${state.visibilityModifier}TypeMirror ${attribute.name}AsTypeMirror() {
         return (TypeMirror)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue();
     }
 
@@ -94,7 +94,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
      */
-    public TypeMirrorWrapper ${attribute.name}AsTypeMirrorWrapper() {
+    ${state.visibilityModifier}TypeMirrorWrapper ${attribute.name}AsTypeMirrorWrapper() {
         return TypeMirrorWrapper.wrap((TypeMirror)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue());
     }
 
@@ -102,7 +102,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a fqn
      */
-    public String ${attribute.name}AsFqn() {
+    ${state.visibilityModifier}String ${attribute.name}AsFqn() {
         return TypeUtils.TypeConversion.convertToFqn(${attribute.name}AsTypeMirror());
     }
 !{/if}!{if attribute.isAnnotationType}
@@ -110,7 +110,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
-    public AnnotationMirror ${attribute.name}AsAnnotationMirror() {
+    ${state.visibilityModifier}AnnotationMirror ${attribute.name}AsAnnotationMirror() {
         return (AnnotationMirror)(AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue());
     }
 
@@ -119,15 +119,15 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
-    public ${attribute.targetWrapperAnnotationName} ${attribute.name}() {
+    ${state.visibilityModifier}${attribute.targetWrapperAnnotationName} ${attribute.name}() {
         return ${attribute.targetWrapperAnnotationName}.wrap(this.annotatedElement, (AnnotationMirror)(AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue()));
     }
 !{/if}!{/if}!{/if}!{if attribute.isArray}!{if attribute.isPrimitiveArrayType}
-   /**
+    /**
     * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
     * @return the attribute value
     */
-   public ${attribute.wrappedTypeMirror.getTypeDeclaration} ${attribute.name}() {
+    ${state.visibilityModifier}${attribute.wrappedTypeMirror.getTypeDeclaration} ${attribute.name}() {
 
        List<AnnotationValue> values = (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue();
 
@@ -138,27 +138,27 @@ import io.toolisticon.aptk.tools.TypeUtils;
        }
 
        return result;
-   }
+    }
 !{/if}!{if attribute.isStringArrayType}
-         /**
-          * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
-          * @return the attribute value
-          */
-         public String[] ${attribute.name}() {
+     /**
+      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
+      * @return the attribute value
+      */
+     ${state.visibilityModifier}String[] ${attribute.name}() {
 
-             List<String> result = new ArrayList<>();
-             for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
-                  result.add((String)value.getValue());
-             }
-
-             return result.toArray(new String[result.size()]);
+         List<String> result = new ArrayList<>();
+         for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
+              result.add((String)value.getValue());
          }
+
+         return result.toArray(new String[result.size()]);
+     }
 !{/if}!{if attribute.isEnum}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
-    public ${attribute.wrappedTypeMirror.getTypeDeclaration} ${attribute.name}() {
+    ${state.visibilityModifier}${attribute.wrappedTypeMirror.getTypeDeclaration} ${attribute.name}() {
 
         List<${attribute.getComponentAttributeType}> result = new ArrayList<>();
         for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
@@ -173,7 +173,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
      */
-    public TypeMirror[] ${attribute.name}AsTypeMirror() {
+    ${state.visibilityModifier}TypeMirror[] ${attribute.name}AsTypeMirror() {
 
         List<TypeMirror> result = new ArrayList<>();
         for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
@@ -187,7 +187,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
      */
-    public TypeMirrorWrapper[] ${attribute.name}AsTypeMirrorWrapper() {
+    ${state.visibilityModifier}TypeMirrorWrapper[] ${attribute.name}AsTypeMirrorWrapper() {
 
         List<TypeMirrorWrapper> result = new ArrayList<>();
         for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
@@ -201,7 +201,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a fqn
      */
-    public String[] ${attribute.name}AsFqn() {
+    ${state.visibilityModifier}String[] ${attribute.name}AsFqn() {
 
         List<String> result = new ArrayList<>();
         for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
@@ -215,7 +215,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
-    public AnnotationMirror[] ${attribute.name}AsAnnotationMirrorArray() {
+    ${state.visibilityModifier}AnnotationMirror[] ${attribute.name}AsAnnotationMirrorArray() {
         List<AnnotationMirror> result = new ArrayList<>();
         for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
             result.add( ((AnnotationMirror)value.getValue()));
@@ -229,7 +229,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
-    public ${attribute.targetWrapperAnnotationName}[] ${attribute.name}() {
+    ${state.visibilityModifier}${attribute.targetWrapperAnnotationName}[] ${attribute.name}() {
         List<${attribute.targetWrapperAnnotationName}> result = new ArrayList<>();
         for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
             result.add( ${attribute.targetWrapperAnnotationName}.wrap(this.annotatedElement, (AnnotationMirror)value.getValue()));
@@ -245,12 +245,12 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * Allows to check if attribute was explicitly set or if default value is used.
      * @return true, if default value is used, otherwise false
      */
-    public boolean ${attribute.name}IsDefaultValue(){
+    ${state.visibilityModifier}boolean ${attribute.name}IsDefaultValue(){
         return AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror,"${attribute.name}") == null;
     }
 !{/if}
 !{/for}!{for customCodeMethod : atw.annotationWrapperCustomCode.customMethods}
-    public ${customCodeMethod.methodDeclarationString}{
+    ${state.visibilityModifier}${customCodeMethod.methodDeclarationString}{
         ${customCodeMethod.forwardCall};
     }
 
@@ -261,7 +261,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * @param element The element to check for wrapped annotation type
      * @return true, if passed element is annotated with ${atw.simpleName} annotation, otherwise false
      */
-    public static boolean isAnnotated(Element element) {
+    ${state.visibilityModifier}static boolean isAnnotated(Element element) {
         return element != null && element.getAnnotation(${atw.simpleName}.class) != null;
     }
 
@@ -270,7 +270,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
       * @param element The element to read the annotations from
       * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
       */
-    public static ${atw.simpleName}Wrapper wrap(Element element) {
+    ${state.visibilityModifier}static ${atw.simpleName}Wrapper wrap(Element element) {
         return isAnnotated(element) ? new ${atw.simpleName}Wrapper(element) : null;
     }
 
@@ -280,7 +280,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * @param annotationMirror The element annotated with the annotation to wrap
      * @return The wrapper instance
      */
-    public static ${atw.simpleName}Wrapper wrap(AnnotationMirror annotationMirror) {
+    ${state.visibilityModifier}static ${atw.simpleName}Wrapper wrap(AnnotationMirror annotationMirror) {
         return new ${atw.simpleName}Wrapper(null, annotationMirror);
     }
 
@@ -291,7 +291,7 @@ import io.toolisticon.aptk.tools.TypeUtils;
      * @param annotationMirror The AnnotationMirror to wrap
      * @return The wrapper instance
      */
-    public static ${atw.simpleName}Wrapper wrap(Element element, AnnotationMirror annotationMirror) {
+    ${state.visibilityModifier}static ${atw.simpleName}Wrapper wrap(Element element, AnnotationMirror annotationMirror) {
         return new ${atw.simpleName}Wrapper(element, annotationMirror);
     }
 
