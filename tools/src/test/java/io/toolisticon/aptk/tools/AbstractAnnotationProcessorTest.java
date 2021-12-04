@@ -1,10 +1,7 @@
 package io.toolisticon.aptk.tools;
 
 import io.toolisticon.aptk.common.ToolingProvider;
-import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
-import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.UnitTest;
@@ -121,15 +118,15 @@ public class AbstractAnnotationProcessorTest {
 
 
                         List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
                                 .getResult();
                         MatcherAssert.assertThat(result, Matchers.hasSize(8));
 
 
                         result = FluentElementFilter.createFluentElementFilter(
                                 element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
-                                .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
                                 .getResult();
                         MatcherAssert.assertThat(result, Matchers.hasSize(1));
                         MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("publicStaticField"));

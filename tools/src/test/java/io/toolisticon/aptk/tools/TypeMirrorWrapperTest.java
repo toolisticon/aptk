@@ -1,5 +1,6 @@
 package io.toolisticon.aptk.tools;
 
+import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
 import io.toolisticon.cute.UnitTest;
@@ -35,6 +36,7 @@ public class TypeMirrorWrapperTest {
     }
     */
 
+
     @Test(expected = IllegalArgumentException.class)
     public void test_nullValuedWrapper_TypeMirror() {
         TypeMirrorWrapper.wrap((TypeMirror) null);
@@ -43,6 +45,13 @@ public class TypeMirrorWrapperTest {
     @Test(expected = IllegalArgumentException.class)
     public void test_nullValuedWrapper_fqn() {
         TypeMirrorWrapper.wrap((String) null);
+    }
+
+    @Test
+    public void test_isVoid() {
+        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.VOID)).isVoidType());
+        MatcherAssert.assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isVoidType());
+        MatcherAssert.assertThat("Expected false for null", !TypeMirrorWrapper.isVoidType(mockTypeCheck(null)));
     }
 
     @Test
@@ -79,6 +88,118 @@ public class TypeMirrorWrapperTest {
         // expect null for non matching type kind
         MatcherAssert.assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.WILDCARD)).getDeclaredType(), Matchers.nullValue());
 
+    }
+
+    public static class CollectionCheck_List {
+        @PassIn
+        List<String> collectionField;
+    }
+
+    public static class CollectionCheck_Set {
+        @PassIn
+        Set<String> collectionField;
+    }
+
+    public static class CollectionCheck_NoCollection {
+        @PassIn
+        Map<String, String> noCollectionField;
+    }
+
+    @Test
+    public void test_isCollection_List() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_List.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+                try {
+                    MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection());
+                } finally {
+                    ToolingProvider.clearTooling();
+                }
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_isCollection_Set() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_Set.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+                try {
+                    MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection());
+                } finally {
+                    ToolingProvider.clearTooling();
+                }
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_isCollection_noCollection() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_NoCollection.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+                try {
+                    MatcherAssert.assertThat("Expected false for no coellection type", !TypeMirrorWrapper.wrap(element.asType()).isCollection());
+                } finally {
+                    ToolingProvider.clearTooling();
+                }
+            }
+        }).executeTest();
+    }
+
+
+    @Test
+    public void test_getComponentType_forList() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_Set.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+                try {
+                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
+                } finally {
+                    ToolingProvider.clearTooling();
+                }
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_getComponentType_forSet() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_Set.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+                try {
+                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
+                } finally {
+                    ToolingProvider.clearTooling();
+                }
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_getComponentType_nonCollection() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_NoCollection.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+                try {
+                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType(), Matchers.nullValue());
+                } finally {
+                    ToolingProvider.clearTooling();
+                }
+            }
+        }).executeTest();
     }
 
     @Test

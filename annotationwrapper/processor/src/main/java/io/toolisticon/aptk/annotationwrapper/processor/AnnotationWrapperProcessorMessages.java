@@ -7,7 +7,7 @@ public enum AnnotationWrapperProcessorMessages implements ValidationMessage {
 
     ERROR_CUSTOMCODEMETHOD_REFERENCES_NO_WRAPPER("ANNOTATION_WRAPPER_ERROR_001", CustomCodeMethod.class.getSimpleName().toString() + " annotated methods first parameter must be a known annotation wrapper but is ${0}"),
     ERROR_CANT_CREATE_WRAPPER("ANNOTATION_WRAPPER_ERROR_001", "Can't create wrapper class for Annotation ${0}"),
-    ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE("ANNOTATION_WRAPPER_ERROR_001", "The first parameter of a custom code method for an annotation wrapper must be of the annotation wrapper type ${0}");
+    ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE("ANNOTATION_WRAPPER_ERROR_001", "The first parameter of a custom code method for an annotation wrapper must be of the annotation wrapper type '${0}' but has is '${1}'");
 
     /**
      * the message code.

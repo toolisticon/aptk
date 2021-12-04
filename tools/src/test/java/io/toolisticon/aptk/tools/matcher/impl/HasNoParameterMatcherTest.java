@@ -1,6 +1,6 @@
 package io.toolisticon.aptk.tools.matcher.impl;
 
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class HasNoParameterMatcherTest {
     @Test
     public void test_check_withNullValue() {
 
-        MatcherAssert.assertThat(CoreMatchers.HAS_NO_PARAMETERS.getMatcher().check(null), Matchers.is(false));
+        MatcherAssert.assertThat(AptkCoreMatchers.HAS_NO_PARAMETERS.getMatcher().check(null), Matchers.is(false));
 
     }
 
@@ -32,7 +32,7 @@ public class HasNoParameterMatcherTest {
         TypeMirror typeMirror = Mockito.mock(TypeMirror.class);
         Mockito.when(element.getParameters()).thenReturn(Collections.EMPTY_LIST);
 
-        MatcherAssert.assertThat(CoreMatchers.HAS_NO_PARAMETERS.getMatcher().check(element), Matchers.is(true));
+        MatcherAssert.assertThat(AptkCoreMatchers.HAS_NO_PARAMETERS.getMatcher().check(element), Matchers.is(true));
 
     }
 
@@ -45,7 +45,7 @@ public class HasNoParameterMatcherTest {
         list.add(Mockito.mock(VariableElement.class));
         Mockito.when(element.getParameters()).thenReturn(list);
 
-        MatcherAssert.assertThat(CoreMatchers.HAS_NO_PARAMETERS.getMatcher().check(element), Matchers.is(false));
+        MatcherAssert.assertThat(AptkCoreMatchers.HAS_NO_PARAMETERS.getMatcher().check(element), Matchers.is(false));
 
     }
 

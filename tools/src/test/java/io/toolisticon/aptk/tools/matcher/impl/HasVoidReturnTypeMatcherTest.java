@@ -1,6 +1,6 @@
 package io.toolisticon.aptk.tools.matcher.impl;
 
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class HasVoidReturnTypeMatcherTest {
     @Test
     public void test_check_withNullValue() {
 
-        MatcherAssert.assertThat(CoreMatchers.HAS_VOID_RETURN_TYPE.getMatcher().check(null), Matchers.is(false));
+        MatcherAssert.assertThat(AptkCoreMatchers.HAS_VOID_RETURN_TYPE.getMatcher().check(null), Matchers.is(false));
 
     }
 
@@ -30,7 +30,7 @@ public class HasVoidReturnTypeMatcherTest {
         Mockito.when(element.getReturnType()).thenReturn(typeMirror);
         Mockito.when(typeMirror.getKind()).thenReturn(TypeKind.VOID);
 
-        MatcherAssert.assertThat(CoreMatchers.HAS_VOID_RETURN_TYPE.getMatcher().check(element), Matchers.is(true));
+        MatcherAssert.assertThat(AptkCoreMatchers.HAS_VOID_RETURN_TYPE.getMatcher().check(element), Matchers.is(true));
 
     }
 
@@ -42,7 +42,7 @@ public class HasVoidReturnTypeMatcherTest {
         Mockito.when(element.getReturnType()).thenReturn(typeMirror);
         Mockito.when(typeMirror.getKind()).thenReturn(TypeKind.ARRAY);
 
-        MatcherAssert.assertThat(CoreMatchers.HAS_VOID_RETURN_TYPE.getMatcher().check(element), Matchers.is(false));
+        MatcherAssert.assertThat(AptkCoreMatchers.HAS_VOID_RETURN_TYPE.getMatcher().check(element), Matchers.is(false));
 
     }
 

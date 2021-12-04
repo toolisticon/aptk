@@ -1,6 +1,6 @@
 package io.toolisticon.aptk.tools.matcher.impl;
 
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class HasNoThrownTypesMatcherTest {
     @Test
     public void test_check_withNullValue() {
 
-        MatcherAssert.assertThat(CoreMatchers.HAS_NO_THROWN_TYPES.getMatcher().check(null), Matchers.is(false));
+        MatcherAssert.assertThat(AptkCoreMatchers.HAS_NO_THROWN_TYPES.getMatcher().check(null), Matchers.is(false));
 
     }
 
@@ -31,7 +31,7 @@ public class HasNoThrownTypesMatcherTest {
         TypeMirror typeMirror = Mockito.mock(TypeMirror.class);
         Mockito.when(element.getThrownTypes()).thenReturn(Collections.EMPTY_LIST);
 
-        MatcherAssert.assertThat(CoreMatchers.HAS_NO_THROWN_TYPES.getMatcher().check(element), Matchers.is(true));
+        MatcherAssert.assertThat(AptkCoreMatchers.HAS_NO_THROWN_TYPES.getMatcher().check(element), Matchers.is(true));
 
     }
 
@@ -44,7 +44,7 @@ public class HasNoThrownTypesMatcherTest {
         list.add(Mockito.mock(TypeMirror.class));
         Mockito.when(element.getThrownTypes()).thenReturn(list);
 
-        MatcherAssert.assertThat(CoreMatchers.HAS_NO_THROWN_TYPES.getMatcher().check(element), Matchers.is(false));
+        MatcherAssert.assertThat(AptkCoreMatchers.HAS_NO_THROWN_TYPES.getMatcher().check(element), Matchers.is(false));
 
     }
 

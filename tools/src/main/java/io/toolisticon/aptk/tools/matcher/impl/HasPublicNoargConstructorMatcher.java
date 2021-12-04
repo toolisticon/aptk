@@ -2,7 +2,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.matcher.ImplicitMatcher;
 
@@ -32,7 +32,7 @@ public class HasPublicNoargConstructorMatcher implements ImplicitMatcher<Element
 
         // Must have just the default noarg constructor or an explicit
         FluentElementFilter<ExecutableElement> fluentElementFilter = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_CONSTRUCTOR);
+                .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR);
 
 
         // Check for NoArgConstructor
@@ -44,8 +44,8 @@ public class HasPublicNoargConstructorMatcher implements ImplicitMatcher<Element
         return (fluentElementFilter.isEmpty() && !hasLombokAllArgsConstructor && !hasLombokRequiredArgsConstructor)
                 || hasLombokNoArgConstructor
                 || fluentElementFilter
-                .applyFilter(CoreMatchers.HAS_NO_PARAMETERS)
-                .applyFilter(CoreMatchers.BY_MODIFIER).filterByOneOf(Modifier.PUBLIC)
+                .applyFilter(AptkCoreMatchers.HAS_NO_PARAMETERS)
+                .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByOneOf(Modifier.PUBLIC)
                 .hasSingleElement();
 
     }

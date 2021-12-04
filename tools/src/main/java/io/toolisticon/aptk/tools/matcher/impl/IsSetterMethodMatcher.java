@@ -1,6 +1,6 @@
 package io.toolisticon.aptk.tools.matcher.impl;
 
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.aptk.tools.matcher.ImplicitMatcher;
 
@@ -17,11 +17,11 @@ public class IsSetterMethodMatcher implements ImplicitMatcher<ExecutableElement>
         }
 
         return FluentElementValidator.createFluentElementValidator(element)
-                .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC)
-                .applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.STATIC, Modifier.ABSTRACT)
-                .applyValidator(CoreMatchers.BY_NUMBER_OF_PARAMETERS).hasOneOf(1)
-                .applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                .applyValidator(CoreMatchers.BY_REGEX_NAME).hasOneOf("set.*")
+                .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC)
+                .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.STATIC, Modifier.ABSTRACT)
+                .applyValidator(AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS).hasOneOf(1)
+                .applyValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
+                .applyValidator(AptkCoreMatchers.BY_REGEX_NAME).hasOneOf("set.*")
                 .justValidate();
 
     }

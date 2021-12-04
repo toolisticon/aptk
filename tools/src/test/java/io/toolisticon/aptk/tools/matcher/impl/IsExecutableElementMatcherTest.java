@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -42,7 +42,7 @@ public class IsExecutableElementMatcherTest {
                 MatcherAssert.assertThat("Precondition: should have found one method", result.size() == 1);
                 MatcherAssert.assertThat("Precondition: found method has to be of type ExecutableElement", result.get(0) instanceof ExecutableElement);
 
-                MatcherAssert.assertThat("Should return true for method : ", CoreMatchers.IS_EXECUTABLE_ELEMENT.getMatcher().check(result.get(0)));
+                MatcherAssert.assertThat("Should return true for method : ", AptkCoreMatchers.IS_EXECUTABLE_ELEMENT.getMatcher().check(result.get(0)));
 
 
             }
@@ -58,7 +58,7 @@ public class IsExecutableElementMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for non ExecutableElement : ", !CoreMatchers.IS_EXECUTABLE_ELEMENT.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return false for non ExecutableElement : ", !AptkCoreMatchers.IS_EXECUTABLE_ELEMENT.getMatcher().check(element));
 
             }
         })
@@ -73,7 +73,7 @@ public class IsExecutableElementMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_EXECUTABLE_ELEMENT.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_EXECUTABLE_ELEMENT.getMatcher().check(null));
 
             }
         })

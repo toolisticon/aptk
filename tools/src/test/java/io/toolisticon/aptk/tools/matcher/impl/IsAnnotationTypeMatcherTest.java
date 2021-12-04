@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -39,7 +39,7 @@ public class IsAnnotationTypeMatcherTest {
                 TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(Override.class);
 
 
-                MatcherAssert.assertThat("Should return true for annotation type : ", CoreMatchers.IS_ANNOTATION_TYPE.getMatcher().check(typeElement));
+                MatcherAssert.assertThat("Should return true for annotation type : ", AptkCoreMatchers.IS_ANNOTATION_TYPE.getMatcher().check(typeElement));
 
             }
         })
@@ -54,7 +54,7 @@ public class IsAnnotationTypeMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for non annotation (class) : ", !CoreMatchers.IS_ANNOTATION_TYPE.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return false for non annotation (class) : ", !AptkCoreMatchers.IS_ANNOTATION_TYPE.getMatcher().check(element));
 
 
             }
@@ -70,7 +70,7 @@ public class IsAnnotationTypeMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_ANNOTATION_TYPE.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_ANNOTATION_TYPE.getMatcher().check(null));
 
             }
         })

@@ -2,7 +2,7 @@ package io.toolisticon.aptk.tools.command.impl;
 
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.BeanUtils;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
@@ -37,8 +37,8 @@ public class GetAttributesCommandTest {
                     protected void testCase(TypeElement element) {
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestDataAnnotatedClass")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestDataAnnotatedClass")
                                 .getResult().get(0);
                         BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
 
@@ -63,8 +63,8 @@ public class GetAttributesCommandTest {
 
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustGetterAnnotatedClass")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustGetterAnnotatedClass")
                                 .getResult().get(0);
 
                         BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
@@ -88,8 +88,8 @@ public class GetAttributesCommandTest {
                     protected void testCase(TypeElement element) {
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustSetterAnnotatedClass")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustSetterAnnotatedClass")
                                 .getResult().get(0);
 
 
@@ -116,8 +116,8 @@ public class GetAttributesCommandTest {
 
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestGetterAndSetterAnnotatedClass")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestGetterAndSetterAnnotatedClass")
                                 .getResult().get(0);
 
 
@@ -144,8 +144,8 @@ public class GetAttributesCommandTest {
                     protected void testCase(TypeElement element) {
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestMixedGetterAndSetterAnnotatedClassAndField1")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestMixedGetterAndSetterAnnotatedClassAndField1")
                                 .getResult().get(0);
 
                         BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
@@ -171,8 +171,8 @@ public class GetAttributesCommandTest {
                     protected void testCase(TypeElement element) {
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestMixedGetterAndSetterAnnotatedClassAndField2")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestMixedGetterAndSetterAnnotatedClassAndField2")
                                 .getResult().get(0);
 
                         BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
@@ -198,8 +198,8 @@ public class GetAttributesCommandTest {
                     protected void testCase(TypeElement element) {
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustGetterAnnotatedField")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustGetterAnnotatedField")
                                 .getResult().get(0);
 
                         BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
@@ -224,8 +224,8 @@ public class GetAttributesCommandTest {
 
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustSetterAnnotatedField")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustSetterAnnotatedField")
                                 .getResult().get(0);
 
                         BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
@@ -249,8 +249,8 @@ public class GetAttributesCommandTest {
                     protected void testCase(TypeElement element) {
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestGetterAndSetterAnnotatedField")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestGetterAndSetterAnnotatedField")
                                 .getResult().get(0);
 
                         BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
@@ -275,8 +275,8 @@ public class GetAttributesCommandTest {
                     protected void testCase(TypeElement element) {
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestFieldGetterAndSetterMethods")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestFieldGetterAndSetterMethods")
                                 .getResult().get(0);
 
                         BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);
@@ -301,8 +301,8 @@ public class GetAttributesCommandTest {
                     protected void testCase(TypeElement element) {
 
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestFieldGetterAndSetterMethodsWithInvalidSetterParameterType")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestFieldGetterAndSetterMethodsWithInvalidSetterParameterType")
                                 .getResult().get(0);
 
                         BeanUtils.AttributeResult[] attributeResult = GetAttributesCommand.INSTANCE.execute(typeElement);

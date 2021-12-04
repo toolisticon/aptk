@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
@@ -39,7 +39,7 @@ public class IsTypeEqualFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return true for matching assignable to case : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(String.class), String.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return true for matching assignable to case : ", AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(String.class), String.class.getCanonicalName()));
 
             }
         })
@@ -58,8 +58,8 @@ public class IsTypeEqualFqnMatcherTest {
 
     public static VariableElement getField(TypeElement typeElement, String fieldName) {
         return FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_FIELD)
-                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(fieldName)
+                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(fieldName)
                 .getResult().get(0);
     }
 
@@ -72,10 +72,10 @@ public class IsTypeEqualFqnMatcherTest {
                 TypeElement testcaseElement = TypeUtils.TypeRetrieval.getTypeElement(MatcherTestCases.class);
 
 
-                MatcherAssert.assertThat("Should return true for matching assignable to case (primitive) : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intType"), int.class.getCanonicalName()));
-                MatcherAssert.assertThat("Should return true for matching assignable to case (array) : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intArray"), int[].class.getCanonicalName()));
-                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type) : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericType"), List.class.getCanonicalName()));
-                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type array) : ", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericTypeArray"), List[].class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (primitive) : ", AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intType"), int.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (array) : ", AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "intArray"), int[].class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type) : ", AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericType"), List.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return true for matching assignable to case (generic type array) : ", AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(getField(testcaseElement, "genericTypeArray"), List[].class.getCanonicalName()));
 
 
             }
@@ -91,7 +91,7 @@ public class IsTypeEqualFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(Object.class), String.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(Object.class), String.class.getCanonicalName()));
 
             }
         })
@@ -106,7 +106,7 @@ public class IsTypeEqualFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(String.class), Object.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return false for mismatching assignable to case : ", !AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(TypeUtils.TypeRetrieval.getTypeElement(String.class), Object.class.getCanonicalName()));
 
             }
         })
@@ -120,9 +120,9 @@ public class IsTypeEqualFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(null, String.class.getCanonicalName()));
-                MatcherAssert.assertThat("Should return false for null valued assignable to class : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(element, null));
-                MatcherAssert.assertThat("Should return false for null valued element and assignable to class : ", !CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(null, null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(null, String.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return false for null valued assignable to class : ", !AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(element, null));
+                MatcherAssert.assertThat("Should return false for null valued element and assignable to class : ", !AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().checkForMatchingCharacteristic(null, null));
 
             }
         })
@@ -136,7 +136,7 @@ public class IsTypeEqualFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
+                MatcherAssert.assertThat("Should not have found matching parameters", AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
 
             }
         })
@@ -150,7 +150,7 @@ public class IsTypeEqualFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should have created valid string representation", CoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(String.class.getCanonicalName()), Matchers.is("java.lang.String"));
+                MatcherAssert.assertThat("Should have created valid string representation", AptkCoreMatchers.IS_TYPE_EQUAL_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(String.class.getCanonicalName()), Matchers.is("java.lang.String"));
 
             }
         })

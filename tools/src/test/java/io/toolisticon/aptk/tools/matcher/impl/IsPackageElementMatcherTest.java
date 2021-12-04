@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -42,7 +42,7 @@ public class IsPackageElementMatcherTest {
                 MatcherAssert.assertThat("Precondition: should have found one method", result != null);
                 MatcherAssert.assertThat("Precondition: found method has to be of type PackageElement", result instanceof PackageElement);
 
-                MatcherAssert.assertThat("Should return true for method : ", CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(result));
+                MatcherAssert.assertThat("Should return true for method : ", AptkCoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(result));
 
             }
         })
@@ -57,7 +57,7 @@ public class IsPackageElementMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for non PackageElement : ", !CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return false for non PackageElement : ", !AptkCoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(element));
 
             }
         })
@@ -72,7 +72,7 @@ public class IsPackageElementMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_PACKAGE_ELEMENT.getMatcher().check(null));
 
             }
         })

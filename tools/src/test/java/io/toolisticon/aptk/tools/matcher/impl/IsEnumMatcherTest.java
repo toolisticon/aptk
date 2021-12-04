@@ -4,7 +4,7 @@ import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -48,7 +48,7 @@ public class IsEnumMatcherTest {
                 MatcherAssert.assertThat("Precondition: must have found a enum", enumList.size() >= 1);
 
 
-                MatcherAssert.assertThat("Should return true for enum : ", CoreMatchers.IS_ENUM.getMatcher().check(enumList.get(0)));
+                MatcherAssert.assertThat("Should return true for enum : ", AptkCoreMatchers.IS_ENUM.getMatcher().check(enumList.get(0)));
 
             }
         })
@@ -63,7 +63,7 @@ public class IsEnumMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for non enum : ", !CoreMatchers.IS_ENUM.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return false for non enum : ", !AptkCoreMatchers.IS_ENUM.getMatcher().check(element));
 
             }
         })
@@ -78,7 +78,7 @@ public class IsEnumMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_ENUM.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_ENUM.getMatcher().check(null));
 
             }
         })

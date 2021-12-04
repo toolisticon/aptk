@@ -4,7 +4,7 @@ import io.toolisticon.aptk.example.annotations.MethodWithOneStringParameterAndVo
 import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.spiap.api.Service;
 
@@ -44,8 +44,8 @@ public class MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor e
 
             // validator already will print output so additional actions are not necessary
             FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(element))
-                    .applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                    .applyValidator(CoreMatchers.BY_PARAMETER_TYPE).hasOneOf(wrapToArray(String.class))
+                    .applyValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
+                    .applyValidator(AptkCoreMatchers.BY_PARAMETER_TYPE).hasOneOf(wrapToArray(String.class))
                     .validateAndIssueMessages();
 
 

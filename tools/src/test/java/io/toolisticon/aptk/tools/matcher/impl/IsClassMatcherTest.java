@@ -4,7 +4,7 @@ import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -45,7 +45,7 @@ public class IsClassMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return true for class : ", CoreMatchers.IS_CLASS.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return true for class : ", AptkCoreMatchers.IS_CLASS.getMatcher().check(element));
 
 
             }
@@ -66,7 +66,7 @@ public class IsClassMatcherTest {
                 MatcherAssert.assertThat("Precondition: must have found a enum", enums.size() >= 1);
 
 
-                MatcherAssert.assertThat("Should return false for enum : ", !CoreMatchers.IS_CLASS.getMatcher().check(enums.get(0)));
+                MatcherAssert.assertThat("Should return false for enum : ", !AptkCoreMatchers.IS_CLASS.getMatcher().check(enums.get(0)));
 
             }
         })
@@ -81,7 +81,7 @@ public class IsClassMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_CLASS.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_CLASS.getMatcher().check(null));
 
             }
         })

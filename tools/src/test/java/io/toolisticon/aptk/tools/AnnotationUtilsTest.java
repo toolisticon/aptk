@@ -4,7 +4,7 @@ import io.toolisticon.aptk.tools.annotationutilstestclasses.ClassArrayAttributeA
 import io.toolisticon.aptk.tools.annotationutilstestclasses.ClassAttributeAnnotation;
 import io.toolisticon.aptk.tools.annotationutilstestclasses.DefaultValueAnnotation;
 import io.toolisticon.aptk.tools.annotationutilstestclasses.NoAttributeAnnotation;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
@@ -52,12 +52,12 @@ public class AnnotationUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassAttributeAnnotation.class)
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(ClassAttributeAnnotation.class)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                         .getResult();
 
                 Element testElement = FluentElementFilter.createFluentElementFilter(result)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classAttribute_empty")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("test_classAttribute_empty")
                         .getResult().get(0);
 
 
@@ -80,12 +80,12 @@ public class AnnotationUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassAttributeAnnotation.class)
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(ClassAttributeAnnotation.class)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                         .getResult();
 
                 Element testElement = FluentElementFilter.createFluentElementFilter(result)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classAttribute_atDefaultValue")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("test_classAttribute_atDefaultValue")
                         .getResult().get(0);
 
 
@@ -108,12 +108,12 @@ public class AnnotationUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassAttributeAnnotation.class)
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(ClassAttributeAnnotation.class)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                         .getResult();
 
                 Element testElement = FluentElementFilter.createFluentElementFilter(result)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classAttribute_atNamedAttribute")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("test_classAttribute_atNamedAttribute")
                         .getResult().get(0);
 
 
@@ -140,12 +140,12 @@ public class AnnotationUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                         .getResult();
 
                 Element testElement = FluentElementFilter.createFluentElementFilter(result)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_empty")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_empty")
                         .getResult().get(0);
 
 
@@ -167,12 +167,12 @@ public class AnnotationUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                         .getResult();
 
                 Element testElement = FluentElementFilter.createFluentElementFilter(result)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_atDefaultValue")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_atDefaultValue")
                         .getResult().get(0);
 
 
@@ -195,12 +195,12 @@ public class AnnotationUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                         .getResult();
 
                 Element testElement = FluentElementFilter.createFluentElementFilter(result)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_atNamedAttribute")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_atNamedAttribute")
                         .getResult().get(0);
 
 
@@ -222,12 +222,12 @@ public class AnnotationUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(ClassArrayAttributeAnnotation.class)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                         .getResult();
 
                 Element testElement = FluentElementFilter.createFluentElementFilter(result)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_atNamedAttribute_withUncompiledClass")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("test_classArrayAttribute_atNamedAttribute_withUncompiledClass")
                         .getResult().get(0);
 
 

@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
@@ -101,7 +101,7 @@ public class IsSetterMethodMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_SETTER_METHOD.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_SETTER_METHOD.getMatcher().check(null));
 
 
             }
@@ -115,13 +115,13 @@ public class IsSetterMethodMatcherTest {
 
         List<ExecutableElement> executableElements =
                 FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                        .applyFilter(CoreMatchers.IS_METHOD)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(methodName)
+                        .applyFilter(AptkCoreMatchers.IS_METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(methodName)
                         .getResult();
 
         MatcherAssert.assertThat("Precondition: Single result for " + methodName, executableElements.size() == 1);
 
-        MatcherAssert.assertThat("methodName", CoreMatchers.IS_SETTER_METHOD.getMatcher().check(executableElements.get(0)), Matchers.is(expectedResult));
+        MatcherAssert.assertThat("methodName", AptkCoreMatchers.IS_SETTER_METHOD.getMatcher().check(executableElements.get(0)), Matchers.is(expectedResult));
 
     }
 

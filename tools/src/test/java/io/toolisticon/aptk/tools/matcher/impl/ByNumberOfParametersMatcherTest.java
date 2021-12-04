@@ -4,7 +4,7 @@ import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -66,9 +66,9 @@ public class ByNumberOfParametersMatcherTest {
                 ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
 
 
-                MatcherAssert.assertThat("Should match 0 parameters", CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 0));
-                MatcherAssert.assertThat("Should match 1 parameters", !CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 1));
-                MatcherAssert.assertThat("Should match 2 parameters", !CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 2));
+                MatcherAssert.assertThat("Should match 0 parameters", AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 0));
+                MatcherAssert.assertThat("Should match 1 parameters", !AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 1));
+                MatcherAssert.assertThat("Should match 2 parameters", !AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 2));
 
 
             }
@@ -97,9 +97,9 @@ public class ByNumberOfParametersMatcherTest {
                 ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
 
 
-                MatcherAssert.assertThat("Should match 0 parameters", !CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 0));
-                MatcherAssert.assertThat("Should match 1 parameters", CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 1));
-                MatcherAssert.assertThat("Should match 2 parameters", !CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 2));
+                MatcherAssert.assertThat("Should match 0 parameters", !AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 0));
+                MatcherAssert.assertThat("Should match 1 parameters", AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 1));
+                MatcherAssert.assertThat("Should match 2 parameters", !AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 2));
             }
 
         })
@@ -127,9 +127,9 @@ public class ByNumberOfParametersMatcherTest {
                 ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
 
 
-                MatcherAssert.assertThat("Should match 0 parameters", !CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 0));
-                MatcherAssert.assertThat("Should match 1 parameters", !CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 1));
-                MatcherAssert.assertThat("Should match 2 parameters", CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 2));
+                MatcherAssert.assertThat("Should match 0 parameters", !AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 0));
+                MatcherAssert.assertThat("Should match 1 parameters", !AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 1));
+                MatcherAssert.assertThat("Should match 2 parameters", AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, 2));
             }
 
         })
@@ -151,9 +151,9 @@ public class ByNumberOfParametersMatcherTest {
                 ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
                 MatcherAssert.assertThat("Precondition: method must have 2 parameters", executableElement.getParameters().size() == 2);
 
-                MatcherAssert.assertThat("Should return false", !CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, null));
-                MatcherAssert.assertThat("Should return false", !CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(null, 1));
-                MatcherAssert.assertThat("Should return false", !CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(null, null));
+                MatcherAssert.assertThat("Should return false", !AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(executableElement, null));
+                MatcherAssert.assertThat("Should return false", !AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(null, 1));
+                MatcherAssert.assertThat("Should return false", !AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().checkForMatchingCharacteristic(null, null));
 
             }
 
@@ -170,7 +170,7 @@ public class ByNumberOfParametersMatcherTest {
             protected void testCase(TypeElement element) {
 
 
-                MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
+                MatcherAssert.assertThat("Should not have found matching parameters", AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
 
             }
 
@@ -188,7 +188,7 @@ public class ByNumberOfParametersMatcherTest {
             protected void testCase(TypeElement element) {
 
 
-                MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
+                MatcherAssert.assertThat("Should not have found matching parameters", AptkCoreMatchers.BY_NUMBER_OF_PARAMETERS.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
 
             }
 
