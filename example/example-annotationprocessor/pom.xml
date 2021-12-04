@@ -8,7 +8,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>example-parent</artifactId>
-        <version>0.17.1</version>
+        <version>0.17.2-SNAPSHOT</version>
     </parent>
 
     <name>example-annotationprocessor</name>
