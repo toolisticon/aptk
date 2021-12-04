@@ -4,7 +4,7 @@ import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -50,7 +50,7 @@ public class IsParameterMatcherTest {
                 ExecutableElement testMethod = (ExecutableElement) methods.get(0);
                 MatcherAssert.assertThat("Precondition: found at least one parameter", ((ExecutableElement) methods.get(0)).getParameters().size() >= 1);
 
-                MatcherAssert.assertThat("Should return true for parameter : ", CoreMatchers.IS_PARAMETER.getMatcher().check(testMethod.getParameters().get(0)));
+                MatcherAssert.assertThat("Should return true for parameter : ", AptkCoreMatchers.IS_PARAMETER.getMatcher().check(testMethod.getParameters().get(0)));
 
             }
         })
@@ -65,7 +65,7 @@ public class IsParameterMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for non parameter : ", !CoreMatchers.IS_PARAMETER.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return false for non parameter : ", !AptkCoreMatchers.IS_PARAMETER.getMatcher().check(element));
 
             }
         })
@@ -80,7 +80,7 @@ public class IsParameterMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_PARAMETER.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_PARAMETER.getMatcher().check(null));
 
             }
         })

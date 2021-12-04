@@ -1,6 +1,6 @@
 package io.toolisticon.aptk.tools;
 
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
@@ -41,7 +41,7 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> results = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
                         .getResult();
 
                 MatcherAssert.assertThat(results, Matchers.hasSize(8));
@@ -65,8 +65,8 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
-                        .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                        .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC, Modifier.STATIC)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -87,7 +87,7 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> results = FluentElementFilter.createFluentElementFilter((List<Element>) null)
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
                         .getResult();
 
                 MatcherAssert.assertThat(results, Matchers.hasSize(0));
@@ -107,7 +107,7 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> results = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(null)
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(null)
                         .getResult();
 
                 MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -126,7 +126,7 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> results = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf()
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf()
                         .getResult();
 
                 MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -148,7 +148,7 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> results = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
                         .getResult();
 
                 MatcherAssert.assertThat(results, Matchers.hasSize(element.getEnclosedElements().size() - 8));
@@ -172,7 +172,7 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> results = FluentElementFilter.createFluentElementFilter((List<Element>) null)
-                        .applyInvertedFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
                         .getResult();
 
                 MatcherAssert.assertThat(results, Matchers.hasSize(0));
@@ -193,7 +193,7 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> results = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(null)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(null)
                         .getResult();
 
                 MatcherAssert.assertThat(results, Matchers.<Element>empty());
@@ -213,7 +213,7 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> results = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf()
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf()
                         .getResult();
 
                 MatcherAssert.assertThat(results, Matchers.empty());
@@ -233,7 +233,7 @@ public class FluentElementFilterTest {
 
                 // one search attribute
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("publicStaticField")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("publicStaticField")
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -256,7 +256,7 @@ public class FluentElementFilterTest {
 
                 // two search attributes
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("publicStaticField", "synchronizedMethod")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("publicStaticField", "synchronizedMethod")
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(2));
@@ -278,7 +278,7 @@ public class FluentElementFilterTest {
 
                 // returns empty result
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("XXX")
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("XXX")
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -298,7 +298,7 @@ public class FluentElementFilterTest {
 
                 // handle no passed filter args correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf()
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf()
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -318,7 +318,7 @@ public class FluentElementFilterTest {
 
                 // handle nulls correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(null)
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(null)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -339,7 +339,7 @@ public class FluentElementFilterTest {
                 // null valued element list
                 List<? extends Element> result =
                         FluentElementFilter.createFluentElementFilter((List<Element>) null)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(null)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(null)
                                 .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -362,7 +362,7 @@ public class FluentElementFilterTest {
 
                 // one search attribute
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_NAME).filterByOneOf("publicStaticField")
+                        .applyInvertedFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("publicStaticField")
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
@@ -387,7 +387,7 @@ public class FluentElementFilterTest {
 
                 // two search attributes
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_NAME).filterByOneOf("publicStaticField", "synchronizedMethod")
+                        .applyInvertedFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("publicStaticField", "synchronizedMethod")
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 2));
@@ -411,7 +411,7 @@ public class FluentElementFilterTest {
 
                 // returns empty result
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_NAME).filterByOneOf("XXX")
+                        .applyInvertedFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("XXX")
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -432,7 +432,7 @@ public class FluentElementFilterTest {
 
                 // handle no passed filter args correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_NAME).filterByOneOf()
+                        .applyInvertedFilter(AptkCoreMatchers.BY_NAME).filterByOneOf()
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -453,7 +453,7 @@ public class FluentElementFilterTest {
 
                 // handle nulls correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_NAME).filterByOneOf(null)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(null)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.<Element>empty());
@@ -475,7 +475,7 @@ public class FluentElementFilterTest {
                 // null valued element list
                 List<? extends Element> result =
                         FluentElementFilter.createFluentElementFilter((List<Element>) null)
-                                .applyInvertedFilter(CoreMatchers.BY_NAME).filterByOneOf(null)
+                                .applyInvertedFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(null)
                                 .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -496,7 +496,7 @@ public class FluentElementFilterTest {
 
                 // one search attribute
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf("publicSt.*Field")
+                        .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf("publicSt.*Field")
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -519,7 +519,7 @@ public class FluentElementFilterTest {
 
                 // two search attributes
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf("publicSt.*Field", "synchr.*Method")
+                        .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf("publicSt.*Field", "synchr.*Method")
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(2));
@@ -541,7 +541,7 @@ public class FluentElementFilterTest {
 
                 // returns empty result
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf("XXX")
+                        .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf("XXX")
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -561,7 +561,7 @@ public class FluentElementFilterTest {
 
                 // handle no passed filter args correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf()
+                        .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf()
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -581,7 +581,7 @@ public class FluentElementFilterTest {
 
                 // handle nulls correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(null)
+                        .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(null)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -601,7 +601,7 @@ public class FluentElementFilterTest {
 
                 // handle nulls correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter((List<Element>) null)
-                        .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(null)
+                        .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(null)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -620,7 +620,7 @@ public class FluentElementFilterTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -643,7 +643,7 @@ public class FluentElementFilterTest {
 
                 // two search attributes
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(1));
@@ -665,7 +665,7 @@ public class FluentElementFilterTest {
 
                 // returns empty result
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf(TestAnnotation.class)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByOneOf(TestAnnotation.class)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -685,7 +685,7 @@ public class FluentElementFilterTest {
 
                 // handle no passed filter args correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf()
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByOneOf()
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -705,7 +705,7 @@ public class FluentElementFilterTest {
 
                 // handle nulls correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf(null)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByOneOf(null)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -725,7 +725,7 @@ public class FluentElementFilterTest {
 
                 // handle nulls correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter((List<Element>) null)
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(0));
@@ -749,7 +749,7 @@ public class FluentElementFilterTest {
 
                 // one search attribute
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
@@ -773,7 +773,7 @@ public class FluentElementFilterTest {
 
                 // two search attributes
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(FilterTestAnnotation1.class, FilterTestAnnotation2.class)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size() - 1));
@@ -797,7 +797,7 @@ public class FluentElementFilterTest {
 
                 // returns empty result
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(FilterTestAnnotation1.class, TestAnnotation.class)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(FilterTestAnnotation1.class, TestAnnotation.class)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -817,7 +817,7 @@ public class FluentElementFilterTest {
 
                 // returns empty result
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(FilterTestAnnotation1.class, TestAnnotation.class)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(FilterTestAnnotation1.class, TestAnnotation.class)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(element.getEnclosedElements().size()));
@@ -838,7 +838,7 @@ public class FluentElementFilterTest {
 
                 // handle nulls correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyInvertedFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf(null)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ANNOTATION).filterByOneOf(null)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.<Element>empty());
@@ -859,7 +859,7 @@ public class FluentElementFilterTest {
 
                 // handle nulls correctly
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter((List<Element>) null)
-                        .applyInvertedFilter(CoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
+                        .applyInvertedFilter(AptkCoreMatchers.BY_ANNOTATION).filterByOneOf(FilterTestAnnotation1.class)
                         .getResult();
 
                 MatcherAssert.assertThat(result, Matchers.hasSize(0));

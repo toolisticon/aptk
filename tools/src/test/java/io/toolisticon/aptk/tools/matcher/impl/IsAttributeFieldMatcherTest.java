@@ -2,7 +2,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
@@ -57,7 +57,7 @@ public class IsAttributeFieldMatcherTest {
 
                         // Do test
                         MatcherAssert.assertThat("Should return true for non static field with getter and setter : ",
-                                CoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("validAttributeField")));
+                                AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("validAttributeField")));
 
 
                     }
@@ -81,7 +81,7 @@ public class IsAttributeFieldMatcherTest {
 
                         // Do test
                         MatcherAssert.assertThat("Should return false for non static field without getter : ",
-                                !CoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("fieldWithoutGetter")));
+                                !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("fieldWithoutGetter")));
 
 
                     }
@@ -105,7 +105,7 @@ public class IsAttributeFieldMatcherTest {
 
                         // Do test
                         MatcherAssert.assertThat("Should return false for non static field without setter : ",
-                                !CoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("fieldWithoutSetter")));
+                                !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("fieldWithoutSetter")));
 
 
                     }
@@ -129,7 +129,7 @@ public class IsAttributeFieldMatcherTest {
 
                         // Do test
                         MatcherAssert.assertThat("Should return false for static field : ",
-                                !CoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("staticField")));
+                                !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("staticField")));
 
 
                     }
@@ -153,7 +153,7 @@ public class IsAttributeFieldMatcherTest {
 
                         // Do test
                         MatcherAssert.assertThat("Should return false for passed null value : ",
-                                !CoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(null));
+                                !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(null));
 
 
                     }
@@ -170,8 +170,8 @@ public class IsAttributeFieldMatcherTest {
         List<VariableElement> variableElement = FluentElementFilter.createFluentElementFilter(
                 TypeUtils.TypeRetrieval.getTypeElement(TestClass.class)
                         .getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_FIELD)
-                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(fieldName)
+                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(fieldName)
                 .getResult();
 
         // Check precondition

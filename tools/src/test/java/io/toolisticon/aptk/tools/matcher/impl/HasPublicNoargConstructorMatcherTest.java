@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
@@ -79,7 +79,7 @@ public class HasPublicNoargConstructorMatcherTest {
 
                 TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(DefaultNoargConstructor.class);
 
-                MatcherAssert.assertThat("Must return true for class with default constructor", CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
+                MatcherAssert.assertThat("Must return true for class with default constructor", AptkCoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
 
             }
         })
@@ -96,7 +96,7 @@ public class HasPublicNoargConstructorMatcherTest {
 
                 TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(NonNoargConstructor.class);
 
-                MatcherAssert.assertThat("Must return false for class with no noarg constructor", !CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
+                MatcherAssert.assertThat("Must return false for class with no noarg constructor", !AptkCoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
 
 
             }
@@ -115,7 +115,7 @@ public class HasPublicNoargConstructorMatcherTest {
 
                 TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(NoPublicNoargConstructor.class);
 
-                MatcherAssert.assertThat("Must return false for class with no public noarg constructor", !CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
+                MatcherAssert.assertThat("Must return false for class with no public noarg constructor", !AptkCoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
 
 
             }
@@ -133,7 +133,7 @@ public class HasPublicNoargConstructorMatcherTest {
 
                 TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(PublicNoargConstructorNextToOtherConstructors.class);
 
-                MatcherAssert.assertThat("Must return true for class with default constructor", CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
+                MatcherAssert.assertThat("Must return true for class with default constructor", AptkCoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(typeElement));
 
 
             }
@@ -151,11 +151,11 @@ public class HasPublicNoargConstructorMatcherTest {
 
                 Element testElement = FluentElementFilter.createFluentElementFilter(
                         TypeUtils.TypeRetrieval.getTypeElement(HasPublicNoargConstructorMatcherTest.class).getEnclosedElements()
-                ).applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testField")
+                ).applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("testField")
                         .getResult().get(0);
 
-                MatcherAssert.assertThat("Must return true for class with default constructor", CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(testElement));
+                MatcherAssert.assertThat("Must return true for class with default constructor", AptkCoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(testElement));
 
             }
         })
@@ -170,7 +170,7 @@ public class HasPublicNoargConstructorMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Must return false for null valued parameter", !CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(null));
+                MatcherAssert.assertThat("Must return false for null valued parameter", !AptkCoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(null));
 
             }
         })
@@ -190,7 +190,7 @@ public class HasPublicNoargConstructorMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Must return false for Class with arg constructor annotated with NoArgsConstructor annotation", CoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(element));
+                MatcherAssert.assertThat("Must return false for Class with arg constructor annotated with NoArgsConstructor annotation", AptkCoreMatchers.HAS_PUBLIC_NOARG_CONSTRUCTOR.getMatcher().check(element));
 
             }
         })

@@ -9,7 +9,7 @@ import io.toolisticon.aptk.tools.FilerUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.aptk.tools.generators.SimpleJavaWriter;
@@ -113,8 +113,8 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             // first scan for all CustomCodeClasses in Package
             List<ExecutableElement> customCodeMethods = FluentElementFilter.createFluentElementFilter(
                     ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree(packageElement, false)
-            ).applyFilter(CoreMatchers.IS_METHOD)
-                    .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(CustomCodeMethod.class)
+            ).applyFilter(AptkCoreMatchers.IS_METHOD)
+                    .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(CustomCodeMethod.class)
                     .getResult();
 
             for (ExecutableElement customClassMethod : customCodeMethods) {
@@ -133,8 +133,8 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
                 TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(customCodeClass);
                 List<ExecutableElement> ccMethods = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                        .applyFilter(CoreMatchers.IS_METHOD)
-                        .applyFilter(CoreMatchers.BY_ANNOTATION).filterByAllOf(CustomCodeMethod.class)
+                        .applyFilter(AptkCoreMatchers.IS_METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(CustomCodeMethod.class)
                         .getResult();
                 for (ExecutableElement customClassMethod : ccMethods) {
                     addCustomCodeMethod(customClassMethod);
@@ -154,7 +154,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
             TypeElement element = TypeUtils.TypeRetrieval.getTypeElement(annotationFqn);
 
-            for (ExecutableElement executableElement : FluentElementFilter.createFluentElementFilter(element.getEnclosedElements()).applyFilter(CoreMatchers.IS_METHOD).getResult()) {
+            for (ExecutableElement executableElement : FluentElementFilter.createFluentElementFilter(element.getEnclosedElements()).applyFilter(AptkCoreMatchers.IS_METHOD).getResult()) {
 
                 TypeMirror returnTypeMirror = executableElement.getReturnType();
                 String returnTypeFqn = TypeMirrorWrapper.wrap(returnTypeMirror).getQualifiedName();
@@ -175,21 +175,43 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
             // validate
             if (!FluentElementValidator.createFluentElementValidator(customClassMethod)
-                    .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.STATIC)
-                    .applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.PRIVATE)
-                    .applyInvertedValidator(CoreMatchers.HAS_NO_PARAMETERS)
+                    .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.STATIC)
+                    .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.PRIVATE)
+                    .applyInvertedValidator(AptkCoreMatchers.HAS_NO_PARAMETERS)
                     .validateAndIssueMessages()) {
                 return;
             }
 
+            // get type annotation type as fqn
+            TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(customClassMethod, CustomCodeMethod.class));
+            String expectedTypeMirrorWrapperClassName = typeMirrorWrapper.getSimpleName() + WRAPPER_SUFFIX;
 
             VariableElement firstParameter = customClassMethod.getParameters().get(0);
-            String ccmWrapperSimpleName = firstParameter.asType().toString();
 
-            if (!wrapperSimpleNameToFqn.containsKey(ccmWrapperSimpleName)) {
-                MessagerUtils.error(firstParameter, AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, ccmWrapperSimpleName);
-                return;
+            if (!firstParameter.asType().toString().equals(expectedTypeMirrorWrapperClassName) && !firstParameter.asType().toString().endsWith("."+expectedTypeMirrorWrapperClassName)) {
+                MessagerUtils.error(firstParameter, AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, firstParameter.asType().toString(), expectedTypeMirrorWrapperClassName);
             }
+
+
+
+            /*-
+            TypeMirror typeMirror = firstParameter.asType();
+
+            if (typeMirror.getKind().equals(TypeKind.DECLARED)){
+                if (!wrapperSimpleNameToFqn.containsKey(TypeUtils.TypeRetrieval.getTypeElement(typeMirror).getSimpleName().toString())) {
+                    MessagerUtils.error(firstParameter, AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, TypeUtils.TypeRetrieval.getTypeElement(typeMirror).getQualifiedName().toString(), TypeUtils.TypeRetrieval.getTypeElement(typeMirror).getQualifiedName().toString());
+                    return;
+                }
+            } else {
+                String ccmWrapperSimpleOrQualifiedName = firstParameter.asType().toString();
+
+                if (!wrapperSimpleNameToFqn.containsKey(ccmWrapperSimpleOrQualifiedName) && !wrapperAnnotationFqnToAnnotationFqnNameMap.containsKey(ccmWrapperSimpleOrQualifiedName)) {
+                    MessagerUtils.error(firstParameter, AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, ccmWrapperSimpleOrQualifiedName);
+                    return;
+                }
+            }
+             */
+
 
             // Must find first parameter
             String annotation = AnnotationUtils.getClassAttributeFromAnnotationAsFqn(customClassMethod, CustomCodeMethod.class);
@@ -848,7 +870,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(annotationToCreateWrapperFor);
 
         // Now process all attributes
-        List<ExecutableElement> attributes = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements()).applyFilter(CoreMatchers.IS_METHOD).getResult();
+        List<ExecutableElement> attributes = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements()).applyFilter(AptkCoreMatchers.IS_METHOD).getResult();
 
         List<AnnotationAttribute> annotationAttributes = new ArrayList<>();
         for (ExecutableElement attribute : attributes) {

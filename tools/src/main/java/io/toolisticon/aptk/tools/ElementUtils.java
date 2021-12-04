@@ -1,6 +1,6 @@
 package io.toolisticon.aptk.tools;
 
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 
 import javax.lang.model.element.Element;
@@ -568,7 +568,7 @@ public final class ElementUtils {
          * @return true if passed element has modifier, otherwise false
          */
         private static boolean hasModifier(Element e, Modifier modifier) {
-            return CoreMatchers.BY_MODIFIER.getValidator().hasAllOf(e, modifier);
+            return AptkCoreMatchers.BY_MODIFIER.getValidator().hasAllOf(e, modifier);
         }
 
         /**
@@ -763,7 +763,7 @@ public final class ElementUtils {
                 return new ArrayList<>();
             }
 
-            return CastElement.castElementList(CoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), name), Element.class);
+            return CastElement.castElementList(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), name), Element.class);
 
         }
 
@@ -819,7 +819,7 @@ public final class ElementUtils {
                 return new ArrayList<>();
             }
 
-            return (List<T>) CoreMatchers.BY_ELEMENT_KIND.getFilter().filterByOneOf(element.getEnclosedElements(), kind);
+            return (List<T>) AptkCoreMatchers.BY_ELEMENT_KIND.getFilter().filterByOneOf(element.getEnclosedElements(), kind);
 
         }
 
@@ -837,7 +837,7 @@ public final class ElementUtils {
                 return new ArrayList<>();
             }
 
-            return (List<Element>) CoreMatchers.BY_ANNOTATION.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
+            return (List<Element>) AptkCoreMatchers.BY_ANNOTATION.getFilter().filterByAllOf(element.getEnclosedElements(), annotations);
 
         }
 
@@ -854,7 +854,7 @@ public final class ElementUtils {
                 return new ArrayList<>();
             }
 
-            return (List<Element>) CoreMatchers.BY_ANNOTATION.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
+            return (List<Element>) AptkCoreMatchers.BY_ANNOTATION.getFilter().filterByAtLeastOneOf(element.getEnclosedElements(), annotations);
 
         }
 
@@ -996,27 +996,27 @@ public final class ElementUtils {
 
         public static TypeElement getDirectSuperTypeElementOfKindType(TypeElement typeElement) {
 
-            FluentElementFilter<TypeElement> fluentElementFilter = FluentElementFilter.createFluentElementFilter(Arrays.asList(getDirectSuperTypeElements(typeElement))).applyFilter(CoreMatchers.IS_CLASS);
+            FluentElementFilter<TypeElement> fluentElementFilter = FluentElementFilter.createFluentElementFilter(Arrays.asList(getDirectSuperTypeElements(typeElement))).applyFilter(AptkCoreMatchers.IS_CLASS);
             return fluentElementFilter.hasSingleElement() ? fluentElementFilter.getResult().get(0) : null;
 
         }
 
         public static TypeElement[] getDirectSuperTypeElementsOfKindInterface(TypeElement typeElement) {
 
-            List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getDirectSuperTypeElements(typeElement))).applyFilter(CoreMatchers.IS_INTERFACE).getResult();
+            List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getDirectSuperTypeElements(typeElement))).applyFilter(AptkCoreMatchers.IS_INTERFACE).getResult();
             return resultList.toArray(new TypeElement[resultList.size()]);
         }
 
 
         public static TypeElement[] getSuperTypeElementsOfKindType(TypeElement typeElement) {
 
-            List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getSuperTypeElements(typeElement))).applyFilter(CoreMatchers.IS_CLASS).getResult();
+            List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getSuperTypeElements(typeElement))).applyFilter(AptkCoreMatchers.IS_CLASS).getResult();
             return resultList.toArray(new TypeElement[resultList.size()]);
         }
 
         public static TypeElement[] getSuperTypeElementsOfKindInterface(TypeElement typeElement) {
 
-            List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getSuperTypeElements(typeElement))).applyFilter(CoreMatchers.IS_INTERFACE).getResult();
+            List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getSuperTypeElements(typeElement))).applyFilter(AptkCoreMatchers.IS_INTERFACE).getResult();
             return resultList.toArray(new TypeElement[resultList.size()]);
         }
 

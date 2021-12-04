@@ -5,7 +5,7 @@ import io.toolisticon.aptk.example.annotations.SpecificInterface;
 import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.spiap.api.Service;
 
@@ -40,7 +40,7 @@ public class ImplementsSpecificInterfaceCheckAnnotationProcessor extends Abstrac
 
             // validator already will print output so additional actions are not necessary
             FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castToTypeElement(element))
-                    .applyValidator(CoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(SpecificInterface.class)
+                    .applyValidator(AptkCoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(SpecificInterface.class)
                     .validateAndIssueMessages();
 
         }

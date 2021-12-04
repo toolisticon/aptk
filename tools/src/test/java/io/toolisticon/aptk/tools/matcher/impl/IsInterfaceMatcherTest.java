@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -37,7 +37,7 @@ public class IsInterfaceMatcherTest {
             protected void testCase(TypeElement element) {
 
                 TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(Serializable.class);
-                MatcherAssert.assertThat("Should return true for interface : ", CoreMatchers.IS_INTERFACE.getMatcher().check(typeElement));
+                MatcherAssert.assertThat("Should return true for interface : ", AptkCoreMatchers.IS_INTERFACE.getMatcher().check(typeElement));
 
             }
         })
@@ -53,7 +53,7 @@ public class IsInterfaceMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for non method : ", !CoreMatchers.IS_INTERFACE.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return false for non method : ", !AptkCoreMatchers.IS_INTERFACE.getMatcher().check(element));
 
 
             }
@@ -69,7 +69,7 @@ public class IsInterfaceMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_INTERFACE.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_INTERFACE.getMatcher().check(null));
 
             }
         })

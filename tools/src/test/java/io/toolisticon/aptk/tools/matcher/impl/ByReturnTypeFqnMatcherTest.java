@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -51,7 +51,7 @@ public class ByReturnTypeFqnMatcherTest {
                 MatcherAssert.assertThat("Precondition: return type must be of type String but is " + executableElement.getParameters().get(0).asType().toString(), executableElement.getReturnType().toString().equals(String.class.getCanonicalName()));
 
 
-                MatcherAssert.assertThat("Should have found matching return type", CoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, String.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should have found matching return type", AptkCoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, String.class.getCanonicalName()));
 
             }
         })
@@ -76,7 +76,7 @@ public class ByReturnTypeFqnMatcherTest {
                 MatcherAssert.assertThat("Precondition: return type must be of type String but is " + executableElement.getParameters().get(0).asType().toString(), executableElement.getReturnType().toString().equals(String.class.getCanonicalName()));
 
 
-                MatcherAssert.assertThat("Should have found a non matching return type", !CoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, Boolean.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should have found a non matching return type", !AptkCoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, Boolean.class.getCanonicalName()));
 
             }
         })
@@ -100,9 +100,9 @@ public class ByReturnTypeFqnMatcherTest {
                 MatcherAssert.assertThat("Precondition: method must have a return type", executableElement.getReturnType(), Matchers.notNullValue());
                 MatcherAssert.assertThat("Precondition: return type must be of type String but is " + executableElement.getParameters().get(0).asType().toString(), executableElement.getReturnType().toString().equals(String.class.getCanonicalName()));
 
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, String.class.getCanonicalName()));
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, null));
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, null));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, String.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(executableElement, null));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, null));
 
             }
         })
@@ -117,7 +117,7 @@ public class ByReturnTypeFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.is(""));
+                MatcherAssert.assertThat("Should not have found matching parameters", AptkCoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.is(""));
 
             }
         })
@@ -132,7 +132,7 @@ public class ByReturnTypeFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should have created valid string representation", CoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(String.class.getCanonicalName()), Matchers.is(String.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should have created valid string representation", AptkCoreMatchers.BY_RETURN_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(String.class.getCanonicalName()), Matchers.is(String.class.getCanonicalName()));
 
             }
         })

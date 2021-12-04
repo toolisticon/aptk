@@ -3,8 +3,8 @@ package io.toolisticon.aptk.annotationwrapper.processor;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessorForTestingAnnotationProcessors;
 import io.toolisticon.aptk.tools.MessagerUtils;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.corematcher.CoreMatcherValidationMessages;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
@@ -683,8 +683,8 @@ public class AnnotationWrapperProcessorTest {
 
     private ExecutableElement getExecutableElement(TypeElement typeElement, String name) {
         return FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_METHOD)
-                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(name)
+                .applyFilter(AptkCoreMatchers.IS_METHOD)
+                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(name)
                 .getResult().get(0);
     }
 

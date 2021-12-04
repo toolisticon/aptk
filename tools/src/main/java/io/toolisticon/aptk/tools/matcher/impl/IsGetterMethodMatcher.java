@@ -1,6 +1,6 @@
 package io.toolisticon.aptk.tools.matcher.impl;
 
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.matcher.ImplicitMatcher;
@@ -19,10 +19,10 @@ public class IsGetterMethodMatcher implements ImplicitMatcher<ExecutableElement>
         }
 
         if (!FluentElementValidator.createFluentElementValidator(element)
-                .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC)
-                .applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.STATIC, Modifier.ABSTRACT)
-                .applyValidator(CoreMatchers.HAS_NO_PARAMETERS)
-                .applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC)
+                .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.STATIC, Modifier.ABSTRACT)
+                .applyValidator(AptkCoreMatchers.HAS_NO_PARAMETERS)
+                .applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
                 .justValidate()
         ) {
             return false;

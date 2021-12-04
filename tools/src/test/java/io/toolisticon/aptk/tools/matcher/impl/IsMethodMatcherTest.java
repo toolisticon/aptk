@@ -4,7 +4,7 @@ import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -47,7 +47,7 @@ public class IsMethodMatcherTest {
                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(typeElement, "testMethod");
                 MatcherAssert.assertThat("Precondition: found test method", methods.size() == 1);
 
-                MatcherAssert.assertThat("Should return true for method : ", CoreMatchers.IS_METHOD.getMatcher().check(methods.get(0)));
+                MatcherAssert.assertThat("Should return true for method : ", AptkCoreMatchers.IS_METHOD.getMatcher().check(methods.get(0)));
 
             }
         })
@@ -62,7 +62,7 @@ public class IsMethodMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for non method : ", !CoreMatchers.IS_METHOD.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return false for non method : ", !AptkCoreMatchers.IS_METHOD.getMatcher().check(element));
 
             }
         })
@@ -77,7 +77,7 @@ public class IsMethodMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_METHOD.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_METHOD.getMatcher().check(null));
 
             }
         })

@@ -1,7 +1,7 @@
 package io.toolisticon.aptk.tools;
 
 
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
@@ -1057,8 +1057,8 @@ public class TypeUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
 
                 ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -1091,8 +1091,8 @@ public class TypeUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
 
                 ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -1124,8 +1124,8 @@ public class TypeUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
 
                 ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 
@@ -1167,8 +1167,8 @@ public class TypeUtilsTest {
             protected void testCase(TypeElement element) {
 
                 List<? extends Element> result = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                        .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
-                        .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
+                        .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("testGenericsOnParameter").getResult();
 
                 ExecutableElement method = ElementUtils.CastElement.castMethod(result.get(0));
 

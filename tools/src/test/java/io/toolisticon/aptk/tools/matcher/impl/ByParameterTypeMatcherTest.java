@@ -5,7 +5,7 @@ import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.Utilities;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -53,7 +53,7 @@ public class ByParameterTypeMatcherTest {
                 MatcherAssert.assertThat("Precondition: second parameter must be of type String but is " + executableElement.getParameters().get(1).asType().toString(), executableElement.getParameters().get(1).asType().toString().equals(String.class.getCanonicalName()));
 
 
-                MatcherAssert.assertThat("Should have found matching parameters", CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class)));
+                MatcherAssert.assertThat("Should have found matching parameters", AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class)));
 
             }
         })
@@ -92,7 +92,7 @@ public class ByParameterTypeMatcherTest {
                 MatcherAssert.assertThat("Precondition: second parameter must be of type String but is " + executableElement.getParameters().get(1).asType().toString(), executableElement.getParameters().get(1).asType().toString().equals(String.class.getCanonicalName()));
 
 
-                MatcherAssert.assertThat("Should have found matching parameters", CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(List.class, String.class, int.class, int[].class, List[].class)));
+                MatcherAssert.assertThat("Should have found matching parameters", AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(List.class, String.class, int.class, int[].class, List[].class)));
 
             }
         })
@@ -115,9 +115,9 @@ public class ByParameterTypeMatcherTest {
                 ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
                 MatcherAssert.assertThat("Precondition: method must have 2 parameters", executableElement.getParameters().size() == 2);
 
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(String.class, Boolean.class)));
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class)));
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class, String.class)));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(String.class, Boolean.class)));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class)));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, Utilities.convertVarargsToArray(Boolean.class, String.class, String.class)));
 
             }
         })
@@ -139,9 +139,9 @@ public class ByParameterTypeMatcherTest {
                 ExecutableElement executableElement = ElementUtils.CastElement.castElementList(result, ExecutableElement.class).get(0);
                 MatcherAssert.assertThat("Precondition: method must have 2 parameters", executableElement.getParameters().size() == 2);
 
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(null, Utilities.convertVarargsToArray(String.class, Boolean.class)));
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, null));
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(null, null));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(null, Utilities.convertVarargsToArray(String.class, Boolean.class)));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(executableElement, null));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().checkForMatchingCharacteristic(null, null));
 
             }
         })
@@ -157,7 +157,7 @@ public class ByParameterTypeMatcherTest {
             protected void testCase(TypeElement element) {
 
 
-                MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.BY_PARAMETER_TYPE.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
+                MatcherAssert.assertThat("Should not have found matching parameters", AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.nullValue());
 
             }
         })
@@ -173,7 +173,7 @@ public class ByParameterTypeMatcherTest {
             protected void testCase(TypeElement element) {
 
 
-                MatcherAssert.assertThat("Should have created valid string representation", CoreMatchers.BY_PARAMETER_TYPE.getMatcher().getStringRepresentationOfPassedCharacteristic(Utilities.convertVarargsToArray(String.class, Boolean.class)), Matchers.is("[java.lang.String, java.lang.Boolean]"));
+                MatcherAssert.assertThat("Should have created valid string representation", AptkCoreMatchers.BY_PARAMETER_TYPE.getMatcher().getStringRepresentationOfPassedCharacteristic(Utilities.convertVarargsToArray(String.class, Boolean.class)), Matchers.is("[java.lang.String, java.lang.Boolean]"));
 
 
             }

@@ -1,7 +1,7 @@
 package io.toolisticon.aptk.tools;
 
 import com.sun.source.tree.StatementTree;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
@@ -60,8 +60,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
                                 .getResult().get(0);
 
 
@@ -82,8 +82,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
                                 .getResult().get(0);
 
 
@@ -103,8 +103,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetterAnnotation")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetterAnnotation")
                                 .getResult().get(0);
 
 
@@ -123,8 +123,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedSetterAndGetterAnnotation")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedSetterAndGetterAnnotation")
                                 .getResult().get(0);
 
 
@@ -144,8 +144,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithoutGetter")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutGetter")
                                 .getResult().get(0);
 
 
@@ -165,8 +165,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithoutSetter")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutSetter")
                                 .getResult().get(0);
 
 
@@ -191,8 +191,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testField")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("testField")
                                 .getResult().get(0);
 
 
@@ -212,8 +212,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testField")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("testField")
                                 .getResult().get(0);
 
 
@@ -233,8 +233,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("testField")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("testField")
                                 .getResult().get(0);
 
 
@@ -259,8 +259,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("booleanFieldWithGetterAnnotation")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("booleanFieldWithGetterAnnotation")
                                 .getResult().get(0);
 
 
@@ -280,8 +280,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedSetterAndGetterAnnotation")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedSetterAndGetterAnnotation")
                                 .getResult().get(0);
 
 
@@ -301,8 +301,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
                                 .getResult().get(0);
 
 
@@ -327,8 +327,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
                                 .getResult().get(0);
 
 
@@ -348,8 +348,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithoutGetter")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutGetter")
                                 .getResult().get(0);
 
 
@@ -369,8 +369,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_FIELD)
-                                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf("fieldWithoutSetter")
+                                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutSetter")
                                 .getResult().get(0);
 
 
@@ -395,8 +395,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*InheritingType")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*InheritingType")
                                 .getResult().get(0);
 
 
@@ -424,8 +424,8 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CLASS)
-                                .applyFilter(CoreMatchers.BY_REGEX_NAME).filterByOneOf(".*InheritingType")
+                                .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*InheritingType")
                                 .getResult().get(0);
 
 
@@ -459,7 +459,7 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
+                                .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
                                 .getResult().get(0);
 
 
@@ -481,7 +481,7 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
+                                .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
                                 .getResult().get(0);
 
 
@@ -503,7 +503,7 @@ public class BeanUtilsTest {
                     @Override
                     protected void testCase(TypeElement element) {
                         ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
+                                .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
                                 .getResult().get(0);
 
                         List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(constructor).getBody().getStatements();

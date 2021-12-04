@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -38,7 +38,7 @@ public class IsTypeElementMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for non TypeElement : ", CoreMatchers.IS_TYPE_ELEMENT.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return false for non TypeElement : ", AptkCoreMatchers.IS_TYPE_ELEMENT.getMatcher().check(element));
 
             }
         })
@@ -58,7 +58,7 @@ public class IsTypeElementMatcherTest {
                 MatcherAssert.assertThat("Precondition: should have found one method", result != null);
                 MatcherAssert.assertThat("Precondition: found method has to be of zype PackageElement", result instanceof PackageElement);
 
-                MatcherAssert.assertThat("Should return false for package : ", !CoreMatchers.IS_TYPE_ELEMENT.getMatcher().check(result));
+                MatcherAssert.assertThat("Should return false for package : ", !AptkCoreMatchers.IS_TYPE_ELEMENT.getMatcher().check(result));
 
             }
         })
@@ -73,7 +73,7 @@ public class IsTypeElementMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_TYPE_ELEMENT.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_TYPE_ELEMENT.getMatcher().check(null));
 
             }
         })

@@ -4,7 +4,7 @@ import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -50,7 +50,7 @@ public class ByReturnTypeMirrorMatcherTest {
                 MatcherAssert.assertThat("Precondition: return type must be of type String but is " + executableElement.getParameters().get(0).asType().toString(), executableElement.getReturnType().toString().equals(String.class.getCanonicalName()));
 
 
-                MatcherAssert.assertThat("Should have found matching return type", CoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(executableElement, TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+                MatcherAssert.assertThat("Should have found matching return type", AptkCoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(executableElement, TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
 
             }
         })
@@ -75,7 +75,7 @@ public class ByReturnTypeMirrorMatcherTest {
                 MatcherAssert.assertThat("Precondition: return type must be of type String but is " + executableElement.getParameters().get(0).asType().toString(), executableElement.getReturnType().toString().equals(String.class.getCanonicalName()));
 
 
-                MatcherAssert.assertThat("Should have found a non matching return type", !CoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(executableElement, TypeUtils.TypeRetrieval.getTypeMirror(Boolean.class)));
+                MatcherAssert.assertThat("Should have found a non matching return type", !AptkCoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(executableElement, TypeUtils.TypeRetrieval.getTypeMirror(Boolean.class)));
 
             }
         })
@@ -99,9 +99,9 @@ public class ByReturnTypeMirrorMatcherTest {
                 MatcherAssert.assertThat("Precondition: method must have a return type", executableElement.getReturnType(), Matchers.notNullValue());
                 MatcherAssert.assertThat("Precondition: return type must be of type String but is " + executableElement.getParameters().get(0).asType().toString(), executableElement.getReturnType().toString().equals(String.class.getCanonicalName()));
 
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(null, TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(executableElement, null));
-                MatcherAssert.assertThat("Should not have found matching parameters", !CoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(null, null));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(null, TypeUtils.TypeRetrieval.getTypeMirror(String.class)));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(executableElement, null));
+                MatcherAssert.assertThat("Should not have found matching parameters", !AptkCoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().checkForMatchingCharacteristic(null, null));
 
             }
         })
@@ -117,7 +117,7 @@ public class ByReturnTypeMirrorMatcherTest {
             protected void testCase(TypeElement element) {
 
 
-                MatcherAssert.assertThat("Should not have found matching parameters", CoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.is(""));
+                MatcherAssert.assertThat("Should not have found matching parameters", AptkCoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().getStringRepresentationOfPassedCharacteristic(null), Matchers.is(""));
 
             }
         })
@@ -133,7 +133,7 @@ public class ByReturnTypeMirrorMatcherTest {
             protected void testCase(TypeElement element) {
 
 
-                MatcherAssert.assertThat("Should have created valid string representation", CoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().getStringRepresentationOfPassedCharacteristic(TypeUtils.TypeRetrieval.getTypeMirror(String.class)), Matchers.is(String.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should have created valid string representation", AptkCoreMatchers.BY_RETURN_TYPE_MIRROR.getMatcher().getStringRepresentationOfPassedCharacteristic(TypeUtils.TypeRetrieval.getTypeMirror(String.class)), Matchers.is(String.class.getCanonicalName()));
 
             }
         })

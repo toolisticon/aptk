@@ -2,7 +2,7 @@ package io.toolisticon.aptk.tools.filter;
 
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -36,12 +36,12 @@ public class InclusiveCriteriaElementFilterTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        List<Element> filteredList = CoreMatchers.BY_MODIFIER.getFilter().filterByAllOf((List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED);
+                        List<Element> filteredList = AptkCoreMatchers.BY_MODIFIER.getFilter().filterByAllOf((List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED);
                         MatcherAssert.assertThat("Must have exactly one element'", filteredList, Matchers.hasSize(1));
                         MatcherAssert.assertThat("Must find one element with name 'synchronizedMethod'", filteredList.get(0).getSimpleName().toString(), Matchers.is("synchronizedMethod"));
 
                         // shouldn't find anything
-                        filteredList = CoreMatchers.BY_MODIFIER.getFilter().filterByAllOf((List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
+                        filteredList = AptkCoreMatchers.BY_MODIFIER.getFilter().filterByAllOf((List<Element>) element.getEnclosedElements(), Modifier.PUBLIC, Modifier.SYNCHRONIZED, Modifier.PROTECTED);
                         MatcherAssert.assertThat("Must have noelement'", filteredList, Matchers.<Element>empty());
 
 

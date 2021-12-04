@@ -3,7 +3,7 @@ package io.toolisticon.aptk.validators;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.cute.CompileTestBuilder;
@@ -46,14 +46,14 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be validated as true", FluentElementValidator.createFluentElementValidator(testElement).applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC).validateAndIssueMessages());
+                        MatcherAssert.assertThat("Should be validated as true", FluentElementValidator.createFluentElementValidator(testElement).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC).validateAndIssueMessages());
 
                     }
                 })
@@ -74,14 +74,14 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(testElement).applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC, Modifier.FINAL).validateAndIssueMessages());
+                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(testElement).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC, Modifier.FINAL).validateAndIssueMessages());
 
                     }
                 })
@@ -102,14 +102,14 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be validated as true", FluentElementValidator.createFluentElementValidator(testElement).applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC).validateAndIssueMessages());
+                        MatcherAssert.assertThat("Should be validated as true", FluentElementValidator.createFluentElementValidator(testElement).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC).validateAndIssueMessages());
 
                     }
                 })
@@ -130,14 +130,14 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(testElement).applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.STATIC, Modifier.FINAL).validateAndIssueMessages());
+                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(testElement).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.STATIC, Modifier.FINAL).validateAndIssueMessages());
 
                     }
                 })
@@ -159,14 +159,14 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be validated as true", FluentElementValidator.createFluentElementValidator(testElement).applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.SYNCHRONIZED, Modifier.FINAL, Modifier.ABSTRACT).validateAndIssueMessages());
+                        MatcherAssert.assertThat("Should be validated as true", FluentElementValidator.createFluentElementValidator(testElement).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.SYNCHRONIZED, Modifier.FINAL, Modifier.ABSTRACT).validateAndIssueMessages());
 
                     }
                 })
@@ -187,14 +187,14 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(testElement).applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC).validateAndIssueMessages());
+                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(testElement).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC).validateAndIssueMessages());
 
                     }
                 })
@@ -216,14 +216,14 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be validated as true", FluentElementValidator.createFluentElementValidator(testElement).applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.FINAL, Modifier.STATIC).validateAndIssueMessages());
+                        MatcherAssert.assertThat("Should be validated as true", FluentElementValidator.createFluentElementValidator(testElement).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.FINAL, Modifier.STATIC).validateAndIssueMessages());
 
                     }
                 })
@@ -244,14 +244,14 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
                         ExecutableElement testElement = ElementUtils.CastElement.castMethod(elements.get(0));
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(testElement).applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC).validateAndIssueMessages());
+                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(testElement).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.SYNCHRONIZED, Modifier.PUBLIC).validateAndIssueMessages());
 
                     }
 
@@ -273,13 +273,13 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod"))
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.METHOD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() == 1);
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be successfully validated", FluentElementValidator.createFluentElementValidator(elements.get(0)).is(CoreMatchers.IS_EXECUTABLE_ELEMENT).validateAndIssueMessages())
+                        MatcherAssert.assertThat("Should be successfully validated", FluentElementValidator.createFluentElementValidator(elements.get(0)).is(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).validateAndIssueMessages())
                         ;
 
                     }
@@ -301,13 +301,13 @@ public class FluentElementValidatorTest {
 
                         // check null value
                         List<? extends Element> elements = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(CoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
+                                .applyFilter(AptkCoreMatchers.BY_ELEMENT_KIND).filterByOneOf(ElementKind.FIELD)
                                 .getResult();
                         MatcherAssert.assertThat("precondition : must have found unique testelement", elements.size() >= 1);
 
 
                         // Test
-                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(elements.get(0)).is(CoreMatchers.IS_EXECUTABLE_ELEMENT).applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.STATIC).validateAndIssueMessages())
+                        MatcherAssert.assertThat("Should be validated as false", !FluentElementValidator.createFluentElementValidator(elements.get(0)).is(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.STATIC).validateAndIssueMessages())
                         ;
 
                     }

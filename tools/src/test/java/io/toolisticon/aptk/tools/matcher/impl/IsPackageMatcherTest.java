@@ -3,7 +3,7 @@ package io.toolisticon.aptk.tools.matcher.impl;
 import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -44,7 +44,7 @@ public class IsPackageMatcherTest {
                 MatcherAssert.assertThat("Precondition: should have found one method", result != null);
                 MatcherAssert.assertThat("Precondition: found method has to be of type package", result instanceof PackageElement);
 
-                MatcherAssert.assertThat("Should return true for method : ", CoreMatchers.IS_PACKAGE.getMatcher().check(result));
+                MatcherAssert.assertThat("Should return true for method : ", AptkCoreMatchers.IS_PACKAGE.getMatcher().check(result));
 
 
             }
@@ -60,7 +60,7 @@ public class IsPackageMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for non Package : ", !CoreMatchers.IS_PACKAGE.getMatcher().check(element));
+                MatcherAssert.assertThat("Should return false for non Package : ", !AptkCoreMatchers.IS_PACKAGE.getMatcher().check(element));
 
             }
         })
@@ -75,7 +75,7 @@ public class IsPackageMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false for null valued element : ", !CoreMatchers.IS_PACKAGE.getMatcher().check(null));
+                MatcherAssert.assertThat("Should return false for null valued element : ", !AptkCoreMatchers.IS_PACKAGE.getMatcher().check(null));
 
             }
         })

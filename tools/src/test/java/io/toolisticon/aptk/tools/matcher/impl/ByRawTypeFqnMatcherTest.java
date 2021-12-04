@@ -4,7 +4,7 @@ import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TestAnnotation;
 import io.toolisticon.aptk.tools.TypeUtils;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -37,7 +37,7 @@ public class ByRawTypeFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return cannonical class name of annotation class", CoreMatchers.BY_RAW_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(ByRawTypeFqnMatcherTest.class.getCanonicalName()).equals(ByRawTypeFqnMatcherTest.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return cannonical class name of annotation class", AptkCoreMatchers.BY_RAW_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(ByRawTypeFqnMatcherTest.class.getCanonicalName()).equals(ByRawTypeFqnMatcherTest.class.getCanonicalName()));
 
             }
         })
@@ -52,7 +52,7 @@ public class ByRawTypeFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return null for null valued parameter", CoreMatchers.BY_RAW_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(null) == null);
+                MatcherAssert.assertThat("Should return null for null valued parameter", AptkCoreMatchers.BY_RAW_TYPE_FQN.getMatcher().getStringRepresentationOfPassedCharacteristic(null) == null);
 
             }
         })
@@ -68,7 +68,7 @@ public class ByRawTypeFqnMatcherTest {
             protected void testCase(TypeElement element) {
 
                 TypeElement tmpElement = TypeUtils.TypeRetrieval.getTypeElement(ByRawTypeFqnMatcherTest.class);
-                MatcherAssert.assertThat("Should find match correctly", CoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(tmpElement, ByRawTypeFqnMatcherTest.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should find match correctly", AptkCoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(tmpElement, ByRawTypeFqnMatcherTest.class.getCanonicalName()));
 
             }
         })
@@ -84,7 +84,7 @@ public class ByRawTypeFqnMatcherTest {
             protected void testCase(TypeElement element) {
 
                 TypeElement tmpElement = TypeUtils.TypeRetrieval.getTypeElement(String.class);
-                MatcherAssert.assertThat("Should find match correctly", !CoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(tmpElement, ByRawTypeFqnMatcherTest.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should find match correctly", !AptkCoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(tmpElement, ByRawTypeFqnMatcherTest.class.getCanonicalName()));
 
             }
         })
@@ -99,7 +99,7 @@ public class ByRawTypeFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false in case of null valued element", !CoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, TestAnnotation.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should return false in case of null valued element", !AptkCoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, TestAnnotation.class.getCanonicalName()));
 
             }
         })
@@ -114,7 +114,7 @@ public class ByRawTypeFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false in case of null valued annotation", !CoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(element, null));
+                MatcherAssert.assertThat("Should return false in case of null valued annotation", !AptkCoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(element, null));
 
             }
         })
@@ -129,7 +129,7 @@ public class ByRawTypeFqnMatcherTest {
             @Override
             protected void testCase(TypeElement element) {
 
-                MatcherAssert.assertThat("Should return false in case of null valued parameters", !CoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, null));
+                MatcherAssert.assertThat("Should return false in case of null valued parameters", !AptkCoreMatchers.BY_RAW_TYPE_FQN.getMatcher().checkForMatchingCharacteristic(null, null));
 
 
             }

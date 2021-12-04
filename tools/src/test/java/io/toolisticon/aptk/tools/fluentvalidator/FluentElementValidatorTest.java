@@ -6,8 +6,8 @@ import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.ProcessingEnvironmentUtils;
 import io.toolisticon.aptk.tools.command.Command;
 import io.toolisticon.aptk.tools.command.CommandWithReturnType;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.corematcher.CoreMatcherValidationMessages;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
 import io.toolisticon.aptk.tools.corematcher.PlainValidationMessage;
 import io.toolisticon.aptk.tools.corematcher.ValidationMessage;
 import io.toolisticon.aptk.tools.TestCoreMatcherFactory;
@@ -48,7 +48,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                     }
@@ -67,7 +67,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
                     }
@@ -88,7 +88,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
                     }
@@ -108,7 +108,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                     }
@@ -130,7 +130,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
 
 
                     }
@@ -149,7 +149,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                     }
@@ -168,7 +168,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
                     }
                 })
                 .compilationShouldSucceed()
@@ -184,7 +184,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
 
 
                     }
@@ -204,7 +204,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_TYPE_ELEMENT).is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_TYPE_ELEMENT).is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
 
                     }
@@ -222,7 +222,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_EXECUTABLE_ELEMENT).is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
 
                     }
@@ -244,7 +244,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_TYPE_ELEMENT).is(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_TYPE_ELEMENT).is(AptkCoreMatchers.IS_INTERFACE).validateAndIssueMessages();
 
 
                     }
@@ -271,7 +271,7 @@ public class FluentElementValidatorTest {
                         MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 
 
-                        FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
 
 
                     }
@@ -295,7 +295,7 @@ public class FluentElementValidatorTest {
                                 MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 
 
-                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
 
 
                             }
@@ -319,7 +319,7 @@ public class FluentElementValidatorTest {
                     @Override
                     protected void testCase(TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                        FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                     }
@@ -339,7 +339,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -361,7 +361,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -381,7 +381,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                             }
@@ -405,7 +405,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -426,7 +426,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                             }
@@ -448,7 +448,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -469,7 +469,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
 
 
                             }
@@ -493,7 +493,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(CoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(AptkCoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
 
                             }
@@ -514,7 +514,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(CoreMatchers.IS_EXECUTABLE_ELEMENT).is(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
 
                             }
@@ -538,7 +538,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator((Element) element).is(CoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(AptkCoreMatchers.IS_INTERFACE).validateAndIssueMessages();
 
 
                             }
@@ -567,7 +567,7 @@ public class FluentElementValidatorTest {
                                 MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 
 
-                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).warning().applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).warning().applyValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
 
 
                             }
@@ -593,7 +593,7 @@ public class FluentElementValidatorTest {
                                 MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 
 
-                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).setCustomMessage("UPS").applyValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).setCustomMessage("UPS").applyValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
 
 
                             }
@@ -621,7 +621,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -642,7 +642,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                             }
@@ -666,7 +666,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                             }
@@ -687,7 +687,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -711,7 +711,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED, Modifier.FINAL).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED, Modifier.FINAL).validateAndIssueMessages();
 
 
                             }
@@ -732,7 +732,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -756,7 +756,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
 
 
                             }
@@ -777,7 +777,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC, Modifier.ABSTRACT).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC, Modifier.ABSTRACT).validateAndIssueMessages();
 
 
                             }
@@ -801,7 +801,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(AptkCoreMatchers.IS_INTERFACE).validateAndIssueMessages();
 
 
                             }
@@ -822,7 +822,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_TYPE_ELEMENT).isNot(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(AptkCoreMatchers.IS_TYPE_ELEMENT).isNot(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
 
                             }
@@ -846,7 +846,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
 
                             }
@@ -875,7 +875,7 @@ public class FluentElementValidatorTest {
                                 MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 
 
-                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
 
 
                             }
@@ -900,7 +900,7 @@ public class FluentElementValidatorTest {
                                 MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 
 
-                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
 
 
                             }
@@ -926,7 +926,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -947,7 +947,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                             }
@@ -971,7 +971,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
                             }
@@ -992,7 +992,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -1016,7 +1016,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED).validateAndIssueMessages();
 
 
                             }
@@ -1037,7 +1037,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -1061,7 +1061,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
 
 
                             }
@@ -1082,7 +1082,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
 
 
                             }
@@ -1106,7 +1106,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(CoreMatchers.IS_INTERFACE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(AptkCoreMatchers.IS_INTERFACE).validateAndIssueMessages();
 
 
                             }
@@ -1127,7 +1127,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(CoreMatchers.IS_TYPE_ELEMENT).isNot(CoreMatchers.IS_METHOD).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(AptkCoreMatchers.IS_TYPE_ELEMENT).isNot(AptkCoreMatchers.IS_METHOD).validateAndIssueMessages();
 
 
                             }
@@ -1151,7 +1151,7 @@ public class FluentElementValidatorTest {
                             @Override
                             protected void testCase(TypeElement element) {
 
-                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(CoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(CoreMatchers.IS_CLASS).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).isNot(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
 
                             }
@@ -1180,7 +1180,7 @@ public class FluentElementValidatorTest {
                                 MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 
 
-                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).warning().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).warning().applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
 
 
                             }
@@ -1206,7 +1206,7 @@ public class FluentElementValidatorTest {
                                 MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 
 
-                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).setCustomMessage("UPS").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).setCustomMessage("UPS").applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
 
 
                             }
@@ -1236,17 +1236,17 @@ public class FluentElementValidatorTest {
 
 
                                 MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                .setCustomMessage("NOTE").note().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .setCustomMessage("NOTE").note().applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
                                                 .validateAndIssueMessages()
                                         , Matchers.equalTo(false));
 
                                 MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                .setCustomMessage("WARNING").warning().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .setCustomMessage("WARNING").warning().applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
                                                 .validateAndIssueMessages()
                                         , Matchers.equalTo(false));
 
                                 MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                .setCustomMessage("ERROR").error().applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .setCustomMessage("ERROR").error().applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
                                                 .validateAndIssueMessages()
                                         , Matchers.equalTo(false));
 
@@ -1279,17 +1279,17 @@ public class FluentElementValidatorTest {
 
 
                                 MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                .note().setCustomMessage("NOTE").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .note().setCustomMessage("NOTE").applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
                                                 .validateAndIssueMessages()
                                         , Matchers.equalTo(false));
 
                                 MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                .warning().setCustomMessage("WARNING").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .warning().setCustomMessage("WARNING").applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
                                                 .validateAndIssueMessages()
                                         , Matchers.equalTo(false));
 
                                 MatcherAssert.assertThat(FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0)))
-                                                .error().setCustomMessage("ERROR").applyInvertedValidator(CoreMatchers.HAS_VOID_RETURN_TYPE)
+                                                .error().setCustomMessage("ERROR").applyInvertedValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
                                                 .validateAndIssueMessages()
                                         , Matchers.equalTo(false));
 

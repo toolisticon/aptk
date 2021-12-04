@@ -2,7 +2,7 @@ package io.toolisticon.aptk.tools;
 
 import com.sun.source.tree.StatementTree;
 import io.toolisticon.aptk.tools.command.impl.GetAttributesCommand;
-import io.toolisticon.aptk.tools.corematcher.CoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 
@@ -107,7 +107,7 @@ public final class BeanUtils {
     public static boolean hasDefaultNoargsConstructor(TypeElement typeElement) {
 
         List<ExecutableElement> constructors = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_CONSTRUCTOR)
+                .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
                 .getResult();
 
         // check for number of constructors
@@ -140,10 +140,10 @@ public final class BeanUtils {
 
         // first check element
         if (!FluentElementValidator.createFluentElementValidator(element)
-                .applyValidator(CoreMatchers.BY_ELEMENT_KIND).hasOneOf(ElementKind.CONSTRUCTOR)
-                .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC)
-                .applyValidator(CoreMatchers.HAS_NO_PARAMETERS)
-                .applyValidator(CoreMatchers.HAS_NO_THROWN_TYPES)
+                .applyValidator(AptkCoreMatchers.BY_ELEMENT_KIND).hasOneOf(ElementKind.CONSTRUCTOR)
+                .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC)
+                .applyValidator(AptkCoreMatchers.HAS_NO_PARAMETERS)
+                .applyValidator(AptkCoreMatchers.HAS_NO_THROWN_TYPES)
                 .justValidate()) {
             return false;
         }
@@ -153,7 +153,7 @@ public final class BeanUtils {
 
         // check for number of constructors
         if (!FluentElementFilter.createFluentElementFilter(typeElementFilter.getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_CONSTRUCTOR).hasSingleElement()) {
+                .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR).hasSingleElement()) {
             return false;
         }
 
@@ -200,8 +200,8 @@ public final class BeanUtils {
         }
 
         List<VariableElement> fields = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_FIELD)
-                .applyFilter(CoreMatchers.BY_MODIFIER).filterByNoneOf(Modifier.STATIC)
+                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByNoneOf(Modifier.STATIC)
                 .getResult();
 
         List<AttributeResult> result = new ArrayList<>();
@@ -236,7 +236,7 @@ public final class BeanUtils {
      */
     public static boolean checkHasGetter(VariableElement field) {
 
-        if (field == null || field.getKind() != ElementKind.FIELD || CoreMatchers.BY_MODIFIER.getMatcher().checkForMatchingCharacteristic(field, Modifier.STATIC)) {
+        if (field == null || field.getKind() != ElementKind.FIELD || AptkCoreMatchers.BY_MODIFIER.getMatcher().checkForMatchingCharacteristic(field, Modifier.STATIC)) {
             return false;
         }
 
@@ -373,12 +373,12 @@ public final class BeanUtils {
 
     protected static ExecutableElement getGetterMethod(VariableElement field, TypeElement typeElement) {
         List<ExecutableElement> result = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_METHOD)
-                .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC)
-                .applyFilter(CoreMatchers.BY_MODIFIER).filterByNoneOf(Modifier.ABSTRACT, Modifier.STATIC)
-                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(getPossibleGetterOrSetterNames(field, GETTER_PREFIXES))
-                .applyFilter(CoreMatchers.HAS_NO_PARAMETERS)
-                .applyFilter(CoreMatchers.BY_RETURN_TYPE_MIRROR).filterByOneOf(field.asType())
+                .applyFilter(AptkCoreMatchers.IS_METHOD)
+                .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC)
+                .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByNoneOf(Modifier.ABSTRACT, Modifier.STATIC)
+                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(getPossibleGetterOrSetterNames(field, GETTER_PREFIXES))
+                .applyFilter(AptkCoreMatchers.HAS_NO_PARAMETERS)
+                .applyFilter(AptkCoreMatchers.BY_RETURN_TYPE_MIRROR).filterByOneOf(field.asType())
                 .getResult();
 
         return result.size() >= 1 ? result.get(0) : null;
@@ -397,12 +397,12 @@ public final class BeanUtils {
         TypeMirror[] parameters = {field.asType()};
 
         List<ExecutableElement> result = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
-                .applyFilter(CoreMatchers.IS_METHOD)
-                .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC)
-                .applyFilter(CoreMatchers.BY_MODIFIER).filterByNoneOf(Modifier.ABSTRACT, Modifier.STATIC)
-                .applyFilter(CoreMatchers.BY_NAME).filterByOneOf(getPossibleGetterOrSetterNames(field, SETTER_PREFIXES))
-                .applyFilter(CoreMatchers.HAS_VOID_RETURN_TYPE)
-                .applyFilter(CoreMatchers.BY_PARAMETER_TYPE_MIRROR).filterByOneOf(parameters)
+                .applyFilter(AptkCoreMatchers.IS_METHOD)
+                .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC)
+                .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByNoneOf(Modifier.ABSTRACT, Modifier.STATIC)
+                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(getPossibleGetterOrSetterNames(field, SETTER_PREFIXES))
+                .applyFilter(AptkCoreMatchers.HAS_VOID_RETURN_TYPE)
+                .applyFilter(AptkCoreMatchers.BY_PARAMETER_TYPE_MIRROR).filterByOneOf(parameters)
                 .getResult();
 
         return result.size() >= 1 ? result.get(0) : null;
