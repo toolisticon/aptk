@@ -73,7 +73,15 @@ public class TypeMirrorWrapperTest {
     }
 
     @Test
-    public void test_isDeclardType() {
+    public void test_isErrorType() {
+        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.ERROR)).isErrorType());
+        MatcherAssert.assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isErrorType());
+        MatcherAssert.assertThat("Expected false for null", !TypeMirrorWrapper.isErrorType(mockTypeCheck(null)));
+    }
+
+
+    @Test
+    public void test_isDeclaredType() {
         MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isDeclared());
         MatcherAssert.assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.ARRAY)).isDeclared());
         MatcherAssert.assertThat("Expected false for null", !TypeMirrorWrapper.isDeclared(null));
@@ -93,6 +101,11 @@ public class TypeMirrorWrapperTest {
     public static class CollectionCheck_List {
         @PassIn
         List<String> collectionField;
+    }
+
+    public static class CollectionCheck_ListWithoutComponentType {
+        @PassIn
+        List collectionField;
     }
 
     public static class CollectionCheck_Set {
@@ -145,7 +158,7 @@ public class TypeMirrorWrapperTest {
 
                 ToolingProvider.setTooling(processingEnvironment);
                 try {
-                    MatcherAssert.assertThat("Expected false for no coellection type", !TypeMirrorWrapper.wrap(element.asType()).isCollection());
+                    MatcherAssert.assertThat("Expected false for no collection type", !TypeMirrorWrapper.wrap(element.asType()).isCollection());
                 } finally {
                     ToolingProvider.clearTooling();
                 }
@@ -162,7 +175,27 @@ public class TypeMirrorWrapperTest {
 
                 ToolingProvider.setTooling(processingEnvironment);
                 try {
-                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
+                    TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+                    MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+                    MatcherAssert.assertThat(typeMirrorWrapper.getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
+                } finally {
+                    ToolingProvider.clearTooling();
+                }
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_getComponentType_forListWithoutComponentType() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_ListWithoutComponentType.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+                try {
+                    TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+                    MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+                    MatcherAssert.assertThat(typeMirrorWrapper.getWrappedComponentType().getQualifiedName(), Matchers.is(Object.class.getCanonicalName()));
                 } finally {
                     ToolingProvider.clearTooling();
                 }
@@ -178,7 +211,9 @@ public class TypeMirrorWrapperTest {
 
                 ToolingProvider.setTooling(processingEnvironment);
                 try {
-                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
+                    TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+                    MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+                    MatcherAssert.assertThat(typeMirrorWrapper.getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
                 } finally {
                     ToolingProvider.clearTooling();
                 }
@@ -194,6 +229,8 @@ public class TypeMirrorWrapperTest {
 
                 ToolingProvider.setTooling(processingEnvironment);
                 try {
+                    TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+                    MatcherAssert.assertThat("Should be false", !typeMirrorWrapper.hasComponentType());
                     MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType(), Matchers.nullValue());
                 } finally {
                     ToolingProvider.clearTooling();
@@ -377,6 +414,61 @@ public class TypeMirrorWrapperTest {
         }).executeTest();
     }
 
+    // ---------------------------------------------------------------
+    // -- getTypeArguments
+    // ---------------------------------------------------------------
+
+    @Test
+    public void test_getTypeArguments() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(TypeArgumentsTest.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                try {
+                    ToolingProvider.setTooling(processingEnvironment);
+
+                    List<? extends TypeMirror> typeArgumentTypeMirrors = TypeMirrorWrapper.wrap(element.asType()).getTypeArguments();
+                    MatcherAssert.assertThat(typeArgumentTypeMirrors, Matchers.hasSize(2));
+                    MatcherAssert.assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(0)), Matchers.is(String.class.getCanonicalName()));
+                    MatcherAssert.assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(1)), Matchers.is(Long.class.getCanonicalName()));
+
+                    // check for non typeArgument class
+                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getTypeArguments(), Matchers.nullValue());
+
+                } finally {
+                    ToolingProvider.clearTooling();
+                }
+            }
+        }).executeTest();
+    }
+
+    // ---------------------------------------------------------------
+    // -- getWrappedTypeArguments
+    // ---------------------------------------------------------------
+
+    @Test
+    public void test_getWrappedTypeArguments() {
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(TypeArgumentsTest.class, new UnitTest<VariableElement>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
+                try {
+                    ToolingProvider.setTooling(processingEnvironment);
+
+                    List<? extends TypeMirrorWrapper> typeArgumentTypeMirrorWrappers = TypeMirrorWrapper.wrap(element.asType()).getWrappedTypeArguments();
+                    MatcherAssert.assertThat(typeArgumentTypeMirrorWrappers, Matchers.hasSize(2));
+                    MatcherAssert.assertThat(typeArgumentTypeMirrorWrappers.get(0).getQualifiedName(), Matchers.is(String.class.getCanonicalName()));
+                    MatcherAssert.assertThat(typeArgumentTypeMirrorWrappers.get(1).getQualifiedName(), Matchers.is(Long.class.getCanonicalName()));
+
+                    // check for non typeArgument class
+                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getWrappedTypeArguments(), Matchers.nullValue());
+
+                } finally {
+                    ToolingProvider.clearTooling();
+                }
+            }
+        }).executeTest();
+    }
 
     // ---------------------------------------------------------------
     // -- getPackage
@@ -569,5 +661,6 @@ public class TypeMirrorWrapperTest {
             }
         }).executeTest();
     }
+
 
 }

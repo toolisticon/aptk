@@ -28,7 +28,7 @@ This project supports you by providing utilities that allow you to develop annot
 It also reduces the complexity of handling compile time and runtime model by shading common pitfalls behind it's api.
 
 # Features
-- provides processor for generating wrapper classes for accessing annotation attributes 
+- provides a processor for generating wrapper classes for accessing annotation attributes 
 - provides support for Class conversion from runtime to compile time model (Class / FQN to Element and TypeMirror)
 - provides support for accessing the compile time element tree
 - provides generic Element based filters, validator and matchers
@@ -50,7 +50,7 @@ This can be done by adding the following to your annotation processors pom.xml:
          <dependency>
              <groupId>io.toolisticon.aptk</groupId>
              <artifactId>tools</artifactId>
-             <version>0.16.0</version>
+             <version>0.17.1</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
@@ -106,7 +106,7 @@ Please check our example provided in the github.
 ## Annotation Wrapper
 Reading attribute values can be very complicated if it comes to annotation type or Class based attributes.
 In this case you are often forced to read the attribute values via the AnnotationMirror api.
-Additionally you usually have to create some kind of class to store those annotation configurations of the annotation.
+Additionally, you usually have to create some kind of class to store those annotation configurations of the annotation.
 
 The APTK provides an annotation processor that generates wrapper classes that allow you to access like if you are accessing the annotation directly.
 Only difference is that Class type based attributes will be accessible as FQN String, TypeMirror or TypeMirrorWrapper.
@@ -120,7 +120,12 @@ This framework provides some utility classes to add some useful features not cov
 - Elements : _ElementUtils_ provides support to navigate through the Element tree
 - Types : _TypeUtils_ provides support to cope with type in java compile time model
 - Messager : _MessagerUtils_ provides support to issue messages during compilation
-- Filer : _FilerUtils_ provides support to access or write java source or resource files 
+- Filer : _FilerUtils_ provides support to access or write java source or resource files
+
+There are some more helpful utility classes:
+
+- _AnnotationUtils_ : provides support for reading annotation attribute values
+- _AnnotationValueUtils_ : provides support for handling _AnnotationValue_;
 
 Example:
 ```java
@@ -142,15 +147,15 @@ Example:
 These are just a few examples of the provided tools. Please check the javadoc for more information.
 
 
-## Characteristic matching, validation and filtering of Elements with CoreMatchers and fluent API
+## Characteristic matching, validation and filtering of Elements with core mathcers and fluent API
 
-The framework provides a set of CoreMatchers that can be used to check if an Element matches a specific characteristic.
+The framework provides a set of core matchers that can be used to check if an Element matches a specific characteristic.
 
-Those CoreMatchers can also be used for validation - validators allow you to check if an element matches none, one, at least one or all of the passed characeristics.  
+Those core matchers can also be used for validation - validators allow you to check if an element matches none, one, at least one or all of the passed characteristics.  
 
-Additionally the CoreMatchers can be used to filter a List of Elements by specific characeristics.
+Additionally, the Core matchers can be used to filter a List of Elements by specific characteristics.
 
-The framework provides a _FluentElementValidator_ and a _FluentElementFilter_ class that allow you to combine multiple filters and validations by providing a simple and powerfull fluent api.
+The framework provides a _FluentElementValidator_ and a _FluentElementFilter_ class that allow you to combine multiple filters and validations by providing a simple and powerful fluent api.
 
 Please check following examples:
 ```java
@@ -158,33 +163,33 @@ Please check following examples:
 
     // validator already will print output so additional actions are not necessary
     FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castToTypeElement(element))
-            .applyValidator(CoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(SpecificInterface.class)
+            .applyValidator(AptkCoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(SpecificInterface.class)
             .validateAndIssueMessages();
 
     // Matcher checks for a single criteria
-    boolean isPublic = CoreMatchers.BY_MODIFIER.getMatcher().checkForMatchingCharacteristic(element, Modifier.PUBLIC);
+    boolean isPublic = AptkCoreMatchers.BY_MODIFIER.getMatcher().checkForMatchingCharacteristic(element, Modifier.PUBLIC);
 
     // Validator checks for multiple criteria : none of, one of, at least one of or all of
-    boolean isPublicAndStatic = CoreMatchers.BY_MODIFIER.getValidator().hasAllOf(element, Modifier.PUBLIC,Modifier.STATIC);
+    boolean isPublicAndStatic = AptkCoreMatchers.BY_MODIFIER.getValidator().hasAllOf(element, Modifier.PUBLIC,Modifier.STATIC);
 
     // Filter checks for multiple criteria and returns a List that contains all matching elements
-    List<Element> isPublicAndStaticElements = CoreMatchers.BY_MODIFIER.getFilter().filterByAllOf(elements, Modifier.PUBLIC,Modifier.STATIC);
+    List<Element> isPublicAndStaticElements = AptkCoreMatchers.BY_MODIFIER.getFilter().filterByAllOf(elements, Modifier.PUBLIC,Modifier.STATIC);
 
     // Just validates without sending messages
     boolean isPublicAndStatic2 = FluentElementValidator.createFluentElementValidator(element)
-            .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
+            .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
             .justValidate();
 
     // Validate and send messages in case of failing validation
     FluentElementValidator.createFluentElementValidator(element)
-            .applyValidator(CoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
+            .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
             .validateAndIssueMessages();
 
 
     // Filters list by criteria : returns all method Elements that are public and static
     List<ExecutableElement> filteredElements = FluentElementFilter.createFluentElementFilter(elements)
-            .applyFilter(CoreMatchers.IS_METHOD)
-            .applyFilter(CoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC,Modifier.STATIC)
+            .applyFilter(AptkCoreMatchers.IS_METHOD)
+            .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC,Modifier.STATIC)
             .getResult();
 ```
 
@@ -256,14 +261,17 @@ We welcome any kind of suggestions and pull requests.
 ## Building and developing annotation-processor-toolkit
 
 The annotation-processor-toolkit is built using Maven (at least version 3.0.0).
+Unfortunately it's getting harder to keep the build process compatible with all Java version.
+So currently project is able to be built with Java versions <=12.
+
 A simple import of the pom in your IDE should get you up and running. To build the annotation-processor-toolkit on the commandline, just run `mvn` or `mvn clean install`
 
 ## Requirements
 
-The likelihood of a pull request being used rises with the following properties:
+The likelihood of a pull request being accepted rises with the following properties:
 
 - You have used a feature branch.
-- You have included a test that demonstrates the functionality added or fixed.
+- You have included tests that demonstrate the functionality added or fixed.
 - You adhered to the [code conventions](http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html).
 
 

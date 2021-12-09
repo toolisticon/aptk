@@ -188,7 +188,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
             VariableElement firstParameter = customClassMethod.getParameters().get(0);
 
-            if (!firstParameter.asType().toString().equals(expectedTypeMirrorWrapperClassName) && !firstParameter.asType().toString().endsWith("."+expectedTypeMirrorWrapperClassName)) {
+            if (!firstParameter.asType().toString().equals(expectedTypeMirrorWrapperClassName) && !firstParameter.asType().toString().endsWith("." + expectedTypeMirrorWrapperClassName)) {
                 MessagerUtils.error(firstParameter, AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, firstParameter.asType().toString(), expectedTypeMirrorWrapperClassName);
             }
 
@@ -654,12 +654,15 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         }
 
         /**
-         * Gets the component type of an array
+         * Gets the component type of an array or collection
          *
-         * @return the component type in case the attribute is an array, otherwise null
+         * @return the component type in case the attribute is an array or a collection, otherwise null
          */
         public String getComponentAttributeType() {
-            return TypeMirrorWrapper.wrap(attribute.getReturnType()).getWrappedComponentType().getSimpleName();
+
+            TypeMirrorWrapper componentTypeMirrorWrapper = TypeMirrorWrapper.wrap(attribute.getReturnType()).getWrappedComponentType();
+            return componentTypeMirrorWrapper != null ? componentTypeMirrorWrapper.getSimpleName() : null;
+
         }
 
         /**
