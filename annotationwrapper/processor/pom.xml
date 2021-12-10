@@ -3,29 +3,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>annotationwrapper-processor</artifactId>
+    <artifactId>aptk-annotationwrapper-processor</artifactId>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
-        <artifactId>annotationwrapper-parent</artifactId>
+        <artifactId>aptk-annotationwrapper-parent</artifactId>
         <version>0.17.2-SNAPSHOT</version>
     </parent>
 
-    <name>annotationwrapper-processor</name>
+    <name>aptk-annotationwrapper-processor</name>
 
     <dependencies>
 
         <!-- runtime dependencies -->
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>annotationwrapper-api</artifactId>
+            <artifactId>aptk-annotationwrapper-api</artifactId>
         </dependency>
 
         <!-- shaded artifacts - set to provided -->
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>tools</artifactId>
+            <artifactId>aptk-tools</artifactId>
         </dependency>
 
         <!-- dependencies just used during compilation -->
@@ -42,7 +42,7 @@
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>cute</artifactId>
+            <artifactId>aptk-cute</artifactId>
         </dependency>
 
     </dependencies>
@@ -67,9 +67,9 @@
 
                             <artifactSet>
                                 <includes>
-                                    <include>io.toolisticon.aptk:tools</include>
-                                    <include>io.toolisticon.aptk:common</include>
-                                    <include>io.toolisticon.aptk:templating</include>
+                                    <include>io.toolisticon.aptk:aptk-tools</include>
+                                    <include>io.toolisticon.aptk:aptk-common</include>
+                                    <include>io.toolisticon.aptk:aptk-templating</include>
                                 </includes>
                             </artifactSet>
 

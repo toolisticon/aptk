@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tools</artifactId>
+    <artifactId>aptk-tools</artifactId>
     <packaging>jar</packaging>
 
     <parent>
@@ -11,19 +11,19 @@
         <version>0.17.2-SNAPSHOT</version>
     </parent>
 
-    <name>tools</name>
+    <name>aptk-tools</name>
 
 
     <dependencies>
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>aptk-common</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>templating</artifactId>
+            <artifactId>aptk-templating</artifactId>
         </dependency>
 
         <dependency>

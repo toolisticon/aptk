@@ -500,19 +500,19 @@
             <!-- internal -->
             <dependency>
                 <groupId>io.toolisticon.aptk</groupId>
-                <artifactId>tools</artifactId>
+                <artifactId>aptk-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.toolisticon.aptk</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>aptk-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.toolisticon.aptk</groupId>
-                <artifactId>templating</artifactId>
+                <artifactId>aptk-templating</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

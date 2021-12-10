@@ -49,8 +49,8 @@ This can be done by adding the following to your annotation processors pom.xml:
 
          <dependency>
              <groupId>io.toolisticon.aptk</groupId>
-             <artifactId>tools</artifactId>
-             <version>0.17.1</version>
+             <artifactId>aptk-tools</artifactId>
+             <version>0.18.0</version>
          </dependency>
 
         <!-- recommended for testing your annotation processor -->
@@ -251,7 +251,7 @@ Unfortunately some incompatible changes have to be introduced with version 0.15.
 
 ## Compile time testing of annotation processors
 
-- [toolisticon compile-testing](https://github.com/toolisticon/compile-testing) : A simple compile testing framework that allows you to test annotation processors. It is used in this project as well.
+- [Toolisticon CUTE](https://github.com/toolisticon/cute) : A simple compile testing framework that allows you to test annotation processors. It was extracted from this project is a great help to unit test your annotation processor code.
 - [google compile-testing](https://github.com/google/compile-testing) : Another compile testing framework which was used in the past by this framework. It has some flaws like missing compatibility with different Java versions, is binding a lot of common 3rd party libraries, and has almost no documentation
 
 # Contributing

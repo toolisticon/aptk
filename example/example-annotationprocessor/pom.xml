@@ -2,28 +2,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>example-annotationprocessor</artifactId>
+    <artifactId>aptk-example-annotationprocessor</artifactId>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
-        <artifactId>example-parent</artifactId>
+        <artifactId>aptk-example-parent</artifactId>
         <version>0.17.2-SNAPSHOT</version>
     </parent>
 
-    <name>example-annotationprocessor</name>
+    <name>aptk-example-annotationprocessor</name>
 
 
     <dependencies>
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>tools</artifactId>
+            <artifactId>aptk-tools</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>example-annotations</artifactId>
+            <artifactId>aptk-example-annotations</artifactId>
             <scope>provided</scope>
         </dependency>
 

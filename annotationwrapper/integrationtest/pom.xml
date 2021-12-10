@@ -3,16 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>annotationwrapper-integrationTest</artifactId>
+    <artifactId>aptk-annotationwrapper-integrationTest</artifactId>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
-        <artifactId>annotationwrapper-parent</artifactId>
+        <artifactId>aptk-annotationwrapper-parent</artifactId>
         <version>0.17.2-SNAPSHOT</version>
     </parent>
 
-    <name>annotationwrapper-integrationTest</name>
+    <name>aptk-annotationwrapper-integrationTest</name>
 
 
     <build>
@@ -28,7 +28,7 @@
                     <annotationProcessorPaths>
                         <path>
                             <groupId>io.toolisticon.aptk</groupId>
-                            <artifactId>annotationwrapper-processor</artifactId>
+                            <artifactId>aptk-annotationwrapper-processor</artifactId>
                             <version>${project.version}</version>
                         </path>
                     </annotationProcessorPaths>
@@ -90,17 +90,17 @@
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>annotationwrapper-api</artifactId>
+            <artifactId>aptk-annotationwrapper-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>tools</artifactId>
+            <artifactId>aptk-tools</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>cute</artifactId>
+            <artifactId>aptk-cute</artifactId>
         </dependency>
 
         <dependency>
