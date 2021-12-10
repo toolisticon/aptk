@@ -233,10 +233,11 @@ Please check [template engine](templating) for further information.
 
 
 # Recent Changes
-Unfortunately some incompatible changes have to be introduced with version 0.15.0 as preparation for Release 1.0.0:
+Unfortunately some incompatible changes have to be introduced with version 0.15.0/0.18.0 as preparation for Release 1.0.0:
 
 - Maven GroupId has changed to *io.toolisticon.aptk*
-- Main artifactId name has changed from *annotationprocessor* to *tools*
+- All artifactIds are now prefixed with 'aptk-'
+- Main artifactId name has changed from *annotationprocessor* to *aptk-tools*
 - Base package name has changed to *io.toolisticon.aptk*
 - AbstractAnnotationProcessor class has been relocated to *io.toolisticon.aptk.tools*
 - ToolingProvider class has been relocated to *io.toolisticon.aptk.common*
