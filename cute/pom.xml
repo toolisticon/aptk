@@ -1,18 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.toolisticon.aptk</groupId>
 
-    <artifactId>cute</artifactId>
+    <artifactId>aptk-cute</artifactId>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-parent</artifactId>
-        <version>0.17.1</version>
+        <version>0.18.0</version>
     </parent>
 
-    <name>cute</name>
+    <name>aptk-cute</name>
 
 
     <dependencies>
@@ -26,7 +25,7 @@
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>tools</artifactId>
+            <artifactId>aptk-tools</artifactId>
             <scope>provided</scope>
         </dependency>
 

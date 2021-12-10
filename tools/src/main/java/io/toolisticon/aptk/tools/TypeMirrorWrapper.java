@@ -8,6 +8,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,6 +57,26 @@ public class TypeMirrorWrapper {
         return TypeUtils.CheckTypeKind.isPrimitive(typeMirror);
     }
 
+
+    /**
+     * Gets wrapped TypeMirror as a PrimitiveType
+     *
+     * @return the wrapped TypeMirror cast to a PrimitiveType, or null if TypeMirror does not represent a primitive type.
+     */
+    public PrimitiveType getPrimitiveType() {
+        return getPrimitiveType(typeMirror);
+    }
+
+    /**
+     * Gets wrapped TypeMirror as a PrimitiveType
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return the wrapped TypeMirror cast to a PrimitiveType, or null if TypeMirror does not represent a primitive type.
+     */
+    public static PrimitiveType getPrimitiveType(TypeMirror typeMirror) {
+        return isPrimitive(typeMirror) ? (PrimitiveType) typeMirror : null;
+    }
+
     /**
      * Checks if wrapped TypeMirror is a TypeVar type.
      *
@@ -76,22 +97,22 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets wrapped TypeMirror as a PrimitiveType
+     * Gets wrapped TypeMirror as a TypeVariable
      *
-     * @return the wrapped TypeMirror cast to a PrimitiveType, or null if TypeMirror does not represent a primitive type.
+     * @return the wrapped TypeMirror cast to a TypeVariable, or null if TypeMirror does not represent a primitive type.
      */
-    public PrimitiveType getPrimitiveType() {
-        return getPrimitiveType(typeMirror);
+    public TypeVariable getTypeVar() {
+        return getTypeVar(typeMirror);
     }
 
     /**
-     * Gets wrapped TypeMirror as a PrimitiveType
+     * Gets wrapped TypeMirror as a TypeVariable
      *
      * @param typeMirror the TypeMirror to check
-     * @return the wrapped TypeMirror cast to a PrimitiveType, or null if TypeMirror does not represent a primitive type.
+     * @return the wrapped TypeMirror cast to a TypeVariable, or null if TypeMirror does not represent a TypeVariable type.
      */
-    public static PrimitiveType getPrimitiveType(TypeMirror typeMirror) {
-        return isPrimitive(typeMirror) ? (PrimitiveType) typeMirror : null;
+    public static TypeVariable getTypeVar(TypeMirror typeMirror) {
+        return isTypeVar(typeMirror) ? (TypeVariable) typeMirror : null;
     }
 
     /**
@@ -239,6 +260,18 @@ public class TypeMirrorWrapper {
         return getWildcardType(typeMirror);
     }
 
+
+
+    /**
+     * Gets wrapped TypeMirror as a DeclaredType
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return the wrapped TypeMirror cast to a DeclaredType, or null if TypeMirror does not represent a declared type.
+     */
+    public static WildcardType getWildcardType(TypeMirror typeMirror) {
+        return isWildcardType(typeMirror) ? (WildcardType) typeMirror : null;
+    }
+
     /**
      * Checks if wrapped TypeMirror is of kind ERROR.
      *
@@ -259,17 +292,27 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets wrapped TypeMirror as a DeclaredType
+     * Checks if TypeMirror has component type.
      *
-     * @param typeMirror the TypeMirror to check
-     * @return the wrapped TypeMirror cast to a DeclaredType, or null if TypeMirror does not represent a declared type.
+     * @return true if the TypeMirror represents either an array or a Collection, otherwise false.
      */
-    public static WildcardType getWildcardType(TypeMirror typeMirror) {
-        return isWildcardType(typeMirror) ? (WildcardType) typeMirror : null;
+    public boolean hasComponentType() {
+        return hasComponentType(typeMirror);
     }
 
     /**
-     * Gets the ComponentType of TypeMirror representing an array or collection
+     * Checks if TypeMirror has component type.
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return true if the TypeMirror represents either an array or a Collection, otherwise false.
+     */
+    public static boolean hasComponentType(TypeMirror typeMirror) {
+        return getComponentType(typeMirror) != null;
+    }
+
+    /**
+     * Gets the ComponentType of TypeMirror representing an array or collection.
+     * Will return TypeMirror of Object if collections component type isn't explicitly set.
      *
      * @return The component TypeMirror when passed typeMirror represents an array or collection, otherwise null.
      */
@@ -278,10 +321,11 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets the ComponentType of TypeMirror representing an array or collection
+     * Gets the ComponentType of TypeMirror representing an array or collection.
+     * Will return TypeMirror of Object if collections component type isn't explicitly set.
      *
      * @param typeMirror the TypeMirror to check
-     * @return The component TypeMirror when passed typeMirror represents an array or collection, otherwise null.
+     * @return The component TypeMirror when passed typeMirror represents an array a collection, otherwise null.
      */
     public static TypeMirror getComponentType(TypeMirror typeMirror) {
 
@@ -289,10 +333,14 @@ public class TypeMirrorWrapper {
             return ((ArrayType) typeMirror).getComponentType();
         }
 
-        if (isCollection(typeMirror) && hasTypeArguments(typeMirror)) {
-            List<? extends TypeMirror> typeArgumentTypeMirrors = getTypeArguments(typeMirror);
-            if (typeArgumentTypeMirrors != null && typeArgumentTypeMirrors.size() == 1) {
+        if (isCollection(typeMirror)) {
+            if (hasTypeArguments(typeMirror)) {
+
+                List<? extends TypeMirror> typeArgumentTypeMirrors = getTypeArguments(typeMirror);
                 return typeArgumentTypeMirrors.get(0);
+
+            } else {
+                return TypeUtils.TypeRetrieval.getTypeMirror(Object.class);
             }
         }
 
@@ -300,9 +348,9 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets the wrapped component type of TypeMirror representing an array
+     * Gets the wrapped component type of TypeMirror representing an array or a collection
      *
-     * @return The component TypeMirror when passed typeMirror represents an array, otherwise null.
+     * @return The component TypeMirror when passed typeMirror represents an array or a collection, otherwise null.
      */
     public TypeMirrorWrapper getWrappedComponentType() {
         return getWrappedComponentType(typeMirror);
@@ -312,10 +360,11 @@ public class TypeMirrorWrapper {
      * Gets the wrapped Component type of TypeMirror representing an array or collection
      *
      * @param typeMirror the TypeMirror to check
-     * @return The component TypeMirror when passed typeMirror represents an array or collection, otherwise null.
+     * @return The component TypeMirror when passed typeMirror represents an array or a collection, otherwise null.
      */
     public static TypeMirrorWrapper getWrappedComponentType(TypeMirror typeMirror) {
-        return isArray(typeMirror) ? TypeMirrorWrapper.wrap(((ArrayType) typeMirror).getComponentType()) : null;
+        TypeMirror componentTypeMirror = getComponentType(typeMirror);
+        return componentTypeMirror != null ? TypeMirrorWrapper.wrap(componentTypeMirror) : null;
     }
 
     /**
