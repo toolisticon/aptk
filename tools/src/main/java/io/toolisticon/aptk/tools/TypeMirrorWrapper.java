@@ -8,6 +8,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,6 +57,26 @@ public class TypeMirrorWrapper {
         return TypeUtils.CheckTypeKind.isPrimitive(typeMirror);
     }
 
+
+    /**
+     * Gets wrapped TypeMirror as a PrimitiveType
+     *
+     * @return the wrapped TypeMirror cast to a PrimitiveType, or null if TypeMirror does not represent a primitive type.
+     */
+    public PrimitiveType getPrimitiveType() {
+        return getPrimitiveType(typeMirror);
+    }
+
+    /**
+     * Gets wrapped TypeMirror as a PrimitiveType
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return the wrapped TypeMirror cast to a PrimitiveType, or null if TypeMirror does not represent a primitive type.
+     */
+    public static PrimitiveType getPrimitiveType(TypeMirror typeMirror) {
+        return isPrimitive(typeMirror) ? (PrimitiveType) typeMirror : null;
+    }
+
     /**
      * Checks if wrapped TypeMirror is a TypeVar type.
      *
@@ -76,22 +97,22 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets wrapped TypeMirror as a PrimitiveType
+     * Gets wrapped TypeMirror as a TypeVariable
      *
-     * @return the wrapped TypeMirror cast to a PrimitiveType, or null if TypeMirror does not represent a primitive type.
+     * @return the wrapped TypeMirror cast to a TypeVariable, or null if TypeMirror does not represent a primitive type.
      */
-    public PrimitiveType getPrimitiveType() {
-        return getPrimitiveType(typeMirror);
+    public TypeVariable getTypeVar() {
+        return getTypeVar(typeMirror);
     }
 
     /**
-     * Gets wrapped TypeMirror as a PrimitiveType
+     * Gets wrapped TypeMirror as a TypeVariable
      *
      * @param typeMirror the TypeMirror to check
-     * @return the wrapped TypeMirror cast to a PrimitiveType, or null if TypeMirror does not represent a primitive type.
+     * @return the wrapped TypeMirror cast to a TypeVariable, or null if TypeMirror does not represent a TypeVariable type.
      */
-    public static PrimitiveType getPrimitiveType(TypeMirror typeMirror) {
-        return isPrimitive(typeMirror) ? (PrimitiveType) typeMirror : null;
+    public static TypeVariable getTypeVar(TypeMirror typeMirror) {
+        return isTypeVar(typeMirror) ? (TypeVariable) typeMirror : null;
     }
 
     /**
