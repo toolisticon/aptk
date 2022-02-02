@@ -47,9 +47,13 @@ public class IfTemplateBlockTest {
         IfTemplateBlock unit = new IfTemplateBlock("def.hij.klm", "templateString");
 
         // Must add template block
-        unit.getBinder().addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        TemplateBlockBinder templateBlockBinder = new TemplateBlockBinder("def.hij.klm");
+        templateBlockBinder.addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        unit.setBinder(templateBlockBinder);
 
-        MatcherAssert.assertThat(unit.getBinder(), Matchers.notNullValue());
+        MatcherAssert.assertThat(unit.getIfStatements(), Matchers.<IfTemplateBlock.IfStatement>hasSize(1));
+        MatcherAssert.assertThat(unit.getIfStatements().get(0).getBinder().getContent(null), Matchers.is("AB"));
+        MatcherAssert.assertThat(unit.getIfStatements().get(0).getAccessPath(), Matchers.is("def.hij.klm"));
         MatcherAssert.assertThat(unit.getAccessPath(), Matchers.equalTo("def.hij.klm"));
         MatcherAssert.assertThat(unit.getTemplateString(), Matchers.equalTo("templateString"));
 
@@ -61,7 +65,9 @@ public class IfTemplateBlockTest {
         IfTemplateBlock unit = new IfTemplateBlock(" def ", "ABC");
 
         // Must add template block
-        unit.getBinder().addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        TemplateBlockBinder templateBlockBinder = new TemplateBlockBinder("def.hij.klm");
+        templateBlockBinder.addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        unit.setBinder(templateBlockBinder);
 
         Map<String, Object> model = new HashMap<String, Object>();
 
@@ -74,7 +80,9 @@ public class IfTemplateBlockTest {
         IfTemplateBlock unit = new IfTemplateBlock(" def ", "${abc}");
 
         // Must add template block
-        unit.getBinder().addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        TemplateBlockBinder templateBlockBinder = new TemplateBlockBinder("def.hij.klm");
+        templateBlockBinder.addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        unit.setBinder(templateBlockBinder);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("def", "NOPE");
@@ -89,7 +97,9 @@ public class IfTemplateBlockTest {
         IfTemplateBlock unit = new IfTemplateBlock(" def ", "ABC");
 
         // Must add template block
-        unit.getBinder().addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        TemplateBlockBinder templateBlockBinder = new TemplateBlockBinder("def.hij.klm");
+        templateBlockBinder.addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        unit.setBinder(templateBlockBinder);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("def", null);
@@ -103,8 +113,9 @@ public class IfTemplateBlockTest {
         IfTemplateBlock unit = new IfTemplateBlock("def", "AB");
 
         // Must add template block
-        unit.getBinder().addTemplateBlock(new PlainTextTemplateBlock("AB"));
-
+        TemplateBlockBinder templateBlockBinder = new TemplateBlockBinder("def.hij.klm");
+        templateBlockBinder.addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        unit.setBinder(templateBlockBinder);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("def", true);
@@ -118,8 +129,9 @@ public class IfTemplateBlockTest {
         IfTemplateBlock unit = new IfTemplateBlock(" def ", "AB");
 
         // Must add template block
-        unit.getBinder().addTemplateBlock(new PlainTextTemplateBlock("AB"));
-
+        TemplateBlockBinder templateBlockBinder = new TemplateBlockBinder("def.hij.klm");
+        templateBlockBinder.addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        unit.setBinder(templateBlockBinder);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("def", false);
@@ -133,7 +145,9 @@ public class IfTemplateBlockTest {
         IfTemplateBlock unit = new IfTemplateBlock(" def == 'YEP' ", "AB");
 
         // Must add template block
-        unit.getBinder().addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        TemplateBlockBinder templateBlockBinder = new TemplateBlockBinder("def.hij.klm");
+        templateBlockBinder.addTemplateBlock(new PlainTextTemplateBlock("AB"));
+        unit.setBinder(templateBlockBinder);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("def", "YEP");

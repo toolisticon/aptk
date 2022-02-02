@@ -235,9 +235,9 @@ public enum TemplateBlockType {
     }
 
     /**
-     * Returns the detection Pattern for a end control block tag.
+     * Returns the detection Pattern for an end control block tag.
      *
-     * @return the detection pattern for a end control block tag, otherwise null
+     * @return the detection pattern for an end control block tag, otherwise null
      */
     public Pattern getEndControlBlockPattern() {
         return isControlBlock ? Pattern.compile("[!][{][/]" + controlBlockCommand + "\\s*[}]") : null;

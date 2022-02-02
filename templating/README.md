@@ -56,11 +56,17 @@ Static text blocks can be used to avoid escaping issues.
 ### if statements
 Simple if statements without else case are currently supported.
 ```
-// currently just supports if statements without else case
+// complex if commands with elseif and else cases are supported
 !{if expression} 
     your text/code 
+!{elseif otherExpression}
+    your alternative text/code
+!{else}
+    else case text/code
 !{/if}
 ```
+
+'elseif' and 'else' cases are optional.
 
 ### for statement
 The template engine provides a for loop functionality:
