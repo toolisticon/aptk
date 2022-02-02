@@ -3,13 +3,13 @@ package io.toolisticon.aptk.templating.exceptions;
 /**
  * Exception that is thrown if an if control block has multiple else cases.
  */
-public class MultipleElseCasesException extends RuntimeException {
+public class InvalidElseIfException extends RuntimeException {
 
-    public MultipleElseCasesException(String message) {
+    public InvalidElseIfException(String message) {
         super(message);
     }
 
-    public MultipleElseCasesException(String message, Throwable e) {
+    public InvalidElseIfException(String message, Throwable e) {
         super(message, e);
     }
 

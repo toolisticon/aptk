@@ -1,12 +1,14 @@
 package io.toolisticon.aptk.templating.templateblocks;
 
 import io.toolisticon.aptk.templating.ParseUtilities;
+import io.toolisticon.aptk.templating.exceptions.InvalidElseIfException;
 import io.toolisticon.aptk.templating.exceptions.InvalidExpressionResult;
-import io.toolisticon.aptk.templating.exceptions.MultipleElseCasesException;
 import io.toolisticon.aptk.templating.expressions.Expression;
 import io.toolisticon.aptk.templating.expressions.ExpressionParser;
 import io.toolisticon.aptk.templating.expressions.operands.Operand;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,14 +18,52 @@ import java.util.regex.Pattern;
  */
 public class IfTemplateBlock implements TemplateBlock {
 
-    private static final String ELSE_REGEX = "[!][{]else[}]";
+    /**
+     * Class to store If and ElseIf statements.
+     */
+    static class IfStatement {
+
+        /** The if statements expression - must resolve to boolean value. */
+        private final String accessPath;
+        /** The template block binder that belongs to the if statement. */
+        private final TemplateBlockBinder binder;
+
+        /**
+         * Constructor.
+         * @param accessPath the if statements expression
+         * @param binder
+         */
+        IfStatement(String accessPath, TemplateBlockBinder binder) {
+            this.accessPath = accessPath;
+            this.binder = binder;
+        }
+
+        String getAccessPath() {
+            return accessPath;
+        }
+
+        TemplateBlockBinder getBinder() {
+            return binder;
+        }
+    }
+
+    private static final String ELSE_OR_ELSEIF_DETECTION_REGEX = "[!][{](?:[ ]*?)(else(?:if){0,1})([ ]+(.*?)){0,1}(?:[ ]*?)[}]";
+    private static final Pattern ELSE_OR_ELSEIF_DETECTION_PATTERN = Pattern.compile(ELSE_OR_ELSEIF_DETECTION_REGEX);
+
+    private static final String ELSE_REGEX = "[!][{](?:[ ]*?)else(?:[ ]*?)[}]";
     private static final Pattern ELSE_PATTERN = Pattern.compile(ELSE_REGEX);
 
+    private static final String ELSEIF_REGEX = "[!][{]elseif[ ]+(.*?)[ ]*[}]";
+    private static final Pattern ELSEIF_PATTERN = Pattern.compile(ELSEIF_REGEX);
+
+    /** The initial if statement expression - must resolve to boolean value.*/
     private final String accessPath;
+    /** The templateString representing the complete if statement.*/
     private final String templateString;
 
-    private TemplateBlockBinder binder;
     private TemplateBlockBinder elseBinder;
+
+    private final List<IfStatement> ifStatements = new ArrayList<>();
 
 
     public IfTemplateBlock(String attributeString, String templateString) {
@@ -34,9 +74,6 @@ public class IfTemplateBlock implements TemplateBlock {
 
         this.accessPath = attributeString.trim();
         this.templateString = ParseUtilities.trimContentString(templateString);
-
-
-        binder = new TemplateBlockBinder(templateString);
 
     }
 
@@ -49,60 +86,154 @@ public class IfTemplateBlock implements TemplateBlock {
     @Override
     public String getContent(Map<String, Object> outerVariables) {
 
-        Expression expression = ExpressionParser.parseExpression(accessPath, outerVariables);
-        Operand result = expression.evaluateExpression();
+        for (IfStatement ifStatement : ifStatements) {
 
-        if (!Boolean.class.equals(result.getOperandsJavaType()) && !boolean.class.equals(result.getOperandsJavaType())) {
-            throw new InvalidExpressionResult("If statements expression '" + accessPath + "' must evaluate to Boolean or boolean " + (result.getOperandsJavaType() != null ? ", but is of type " + result.getOperandsJavaType().getCanonicalName() : ""));
+            Expression expression = ExpressionParser.parseExpression(ifStatement.getAccessPath(), outerVariables);
+            Operand result = expression.evaluateExpression();
+
+            if (!Boolean.class.equals(result.getOperandsJavaType()) && !boolean.class.equals(result.getOperandsJavaType())) {
+                throw new InvalidExpressionResult("If statements expression '" + ifStatement.getAccessPath() + "' must evaluate to Boolean or boolean " + (result.getOperandsJavaType() != null ? ", but is of type " + result.getOperandsJavaType().getCanonicalName() : ""));
+            }
+
+            if ((Boolean) result.value()) {
+                return ifStatement.getBinder().getContent(outerVariables).toString();
+            }
+
         }
 
-        if ((Boolean) result.value()) {
-            return binder.getContent(outerVariables).toString();
-        } else {
-            return elseBinder != null ? elseBinder.getContent(outerVariables) : "";
-        }
+        return elseBinder != null ? elseBinder.getContent(outerVariables) : "";
 
     }
 
+    private enum Phase {
+        ELSEIF("elseif"),
+        ELSE("else");
 
-    public TemplateBlockBinder getBinder() {
-        return binder;
+        private final String commandString;
+
+        Phase(String commandString) {
+            this.commandString = commandString;
+        }
+
+        String getCommandString() {
+            return this.commandString;
+        }
     }
 
     public void setBinder(TemplateBlockBinder binder) {
 
+        this.elseBinder = new TemplateBlockBinder(null);
 
-        // check if the passed binder contains an else case
-        if (!hasElseStatement(binder)) {
+        // access path and binder for current if
+        TemplateBlockBinder currentIfBinder = new TemplateBlockBinder(null);
+        ifStatements.add(new IfStatement(this.accessPath, currentIfBinder));
 
-            this.binder = binder;
 
-        } else {
+        // phase 1: elseifs, phase2: no more elseif and else
+        Phase phase = Phase.ELSEIF;
+        for (TemplateBlock templateBlock : binder.getTemplateBlocks()) {
+            if (phase == Phase.ELSEIF) {
 
-            this.binder = new TemplateBlockBinder(null);
-            this.elseBinder = new TemplateBlockBinder(null);
+                // Just add template block for non plaintext blocks
+                if (templateBlock.getTemplateBlockType() != TemplateBlockType.PLAIN_TEXT) {
+                    currentIfBinder.addTemplateBlock(templateBlock);
+                    continue;
+                }
 
-            boolean foundElse = false;
-            for (TemplateBlock templateBlock : binder.getTemplateBlocks()) {
+                // Check for elseif or else
+                Matcher detectElseOrElseIfMatcher = ELSE_OR_ELSEIF_DETECTION_PATTERN.matcher(templateBlock.getContent(null));
+                boolean foundElseOrElseIf = detectElseOrElseIfMatcher.find();
 
-                if (!foundElse) {
-                    if (!hasElseStatement(templateBlock)) {
-                        // templateBlock belongs to if
-                        this.binder.addTemplateBlock(templateBlock);
+                // add block if it contains no elseif or else
+                if (!foundElseOrElseIf) {
+                    currentIfBinder.addTemplateBlock(templateBlock);
+                    continue;
+                }
+
+                // This is the most complex part, a plain text block can contain multiple elseif statements and a final else statement
+                String contentString = templateBlock.getContent(null);
+                int lastBeginIndex = 0;
+                while (foundElseOrElseIf) {
+
+                    if (phase == Phase.ELSEIF) {
+
+                        // add segment to current if or elseif and finish it
+                        PlainTextTemplateBlock currentSegmentTemplateBlock = new PlainTextTemplateBlock(contentString.substring(lastBeginIndex, detectElseOrElseIfMatcher.start()));
+                        currentIfBinder.addTemplateBlock(currentSegmentTemplateBlock);
+
                     } else {
-                        foundElse = true;
 
-                        // handle else template block
-                        String[] result = templateBlock.getContent(null).split(ELSE_REGEX);
+                        // detected another else or elseif in else phase -> error
+                        String statementString = detectElseOrElseIfMatcher.group();
+                        throw new InvalidElseIfException("Detected '" + statementString + "' after finishing else case which is syntactical incorrect");
 
-                        this.binder.addTemplateBlock(new PlainTextTemplateBlock(result[0]));
-                        this.elseBinder.addTemplateBlock(new PlainTextTemplateBlock(result[1]));
                     }
 
-                } else {
-                    // put rest of template
-                    this.elseBinder.addTemplateBlock(templateBlock);
+
+                    // Must now detect if it's an elseif or command which was found
+                    String commandString = detectElseOrElseIfMatcher.group();
+                    String command = detectElseOrElseIfMatcher.group(1);
+
+                    if (Phase.ELSEIF.getCommandString().equals(command)) {
+
+                        // Check if else was used syntactically correct
+                        Matcher elsifMatcher = ELSEIF_PATTERN.matcher(commandString);
+                        if (!elsifMatcher.matches()) {
+                            throw new InvalidElseIfException("Detected syntactical wrong elseif command : '" + commandString + "'");
+                        }
+
+                        // get expression
+                        String elseifAccessPath = elsifMatcher.group(1);
+
+                        // now create new binder
+                        currentIfBinder = new TemplateBlockBinder(null);
+                        ifStatements.add(new IfStatement(elseifAccessPath, currentIfBinder));
+
+                    } else {
+
+                        // Check if else was used syntactically correct
+                        if (!ELSE_PATTERN.matcher(commandString).matches()) {
+                            throw new InvalidElseIfException("Detected syntactical wrong else command : '" + commandString + "'");
+                        }
+
+                        // Switch to else stage
+                        phase = Phase.ELSE;
+
+                    }
+
+
+                    // do next check in plain text block
+                    lastBeginIndex = detectElseOrElseIfMatcher.end();
+                    foundElseOrElseIf = detectElseOrElseIfMatcher.find();
                 }
+
+                // must add last block to either elseif or else case
+                // add segment to current if or elseif and finish it
+                PlainTextTemplateBlock currentSegmentTemplateBlock = new PlainTextTemplateBlock(contentString.substring(lastBeginIndex));
+                if (phase == Phase.ELSEIF) {
+                    currentIfBinder.addTemplateBlock(currentSegmentTemplateBlock);
+                } else {
+                    this.elseBinder.addTemplateBlock(currentSegmentTemplateBlock);
+                }
+
+            } else {
+                // In ELSE phase
+
+                // Just add template block for non plaintext blocks
+                if (templateBlock.getTemplateBlockType() != TemplateBlockType.PLAIN_TEXT) {
+                    this.elseBinder.addTemplateBlock(templateBlock);
+                    continue;
+                }
+
+                // must not contain any more else or elseif cases
+                // Check for elseif or else
+                Matcher detectElseOrElseIfMatcher = ELSE_OR_ELSEIF_DETECTION_PATTERN.matcher(templateBlock.getContent(null));
+                if (detectElseOrElseIfMatcher.find()) {
+                    String statementString = detectElseOrElseIfMatcher.group();
+                    throw new InvalidElseIfException("Detected '" + statementString + "' after finishing else case which is syntactical incorrect");
+                }
+
+                this.elseBinder.addTemplateBlock(templateBlock);
 
             }
 
@@ -120,59 +251,11 @@ public class IfTemplateBlock implements TemplateBlock {
         return templateString;
     }
 
-    private boolean hasElseStatement(TemplateBlockBinder binder) {
-        int elseCount = 0;
-        for (TemplateBlock templateBlock : binder.getTemplateBlocks()) {
-
-            elseCount += (hasElseStatement(templateBlock) ? 1 : 0);
-
-        }
-
-        if (elseCount > 1) {
-            throwMultipleElseStatementError();
-        }
-
-        return elseCount == 1;
+    public TemplateBlockBinder getElseBinder() {
+        return elseBinder;
     }
 
-    /**
-     * Checks wether passed templateBlock contains one else command block.
-     * @param templateBlock the template block to scan
-     * @return true, if template block contains one else command block, otherwise false.
-     * @throws MultipleElseCasesException id more than one else command block is present
-     */
-    private boolean hasElseStatement(TemplateBlock templateBlock) {
-
-        if (templateBlock.getTemplateBlockType() == TemplateBlockType.PLAIN_TEXT) {
-
-            PlainTextTemplateBlock plainTextTemplateBlock = (PlainTextTemplateBlock) templateBlock;
-
-            Matcher matcher = ELSE_PATTERN.matcher(plainTextTemplateBlock.getContent(null));
-
-            if (matcher.find()) {
-
-
-                if (matcher.find()) {
-                    // must throw error
-                    throwMultipleElseStatementError();
-                }
-
-                return true;
-            }
-
-
-        }
-
-        return false;
-
+    public List<IfStatement> getIfStatements() {
+        return ifStatements;
     }
-
-    /**
-     * Throws a MultipleElseCasesException exception if there is more than one else command block.
-     */
-    private void throwMultipleElseStatementError() {
-        throw new MultipleElseCasesException("If command block has multiple else cases.");
-    }
-
-
 }

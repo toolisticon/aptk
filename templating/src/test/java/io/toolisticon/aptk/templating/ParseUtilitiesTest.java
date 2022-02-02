@@ -1,8 +1,8 @@
 package io.toolisticon.aptk.templating;
 
+import io.toolisticon.aptk.templating.exceptions.InvalidElseIfException;
 import io.toolisticon.aptk.templating.exceptions.InvalidIncludeModelExpression;
 import io.toolisticon.aptk.templating.exceptions.InvalidPathException;
-import io.toolisticon.aptk.templating.exceptions.MultipleElseCasesException;
 import io.toolisticon.aptk.templating.templateblocks.TemplateBlockBinder;
 import io.toolisticon.aptk.templating.testclasses.TestClass2;
 import org.hamcrest.CoreMatchers;
@@ -210,28 +210,105 @@ public class ParseUtilitiesTest {
         TemplateBlockBinder templateBlockBinder = ParseUtilities.parseString(stringToParse);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("abc" , true);
-        map.put("val" , "2");
+        map.put("abc", true);
+        map.put("val", "2");
 
         MatcherAssert.assertThat(templateBlockBinder.getContent(map), Matchers.is("yes2yes"));
 
-        map.put("abc" , false);
+        map.put("abc", false);
         MatcherAssert.assertThat(templateBlockBinder.getContent(map), Matchers.is("no2no"));
 
     }
 
-    @Test(expected = MultipleElseCasesException.class)
+    @Test
+    public void parseString_IfWithMultipleElseIfsStatement() {
+        String stringToParse = "!{if abc==1}yes${val}!{elseif abc==2}2!{elseif abc==3}yes!!{else}no${val}no!{/if}";
+
+        TemplateBlockBinder templateBlockBinder = ParseUtilities.parseString(stringToParse);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("abc", 1);
+        map.put("val", "2");
+
+        MatcherAssert.assertThat(templateBlockBinder.getContent(map), Matchers.is("yes2"));
+
+        map.put("abc", 2);
+        MatcherAssert.assertThat(templateBlockBinder.getContent(map), Matchers.is("2"));
+
+        map.put("abc", 3);
+        MatcherAssert.assertThat(templateBlockBinder.getContent(map), Matchers.is("yes!"));
+
+        map.put("abc", 4);
+        MatcherAssert.assertThat(templateBlockBinder.getContent(map), Matchers.is("no2no"));
+
+    }
+
+    @Test(expected = InvalidElseIfException.class)
     public void parseString_multipleElseStatements_expectException() {
         String stringToParse = "!{if abc == true}yes!{else}no!{else}WTF!{/if}";
 
         TemplateBlockBinder templateBlockBinder = ParseUtilities.parseString(stringToParse);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("abc" , true);
-        map.put("val" , "2");
+        map.put("abc", true);
+        map.put("val", "2");
 
         templateBlockBinder.getContent(map);
 
+
+    }
+
+    @Test(expected = InvalidElseIfException.class)
+    public void parseString_elseIfStatementAfterEslse_expectException() {
+        String stringToParse = "!{if abc == 1}yes!{else}no!{elseif abc == 2}WTF!{/if}";
+
+        TemplateBlockBinder templateBlockBinder = ParseUtilities.parseString(stringToParse);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("abc", 1);
+        map.put("val", "2");
+
+        templateBlockBinder.getContent(map);
+
+
+    }
+
+    @Test
+    public void parseString_ifelse_ifCase_Test() throws Exception {
+
+        final String TEMPLATE_STRING = ParseUtilities.readResourceToString("/IfStatementBlockType.tpl");
+        final String EXPECTED_RESULT = ParseUtilities.readResourceToString("/IfStatementBlockType.expectedResult1");
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("var", 1);
+
+        MatcherAssert.assertThat(ParseUtilities.parseString(TEMPLATE_STRING).getContent(model), Matchers.is(EXPECTED_RESULT));
+
+    }
+
+    @Test
+    public void parseString_ifelse_ifElseCase_Test() throws Exception {
+
+        final String TEMPLATE_STRING = ParseUtilities.readResourceToString("/IfStatementBlockType.tpl");
+        final String EXPECTED_RESULT = ParseUtilities.readResourceToString("/IfStatementBlockType.expectedResult2");
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("var", 2);
+
+        MatcherAssert.assertThat(ParseUtilities.parseString(TEMPLATE_STRING).getContent(model), Matchers.is(EXPECTED_RESULT));
+
+    }
+
+    @Test
+    public void parseString_ifelse_else_Test() throws Exception {
+
+        final String TEMPLATE_STRING = ParseUtilities.readResourceToString("/IfStatementBlockType.tpl");
+        final String EXPECTED_RESULT = ParseUtilities.readResourceToString("/IfStatementBlockType.expectedResult3");
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("var", 3);
+
+        MatcherAssert.assertThat(ParseUtilities.parseString(TEMPLATE_STRING).getContent(model), Matchers.is(EXPECTED_RESULT));
 
     }
 
@@ -355,8 +432,6 @@ public class ParseUtilitiesTest {
 
 
     }
-
-
 
 
 }
