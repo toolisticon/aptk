@@ -34,6 +34,7 @@ public final class ElementUtils {
      */
     public static final class CheckKindOfElement {
 
+        /** Needed for handling Module Type until source level is java 9. */
         private final static String KIND_MODULE = "MODULE";
 
         /**

@@ -2,6 +2,8 @@ package io.toolisticon.aptk.templating;
 
 import io.toolisticon.aptk.templating.exceptions.InvalidIncludeModelExpression;
 import io.toolisticon.aptk.templating.exceptions.InvalidPathException;
+import io.toolisticon.aptk.templating.exceptions.MultipleElseCasesException;
+import io.toolisticon.aptk.templating.templateblocks.TemplateBlockBinder;
 import io.toolisticon.aptk.templating.testclasses.TestClass2;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
@@ -201,6 +203,37 @@ public class ParseUtilitiesTest {
 
     }
 
+    @Test
+    public void parseString_ifElseStatement() {
+        String stringToParse = "!{if abc == true}yes${val}yes!{else}no${val}no!{/if}";
+
+        TemplateBlockBinder templateBlockBinder = ParseUtilities.parseString(stringToParse);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("abc" , true);
+        map.put("val" , "2");
+
+        MatcherAssert.assertThat(templateBlockBinder.getContent(map), Matchers.is("yes2yes"));
+
+        map.put("abc" , false);
+        MatcherAssert.assertThat(templateBlockBinder.getContent(map), Matchers.is("no2no"));
+
+    }
+
+    @Test(expected = MultipleElseCasesException.class)
+    public void parseString_multipleElseStatements_expectException() {
+        String stringToParse = "!{if abc == true}yes!{else}no!{else}WTF!{/if}";
+
+        TemplateBlockBinder templateBlockBinder = ParseUtilities.parseString(stringToParse);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("abc" , true);
+        map.put("val" , "2");
+
+        templateBlockBinder.getContent(map);
+
+
+    }
 
     @Test
     public void trimContentString_trimContentString_Test() {
@@ -322,6 +355,8 @@ public class ParseUtilitiesTest {
 
 
     }
+
+
 
 
 }

@@ -32,6 +32,10 @@ public class TemplateBlockBinder implements TemplateBlock {
         return stringBuilder.toString();
     }
 
+    public List<TemplateBlock> getTemplateBlocks(){
+        return this.templateBlocks;
+    }
+
     public void addTemplateBlock(TemplateBlock templateBlock) {
         templateBlocks.add(templateBlock);
     }
