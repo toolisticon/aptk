@@ -38,16 +38,29 @@ public class ElementUtils_AccessEnclosedElementsTest {
         return element;
     }
 
-    private <T extends Element> T mockElementWithAnnotations(Class<T> type, ElementKind elementKind, Class<? extends Annotation>... annotations) {
+    private <T extends Element, A extends Annotation> T mockElementWithAnnotations(Class<T> type, ElementKind elementKind) {
+        return mockElement(type, elementKind);
+    }
+
+    private <T extends Element, A extends Annotation> T mockElementWithAnnotations(Class<T> type, ElementKind elementKind, Class<A> annotation) {
         T element = mockElement(type, elementKind);
 
-        for (Class<? extends Annotation> annotation : annotations) {
-            Mockito.when(element.getAnnotation(annotation)).thenReturn(Mockito.mock(annotation));
-        }
+        A annotationMock = Mockito.mock(annotation);
+        Mockito.when(element.getAnnotation(annotation)).thenReturn(annotationMock);
 
         return element;
     }
 
+    private <T extends Element, A1 extends Annotation, A2 extends Annotation> T mockElementWithAnnotations(Class<T> type, ElementKind elementKind, Class<A1> annotation1, Class<A2> annotation2) {
+        T element = mockElement(type, elementKind);
+
+        A1 annotationMock1 = Mockito.mock(annotation1);
+        A2 annotationMock2 = Mockito.mock(annotation2);
+        Mockito.when(element.getAnnotation(annotation1)).thenReturn(annotationMock1);
+        Mockito.when(element.getAnnotation(annotation2)).thenReturn(annotationMock2);
+
+        return element;
+    }
 
     @Test
     public void testGetEnclosedFields() {

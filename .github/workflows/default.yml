@@ -12,8 +12,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest,macos-latest,windows-latest]
-        java: [ 7, 7.0.181, 8, 8.0.192, 9.0.x, 10, 11.0.x, 11.0.3, 12 ]
+        os: [ ubuntu-latest,macos-latest,windows-latest ]
+        java: [ 8.0.192, 9, 10,  11, 12, 13, 14, 15, 16, 17 ]
 
     steps:
       - name: Checkout Code
@@ -31,7 +31,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven
-            
+
       - name: Prepare mvnw
         run: chmod +x ./mvnw
 

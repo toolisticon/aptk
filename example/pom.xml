@@ -60,7 +60,7 @@
                                     <version>[3.0.0,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>1.6</version>
+                                    <version>${java.version}</version>
                                 </requireJavaVersion>
                                 <bannedDependencies>
                                     <searchTransitive>false</searchTransitive>

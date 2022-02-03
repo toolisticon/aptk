@@ -82,19 +82,19 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <encoding>UTF-8</encoding>
 
-        <java.compile.source.version>1.7</java.compile.source.version>
-        <java.compile.target.version>1.7</java.compile.target.version>
+        <java.compile.source.version>1.8</java.compile.source.version>
+        <java.compile.target.version>1.8</java.compile.target.version>
 
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
 
         <spiap.version>0.8.0</spiap.version>
         <cute.version>0.11.1</cute.version>
 
         <!-- versions of test dependencies -->
-        <junit.version>4.13.1</junit.version>
+        <junit.version>4.13.2</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <mockito.version>2.28.2</mockito.version>
-        <lombok.version>1.18.2</lombok.version>
+        <mockito.version>4.3.1</mockito.version>
+        <lombok.version>1.18.22</lombok.version>
 
         <!-- plugin versions -->
         <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
@@ -103,7 +103,7 @@
         <maven-processor-plugin.version>2.2.4</maven-processor-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
-        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
 
         <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
 
@@ -147,7 +147,7 @@
                                     <version>[3.0.4,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>1.7</version>
+                                    <version>1.8</version>
                                 </requireJavaVersion>
                                 <bannedDependencies>
                                     <searchTransitive>false</searchTransitive>
@@ -337,7 +337,7 @@
         <profile>
             <id>jdksmallerthan9</id>
             <activation>
-                <jdk>[1.6,9)</jdk>
+                <jdk>[1.8,9)</jdk>
             </activation>
 
 
@@ -348,7 +348,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>animal-sniffer-maven-plugin</artifactId>
-                        <version>1.17</version>
+                        <version>1.18</version>
 
 
                         <executions>
@@ -370,7 +370,7 @@
 
                                     <signature>
                                         <groupId>org.codehaus.mojo.signature</groupId>
-                                        <artifactId>java17</artifactId>
+                                        <artifactId>java18</artifactId>
                                         <version>1.0</version>
                                     </signature>
 
@@ -417,7 +417,7 @@
                         <executions>
 
                             <execution>
-                                <id>check_java17</id>
+                                <id>check_java18</id>
 
                                 <phase>test</phase>
 
@@ -432,7 +432,7 @@
 
                                     <signature>
                                         <groupId>org.codehaus.mojo.signature</groupId>
-                                        <artifactId>java17</artifactId>
+                                        <artifactId>java18</artifactId>
                                         <version>1.0</version>
                                     </signature>
 
