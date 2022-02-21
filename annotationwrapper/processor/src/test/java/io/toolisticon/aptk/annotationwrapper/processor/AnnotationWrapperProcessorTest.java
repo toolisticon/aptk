@@ -284,7 +284,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.getAttributeType(), Matchers.is(expectedType.getSimpleName()));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -315,7 +315,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.getComponentAttributeType(), Matchers.is(expectedType.getSimpleName()));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -352,7 +352,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.getImport(), Matchers.is(expectedImport));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -389,7 +389,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.getName(), Matchers.is(name));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -426,7 +426,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.getWrappedTypeMirror().getQualifiedName(), Matchers.is(expectedType.getCanonicalName()));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -463,7 +463,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.isAnnotationType(), Matchers.is(expectedResult));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -500,7 +500,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.isArray(), Matchers.is(expectedResult));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -537,7 +537,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.isClass(), Matchers.is(expectedResult));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -574,7 +574,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.isEnum(), Matchers.is(expectedResult));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -611,7 +611,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.isPrimitiveOrString(), Matchers.is(expectedResult));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 
@@ -648,7 +648,7 @@ public class AnnotationWrapperProcessorTest {
         MatcherAssert.assertThat(unit.isOptional(), Matchers.is(expectedResult));
 
         // make sure that there are no interactions with state
-        Mockito.verifyZeroInteractions(state);
+        Mockito.verifyNoInteractions(state);
 
     }
 

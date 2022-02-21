@@ -63,6 +63,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         final static String WRAPPER_SUFFIX = "Wrapper";
 
         final PackageElement packageElement;
+        final Element annotatedElement;
         final Set<String> annotationsToBeWrapped = new HashSet<>();
         final String[] customCodeClasses;
         final Map<String, AnnotationWrapperCustomCode> annotationWrapperCustomCode = new HashMap<>();
@@ -76,16 +77,20 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
 
         /**
-         * Constructor
+         * Constructor.
          *
-         * @param packageElement the base package name
+         * @param annotatedElement the base package name
          */
-        State(PackageElement packageElement) {
-            this.packageElement = packageElement;
+        State(Element annotatedElement) {
+            this.annotatedElement = annotatedElement;
+            this.packageElement = ElementUtils.CheckKindOfElement.isPackage(this.annotatedElement) ?
+                    ((PackageElement)this.annotatedElement)
+                    : ElementUtils.AccessEnclosingElements.<PackageElement>getFirstEnclosingElementOfKind(this.annotatedElement,ElementKind.PACKAGE);
 
-            Collections.addAll(this.annotationsToBeWrapped, AnnotationUtils.getClassArrayAttributeFromAnnotationAsFqn(packageElement, AnnotationWrapper.class));
 
-            AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(packageElement, AnnotationWrapper.class);
+            Collections.addAll(this.annotationsToBeWrapped, AnnotationUtils.getClassArrayAttributeFromAnnotationAsFqn(annotatedElement, AnnotationWrapper.class));
+
+            AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(annotatedElement, AnnotationWrapper.class);
             usePublicVisibility = (Boolean) AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "usePublicVisibility").getValue();
             automaticallyWrapEmbeddedAnnotations = (Boolean) AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "automaticallyWrapEmbeddedAnnotations").getValue();
             customCodeClasses = AnnotationUtils.getClassArrayAttributeFromAnnotationAsFqn(annotationMirror, "bindCustomCode");
@@ -224,12 +229,12 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         }
 
         /**
-         * Gets the PackageElement used during wrapper generation
+         * Gets the annotated element used during wrapper generation
          *
-         * @return The PackageElement
+         * @return The annotated element
          */
-        public PackageElement getPackageElement() {
-            return this.packageElement;
+        public Element getAnnotatedElement() {
+            return this.annotatedElement;
         }
 
         /**
@@ -278,9 +283,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         // process Services annotation
         for (Element element : roundEnv.getElementsAnnotatedWith(AnnotationWrapper.class)) {
 
-
-            PackageElement packageElement = (PackageElement) element;
-            State state = new State(packageElement);
+            State state = new State(element);
 
             // Now iterate over the annotation types and
             for (String annotationToBeWrapped : state.getAnnotationToBeWrapped()) {
@@ -915,11 +918,11 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         // create the class
         String filePath = state.getPackageName() + "." + annotationToWrap.getSimpleName() + "Wrapper";
         try {
-            SimpleJavaWriter javaWriter = FilerUtils.createSourceFile(filePath, state.getPackageElement());
+            SimpleJavaWriter javaWriter = FilerUtils.createSourceFile(filePath, state.getAnnotatedElement());
             javaWriter.writeTemplate("/AnnotationWrapper.tpl", model);
             javaWriter.close();
         } catch (IOException e) {
-            MessagerUtils.error(state.getPackageElement(), AnnotationWrapperProcessorMessages.ERROR_CANT_CREATE_WRAPPER, annotationToWrap.getQualifiedName());
+            MessagerUtils.error(state.getAnnotatedElement(), AnnotationWrapperProcessorMessages.ERROR_CANT_CREATE_WRAPPER, annotationToWrap.getQualifiedName());
         }
     }
 

@@ -1,5 +1,9 @@
-package io.toolisticon.aptk.annotationwrapper.test;
+package io.toolisticon.aptk.annotationwrapper.test.annotationontype;
 
+import io.toolisticon.aptk.annotationwrapper.test.EmbeddedAnnotation;
+import io.toolisticon.aptk.annotationwrapper.test.TestAnnotation;
+import io.toolisticon.aptk.annotationwrapper.test.TestDefaultsAnnotation;
+import io.toolisticon.aptk.annotationwrapper.test.TestEnum;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * Annotation to create a wrapper class for an annotation.
  * The wrapper
  */
-@Target(ElementType.PACKAGE)
+@Target({ElementType.PACKAGE, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface AnnotationWrapper {
