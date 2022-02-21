@@ -1,6 +1,7 @@
-package io.toolisticon.aptk.annotationwrapper.test;
+package io.toolisticon.aptk.annotationwrapper.test.annotationonpackage;
 
 import io.toolisticon.aptk.annotationwrapper.api.CustomCodeMethod;
+import io.toolisticon.aptk.annotationwrapper.test.TestAnnotation;
 
 public class CustomCodeClass {
 
