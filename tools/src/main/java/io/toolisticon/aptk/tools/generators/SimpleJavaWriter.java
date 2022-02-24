@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * A Simple java writer.
  */
-public class SimpleJavaWriter extends AbstractSimpleWriter<JavaFileObject> {
+public class SimpleJavaWriter extends FileObjectSimpleWriter<JavaFileObject> {
 
 
     public SimpleJavaWriter(JavaFileObject fileObject) throws IOException {
