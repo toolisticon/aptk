@@ -2,6 +2,7 @@ package io.toolisticon.aptk.tools;
 
 
 import io.toolisticon.aptk.tools.generators.SimpleJavaWriter;
+import io.toolisticon.aptk.tools.generators.SimpleKotlinWriter;
 import io.toolisticon.aptk.tools.generators.SimpleResourceReader;
 import io.toolisticon.aptk.tools.generators.SimpleResourceWriter;
 
@@ -112,9 +113,9 @@ public final class FilerUtils {
     }
 
     /**
-     * Creates a source file writer.
+     * Creates a java source file writer.
      *
-     * @param fileName            the filename to use
+     * @param fileName            the canonical name of the class to create
      * @param originatingElements the element which originates the creation of the source file
      * @return a SimpleJavaWriter that can be used to write java source code
      * @throws IOException is thrown if writer can't be created
@@ -123,5 +124,17 @@ public final class FilerUtils {
         return new SimpleJavaWriter(ProcessingEnvironmentUtils.getFiler().createSourceFile(fileName, originatingElements));
     }
 
+    /**
+     * Creates a kotlin source file.
+     * Compilation will fail if the kapt plugin isn't used properly (kapt.kotlin.generated must be configured in compiler options)
+     *
+     * @param fileName            the canonical name of the class to create
+     * @param originatingElements the element which originates the creation of the source file
+     * @return a SimpleJavaWriter that can be used to write java source code
+     * @throws IOException is thrown if writer can't be created
+     */
+    public static SimpleKotlinWriter createKotlinSourceFile(String fileName, Element... originatingElements) throws IOException {
+        return new SimpleKotlinWriter(fileName, originatingElements);
+    }
 
 }

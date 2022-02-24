@@ -8,7 +8,7 @@ import java.io.IOException;
  * This can be very useful for the creation of text based resource files.
  */
 
-public class SimpleResourceWriter extends AbstractSimpleWriter<FileObject> {
+public class SimpleResourceWriter extends FileObjectSimpleWriter<FileObject> {
 
 
     public SimpleResourceWriter(FileObject fileObject) throws IOException {
