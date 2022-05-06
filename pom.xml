@@ -18,6 +18,7 @@
         <module>tools</module>
         <module>example</module>
         <module>templating</module>
+        <module>extensions</module>
 
         <!-- wrapper processor -->
         <module>annotationwrapper</module>
@@ -88,7 +89,7 @@
         <java.version>1.8</java.version>
 
         <spiap.version>0.8.0</spiap.version>
-        <cute.version>0.11.1</cute.version>
+        <cute.version>0.12.0</cute.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.13.2</junit.version>

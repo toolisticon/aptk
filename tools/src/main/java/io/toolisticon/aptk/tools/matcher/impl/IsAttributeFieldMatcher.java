@@ -21,7 +21,6 @@ public class IsAttributeFieldMatcher implements ImplicitMatcher<VariableElement>
             return false;
         }
 
-
         return BeanUtils.isAttribute(element);
     }
 }
