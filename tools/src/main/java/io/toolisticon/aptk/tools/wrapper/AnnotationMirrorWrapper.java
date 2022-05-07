@@ -21,6 +21,10 @@ public class AnnotationMirrorWrapper {
         return annotationMirror != null;
     }
 
+    public AnnotationMirror unwrap(){
+        return annotationMirror;
+    }
+
     public AnnotationValueWrapper getAttribute() {
         return getAttribute("value");
     }

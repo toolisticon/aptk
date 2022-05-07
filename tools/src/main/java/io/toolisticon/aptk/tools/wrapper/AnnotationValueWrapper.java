@@ -9,6 +9,9 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
+/**
+ * Wrapper class for AnnotationValues.
+ */
 public class AnnotationValueWrapper {
 
     final AnnotationValue annotationValue;
@@ -17,6 +20,14 @@ public class AnnotationValueWrapper {
         this.annotationValue = annotationValue;
     }
 
+    /**
+     * Returns the wrapped AnnotationValue.
+     *
+     * @return the wrapped AnnotationValue
+     */
+    public AnnotationValue unwrap() {
+        return this.annotationValue;
+    }
 
     /**
      * Checks if passed annotation value is of type Integer.
@@ -142,7 +153,7 @@ public class AnnotationValueWrapper {
      *
      * @return the annotationValues value cast as Boolean, or null if value has not the correct type.
      */
-    public  Boolean getBooleanValue() {
+    public Boolean getBooleanValue() {
         return AnnotationValueUtils.getBooleanValue(annotationValue);
     }
 
@@ -151,7 +162,7 @@ public class AnnotationValueWrapper {
      *
      * @return the annotationValues value cast as Long, or null if value has not the correct type.
      */
-    public  Float getFloatValue() {
+    public Float getFloatValue() {
         return AnnotationValueUtils.getFloatValue(annotationValue);
     }
 
@@ -160,7 +171,7 @@ public class AnnotationValueWrapper {
      *
      * @return the annotationValues value cast as Long, or null if value has not the correct type.
      */
-    public  Double getDoubleValue() {
+    public Double getDoubleValue() {
         return AnnotationValueUtils.getDoubleValue(annotationValue);
     }
 
@@ -178,7 +189,7 @@ public class AnnotationValueWrapper {
      *
      * @return the annotationValues value cast as Long, or null if value has not the correct type.
      */
-    public  Character getCharValue() {
+    public Character getCharValue() {
         return AnnotationValueUtils.getCharValue(annotationValue);
     }
 
@@ -243,6 +254,7 @@ public class AnnotationValueWrapper {
 
     /**
      * Wraps an AnnotationValue for convenient function access.
+     *
      * @param annotationValue the annotation value to wrap
      * @return the annotation value
      */

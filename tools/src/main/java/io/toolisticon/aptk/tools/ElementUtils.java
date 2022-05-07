@@ -9,6 +9,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
@@ -204,7 +205,7 @@ public final class ElementUtils {
 
         // look up tables for the different kind of types
         private static final Set<ElementKind> TYPE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM, ElementKind.ANNOTATION_TYPE);
-        private static final Set<ElementKind> TYPE_PARAMETER_ELEMENT_KIND_LUT =Utilities.convertVarargsToSet(ElementKind.TYPE_PARAMETER);
+        private static final Set<ElementKind> TYPE_PARAMETER_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.TYPE_PARAMETER);
         private static final Set<ElementKind> VARIABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PARAMETER, ElementKind.FIELD);
         private static final Set<ElementKind> EXECUTABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD);
         private static final Set<ElementKind> PACKAGE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PACKAGE);
@@ -373,6 +374,17 @@ public final class ElementUtils {
          */
         public static TypeElement castToTypeElement(Element e) {
             return (TypeElement) e;
+        }
+
+        /**
+         * Casts an element to TypeParameterElement.
+         *
+         * @param e the element to cast
+         * @return the cast element
+         * @throws ClassCastException if passed Element can't be cast to TypeParameterElement
+         */
+        public static TypeParameterElement castToTypeParameterElement(Element e) {
+            return (TypeParameterElement) e;
         }
 
         /**
@@ -1075,10 +1087,10 @@ public final class ElementUtils {
          * Gets the method signature String for an ExecutableElement.
          * <p>
          * This is useful for implementing of interfaces in generated classes.
-         *
+         * <p>
          * This method works perfectly well for ExecutableElements of classes and interfaces in compilation,
          * but will have some limitations for precompiled classes.
-         *
+         * <p>
          * Keep in mind that javac doesn't store parameter names in bytecode out of the box.
          * So passing in an ExecutableElement of a precompiled class will have arg0,arg1,.. as parameter names.
          * This can be changed if class is compiled with "-parameters" compiler option.
@@ -1091,10 +1103,10 @@ public final class ElementUtils {
             StringBuilder builder = new StringBuilder();
 
             // Add throws if present
-            if(!executableElement.getTypeParameters().isEmpty()) {
+            if (!executableElement.getTypeParameters().isEmpty()) {
                 builder.append("<");
                 builder.append(String.join(", ", executableElement.getTypeParameters().stream().map(tp -> {
-                    return tp.toString() +  " extends " + TypeMirrorWrapper.wrap(tp.getBounds().get(0)).getTypeDeclaration();
+                    return tp.toString() + " extends " + TypeMirrorWrapper.wrap(tp.getBounds().get(0)).getTypeDeclaration();
                 }).collect(Collectors.toList())));
                 builder.append("> ");
             }
@@ -1112,7 +1124,7 @@ public final class ElementUtils {
             builder.append(")");
 
             // Add throws if present
-            if(!executableElement.getThrownTypes().isEmpty()) {
+            if (!executableElement.getThrownTypes().isEmpty()) {
                 builder.append(" throws ");
                 builder.append(String.join(", ", executableElement.getThrownTypes().stream().map(tm -> {
                     return TypeMirrorWrapper.wrap(tm).getSimpleName();

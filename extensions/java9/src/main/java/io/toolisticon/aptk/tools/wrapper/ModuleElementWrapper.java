@@ -32,10 +32,6 @@ public class ModuleElementWrapper extends ElementWrapper<ModuleElement> {
         return this.element.getDirectives();
     }
 
-    public static boolean isModuleElement(ElementWrapper<Element> element) {
-        return element != null & element.getKind().equals(ElementKind.MODULE);
-    }
-
     public static ModuleElementWrapper toModuleElement(Element element) {
         return ModuleElementWrapper.wrap((ModuleElement) element);
     }

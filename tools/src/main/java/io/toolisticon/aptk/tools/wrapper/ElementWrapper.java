@@ -2,18 +2,13 @@ package io.toolisticon.aptk.tools.wrapper;
 
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
-import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ElementVisitor;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.TypeParameterElement;
-import javax.lang.model.element.VariableElement;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +41,8 @@ public class ElementWrapper<E extends Element> {
      *
      * @return the PackageElement of the enclosing Package
      */
-    public PackageElement getPackage() {
-        return ElementUtils.AccessEnclosingElements.<PackageElement>getFirstEnclosingElementOfKind(element, ElementKind.PACKAGE);
+    public PackageElementWrapper getPackage() {
+        return PackageElementWrapper.wrap(ElementUtils.AccessEnclosingElements.<PackageElement>getFirstEnclosingElementOfKind(element, ElementKind.PACKAGE));
     }
 
     /**
@@ -68,10 +63,22 @@ public class ElementWrapper<E extends Element> {
         return getPackage().getSimpleName().toString();
     }
 
+    /**
+     * Checks if wrapped elements package name equals passed name.
+     *
+     * @param name the qualified name of the package
+     * @return true if package names match, otherwise false
+     */
     public boolean hasPackageName(String name) {
         return name != null && this.getPackageName().equals(name);
     }
 
+    /**
+     * Checks if wrapped elements simple package name equals passed name.
+     *
+     * @param name the qualified name of the package
+     * @return true if package names match, otherwise false
+     */
     public boolean hasSimplePackageName(String name) {
         return name != null && this.getSimplePackageName().equals(name);
     }
@@ -87,6 +94,12 @@ public class ElementWrapper<E extends Element> {
     }
 
 
+    /**
+     * Checks if simple name of element matches passed name.
+     *
+     * @param name the name to check for
+     * @return true if elements name and passed name match, otherwise false
+     */
     public boolean hasSimpleName(String name) {
         return name != null && this.getSimpleName().equals(name);
     }
@@ -98,6 +111,10 @@ public class ElementWrapper<E extends Element> {
      * @return true, if all passed modifiers are present, otherwise false
      */
     public boolean hasModifiers(Modifier... modifiersToCheck) {
+        if (modifiersToCheck == null) {
+            return false;
+        }
+
         for (Modifier modifier : modifiersToCheck) {
             if (!element.getModifiers().contains(modifier)) {
                 return false;
@@ -106,8 +123,27 @@ public class ElementWrapper<E extends Element> {
         return true;
     }
 
-    public FluentElementValidator<E> validate() {
+
+    /**
+     * Starts a validation of wrapped element based on FluentElementValidator.
+     * <p>
+     * The FluentElementValidator API is pretty powerful if you want to automatically write compiler messages if validations fail.
+     *
+     * @return a FluentElementValidator instance
+     */
+    public FluentElementValidator<E> validateWithFluentElementValidator() {
         return FluentElementValidator.createFluentElementValidator(this.unwrap());
+    }
+
+    /**
+     * Starts a validation based on a lambda style api.
+     * <p>
+     * The validator is pretty flexible. The downside is that it's not possible to provide automatic compiler messages in case of failing validations.
+     *
+     * @return The validator api instance
+     */
+    public ElementWrapperValidatorInterface.FirstValidation<ElementWrapper<E>> validate() {
+        return ElementWrapperValidator.startValidation(this);
     }
 
     /**
@@ -207,30 +243,30 @@ public class ElementWrapper<E extends Element> {
     }
 
     /**
-     * Returns all enclosed Elements e
+     * Returns the flattened enclosed element tree as a list.
      *
-     * @return
+     * @return a list of all elements of the enclosed element tree
      */
-    public List<ElementWrapper<Element>> getAllEnclosedElements() {
-        return getAllEnclosedElements(false);
+    public List<ElementWrapper<Element>> getFlattenedEnclosedElementTree() {
+        return getFlattenedEnclosedElementTree(false);
     }
 
     /**
-     * Returns all enclosed Elements e
+     * Returns the flattened enclosed element tree as a list.
      *
-     * @return
+     * @return a list of all elements of the enclosed element tree plus element itself if includeSelf flag is set
      */
-    public List<ElementWrapper<Element>> getAllEnclosedElements(boolean includeSelf) {
+    public List<ElementWrapper<Element>> getFlattenedEnclosedElementTree(boolean includeSelf) {
         return ElementUtils.AccessEnclosingElements.getFlattenedEnclosingElementsTree(this.unwrap(), includeSelf)
                 .stream().map(ExecutableElementWrapper::wrap).collect(Collectors.toList());
     }
 
     /**
-     * Returns all enclosed Elements e
+     * Returns the flattened enclosed element tree as a list. All elements up to a max depth will be included in the result.
      *
-     * @return
+     * @return a list of all elements up to the max depth of the enclosed element tree plus element itself if includeSelf flag is set
      */
-    public List<ElementWrapper<Element>> getAllEnclosedElements(boolean includeSelf, int maxDepth) {
+    public List<ElementWrapper<Element>> getFlattenedEnclosedElementTree(boolean includeSelf, int maxDepth) {
         return ElementUtils.AccessEnclosingElements.getFlattenedEnclosingElementsTree(this.unwrap(), includeSelf, maxDepth)
                 .stream().map(ExecutableElementWrapper::wrap).collect(Collectors.toList());
     }
@@ -266,6 +302,13 @@ public class ElementWrapper<E extends Element> {
         return element.accept(v, p);
     }
 
+    /**
+     * Gets annotations by type
+     *
+     * @param annotationType the Class object corresponding to the annotation type
+     * @param <A>            the annotation type
+     * @return this construct's annotations for the specified annotation type if present on this construct, else an empty array
+     */
     public <A extends Annotation> A[] getAnnotationsByType(Class<A> annotationType) {
         return element.getAnnotationsByType(annotationType);
     }
@@ -275,33 +318,13 @@ public class ElementWrapper<E extends Element> {
     // --------------------------------------------------------------------------
 
 
-    public static PackageElementWrapper wrap(PackageElement element) {
-        return PackageElementWrapper.wrap(element);
-    }
-
-    public static ExecutableElementWrapper wrap(ExecutableElement element) {
-        return ExecutableElementWrapper.wrap(element);
-    }
-
-    public static TypeElementWrapper wrap(TypeElement element) {
-        return TypeElementWrapper.wrap(element);
-    }
-
-    public static VariableElementWrapper wrap(VariableElement element) {
-        return VariableElementWrapper.wrap(element);
-    }
-
-    public static TypeParameterElementWrapper wrap(TypeParameterElement element) {
-        return TypeParameterElementWrapper.wrap(element);
-    }
-
     /**
      * Wraps an Element.
      *
      * @param element the Element to wrap
      * @return an ElementWrapper instance
      */
-    public static ElementWrapper<Element> wrap(Element element) {
+    public static <T extends Element> ElementWrapper<T> wrap(T element) {
         return new ElementWrapper<>(element);
     }
 
@@ -311,7 +334,7 @@ public class ElementWrapper<E extends Element> {
      * @param elements The list of Elements to wrap
      * @return a List of Wrapped Elements, or an empty list
      */
-    public static List<ElementWrapper<Element>> wrap(List<Element> elements) {
+    public static <T extends Element> List<ElementWrapper<T>> wrap(List<T> elements) {
         return elements != null ? elements.stream().map(ElementWrapper::wrap).collect(Collectors.toList()) : new ArrayList<>();
     }
 
@@ -319,103 +342,228 @@ public class ElementWrapper<E extends Element> {
     // Helper functions for usage with stream api
     // --------------------------------------------------------------------------
 
-    public static boolean isModule(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents a module.
+     *
+     * @param element the element to check
+     * @return true if passed element represents a module, otherwise false
+     */
+    public static boolean isModule(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isModule(element.unwrap());
     }
 
-    public static boolean isPackage(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents a package.
+     *
+     * @param element the element to check
+     * @return true if passed element represents a package, otherwise false
+     */
+    public static boolean isPackage(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isPackage(element.unwrap());
     }
 
-    public static boolean isClass(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents a class.
+     *
+     * @param element the element to check
+     * @return true if passed element represents a class, otherwise false
+     */
+    public static boolean isClass(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isClass(element.unwrap());
     }
 
-    public static boolean isInterface(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents an interface.
+     *
+     * @param element the element to check
+     * @return true if passed element represents an interface, otherwise false
+     */
+    public static boolean isInterface(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isInterface(element.unwrap());
     }
 
-    public static boolean isEnum(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents an enum.
+     *
+     * @param element the element to check
+     * @return true if passed element represents an enum, otherwise false
+     */
+    public static boolean isEnum(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isEnum(element.unwrap());
     }
 
-    public static boolean isAnnotation(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents an annotation.
+     *
+     * @param element the element to check
+     * @return true if passed element represents an annotation, otherwise false
+     */
+    public static boolean isAnnotation(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isAnnotation(element.unwrap());
     }
 
-    public static boolean isConstructor(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents a constructor.
+     *
+     * @param element the element to check
+     * @return true if passed element represents a constructor, otherwise false
+     */
+    public static boolean isConstructor(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isConstructor(element.unwrap());
     }
 
-    public static boolean isMethod(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents a method.
+     *
+     * @param element the element to check
+     * @return true if passed element represents a method, otherwise false
+     */
+    public static boolean isMethod(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isMethod(element.unwrap());
     }
 
-    public static boolean isField(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents a field.
+     *
+     * @param element the element to check
+     * @return true if passed element represents a field, otherwise false
+     */
+    public static boolean isField(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isField(element.unwrap());
     }
 
-    public static boolean isAnnotationAttribute(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents an annotation attribute.
+     *
+     * @param element the element to check
+     * @return true if passed element represents an annotation attribute, otherwise false
+     */
+    public static boolean isAnnotationAttribute(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isAnnotationAttribute(element.unwrap());
     }
 
-    public static boolean isConstructorParameter(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents a constructor parameter.
+     *
+     * @param element the element to check
+     * @return true if passed element represents a constructor parameter, otherwise false
+     */
+    public static boolean isConstructorParameter(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isConstructorParameter(element.unwrap());
     }
 
-    public static boolean isMethodParameter(ElementWrapper<Element> element) {
+    /**
+     * Checks if passed element represents a method parameter.
+     *
+     * @param element the element to check
+     * @return true if passed element represents a method parameter, otherwise false
+     */
+    public static boolean isMethodParameter(ElementWrapper<? extends Element> element) {
         return ElementUtils.CheckKindOfElement.isMethodParameter(element.unwrap());
     }
 
-    public static boolean isPackageElement(ElementWrapper<Element> element) {
+    /**
+     * Checks if wrapped element is a PackageElement.
+     *
+     * @param element the element to check
+     * @return true if passed element is a PackageElement, otherwise false
+     */
+    public static boolean isPackageElement(ElementWrapper<? extends Element> element) {
         return ElementUtils.CastElement.isPackageElement(element.unwrap());
     }
 
-    public static boolean isTypeElement(ElementWrapper<Element> element) {
+    /**
+     * Checks if wrapped element is a TypeElement.
+     *
+     * @param element the element to check
+     * @return true if passed element is a TypeElement, otherwise false
+     */
+    public static boolean isTypeElement(ElementWrapper<? extends Element> element) {
         return ElementUtils.CastElement.isTypeElement(element.unwrap());
     }
 
-    public static boolean isExecutableElement(ElementWrapper<Element> element) {
+    /**
+     * Checks if wrapped element is a ExecutableElement.
+     *
+     * @param element the element to check
+     * @return true if passed element is a ExecutableElement, otherwise false
+     */
+    public static boolean isExecutableElement(ElementWrapper<? extends Element> element) {
         return ElementUtils.CastElement.isExecutableElement(element.unwrap());
     }
 
-    public static boolean isVariableElement(ElementWrapper<Element> element) {
+    /**
+     * Checks if wrapped element is a VariableElement.
+     *
+     * @param element the element to check
+     * @return true if passed element is a VariableElement, otherwise false
+     */
+    public static boolean isVariableElement(ElementWrapper<? extends Element> element) {
         return ElementUtils.CastElement.isVariableElement(element.unwrap());
     }
 
-    public static boolean isTypeParameterElement(ElementWrapper<Element> element) {
+    /**
+     * Checks if wrapped element is a TypeParameterElement.
+     *
+     * @param element the element to check
+     * @return true if passed element is a TypeParameterElement, otherwise false
+     */
+    public static boolean isTypeParameterElement(ElementWrapper<? extends Element> element) {
         return ElementUtils.CastElement.isTypeParameterElement(element.unwrap());
     }
 
-    public static boolean isModuleElement(ElementWrapper<Element> element) {
+    /**
+     * Checks if wrapped element is a ModuleElement.
+     *
+     * @param element the element to check
+     * @return true if passed element is a ModuleElement, otherwise false
+     */
+    public static boolean isModuleElement(ElementWrapper<? extends Element> element) {
         return ElementUtils.CastElement.isModuleElement(element.unwrap());
     }
 
-    public static PackageElementWrapper toPackageElement(ElementWrapper<Element> element) {
-        return ElementWrapper.wrap(ElementUtils.CastElement.castToPackageElement(element.unwrap()));
+    /**
+     * Converts wrapper to a PackageElementWrapper by casting and re-wrapping wrapped element.
+     *
+     * @param wrapper the wrapper to convert
+     * @return a PackageElementWrapper instance
+     * @throws ClassCastException if wrapped Element cannot be casted to target Element type
+     */
+    public static PackageElementWrapper toPackageElement(ElementWrapper<? extends Element> wrapper) {
+        return PackageElementWrapper.wrap(ElementUtils.CastElement.castToPackageElement(wrapper.unwrap()));
     }
 
-    public static TypeElementWrapper toTypeElement(ElementWrapper<Element> element) {
-        return ElementWrapper.wrap(ElementUtils.CastElement.castToTypeElement(element.unwrap()));
+    /**
+     * Converts wrapper to a TypeElementWrapper by casting and re-wrapping wrapped element.
+     *
+     * @param wrapper the wrapper to convert
+     * @return a TypeElementWrapper instance
+     * @throws ClassCastException if wrapped Element cannot be casted to target Element type
+     */
+    public static TypeElementWrapper toTypeElement(ElementWrapper<? extends Element> wrapper) {
+        return TypeElementWrapper.wrap(ElementUtils.CastElement.castToTypeElement(wrapper.unwrap()));
     }
 
+    /**
+     * Converts wrapper to a TypeParameterElementWrapper by casting and re-wrapping wrapped element.
+     *
+     * @param wrapper the wrapper to convert
+     * @return a TypeParameterElementWrapper instance
+     * @throws ClassCastException if wrapped Element cannot be casted to target Element type
+     */
+    public static TypeParameterElementWrapper toTypeParameterElementWrapper(ElementWrapper<? extends Element> wrapper) {
+        return TypeParameterElementWrapper.wrap(ElementUtils.CastElement.castToTypeParameterElement(wrapper.unwrap()));
+    }
 
-    public static void main(String[] args) {
-        List<ElementWrapper> testList = new ArrayList<>();
-
-        List<TypeElementWrapper> teList = testList.stream()
-                .filter(ElementWrapper::isWrappedElementNotNull)
-                .filter(ElementWrapper::isTypeElement)
-                .map(ElementWrapper::toTypeElement)
-                .filter(e -> e.hasModifiers(Modifier.STATIC, Modifier.PUBLIC))
-                .filter(e -> e.hasQualifiedName("WHOOP"))
-                .filter(ElementWrapper::isWrappedElementNotNull)
-                .collect(Collectors.toList());
-        PackageElementWrapper tew = ElementWrapper.wrap((PackageElement) null);
-        tew.validate()
-                .is(AptkCoreMatchers.IS_FIELD)
-                .applyValidator(AptkCoreMatchers.BY_NAME).hasOneOf("abc")
-                .validateAndIssueMessages();
+    /**
+     * Converts wrapper to a VariableElementWrapper by casting and re-wrapping wrapped element.
+     *
+     * @param wrapper the wrapper to convert
+     * @return a VariableElementWrapper instance
+     * @throws ClassCastException if wrapped Element cannot be casted to target Element type
+     */
+    public static VariableElementWrapper toVariableElementWrapper(ElementWrapper<? extends Element> wrapper) {
+        return VariableElementWrapper.wrap(ElementUtils.CastElement.castToVariableElement(wrapper.unwrap()));
     }
 
 
