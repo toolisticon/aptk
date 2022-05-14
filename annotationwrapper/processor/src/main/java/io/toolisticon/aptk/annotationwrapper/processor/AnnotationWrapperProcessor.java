@@ -4,6 +4,7 @@ import io.toolisticon.aptk.annotationwrapper.api.AnnotationWrapper;
 import io.toolisticon.aptk.annotationwrapper.api.CustomCodeMethod;
 import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.AnnotationUtils;
+import io.toolisticon.aptk.tools.AnnotationValueUtils;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.FilerUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
@@ -13,11 +14,13 @@ import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.aptk.tools.generators.SimpleJavaWriter;
+import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.spiap.api.Service;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -66,6 +69,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         final Element annotatedElement;
         final Set<String> annotationsToBeWrapped = new HashSet<>();
         final String[] customCodeClasses;
+        final Map<String,List<TypeMirrorWrapper>> customInterfaces;
         final Map<String, AnnotationWrapperCustomCode> annotationWrapperCustomCode = new HashMap<>();
         final Map<String, List<CustomCodeClassMethod>> customCodeClassMethodMappings = new HashMap<>();
         final Map<String, String> annotationNameToWrapperSimpleNameMap = new HashMap();
@@ -94,6 +98,8 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             usePublicVisibility = (Boolean) AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "usePublicVisibility").getValue();
             automaticallyWrapEmbeddedAnnotations = (Boolean) AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "automaticallyWrapEmbeddedAnnotations").getValue();
             customCodeClasses = AnnotationUtils.getClassArrayAttributeFromAnnotationAsFqn(annotationMirror, "bindCustomCode");
+            customInterfaces = getCustomInterfaces(this.annotatedElement, annotationMirror);
+
 
             // now recursively add all embedded annotations
             if (automaticallyWrapEmbeddedAnnotations) {
@@ -228,6 +234,41 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         }
 
+        Map<String, List<TypeMirrorWrapper>> getCustomInterfaces (Element element,AnnotationMirror annotationMirror){
+
+            AnnotationValue annotationValue = AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror,"customInterfaces");
+            Map<String, List<TypeMirrorWrapper>> result = new HashMap<>();
+            AnnotationMirror[] annotationMirrors = AnnotationValueUtils.getAnnotationValueArray(annotationValue);
+            if(annotationMirrors == null) {
+                return result;
+            }
+            for (AnnotationMirror customInterfaceAnnotationMirror : annotationMirrors) {
+                TypeMirrorWrapper annotationType = TypeMirrorWrapper.wrap(AnnotationUtils.getClassAttributeFromAnnotationAsTypeMirror(customInterfaceAnnotationMirror, "annotationToWrap"));
+                TypeMirror[] interfaceTypes = AnnotationUtils.getClassArrayAttributeFromAnnotationAsTypeMirror(customInterfaceAnnotationMirror, "interfacesToApply");
+
+
+                List<TypeMirrorWrapper> customInterfacesList =  result.get(annotationType.getQualifiedName());
+                if (customInterfacesList == null) {
+                    customInterfacesList = new ArrayList<>();
+                    result.put(annotationType.getQualifiedName(), customInterfacesList);
+                }
+
+                for (TypeMirror customInterfaceType : interfaceTypes) {
+                    TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(customInterfaceType);
+
+                    // get is safe because it is interface
+                    if(!typeMirrorWrapper.getTypeElement().get().validateWithFluentElementValidator().is(AptkCoreMatchers.IS_INTERFACE).justValidate()){
+                        MessagerUtils.error(element, annotationMirror, "Class in interfacesToApply attribute array must be an interface!" );
+                        continue;
+                    }
+
+                    customInterfacesList.add(typeMirrorWrapper);
+                }
+
+            }
+            return result;
+        }
+
         /**
          * Gets the annotated element used during wrapper generation
          *
@@ -272,6 +313,10 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         public String getVisibilityModifier() {
             return usePublicVisibility ? "public " : "";
+        }
+
+        public List<TypeMirrorWrapper> getCustomInterfacesForAnnotation(String annotationFqn){
+            return this.customInterfaces.get(annotationFqn);
         }
 
     }
@@ -320,16 +365,22 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         final AnnotationWrapperCustomCode annotationWrapperCustomCode;
 
         /**
+         * Custom interfaces for wrapper.
+         */
+        final List<TypeMirrorWrapper> customInterfaces;
+
+        /**
          * The constructor
          *
          * @param annotationFqn               the fully qualified name of the annotation
          * @param attributes                  The attributes of the annotation
          * @param annotationWrapperCustomCode custom code methods to extend the wrappers api
          */
-        AnnotationToWrap(String annotationFqn, List<AnnotationAttribute> attributes, AnnotationWrapperCustomCode annotationWrapperCustomCode) {
+        AnnotationToWrap(String annotationFqn, List<AnnotationAttribute> attributes, AnnotationWrapperCustomCode annotationWrapperCustomCode, List<TypeMirrorWrapper> customInterfaces) {
             this.annotationFqn = annotationFqn;
             this.attributes = attributes;
             this.annotationWrapperCustomCode = annotationWrapperCustomCode;
+            this.customInterfaces = customInterfaces;
         }
 
         /**
@@ -397,6 +448,31 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             return imports;
         }
 
+        public List<TypeMirrorWrapper> getCustomInterfaces() {
+            return customInterfaces;
+        }
+
+        public String getImplementsString(){
+
+            if (getCustomInterfaces() != null && getCustomInterfaces().size() > 0 ){
+
+                StringBuilder sb = new StringBuilder();
+                boolean first = true;
+                for(TypeMirrorWrapper wrapper :getCustomInterfaces()){
+                    if (first){
+                        first =false;
+                    } else {
+                        sb.append(", ");
+                    }
+                    sb.append(wrapper.getSimpleName().toString());
+                }
+
+                return sb.toString();
+            }
+
+
+            return  "";
+        }
     }
 
     /**
@@ -892,7 +968,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
         }
 
-        AnnotationToWrap annotationToWrap = new AnnotationToWrap(annotationToCreateWrapperFor, annotationAttributes, state.getAnnotationWrapperCustomCode(annotationToCreateWrapperFor));
+        AnnotationToWrap annotationToWrap = new AnnotationToWrap(annotationToCreateWrapperFor, annotationAttributes, state.getAnnotationWrapperCustomCode(annotationToCreateWrapperFor), state.getCustomInterfacesForAnnotation(annotationToCreateWrapperFor));
 
         createClass(state, annotationToWrap);
 

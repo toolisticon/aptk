@@ -10,12 +10,15 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import java.lang.annotation.Target;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Unit Test for {@link ElementWrapper}.
@@ -27,6 +30,11 @@ public class ElementWrapperTest {
         TypeElement te = Mockito.mock(TypeElement.class);
 
         MatcherAssert.assertThat(ElementWrapper.wrap(te).unwrap(), Matchers.is(te));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_wrap_nullSafety() {
+        ElementWrapper.wrap((Element) null);
     }
 
     @PassIn
@@ -124,6 +132,31 @@ public class ElementWrapperTest {
     }
 
     @Test
+    public void test_getEnclosingElement() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
+            ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+            MatcherAssert.assertThat( unit.getEnclosingElement().get().asType().getQualifiedName(), Matchers.is(ElementWrapperTest.class.getCanonicalName()));
+        }).executeTest();
+
+    }
+
+    @Test
+    public void test_getAllEnclosingElements() {
+
+        // THIS IS REALLY HARD TO TEST WITH COMPILE TEST SINCE RESULT DIFFERS BASED ON JDK VERSION (Additional unnamed module for Java >=9)
+        TypeElement element = Mockito.mock(TypeElement.class);
+        PackageElement packageElement = Mockito.mock(PackageElement.class);
+        Mockito.when(element.getEnclosingElement()).thenReturn(packageElement);
+
+        ElementWrapper<Element> unit = ElementWrapper.wrap(element);
+
+        MatcherAssert.assertThat(unit.getAllEnclosingElements().stream().map(ElementWrapper::unwrap).collect(Collectors.toList()), Matchers.contains(packageElement));
+        MatcherAssert.assertThat(unit.getAllEnclosingElements(true).stream().map(ElementWrapper::unwrap).collect(Collectors.toList()), Matchers.contains(element,packageElement));
+    }
+
+
+    @Test
     public void test_validateWithFluentElementValidator() {
 
         CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
@@ -157,25 +190,6 @@ public class ElementWrapperTest {
 
     }
 
-    @Test
-    public void test_isWrappedElementNull() {
-
-        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
-            MatcherAssert.assertThat("Should return false", !ElementWrapper.wrap(element).isWrappedElementNull());
-            MatcherAssert.assertThat("Should return true", ElementWrapper.wrap((TypeElement) null).isWrappedElementNull());
-        }).executeTest();
-
-    }
-
-    @Test
-    public void test_isWrappedElementNotNull() {
-
-        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
-            MatcherAssert.assertThat("Should return true", ElementWrapper.wrap(element).isWrappedElementNotNull());
-            MatcherAssert.assertThat("Should return false", !ElementWrapper.wrap((TypeElement) null).isWrappedElementNotNull());
-        }).executeTest();
-
-    }
 
     @Test
     public void test_asType() {
@@ -251,8 +265,8 @@ public class ElementWrapperTest {
 
         CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
             ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
-            MatcherAssert.assertThat(unit.getAnnotation(PassIn.class), Matchers.notNullValue());
-            MatcherAssert.assertThat(unit.getAnnotation(Target.class), Matchers.nullValue());
+            MatcherAssert.assertThat("Should find annotation", unit.getAnnotation(PassIn.class).isPresent());
+            MatcherAssert.assertThat("Shouldn't find annotation", !unit.getAnnotation(Target.class).isPresent());
         }).executeTest();
 
     }

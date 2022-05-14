@@ -16,14 +16,30 @@ public class TypeParameterElementWrapper extends ElementWrapper<TypeParameterEle
         super(typeParameterElement);
     }
 
+    /**
+     * Returns the generic class, interface, method, or constructor that is parameterized by this type parameter.
+     *
+     * @return the generic class, interface, method, or constructor that is parameterized by this type parameter
+     */
     public ElementWrapper<Element> getGenericElement() {
         return ElementWrapper.wrap(this.element.getGenericElement());
     }
 
+    /**
+     * Returns the bounds of this type parameter. These are the types given by the extends clause used to declare this type parameter. If no explicit extends clause was used, then java.lang.Object is considered to be the sole bound.
+     *
+     * @return the bounds of this type parameter, or an empty list if there are none
+     */
     public List<TypeMirrorWrapper> getBounds() {
         return this.element.getBounds().stream().map(TypeMirrorWrapper::wrap).collect(Collectors.toList());
     }
 
+    /**
+     * Wraps a TypeParameterElement.
+     * Will throw IllegalArgumentException if passed element is null.
+     * @param typeParameterElement the element to wrap
+     * @return a wrapper instance
+     */
     public static TypeParameterElementWrapper wrap(TypeParameterElement typeParameterElement) {
         return new TypeParameterElementWrapper(typeParameterElement);
     }

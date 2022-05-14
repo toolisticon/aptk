@@ -1,5 +1,7 @@
 package io.toolisticon.aptk.tools;
 
+import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
+
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -15,6 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -259,7 +262,6 @@ public class TypeMirrorWrapper {
     public WildcardType getWildcardType() {
         return getWildcardType(typeMirror);
     }
-
 
 
     /**
@@ -693,13 +695,25 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets the TypeElement for a typeMirror.
+     * Gets an Optional containing the TypeElement for a typeMirror, if it exists.
      *
-     * @return the TypeElement for a typeMirror or null for arrays and primitives (non DeclaredTypes)
+     * @return an Optional containing the TypeElement for a typeMirror, that represents no arrays or primitives (non DeclaredTypes)
      */
-    public TypeElement getTypeElement() {
+    public Optional<TypeElementWrapper> getTypeElement() {
         return getTypeElement(typeMirror);
     }
+
+
+    @Override
+    public int hashCode() {
+        return this.typeMirror.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.typeMirror.equals(obj);
+    }
+
 
     /**
      * Unwraps the wrapped TypeMirror instance.
@@ -710,11 +724,11 @@ public class TypeMirrorWrapper {
         return this.typeMirror;
     }
 
-    public static TypeElement getTypeElement(TypeMirror typeMirror) {
+    public static Optional<TypeElementWrapper> getTypeElement(TypeMirror typeMirror) {
         if (typeMirror != null && isDeclared(typeMirror)) {
-            return (TypeElement) getDeclaredType(typeMirror).asElement();
+            return Optional.of(TypeElementWrapper.wrap((TypeElement) getDeclaredType(typeMirror).asElement()));
         }
-        return null;
+        return Optional.empty();
     }
 
     /**

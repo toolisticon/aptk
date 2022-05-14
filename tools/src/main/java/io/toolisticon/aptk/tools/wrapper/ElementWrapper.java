@@ -1,9 +1,11 @@
 package io.toolisticon.aptk.tools.wrapper;
 
+import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ElementVisitor;
@@ -12,6 +14,7 @@ import javax.lang.model.element.PackageElement;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,9 @@ public class ElementWrapper<E extends Element> {
     protected final E element;
 
     protected ElementWrapper(E element) {
+        if (element == null) {
+            throw new IllegalArgumentException("Passed Element to wrap must not be null.");
+        }
         this.element = element;
     }
 
@@ -152,26 +158,8 @@ public class ElementWrapper<E extends Element> {
      * @param annotationFqn the annotation to get
      * @return the AnnotationMirror wrapped by an AnnotationWrapper instance,
      */
-    public AnnotationMirrorWrapper getAnnotation(String annotationFqn) {
+    public Optional<AnnotationMirrorWrapper> getAnnotation(String annotationFqn) {
         return AnnotationMirrorWrapper.get(element, annotationFqn);
-    }
-
-    /**
-     * Checks if wrapped instance is null
-     *
-     * @return true, if wrapped element is null, otherwise false.
-     */
-    public boolean isWrappedElementNull() {
-        return this.element == null;
-    }
-
-    /**
-     * Checks if wrapped instance is null
-     *
-     * @return true, if wrapped element is not null, otherwise false.
-     */
-    public boolean isWrappedElementNotNull() {
-        return !isWrappedElementNull();
     }
 
     /**
@@ -205,10 +193,11 @@ public class ElementWrapper<E extends Element> {
     /**
      * Returns the enclosing element.
      *
-     * @return the enclosing element, or null if it doesn't exist
+     * @return an Optional containing the enclosing element, or an empty Optional if it doesn't exist
      */
-    public ElementWrapper<Element> getEnclosingElement() {
-        return ElementWrapper.wrap(element.getEnclosingElement());
+    public Optional<ElementWrapper<Element>> getEnclosingElement() {
+        Element enclosingElement = element.getEnclosingElement();
+        return enclosingElement != null ? Optional.of(ElementWrapper.wrap(enclosingElement)) : Optional.empty();
     }
 
     /**
@@ -257,8 +246,7 @@ public class ElementWrapper<E extends Element> {
      * @return a list of all elements of the enclosed element tree plus element itself if includeSelf flag is set
      */
     public List<ElementWrapper<Element>> getFlattenedEnclosedElementTree(boolean includeSelf) {
-        return ElementUtils.AccessEnclosingElements.getFlattenedEnclosingElementsTree(this.unwrap(), includeSelf)
-                .stream().map(ExecutableElementWrapper::wrap).collect(Collectors.toList());
+        return getFlattenedEnclosedElementTree(false, Integer.MAX_VALUE);
     }
 
     /**
@@ -284,11 +272,34 @@ public class ElementWrapper<E extends Element> {
      * Returns an annotation of a specific type.
      *
      * @param annotationType the type to search
+     * @return the annotation or null if Element isn't annotated with annotation
+     */
+    public Optional<AnnotationMirrorWrapper> getAnnotationMirror(Class<? extends Annotation> annotationType) {
+        AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, annotationType);
+        return annotationMirror != null ? Optional.of(AnnotationMirrorWrapper.wrap(annotationMirror)) : Optional.empty();
+    }
+
+    /**
+     * Returns an Optional of AnnotationMirror of a specific type.
+     *
+     * @param annotationTypeFqn the type to search
+     * @return the annotation or null if Element isn't annotated with annotation
+     */
+    public Optional<AnnotationMirrorWrapper> getAnnotationMirror(String annotationTypeFqn) {
+        AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(element, annotationTypeFqn);
+        return annotationMirror != null ? Optional.of(AnnotationMirrorWrapper.wrap(annotationMirror)) : Optional.empty();
+    }
+
+    /**
+     * Returns an annotation of a specific type.
+     * This should only be used if annotation doesn't have Class based attributes, since Classes might not be compiled already.
+     *
+     * @param annotationType the type to search
      * @param <A>            The annotation type
      * @return the annotation or null if Element isn't annotated with annotation
      */
-    public <A extends Annotation> A getAnnotation(Class<A> annotationType) {
-        return element.getAnnotation(annotationType);
+    public <A extends Annotation> Optional<A> getAnnotation(Class<A> annotationType) {
+        return Optional.ofNullable(element.getAnnotation(annotationType));
     }
 
     /**
@@ -312,6 +323,19 @@ public class ElementWrapper<E extends Element> {
     public <A extends Annotation> A[] getAnnotationsByType(Class<A> annotationType) {
         return element.getAnnotationsByType(annotationType);
     }
+
+
+    @Override
+    public int hashCode() {
+        return element.hashCode();
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        return element.equals(obj);
+    }
+
 
     // --------------------------------------------------------------------------
     // Central wrappers

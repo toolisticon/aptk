@@ -18,12 +18,14 @@ import java.util.List;
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.TypeUtils;
+!{if atw.customInterfaces != null}!{for customInterface : atw.customInterfaces}import ${customInterface.qualifiedName};
+!{/for}!{/if}
 
 
 /**
  * Wrapper class to read attribute values from Annotation ${atw.simpleName}.
  */
-${state.visibilityModifier}class ${atw.simpleName}Wrapper {
+${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfaces != null}implements ${atw.getImplementsString}!{/if}{
 
     private final Element annotatedElement;
     private final AnnotationMirror annotationMirror;

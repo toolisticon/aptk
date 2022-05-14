@@ -10,6 +10,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Utility class which helps to handle different {@link AnnotationValue} related tasks.
@@ -245,12 +246,23 @@ public class AnnotationValueUtils {
 
     /**
      * Tries to get the annotationValues value as TypeMirror.
+     * This is potentially an unsafe operation since it's never guaranteed that a class has already been compiled.
+     * Prefer working with TypeMirrors instead.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value cast as TypeMirror, or null if value has not the correct type.
+     * @return the annotationValues value as a Class value, or null if value has not the correct type or hasn't been compiled yet.
      */
-    public static TypeMirror getClassValue(AnnotationValue annotationValue) {
-        return getTypeMirrorValue(annotationValue);
+    public static Class<?> getClassValue(AnnotationValue annotationValue) {
+        TypeMirror typeMirror = getTypeMirrorValue(annotationValue);
+        if (typeMirror != null) {
+            try {
+                return Class.forName(typeMirror.toString());
+            } catch (ClassNotFoundException e) {
+                // ignore will just return null
+            }
+        }
+
+        return null;
     }
 
     /**

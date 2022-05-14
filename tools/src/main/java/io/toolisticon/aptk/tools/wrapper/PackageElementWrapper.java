@@ -34,6 +34,7 @@ public class PackageElementWrapper extends ElementWrapper<PackageElement>{
 
     /**
      * Wraps a PackageElement instance.
+     * Throws am IllegalArgumentException if passed element is null.
      * @param element the element to wrap
      * @return a wrapper instance‚
      */

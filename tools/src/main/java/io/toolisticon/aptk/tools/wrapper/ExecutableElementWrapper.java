@@ -5,6 +5,7 @@ import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import javax.lang.model.element.ExecutableElement;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -123,15 +124,21 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
         return imports;
     }
 
-    static List<String> getImportsNeededByMethodsSignature() {
-        return null;
-    }
 
+    /**
+     * Returns all Type Parameters of the wrapped Executable Element.
+     * @return a list containing all  wrapped TypeParameters, or an empty list if none are present.
+     */
     public List<TypeParameterElementWrapper> getTypeParameters() {
         return this.element.getTypeParameters().stream().map(TypeParameterElementWrapper::wrap).collect(Collectors.toList());
     }
 
 
+    /**
+     * Returns the return type of the Executable Element.
+     * Wraps a NoType with kind VOID if this executable is not a method, or is a method that does not return a value.
+     * @return a TypeMirrorWrapper instance
+     */
     public TypeMirrorWrapper getReturnType() {
         return TypeMirrorWrapper.wrap(this.element.getReturnType());
     }
@@ -145,26 +152,54 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
         return this.element.getParameters().stream().map(VariableElementWrapper::wrap).collect(Collectors.toList());
     }
 
+    /**
+     * Returns the receiver type of this executable, or NoType with kind NONE if the executable has no receiver type. An executable which is an instance method, or a constructor of an inner class, has a receiver type derived from the declaring type. An executable which is a static method, or a constructor of a non-inner class, or an initializer (static or instance), has no receiver type.
+     *
+     * @return the receiver type of this executable
+     */
     public TypeMirrorWrapper getReceiverType() {
         return TypeMirrorWrapper.wrap(this.element.getReceiverType());
     }
 
+    /**
+     * Returns if wrapped ExecutableElement has a vararg parameter
+     * @return
+     */
     public boolean isVarArgs() {
         return this.element.isVarArgs();
     }
 
+    /**
+     * Returns if wrapped ExecutableElement is a default implementation.
+     * @return true if wrapped ExecutableElement is a default implementation, otherwise false
+     */
     public boolean isDefault() {
         return this.element.isDefault();
     }
 
+
+    /**
+     * Returns the exceptions and other throwables listed in this method or constructor's throws clause in declaration order.
+     * @return the exceptions and other throwables listed in the throws clause, or an empty list if there are none
+     */
     public List<TypeMirrorWrapper> getThrownTypes() {
         return this.element.getThrownTypes().stream().map(TypeMirrorWrapper::wrap).collect(Collectors.toList());
     }
 
-    public AnnotationValueWrapper getDefaultValue() {
-        return this.element.getDefaultValue() != null ? AnnotationValueWrapper.wrap(element.getDefaultValue()) : null;
+    /**
+     * Returns an Optional containing the default value if this executable is an annotation type element and if a default value is present.
+     * @return the Optional containing the default value if present
+     */
+    public Optional<AnnotationValueWrapper> getDefaultValue() {
+        return this.element.getDefaultValue() != null ? Optional.of(AnnotationValueWrapper.wrap(element.getDefaultValue())) : Optional.empty();
     }
 
+    /**
+     * Wraps an ExecutableElement.
+     * Throws IllegalArgumentException if passed executableElement is null
+     * @param executableElement the element to wrap, must not be null
+     * @return the wrapper instance
+     */
     public static ExecutableElementWrapper wrap(ExecutableElement executableElement) {
         return new ExecutableElementWrapper(executableElement);
     }

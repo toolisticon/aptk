@@ -119,6 +119,47 @@ accessing the annotation directly. Only difference is that Class type based attr
 TypeMirror or TypeMirrorWrapper. Annotation type based attributes will be also wrapped to ease access. Please
 check [annotation wrapper processor](annotationwrapper) for further information.
 
+## Element Wrappers
+
+Element wrappers are quite helpful by extending the Element API by enhanced utility functions, which for example help to 
+navigate through the element tree or by providing Element validation support.
+
+Some examples:
+
+```java
+
+// validation - lambda style
+Element element = null;
+    ElementWrapper.wrap(element).validate()
+        .asError().withCustomMessage("Annotation must be placed on static inner class with public or protected modifier")
+        .check( ElementWrapper::isClass)
+        .and(e -> e.hasModifiers(Modifier.STATIC) && (e.hasModifiers(Modifier.PUBLIC) || e.hasModifiers(Modifier.PROTECTED)))
+        .validate();
+
+// same validation APTK style - with generic compiler messages
+ElementWrapper.wrap(element).validateWithFluentElementValidator()
+    .is(AptkCoreMatchers.IS_CLASS)
+    .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.STATIC)
+    .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.PUBLIC, Modifier.PROTECTED)
+    .validateAndIssueMessages();
+
+// Navigation / Filtering
+List<TypeElementWrapper> allStaticInnerClasses = ElementWrapper.wrap(element).getAllEnclosingElements().stream()
+    .filter(ElementWrapper::isClass)
+    .filter(e -> e.hasModifiers(Modifier.STATIC) && (e.hasModifiers(Modifier.PUBLIC) || e.hasModifiers(Modifier.PROTECTED)))
+    .map(ElementWrapper::toTypeElement)
+    .collect(Collectors.toList());
+
+// getting methods of TypeElement
+    TypeElement typeElement = null;
+    Optional<ExecutableElementWrapper> method = TypeElementWrapper.wrap(typeElement).getMethod("methodName", String.class, Long.class);
+
+// ...
+
+
+```                                                
+
+
 ## Enhanced utility support
 
 Java itself provides some tools to support you to build annotation processors. This framework provides some utility

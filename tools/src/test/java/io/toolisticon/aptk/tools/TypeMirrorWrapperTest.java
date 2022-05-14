@@ -544,7 +544,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getTypeElement().getQualifiedName().toString(), Matchers.is(GetTypeElement.class.getCanonicalName()));
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getTypeElement().get().getQualifiedName().toString(), Matchers.is(GetTypeElement.class.getCanonicalName()));
 
             }
         }).executeTest();
@@ -562,7 +562,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getTypeElement(), Matchers.nullValue());
+                MatcherAssert.assertThat("Must return empty optional",!TypeMirrorWrapper.wrap(element.asType()).getTypeElement().isPresent());
 
             }
         }).executeTest();

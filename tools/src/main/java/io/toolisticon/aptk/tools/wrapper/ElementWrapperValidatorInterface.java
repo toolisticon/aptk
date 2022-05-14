@@ -9,21 +9,45 @@ import java.util.function.Predicate;
  */
 public class ElementWrapperValidatorInterface {
 
-
+    /**
+     * Initial builder interface.
+     * @param <WRAPPER> The wrapper type
+     */
     public interface FirstValidation<WRAPPER extends ElementWrapper<?>> {
 
+        /**
+         * Set the compiuler message level to NOTE.
+         * @return the next builder instance.
+         */
         FirstValidationWithScope<WRAPPER> asInfo();
 
+        /**
+         * Set the compiuler message level to WARNING.
+         * @return the next builder instance.
+         */
         FirstValidationWithScope<WRAPPER> asWarning();
 
+        /**
+         * Set the compiuler message level to MANDATORY_WARNING.
+         * @return the next builder instance.
+         */
         FirstValidationWithScope<WRAPPER> asMandatoryWarning();
 
+        /**
+         * Set the compiuler message level to ERROR.
+         * @return the next builder instance.
+         */
         FirstValidationWithScope<WRAPPER> asError();
 
         FirstValidationWithScopeAndCustomMessage<WRAPPER> withCustomMessage(ValidationMessage message, Object... vars);
 
         FirstValidationWithScopeAndCustomMessage<WRAPPER> withCustomMessage(String message, Object... vars);
 
+        /**
+         * Adds a validation check.
+         * @param predicate
+         * @return
+         */
         FollowUpValidationOrEndValidation<WRAPPER> check(Predicate<WRAPPER> predicate);
 
     }

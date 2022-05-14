@@ -16,6 +16,12 @@ public class VariableElementWrapper extends ElementWrapper<VariableElement>{
         return this.element.getConstantValue();
     }
 
+    /**
+     * Wraps a VariableElement.
+     * Will throw IllegalArgumentException if passed element is null.
+     * @param variableElement the element to wrap
+     * @return a wrapper instance
+     */
     public static VariableElementWrapper wrap(VariableElement variableElement) {
         return new VariableElementWrapper(variableElement);
     }

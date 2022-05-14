@@ -2,6 +2,7 @@ package io.toolisticon.aptk.tools.wrapper;
 
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 
@@ -10,8 +11,11 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -76,12 +80,30 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
     }
 
     /**
-     * Returns list of TypeMirrorWrapper containing all implemented interfaces.
+     * Returns list of TypeMirrorWrapper containing all directly implemented interfaces.
+     * Doesn't return interfaces implemented by superclasses.
      *
-     * @return list of TypeMirrorWrapper containing all implemented interfaces
+     * @return list of TypeMirrorWrapper containing all directly implemented interfaces
      */
     public List<TypeMirrorWrapper> getInterfaces() {
         return this.element.getInterfaces().stream().map(TypeMirrorWrapper::wrap).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns list of TypeMirrorWrapper containing all implemented interfaces (including those of superclasses).
+     *
+     * @return list of TypeMirrorWrapper containing all implemented interfaces
+     */
+    public Set<TypeMirrorWrapper> getAllInterfaces() {
+
+        // Add own interfaces
+        Set<TypeMirrorWrapper> result = new HashSet<>(this.getInterfaces());
+
+        // recursively add those of superclasses.
+        Optional<TypeElementWrapper> superClass  = getSuperclass().getTypeElement();
+        superClass.ifPresent(typeElementWrapper -> result.addAll(typeElementWrapper.getAllInterfaces()));
+
+        return result;
     }
 
     /**
@@ -210,8 +232,6 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
 
     }
 
-
-
     /**
      * Wraps a TypeElement.
      *
@@ -221,4 +241,68 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
     public static TypeElementWrapper wrap(TypeElement element) {
         return new TypeElementWrapper(element);
     }
+
+    /**
+     * Retrieve TypeElementWrapper by fully qualified name.
+     * @param fqn the fully qualified name of the element
+     * @return an Optional that contains the wrapper instance, if TypeELement for fqn exists
+     */
+    public static Optional<TypeElementWrapper> getByFqn (String fqn) {
+        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(fqn);
+        return typeElement != null ? Optional.of(wrap(typeElement)) : Optional.empty();
+    }
+
+    /**
+     * Retrieve TypeElementWrapper by fully qualified name.
+     * @param clazz the class of the element
+     * @return an Optional that contains the wrapper instance, if TypeELement for class exists (only for DeclaredTypes)
+     */
+    public static Optional<TypeElementWrapper> getByClass (Class<?> clazz) {
+        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(clazz);
+        return typeElement != null ? Optional.of(wrap(typeElement)) : Optional.empty();
+    }
+
+    /**
+     * Retrieve TypeElementWrapper by fully qualified name.
+     * @param typeMirror the TypeMirror of the element
+     * @return an Optional that contains the wrapper instance, if TypeELement for TypeMirror exists (only for DeclaredTypes)
+     */
+    public static Optional<TypeElementWrapper> getByTypeMirror(TypeMirror typeMirror) {
+        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(typeMirror);
+        return typeElement != null ? Optional.of(wrap(typeElement)) : Optional.empty();
+    }
+
+    /*-
+    public static void main (String[] args){
+
+        // validation - lambda style
+        Element element = null;
+        ElementWrapper.wrap(element).validate()
+                .asError().withCustomMessage("Annotation must be placed on static inner class with public or protected modifier")
+                .check( ElementWrapper::isClass)
+                .and(e -> e.hasModifiers(Modifier.STATIC) && (e.hasModifiers(Modifier.PUBLIC) || e.hasModifiers(Modifier.PROTECTED)))
+                .validate();
+
+        // same validation APTK style
+        ElementWrapper.wrap(element).validateWithFluentElementValidator()
+                .is(AptkCoreMatchers.IS_CLASS)
+                .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.STATIC)
+                .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.PUBLIC, Modifier.PROTECTED)
+                .validateAndIssueMessages();
+
+        // Navigation / Filtering
+        List<TypeElementWrapper> allStaticInnerClasses = ElementWrapper.wrap(element).getAllEnclosingElements().stream()
+                .filter(ElementWrapper::isClass)
+                .filter(e -> e.hasModifiers(Modifier.STATIC) && (e.hasModifiers(Modifier.PUBLIC) || e.hasModifiers(Modifier.PROTECTED)))
+                .map(ElementWrapper::toTypeElement)
+                .collect(Collectors.toList());
+
+        // getting methods of TypeElement
+        TypeElement typeElement = null;
+        Optional<ExecutableElementWrapper> method = TypeElementWrapper.wrap(typeElement).getMethod("methodName", String.class, Long.class);
+
+        // and much more
+
+    }
+    */
 }
