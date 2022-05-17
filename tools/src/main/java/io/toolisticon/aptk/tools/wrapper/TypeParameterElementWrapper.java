@@ -34,6 +34,10 @@ public class TypeParameterElementWrapper extends ElementWrapper<TypeParameterEle
         return this.element.getBounds().stream().map(TypeMirrorWrapper::wrap).collect(Collectors.toList());
     }
 
+    public String toString() {
+        return this.element.toString();
+    }
+
     /**
      * Wraps a TypeParameterElement.
      * Will throw IllegalArgumentException if passed element is null.

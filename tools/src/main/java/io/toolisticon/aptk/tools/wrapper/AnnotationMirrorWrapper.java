@@ -55,9 +55,14 @@ public class AnnotationMirrorWrapper {
      */
     public Optional<AnnotationValueWrapper> getAttribute(String name) {
 
-        // return empty optional if passed name is null
+        // throw exception if name is null
         if (name == null) {
-            return Optional.empty();
+            throw new IllegalArgumentException("passed attribute name must not be null");
+        }
+
+        // throw exception if attribute name is not existent
+        if (!hasAttribute(name)) {
+            throw new IllegalArgumentException("Passed attribute name is not valid. Annotation " + this.annotationMirror.getAnnotationType().asElement().getSimpleName() + " has the following attributes : " + getAttributeNames());
         }
 
         AnnotationValue annotationValue = AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, name);
@@ -70,7 +75,7 @@ public class AnnotationMirrorWrapper {
      *
      * @return an Optional of AnnotationValueWrapper
      */
-    public Optional<AnnotationValueWrapper> getAttributeWithDefault() {
+    public AnnotationValueWrapper getAttributeWithDefault() {
         return getAttributeWithDefault("value");
     }
 
@@ -80,15 +85,21 @@ public class AnnotationMirrorWrapper {
      * @param name the name of the attribute
      * @return an Optional of AnnotationValueWrapper
      */
-    public Optional<AnnotationValueWrapper> getAttributeWithDefault(String name) {
+    public AnnotationValueWrapper getAttributeWithDefault(String name) {
 
-        // return empty optional if passed name is null
+        // throw exception if name is null
         if (name == null) {
-            return Optional.empty();
+            throw new IllegalArgumentException("passed attribute name must not be null");
         }
 
+        // throw exception if attribute name is not existent
+        if (!hasAttribute(name)) {
+            throw new IllegalArgumentException("Passed attribute name is not valid. Annotation " + this.annotationMirror.getAnnotationType().asElement().getSimpleName() + " has the following attributes : " + getAttributeNames());
+        }
+
+
         AnnotationValue annotationValue = AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, name);
-        return annotationValue != null ? Optional.of(AnnotationValueWrapper.wrap(annotationValue)) : Optional.empty();
+        return AnnotationValueWrapper.wrap(annotationValue);
     }
 
     /**
@@ -126,20 +137,11 @@ public class AnnotationMirrorWrapper {
     }
 
     /**
-     * Gets the attribute names explicitely used in the annotation.
+     * Get all attribute names of the annotation.
      *
      * @return a set containing all attribute names
      */
     public Set<String> getAttributeNames() {
-        return this.annotationMirror.getElementValues().keySet().stream().map(e -> e.getSimpleName().toString()).collect(Collectors.toSet());
-    }
-
-    /**
-     * Gets all attribute names of the annotation.
-     *
-     * @return a set containing all attribute names
-     */
-    public Set<String> getAllAttributeNames() {
         return new HashSet<String>(this.annotationMirror.getAnnotationType().asElement().getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.METHOD).map(e -> e.getSimpleName().toString()).collect(Collectors.toList()));
     }
 
@@ -150,7 +152,7 @@ public class AnnotationMirrorWrapper {
      * @return true if attribute with passed name was found, otherwise false
      */
     public boolean hasAttribute(String name) {
-        return getAllAttributeNames().contains(name);
+        return getAttributeNames().contains(name);
     }
 
 

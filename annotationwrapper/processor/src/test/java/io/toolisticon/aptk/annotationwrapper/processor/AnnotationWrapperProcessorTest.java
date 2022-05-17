@@ -3,10 +3,10 @@ package io.toolisticon.aptk.annotationwrapper.processor;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessorForTestingAnnotationProcessors;
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
+import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
 import io.toolisticon.cute.matchers.CoreGeneratedFileObjectMatchers;
@@ -156,9 +156,9 @@ public class AnnotationWrapperProcessorTest {
 
                         AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(
                                 UnitTestAnnotation.class.getCanonicalName(),
-                                new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>(),
+                                new ArrayList<>(),
                                 new AnnotationWrapperProcessor.AnnotationWrapperCustomCode(UnitTestAnnotation.class.getCanonicalName()),
-                                new ArrayList<TypeMirrorWrapper>()
+                                new ArrayList<>()
                         );
 
                         MatcherAssert.assertThat(unit.getSimpleName(), Matchers.is(UnitTestAnnotation.class.getSimpleName()));
@@ -177,9 +177,9 @@ public class AnnotationWrapperProcessorTest {
 
                         AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(
                                 UnitTestAnnotation.class.getCanonicalName(),
-                                new ArrayList<AnnotationWrapperProcessor.AnnotationAttribute>(),
+                                new ArrayList<>(),
                                 new AnnotationWrapperProcessor.AnnotationWrapperCustomCode(UnitTestAnnotation.class.getCanonicalName()),
-                                new ArrayList<TypeMirrorWrapper>());
+                                new ArrayList<>());
 
                         MatcherAssert.assertThat(unit.getQualifiedName(), Matchers.is(UnitTestAnnotation.class.getCanonicalName()));
 
@@ -207,7 +207,7 @@ public class AnnotationWrapperProcessorTest {
                                 UnitTestAnnotation.class.getCanonicalName(),
                                 attributes,
                                 new AnnotationWrapperProcessor.AnnotationWrapperCustomCode(UnitTestAnnotation.class.getCanonicalName()),
-                                new ArrayList<TypeMirrorWrapper>());
+                                new ArrayList<>());
 
                         MatcherAssert.assertThat(unit.getImports(), Matchers.containsInAnyOrder(UnitTestAnnotation.class.getCanonicalName(), Serializable.class.getCanonicalName(), Collections.class.getCanonicalName()));
 
@@ -233,7 +233,7 @@ public class AnnotationWrapperProcessorTest {
                 UnitTestAnnotation.class.getCanonicalName(),
                 attributes,
                 new AnnotationWrapperProcessor.AnnotationWrapperCustomCode(UnitTestAnnotation.class.getCanonicalName()),
-                new ArrayList<TypeMirrorWrapper>());
+                new ArrayList<>());
 
         MatcherAssert.assertThat(unit.getAttributes(), Matchers.is(attributes));
 
@@ -295,7 +295,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_getAttributeType(TypeElement typeElement, String name, Class<?> expectedType) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -326,7 +326,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_getComponentAttributeType(TypeElement typeElement, String name, Class<?> expectedType) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -363,7 +363,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_getImport(TypeElement typeElement, String name, String expectedImport) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -400,7 +400,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_getName(TypeElement typeElement, String name) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -437,7 +437,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_getWrappedTypeMirror(TypeElement typeElement, String name, Class<?> expectedType) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -474,7 +474,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_isAnnotationType(TypeElement typeElement, String name, boolean expectedResult) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -511,7 +511,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_isArray(TypeElement typeElement, String name, boolean expectedResult) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -548,7 +548,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_isClass(TypeElement typeElement, String name, boolean expectedResult) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -585,7 +585,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_isEnum(TypeElement typeElement, String name, boolean expectedResult) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -622,7 +622,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_isPrimitiveOrString(TypeElement typeElement, String name, boolean expectedResult) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -659,7 +659,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_isOptional(TypeElement typeElement, String name, boolean expectedResult) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -688,7 +688,7 @@ public class AnnotationWrapperProcessorTest {
     private void test_AnnotationToWrap_getTargetWrapperAnnotationName(TypeElement typeElement, String name, String expectedCanonicalName) {
 
         AnnotationWrapperProcessor.State state = Mockito.mock(AnnotationWrapperProcessor.State.class);
-        ExecutableElement executableElement = getExecutableElement(typeElement, name);
+        ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
 
@@ -699,11 +699,11 @@ public class AnnotationWrapperProcessorTest {
 
     }
 
-    private ExecutableElement getExecutableElement(TypeElement typeElement, String name) {
-        return FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
+    private ExecutableElementWrapper getExecutableElement(TypeElement typeElement, String name) {
+        return ExecutableElementWrapper.wrap(FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
                 .applyFilter(AptkCoreMatchers.IS_METHOD)
                 .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(name)
-                .getResult().get(0);
+                .getResult().get(0));
     }
 
 
@@ -722,7 +722,7 @@ public class AnnotationWrapperProcessorTest {
                             @Override
                             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, ExecutableElement element) {
 
-                                AnnotationWrapperProcessor.CustomCodeClassMethod unit = new AnnotationWrapperProcessor.CustomCodeClassMethod(element);
+                                AnnotationWrapperProcessor.CustomCodeClassMethod unit = new AnnotationWrapperProcessor.CustomCodeClassMethod(ExecutableElementWrapper.wrap(element));
                                 String forwardCall = unit.getForwardCall();
                                 String methodDeclarationString = unit.getMethodDeclarationString();
 
@@ -743,8 +743,8 @@ public class AnnotationWrapperProcessorTest {
                 .addSources(
                         "testcase/withCustomInterface/package-info.java"
                 )
-                .expectThatJavaFileObjectExists(StandardLocation.SOURCE_OUTPUT, "io.toolisticon.aptk.wrapper.test.TestAnnotationWrapper", JavaFileObject.Kind.SOURCE,CoreGeneratedFileObjectMatchers.createContainsSubstringsMatcher("implements Serializable, Cloneable"))
+                .expectThatJavaFileObjectExists(StandardLocation.SOURCE_OUTPUT, "io.toolisticon.aptk.wrapper.test.TestAnnotationWrapper", JavaFileObject.Kind.SOURCE, CoreGeneratedFileObjectMatchers.createContainsSubstringsMatcher("implements Serializable, Cloneable"))
                 .compilationShouldSucceed()
-                 .executeTest();
+                .executeTest();
     }
 }

@@ -19,9 +19,6 @@ public class AnnotationValueWrapper {
     final AnnotationValue annotationValue;
 
     private AnnotationValueWrapper(AnnotationValue annotationValue) {
-        if (annotationValue == null) {
-            throw new IllegalArgumentException("Passed AnnotationValue to wrap must not be null.");
-        }
         this.annotationValue = annotationValue;
     }
 
@@ -137,85 +134,85 @@ public class AnnotationValueWrapper {
     /**
      * Tries to get the annotationValues value as Long.
      *
-     * @return the annotationValues value as an Optional of type Long, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value as an Optional of type Long, or null if value has not the correct type.
      */
-    public Optional<Long> getLongValue() {
-        return Optional.ofNullable(AnnotationValueUtils.getLongValue(annotationValue));
+    public Long getLongValue() {
+        return AnnotationValueUtils.getLongValue(annotationValue);
     }
 
     /**
      * Tries to get the annotationValues value as Integer.
      *
-     * @return the annotationValues value as an Optional of type Integer, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value as an Optional of type Integer, or null if value has not the correct type.
      */
-    public Optional<Integer> getIntegerValue() {
-        return Optional.ofNullable(AnnotationValueUtils.getIntegerValue(annotationValue));
+    public Integer getIntegerValue() {
+        return AnnotationValueUtils.getIntegerValue(annotationValue);
     }
 
 
     /**
      * Tries to get the annotationValues value as Boolean.
      *
-     * @return the annotationValues value as an Optional of type Boolean, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value as an Optional of type Boolean, or null if value has not the correct type.
      */
-    public Optional<Boolean> getBooleanValue() {
-        return Optional.ofNullable(AnnotationValueUtils.getBooleanValue(annotationValue));
+    public Boolean getBooleanValue() {
+        return AnnotationValueUtils.getBooleanValue(annotationValue);
     }
 
     /**
      * Tries to get the annotationValues value as Float.
      *
-     * @return the annotationValues value as an Optional of type Float, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value as an Optional of type Float, or null if value has not the correct type.
      */
-    public Optional<Float> getFloatValue() {
-        return Optional.ofNullable(AnnotationValueUtils.getFloatValue(annotationValue));
+    public Float getFloatValue() {
+        return AnnotationValueUtils.getFloatValue(annotationValue);
     }
 
     /**
      * Tries to get the annotationValues value as Double.
      *
-     * @return the annotationValues value as an Optional of type Double, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value as an Optional of type Double, or null if value has not the correct type.
      */
-    public Optional<Double> getDoubleValue() {
-        return Optional.ofNullable(AnnotationValueUtils.getDoubleValue(annotationValue));
+    public Double getDoubleValue() {
+        return AnnotationValueUtils.getDoubleValue(annotationValue);
     }
 
     /**
      * Tries to get the annotationValues value as Long.
      *
-     * @return the annotationValues value as an Optional of type String, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value as an Optional of type String, or null if value has not the correct type.
      */
-    public Optional<String> getStringValue() {
-        return Optional.ofNullable(AnnotationValueUtils.getStringValue(annotationValue));
+    public String getStringValue() {
+        return AnnotationValueUtils.getStringValue(annotationValue);
     }
 
     /**
      * Tries to get the annotationValues value as Long.
      *
-     * @return the annotationValues value as an Optional of type Char, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value as an Optional of type Char, or null if value has not the correct type.
      */
-    public Optional<Character> getCharValue() {
-        return Optional.ofNullable(AnnotationValueUtils.getCharValue(annotationValue));
+    public Character getCharValue() {
+        return AnnotationValueUtils.getCharValue(annotationValue);
     }
 
     /**
      * Tries to get the annotationValues value as TypeMirrorWrapper.
      *
-     * @return the annotationValues value as an Optional of type TypeMirrorWrapper, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value as an Optional of type TypeMirrorWrapper, or null if value has not the correct type.
      */
-    public Optional<TypeMirrorWrapper> getClassValue() {
+    public TypeMirrorWrapper getClassValue() {
         TypeMirror typeMirror = AnnotationValueUtils.getTypeMirrorValue(annotationValue);
-        return typeMirror!= null ? Optional.of(TypeMirrorWrapper.wrap(typeMirror)) : Optional.empty();
+        return typeMirror!= null ? TypeMirrorWrapper.wrap(typeMirror) : null;
     }
 
     /**
      * Tries to get the annotationValues value as VariableElement (== enum value).
      *
-     * @return the annotationValues value as an Optional of type VariableElementWrapper, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value cast as a VariableElementWrapper, or null if value has not the correct type.
      */
-    public Optional<VariableElementWrapper> getEnumValue() {
+    public VariableElementWrapper getEnumValue() {
         VariableElement result = AnnotationValueUtils.getEnumValue(annotationValue);
-        return result != null ? Optional.of(VariableElementWrapper.wrap(result)):Optional.empty();
+        return result != null ? VariableElementWrapper.wrap(result):null;
     }
 
     /**
@@ -223,20 +220,21 @@ public class AnnotationValueWrapper {
      *
      * @param enumType The enum Type
      * @param <T>      The enum type
-     * @return the annotationValues value as an Optional of the enum value type, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value cast as the enum value type, or null if value has not the correct type.
      */
-    public <T extends Enum<T>> Optional<T> getEnumValue(Class<T> enumType) {
-        return  Optional.ofNullable(AnnotationValueUtils.getEnumValue(enumType, annotationValue));
+    public <T extends Enum<T>> T getEnumValue(Class<T> enumType) {
+        return  AnnotationValueUtils.getEnumValue(enumType, annotationValue);
 }
 
     /**
      * Tries to get the annotationValues value as AnnotationMirror (== annotation value).
      *
-     * @return the annotationValues value cast as an Optional of AnnotationMirrorWrapper, or an empty Optional if value has not the correct type.
+     * @return the annotationValues value cast as an AnnotationMirrorWrapper, or null if value has not the correct type.
      */
-    public Optional<AnnotationMirrorWrapper> getAnnotationValue() {
+    public AnnotationMirrorWrapper getAnnotationValue() {
+
         AnnotationMirror annotationMirror = AnnotationValueUtils.getAnnotationValue(annotationValue);
-        return annotationMirror != null ? Optional.of(AnnotationMirrorWrapper.wrap(annotationMirror)) : Optional.empty();
+        return annotationMirror != null ? AnnotationMirrorWrapper.wrap(annotationMirror) : null;
     }
 
     /**
@@ -244,9 +242,9 @@ public class AnnotationValueWrapper {
      *
      * @return the annotationValues value cast as List of Attributes, or null if value has not the correct type.
      */
-    public Optional<List<AnnotationValueWrapper>> getArrayValue() {
+    public List<AnnotationValueWrapper> getArrayValue() {
         List<? extends AnnotationValue> annotationMirrors = AnnotationValueUtils.getArrayValue(annotationValue);
-        return annotationMirrors != null ? Optional.of(annotationMirrors.stream().map(AnnotationValueWrapper::wrap).collect(Collectors.toList())) : Optional.empty();
+        return annotationMirrors != null ? annotationMirrors.stream().map(AnnotationValueWrapper::wrap).collect(Collectors.toList()) : null;
     }
 
     /**

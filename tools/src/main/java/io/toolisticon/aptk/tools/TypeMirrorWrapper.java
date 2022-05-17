@@ -42,6 +42,14 @@ public class TypeMirrorWrapper {
     }
 
     /**
+     * Gets the kind of the Type Mirroe
+     * @return
+     */
+    public TypeKind getKind() {
+        return this.typeMirror.getKind();
+    }
+
+    /**
      * Checks if wrapped TypeMirror is a primitive type.
      *
      * @return true if wrapped TypeMirror is primitive, otherwise false
@@ -714,6 +722,10 @@ public class TypeMirrorWrapper {
         return this.typeMirror.equals(obj);
     }
 
+    @Override
+    public String toString() {
+        return this.typeMirror.toString();
+    }
 
     /**
      * Unwraps the wrapped TypeMirror instance.

@@ -1,30 +1,22 @@
 package io.toolisticon.aptk.tools.wrapper;
 
 import io.toolisticon.aptk.tools.MessagerUtils;
-import io.toolisticon.aptk.tools.TypeMirrorWrapper;
-import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
-import io.toolisticon.cute.UnitTest;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ExecutableElementWrapperTest {
@@ -227,7 +219,7 @@ public class ExecutableElementWrapperTest {
     public void test_getDefaultValue_withDefault(){
         unitTestBuilder
                 .<ExecutableElement>defineTestWithPassedInElement(GetDefaultValueTestAnnotation.class, PassIn.class, (processingEnvironment, executableElement) -> {
-                    MatcherAssert.assertThat(ExecutableElementWrapper.wrap(executableElement).getDefaultValue().get().getStringValue().get(), Matchers.is("XOXO"));
+                    MatcherAssert.assertThat(ExecutableElementWrapper.wrap(executableElement).getDefaultValue().get().getStringValue(), Matchers.is("XOXO"));
                 }).compilationShouldSucceed()
                 .executeTest();
     }

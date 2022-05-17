@@ -3,6 +3,7 @@ package io.toolisticon.aptk.tools.wrapper;
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -11,6 +12,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +154,23 @@ public class ElementWrapper<E extends Element> {
         return ElementWrapperValidator.startValidation(this);
     }
 
+
+    public FluentElementFilter<Element> filterEnclosedElements(){
+        return FluentElementFilter.createFluentElementFilter(getEnclosedElements().stream().map(ElementWrapper::unwrap).collect(Collectors.toList()));
+    }
+
+    public FluentElementFilter<Element> filterFlattenedEnclosedElementTree(){
+        return filterFlattenedEnclosedElementTree(false);
+    }
+
+    public FluentElementFilter<Element> filterFlattenedEnclosedElementTree(boolean includeSelf ){
+        return filterFlattenedEnclosedElementTree(false, Integer.MAX_VALUE);
+    }
+
+    public FluentElementFilter<Element> filterFlattenedEnclosedElementTree(boolean includeSelf, int maxDepth ){
+        return FluentElementFilter.createFluentElementFilter(getFlattenedEnclosedElementTree(includeSelf,maxDepth).stream().map(ElementWrapper::unwrap).collect(Collectors.toList()));
+    }
+
     /**
      * Gets the annotation
      *
@@ -221,6 +240,29 @@ public class ElementWrapper<E extends Element> {
                 .stream().map(ElementWrapper::wrap).collect(Collectors.toList());
     }
 
+    public < EW extends ElementWrapper<?>> Optional<EW> getFirstEnclosingElementWithKind (ElementKind kind) {
+        Element element = ElementUtils.AccessEnclosingElements.<TypeElement>getFirstEnclosingElementOfKind(this.element, kind);
+
+        if (element == null) {
+            return Optional.empty();
+        }
+
+        ElementWrapper<Element> elementWrapper = ElementWrapper.wrap(element);
+
+        if (ElementWrapper.isTypeElement(elementWrapper)) {
+            return (Optional<EW>) Optional.of(ElementWrapper.toTypeElement(elementWrapper));
+        } else if (ElementWrapper.isExecutableElement(elementWrapper)) {
+            return (Optional<EW>) Optional.of(ElementWrapper.toExecutableElementWrapper(elementWrapper));
+        } else if (ElementWrapper.isPackageElement(elementWrapper)) {
+            return (Optional<EW>) Optional.of(ElementWrapper.toPackageElement(elementWrapper));
+        } else if (ElementWrapper.isVariableElement(elementWrapper)) {
+            return (Optional<EW>) Optional.of(ElementWrapper.toVariableElementWrapper(elementWrapper));
+        } else if (ElementWrapper.isTypeParameterElement(elementWrapper)) {
+            return (Optional<EW>) Optional.of(ElementWrapper.toTypeParameterElementWrapper(elementWrapper));
+        }
+
+        return (Optional<EW>) Optional.of(elementWrapper);
+    }
 
     /**
      * Returns the wrapped enclosed elements as a List.
@@ -590,5 +632,15 @@ public class ElementWrapper<E extends Element> {
         return VariableElementWrapper.wrap(ElementUtils.CastElement.castToVariableElement(wrapper.unwrap()));
     }
 
+    /**
+     * Converts wrapper to a ExecutableElementWrapper by casting and re-wrapping wrapped element.
+     *
+     * @param wrapper the wrapper to convert
+     * @return a ExecutableElementWrapper instance
+     * @throws ClassCastException if wrapped Element cannot be casted to target Element type
+     */
+    public static ExecutableElementWrapper toExecutableElementWrapper(ElementWrapper<? extends Element> wrapper) {
+        return ExecutableElementWrapper.wrap(ElementUtils.CastElement.castToExecutableElement(wrapper.unwrap()));
+    }
 
 }
