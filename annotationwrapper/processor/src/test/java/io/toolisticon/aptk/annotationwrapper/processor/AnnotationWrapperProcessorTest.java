@@ -662,7 +662,6 @@ public class AnnotationWrapperProcessorTest {
         ExecutableElementWrapper executableElement = getExecutableElement(typeElement, name);
 
         AnnotationWrapperProcessor.AnnotationAttribute unit = new AnnotationWrapperProcessor.AnnotationAttribute(state, executableElement);
-
         MatcherAssert.assertThat(unit.isOptional(), Matchers.is(expectedResult));
 
         // make sure that there are no interactions with state

@@ -6,7 +6,6 @@ import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.FilerUtils;
-import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
@@ -73,10 +72,10 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         final Map<String, List<TypeMirrorWrapper>> customInterfaces;
         final Map<String, AnnotationWrapperCustomCode> annotationWrapperCustomCode = new HashMap<>();
         final Map<String, List<CustomCodeClassMethod>> customCodeClassMethodMappings = new HashMap<>();
-        final Map<String, String> annotationNameToWrapperSimpleNameMap = new HashMap();
+        final Map<String, String> annotationNameToWrapperSimpleNameMap = new HashMap<>();
         final Map<String, String> wrapperSimpleNameToFqn = new HashMap<>();
-        final Map<String, String> wrapperAnnotationFqnToAnnotationFqnNameMap = new HashMap();
-        final Map<String, String> annotationFqnToWrapperAnnotationFqnNameMap = new HashMap();
+        final Map<String, String> wrapperAnnotationFqnToAnnotationFqnNameMap = new HashMap<>();
+        final Map<String, String> annotationFqnToWrapperAnnotationFqnNameMap = new HashMap<>();
         final boolean usePublicVisibility;
         final boolean automaticallyWrapEmbeddedAnnotations;
 
@@ -89,7 +88,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         State(Element annotatedElement) {
 
             this.annotatedElement = ElementWrapper.wrap(annotatedElement);
-            this.packageElement = ElementWrapper.isPackage(this.annotatedElement) ? ElementWrapper.toPackageElement(this.annotatedElement) : PackageElementWrapper.wrap(ElementUtils.AccessEnclosingElements.<PackageElement>getFirstEnclosingElementOfKind(this.annotatedElement.unwrap(), ElementKind.PACKAGE));
+            this.packageElement = this.annotatedElement.isPackage() ? ElementWrapper.toPackageElement(this.annotatedElement) : PackageElementWrapper.wrap(ElementUtils.AccessEnclosingElements.<PackageElement>getFirstEnclosingElementOfKind(this.annotatedElement.unwrap(), ElementKind.PACKAGE));
 
             Collections.addAll(this.annotationsToBeWrapped, AnnotationUtils.getClassArrayAttributeFromAnnotationAsFqn(annotatedElement, AnnotationWrapper.class));
 
@@ -133,7 +132,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             for (String customCodeClass : customCodeClasses) {
 
                 // Need to filter out all classes in package which have already been picked up
-                if (packageElement.getQualifiedName().toString().equals(TypeMirrorWrapper.wrap(customCodeClass).getPackage())) {
+                if (packageElement.getQualifiedName().equals(TypeMirrorWrapper.wrap(customCodeClass).getPackage())) {
                     // is in package so skip
                     continue;
                 }
@@ -168,7 +167,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
                         .collect(Collectors.toList())) {
                     String returnTypeFqn = executableElementWrapper.getReturnType().getQualifiedName();
                     if (executableElementWrapper.getReturnType().isDeclared()
-                            && ElementWrapper.isAnnotation(executableElementWrapper.getReturnType().getTypeElement().get())
+                            && executableElementWrapper.getReturnType().getTypeElement().get().isAnnotation()
                             && !this.annotationsToBeWrapped.contains(returnTypeFqn)) {
                         this.annotationsToBeWrapped.add(returnTypeFqn);
                         recursivelyAddAnnotations(returnTypeFqn);
@@ -197,7 +196,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             VariableElementWrapper firstParameter = customClassMethod.getParameters().get(0);
 
             if (!firstParameter.asType().toString().equals(expectedTypeMirrorWrapperClassName) && !firstParameter.asType().toString().endsWith("." + expectedTypeMirrorWrapperClassName)) {
-                MessagerUtils.error(firstParameter.unwrap(), AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, firstParameter.asType().toString(), expectedTypeMirrorWrapperClassName);
+                firstParameter.compilerMessage().asError().write(AnnotationWrapperProcessorMessages.ERROR_FIRST_PARAMETER_OF_CUSTOM_CODE_METHOD_MUST_BE_WRAPPER_TYPE, firstParameter.asType().toString(), expectedTypeMirrorWrapperClassName);
             }
 
 
@@ -232,13 +231,12 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
         }
 
         Map<String, List<TypeMirrorWrapper>> getCustomInterfaces(ElementWrapper element, AnnotationMirrorWrapper annotationMirror) {
-
-            AnnotationValueWrapper annotationValue = annotationMirror.getAttributeWithDefault("customInterfaces");
             Map<String, List<TypeMirrorWrapper>> result = new HashMap<>();
+
+            // custom interfaces has empty array as default value so it's safe to open the stream
+            AnnotationValueWrapper annotationValue = annotationMirror.getAttributeWithDefault("customInterfaces");
             List<AnnotationMirrorWrapper> annotationMirrors = annotationValue.getArrayValue().stream().map(AnnotationValueWrapper::getAnnotationValue).collect(Collectors.toList());
-            if (annotationMirrors == null) {
-                return result;
-            }
+
             for (AnnotationMirrorWrapper customInterfaceAnnotationMirror : annotationMirrors) {
                 TypeMirrorWrapper annotationType = customInterfaceAnnotationMirror.getAttributeWithDefault("annotationToWrap").getClassValue();
                 List<TypeMirrorWrapper> interfaceTypes = customInterfaceAnnotationMirror.getAttributeWithDefault("interfacesToApply").getArrayValue().stream().map(AnnotationValueWrapper::getClassValue).collect(Collectors.toList());
@@ -256,7 +254,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
                     if (!customInterfaceType.getTypeElement().get().validateWithFluentElementValidator()
                             .is(AptkCoreMatchers.IS_INTERFACE)
                             .justValidate()) {
-                        MessagerUtils.error(element.unwrap(), annotationMirror.unwrap(), "Class in interfacesToApply attribute array must be an interface!");
+                        element.compilerMessage(annotationMirror.unwrap()).asError().write("Class in interfacesToApply attribute array must be an interface!");
                         continue;
                     }
 
@@ -533,16 +531,14 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
                 return false;
             }
 
-            returnType = returnType.getWrappedComponentType();
-
-            return returnType.isPrimitive();
+            return returnType.getWrappedComponentType().isPrimitive();
 
         }
 
         /**
-         * Checks whether attribute is a primitive Array and returns the primitives boxed type.
+         * Checks whether attribute is a primitive Array and returns the primitives simple boxed type name.
          *
-         * @return the primitives boxed type, otherwise null
+         * @return the primitives boxed type simple name, otherwise null
          */
         public String getBoxedType() {
 
@@ -551,30 +547,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
                 returnType = returnType.getWrappedComponentType();
             }
 
-
-            // check for primitives
-            switch (returnType.getKind()) {
-                case INT:
-                    return Integer.class.getSimpleName();
-                case BYTE:
-                    return Byte.class.getSimpleName();
-                case LONG:
-                    return Long.class.getSimpleName();
-                case CHAR:
-                    return Character.class.getSimpleName();
-                case FLOAT:
-                    return Float.class.getSimpleName();
-                case DOUBLE:
-                    return Double.class.getSimpleName();
-                case BOOLEAN:
-                    return Boolean.class.getSimpleName();
-                case SHORT:
-                    return Short.class.getSimpleName();
-
-            }
-
-            return null;
-
+            return returnType.isPrimitive() ? TypeUtils.getTypes().boxedClass(returnType.getPrimitiveType()).getSimpleName().toString(): null;
         }
 
         /**
@@ -607,7 +580,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
                 returnType = returnType.getWrappedComponentType();
             }
 
-            return returnType.isDeclared() && ElementWrapper.isEnum(returnType.getTypeElement().get());
+            return returnType.isDeclared() && returnType.getTypeElement().get().isEnum();
         }
 
         /**
@@ -964,7 +937,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             javaWriter.writeTemplate("/AnnotationWrapper.tpl", model);
             javaWriter.close();
         } catch (IOException e) {
-            MessagerUtils.error(state.getAnnotatedElement().unwrap(), AnnotationWrapperProcessorMessages.ERROR_CANT_CREATE_WRAPPER, annotationToWrap.getQualifiedName());
+            state.getAnnotatedElement().compilerMessage().asError().write(AnnotationWrapperProcessorMessages.ERROR_CANT_CREATE_WRAPPER, annotationToWrap.getQualifiedName());
         }
     }
 

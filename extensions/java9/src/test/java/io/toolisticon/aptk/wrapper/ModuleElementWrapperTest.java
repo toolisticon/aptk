@@ -7,7 +7,6 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.Name;
@@ -80,18 +79,16 @@ public class ModuleElementWrapperTest {
     }
 
     @Test
-    public void test_isModuleElement(){
+    public void test_isModuleElement() {
         ModuleElement moduleElement = Mockito.mock(ModuleElement.class);
 
         Mockito.when(moduleElement.getKind()).thenReturn(ElementKind.MODULE);
-        MatcherAssert.assertThat(ModuleElementWrapper.isModuleElement(ElementWrapper.wrap((Element)moduleElement)), Matchers.is(true));
+        MatcherAssert.assertThat(ElementWrapper.wrap(moduleElement).isModule(), Matchers.is(true));
 
 
         TypeElement typeElement = Mockito.mock(TypeElement.class);
         Mockito.when(typeElement.getKind()).thenReturn(ElementKind.CLASS);
-        MatcherAssert.assertThat(ModuleElementWrapper.isModuleElement(ElementWrapper.wrap((Element) typeElement)), Matchers.is(false));
-
-
+        MatcherAssert.assertThat(ElementWrapper.wrap(typeElement).isModuleElement(), Matchers.is(false));
 
     }
 /*-
