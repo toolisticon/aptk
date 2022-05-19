@@ -22,6 +22,7 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
     BY_RETURN_TYPE_FQN("CM_BY_RETURN_TYPE_FQN", "Element must ${0} have  ${1} of the following return type: ${2}"),
     BY_RETURN_TYPE_MIRROR("CM_BY_RETURN_TYPE_MIRROR", "Element must ${0} have  ${1} of the following return type: ${2}"),
     BY_RAW_TYPE("CM_BY_RAW_TYPE", "Element must ${0} have ${1} of the following raw types: ${2}"),
+    BY_NESTING_KIND("CM_BY_NESTING_KIND", "Element must ${0} have ${1} of the following NestingKinds: ${2}"),
     IS_ASSIGNABLE_TO("CM_IS_ASSIGNABLE_TO", "Element must ${0} be assignable to ${1} of the following types: ${2}"),
     IS_TYPE_EQUAL("CM_IS_TYPE_EQUAL", "Element's type must ${0} be equal ${1} to one of the following type: ${2}"),
     HAS_VOID_RETURN_TYPE("CM_HAS_VOID_RETURN_TYPE", "Element must ${0} have void return type"),

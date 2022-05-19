@@ -22,6 +22,12 @@ public @interface AnnotationWrapper {
      */
     Class<? extends Annotation>[] value();
 
+    /**
+     * Adds a custom interface to the wrapper.
+     *
+     * @return
+     */
+    CustomInterface[] customInterfaces() default {};
 
     /**
      * Bind custom code into the api.
