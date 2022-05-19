@@ -8,7 +8,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>extension-parent</artifactId>
-        <version>0.19.3-jav8-enhancements-SNAPSHOT</version>
+        <version>0.19.3-SNAPSHOT</version>
     </parent>
 
     <name>aptk-tools-java9</name>
