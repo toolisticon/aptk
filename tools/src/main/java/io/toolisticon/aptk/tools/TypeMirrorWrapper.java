@@ -22,7 +22,7 @@ import java.util.Set;
 
 /**
  * This is a convenience wrapper for TypeMirrors.
- * This is extremely useful for template based code generation and doing programatical checks.
+ * This is extremely useful for template based code generation and doing programmatically checks.
  */
 public class TypeMirrorWrapper {
 
@@ -52,8 +52,8 @@ public class TypeMirrorWrapper {
 
 
     /**
-     * Gets the kind of the Type Mirroe
-     * @return
+     * Gets the kind of the wrapped TypeMirror.
+     * @return the kind of the wrapped TypeMirror
      */
     public TypeKind getKind() {
         return this.typeMirror.getKind();
