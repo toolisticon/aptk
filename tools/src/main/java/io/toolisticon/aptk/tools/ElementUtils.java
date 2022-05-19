@@ -7,7 +7,9 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
@@ -16,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Utility class which helps to handle different {@link Element} related tasks.
@@ -34,7 +37,9 @@ public final class ElementUtils {
      */
     public static final class CheckKindOfElement {
 
-        /** Needed for handling Module Type until source level is java 9. */
+        /**
+         * Needed for handling Module Type until source level is java 9.
+         */
         private final static String KIND_MODULE = "MODULE";
 
         /**
@@ -200,9 +205,11 @@ public final class ElementUtils {
 
         // look up tables for the different kind of types
         private static final Set<ElementKind> TYPE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM, ElementKind.ANNOTATION_TYPE);
+        private static final Set<ElementKind> TYPE_PARAMETER_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.TYPE_PARAMETER);
         private static final Set<ElementKind> VARIABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PARAMETER, ElementKind.FIELD);
         private static final Set<ElementKind> EXECUTABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD);
         private static final Set<ElementKind> PACKAGE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PACKAGE);
+        private static final Set<String> MODULE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet("MODULE");
 
 
         /**
@@ -214,7 +221,7 @@ public final class ElementUtils {
 
 
         /**
-         * Checks if passed element can be casted to TypeElement.
+         * Checks if passed element can be cast to TypeElement.
          *
          * @param e the element to check
          * @return true if passed element can be cast to TypeElement, otherwise false
@@ -224,7 +231,17 @@ public final class ElementUtils {
         }
 
         /**
-         * Checks if passed element can be casted to VariableElement.
+         * Checks if passed element can be cast to TypeParameterElement.
+         *
+         * @param e the element to check
+         * @return true if passed element can be cast to TypeParameterElement, otherwise false
+         */
+        public static boolean isTypeParameterElement(Element e) {
+            return e != null && TYPE_PARAMETER_ELEMENT_KIND_LUT.contains(e.getKind());
+        }
+
+        /**
+         * Checks if passed element can be cast to VariableElement.
          *
          * @param e the element to check
          * @return true if passed element can be cast to VariableElement, otherwise false
@@ -234,7 +251,7 @@ public final class ElementUtils {
         }
 
         /**
-         * Checks if passed element can be casted to ExecutableElement.
+         * Checks if passed element can be cast to ExecutableElement.
          *
          * @param e the element to check
          * @return true if passed element can be cast to ExecutableElement, otherwise false
@@ -244,7 +261,7 @@ public final class ElementUtils {
         }
 
         /**
-         * Checks if passed element can be casted to PackageElement.
+         * Checks if passed element can be cast to PackageElement.
          *
          * @param e the element to check
          * @return true if passed element can be cast to PackageElement, otherwise false
@@ -253,13 +270,23 @@ public final class ElementUtils {
             return e != null && PACKAGE_ELEMENT_KIND_LUT.contains(e.getKind());
         }
 
+        /**
+         * Checks if passed element can be cast to ModuleElement.
+         *
+         * @param e the element to check
+         * @return true if passed element can be cast to PackageElement, otherwise false
+         */
+        public static boolean isModuleElement(Element e) {
+            return e != null && MODULE_ELEMENT_KIND_LUT.contains(e.getKind().toString());
+        }
+
 
         /**
          * Casts an element.
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast
          */
         public static TypeElement castClass(Element e) {
@@ -271,7 +298,7 @@ public final class ElementUtils {
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast
          */
         public static TypeElement castInterface(Element e) {
@@ -283,7 +310,7 @@ public final class ElementUtils {
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast
          */
         public static TypeElement castEnum(Element e) {
@@ -295,7 +322,7 @@ public final class ElementUtils {
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast
          */
         public static TypeElement castAnnotationType(Element e) {
@@ -307,7 +334,7 @@ public final class ElementUtils {
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast
          */
         public static VariableElement castParameter(Element e) {
@@ -319,11 +346,22 @@ public final class ElementUtils {
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast
          */
         public static VariableElement castField(Element e) {
             return castToVariableElement(e);
+        }
+
+        /**
+         * Casts an element to PackageElement.
+         *
+         * @param e the element to cast
+         * @return the cast element
+         * @throws ClassCastException if passed Element can't be cast to PackageElement
+         */
+        public static PackageElement castToPackageElement(Element e) {
+            return (PackageElement) e;
         }
 
 
@@ -331,7 +369,7 @@ public final class ElementUtils {
          * Casts an element to TypeElement.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast to TypeElement
          */
         public static TypeElement castToTypeElement(Element e) {
@@ -339,10 +377,21 @@ public final class ElementUtils {
         }
 
         /**
+         * Casts an element to TypeParameterElement.
+         *
+         * @param e the element to cast
+         * @return the cast element
+         * @throws ClassCastException if passed Element can't be cast to TypeParameterElement
+         */
+        public static TypeParameterElement castToTypeParameterElement(Element e) {
+            return (TypeParameterElement) e;
+        }
+
+        /**
          * Casts an element to VariableElement.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast to TypeElement
          */
         public static VariableElement castToVariableElement(Element e) {
@@ -354,7 +403,7 @@ public final class ElementUtils {
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast
          */
         public static ExecutableElement castConstructor(Element e) {
@@ -366,7 +415,7 @@ public final class ElementUtils {
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast
          */
         public static ExecutableElement castMethod(Element e) {
@@ -378,7 +427,7 @@ public final class ElementUtils {
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast
          */
         public static ExecutableElement castAnnotationAttribute(Element e) {
@@ -390,7 +439,7 @@ public final class ElementUtils {
          * This is a convenient method. You don't have to think about the matching element types for a specific ElementKind.
          *
          * @param e the element to cast
-         * @return the casted element
+         * @return the cast element
          * @throws ClassCastException if passed Element can't be cast to ExecutableElement
          */
         public static ExecutableElement castToExecutableElement(Element e) {
@@ -1022,6 +1071,73 @@ public final class ElementUtils {
         }
 
 
+    }
+
+    public static class ForExecutableElements {
+
+        /**
+         * Hidden constructor.
+         */
+        private ForExecutableElements() {
+
+        }
+
+
+        /**
+         * Gets the method signature String for an ExecutableElement.
+         * <p>
+         * This is useful for implementing of interfaces in generated classes.
+         * <p>
+         * This method works perfectly well for ExecutableElements of classes and interfaces in compilation,
+         * but will have some limitations for precompiled classes.
+         * <p>
+         * Keep in mind that javac doesn't store parameter names in bytecode out of the box.
+         * So passing in an ExecutableElement of a precompiled class will have arg0,arg1,.. as parameter names.
+         * This can be changed if class is compiled with "-parameters" compiler option.
+         *
+         * @param executableElement the Method to get the method signature for
+         * @return the method signature
+         */
+        static String getMethodSignature(ExecutableElement executableElement) {
+
+            StringBuilder builder = new StringBuilder();
+
+            // Add throws if present
+            if (!executableElement.getTypeParameters().isEmpty()) {
+                builder.append("<");
+                builder.append(String.join(", ", executableElement.getTypeParameters().stream().map(tp -> {
+                    return tp.toString() + " extends " + TypeMirrorWrapper.wrap(tp.getBounds().get(0)).getTypeDeclaration();
+                }).collect(Collectors.toList())));
+                builder.append("> ");
+            }
+
+
+            // return type and method name
+            TypeMirrorWrapper wrappedReturnType = TypeMirrorWrapper.wrap(executableElement.getReturnType());
+            builder.append(wrappedReturnType.getTypeDeclaration()).append(" ").append(executableElement.getSimpleName());
+
+            // add parameters
+            builder.append("(");
+            builder.append(String.join(", ", executableElement.getParameters().stream().map(element -> {
+                return TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration() + " " + element.getSimpleName().toString();
+            }).collect(Collectors.toList())));
+            builder.append(")");
+
+            // Add throws if present
+            if (!executableElement.getThrownTypes().isEmpty()) {
+                builder.append(" throws ");
+                builder.append(String.join(", ", executableElement.getThrownTypes().stream().map(tm -> {
+                    return TypeMirrorWrapper.wrap(tm).getSimpleName();
+                }).collect(Collectors.toList())));
+            }
+
+            return builder.toString();
+        }
+
+    }
+
+    static List<String> getImportsNeededByMethodsSignature() {
+        return null;
     }
 
 

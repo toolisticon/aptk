@@ -9,6 +9,7 @@ import io.toolisticon.aptk.tools.matcher.impl.ByGenericTypeMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByModifierMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByNameMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByNameRegexMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.ByNestingKindMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByNumberOfParametersMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByPackageNameMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByParameterTypeFqnMatcher;
@@ -50,6 +51,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -166,6 +168,11 @@ public class AptkCoreMatchers {
      */
     public final static ExclusiveCriteriaCoreMatcher<ExecutableElement, TypeMirror> BY_RETURN_TYPE_MIRROR = new ExclusiveCriteriaCoreMatcher<>(new ByReturnTypeMirrorMatcher(), CoreMatcherValidationMessages.BY_RETURN_TYPE_MIRROR);
 
+    /**
+     * Matcher to check if a TypeElement has a specific NestingKind.
+     */
+    public final static ExclusiveCriteriaCoreMatcher<TypeElement,NestingKind> BY_NESTING_KIND = new ExclusiveCriteriaCoreMatcher<>(new ByNestingKindMatcher(), CoreMatcherValidationMessages.IS_TYPE_EQUAL);
+
 
     /**
      * Matcher to check if an Element is assignable to a specific type
@@ -186,6 +193,8 @@ public class AptkCoreMatchers {
      * Matcher to check if an Element is assignable to a specific type
      */
     public final static ExclusiveCriteriaElementBasedCoreMatcher<String> IS_TYPE_EQUAL_FQN = new ExclusiveCriteriaElementBasedCoreMatcher<>(new IsTypeEqualFqnMatcher(), CoreMatcherValidationMessages.IS_TYPE_EQUAL);
+
+
 
     // ---------------------------------------------------------------------------------
     // -- IMPLICIT CORE MATCHER

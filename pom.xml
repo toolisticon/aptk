@@ -4,7 +4,7 @@
 
     <groupId>io.toolisticon.aptk</groupId>
     <artifactId>aptk-parent</artifactId>
-    <version>0.19.2</version>
+    <version>0.20.0</version>
     <packaging>pom</packaging>
 
     <name>aptk-parent</name>
@@ -18,6 +18,7 @@
         <module>tools</module>
         <module>example</module>
         <module>templating</module>
+        <module>extensions</module>
 
         <!-- wrapper processor -->
         <module>annotationwrapper</module>
@@ -88,7 +89,7 @@
         <java.version>1.8</java.version>
 
         <spiap.version>0.8.0</spiap.version>
-        <cute.version>0.11.1</cute.version>
+        <cute.version>0.12.0</cute.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.13.2</junit.version>
@@ -97,15 +98,13 @@
         <lombok.version>1.18.22</lombok.version>
 
         <!-- plugin versions -->
-        <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
-        <maven-bundle-plugin.version>2.5.3</maven-bundle-plugin.version>
-        <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
-        <maven-processor-plugin.version>2.2.4</maven-processor-plugin.version>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
-        <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
-        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 
-        <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.4.0</maven-javadoc-plugin.version>
 
 
     </properties>

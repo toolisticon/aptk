@@ -10,6 +10,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Utility class which helps to handle different {@link AnnotationValue} related tasks.
@@ -168,14 +169,14 @@ public class AnnotationValueUtils {
     }
 
     // -----------------------------------------------------------------------------------------
-    // -- Methods to get the casted AnnotationValue
+    // -- Methods to get the cast AnnotationValue
     // -----------------------------------------------------------------------------------------
 
     /**
      * Tries to get the annotationValues value as Long.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as Long, or null if value has not the correct type.
+     * @return the annotationValues value cast as Long, or null if value has not the correct type.
      */
     public static Long getLongValue(AnnotationValue annotationValue) {
         return !isLong(annotationValue) ? null : (Long) annotationValue.getValue();
@@ -185,7 +186,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as Integer.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as Integer, or null if value has not the correct type.
+     * @return the annotationValues value cast as Integer, or null if value has not the correct type.
      */
     public static Integer getIntegerValue(AnnotationValue annotationValue) {
         return !isInteger(annotationValue) ? null : (Integer) annotationValue.getValue();
@@ -196,7 +197,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as Boolean.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as Boolean, or null if value has not the correct type.
+     * @return the annotationValues value cast as Boolean, or null if value has not the correct type.
      */
     public static Boolean getBooleanValue(AnnotationValue annotationValue) {
         return !isBoolean(annotationValue) ? null : (Boolean) annotationValue.getValue();
@@ -206,7 +207,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as Float.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as Long, or null if value has not the correct type.
+     * @return the annotationValues value cast as Long, or null if value has not the correct type.
      */
     public static Float getFloatValue(AnnotationValue annotationValue) {
         return !isFloat(annotationValue) ? null : (Float) annotationValue.getValue();
@@ -216,7 +217,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as Double.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as Long, or null if value has not the correct type.
+     * @return the annotationValues value cast as Long, or null if value has not the correct type.
      */
     public static Double getDoubleValue(AnnotationValue annotationValue) {
         return !isDouble(annotationValue) ? null : (Double) annotationValue.getValue();
@@ -226,7 +227,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as Long.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as Long, or null if value has not the correct type.
+     * @return the annotationValues value cast as Long, or null if value has not the correct type.
      */
     public static String getStringValue(AnnotationValue annotationValue) {
         return !isString(annotationValue) ? null : (String) annotationValue.getValue();
@@ -236,7 +237,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as Long.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as Long, or null if value has not the correct type.
+     * @return the annotationValues value cast as Long, or null if value has not the correct type.
      */
     public static Character getCharValue(AnnotationValue annotationValue) {
         return !isChar(annotationValue) ? null : (Character) annotationValue.getValue();
@@ -245,19 +246,30 @@ public class AnnotationValueUtils {
 
     /**
      * Tries to get the annotationValues value as TypeMirror.
+     * This is potentially an unsafe operation since it's never guaranteed that a class has already been compiled.
+     * Prefer working with TypeMirrors instead.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as TypeMirror, or null if value has not the correct type.
+     * @return the annotationValues value as a Class value, or null if value has not the correct type or hasn't been compiled yet.
      */
-    public static TypeMirror getClassValue(AnnotationValue annotationValue) {
-        return getTypeMirrorValue(annotationValue);
+    public static Class<?> getClassValue(AnnotationValue annotationValue) {
+        TypeMirror typeMirror = getTypeMirrorValue(annotationValue);
+        if (typeMirror != null) {
+            try {
+                return Class.forName(typeMirror.toString());
+            } catch (ClassNotFoundException e) {
+                // ignore will just return null
+            }
+        }
+
+        return null;
     }
 
     /**
      * Tries to get the annotationValues value as TypeMirror.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as TypeMirror, or null if value has not the correct type.
+     * @return the annotationValues value cast as TypeMirror, or null if value has not the correct type.
      */
     public static String getClassValueAsFQN(AnnotationValue annotationValue) {
         return ((TypeElement) ToolingProvider.getTooling().getTypes().asElement(getTypeMirrorValue(annotationValue))).getQualifiedName().toString();
@@ -267,7 +279,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as TypeMirror.
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as TypeMirror, or null if value has not the correct type.
+     * @return the annotationValues value cast as TypeMirror, or null if value has not the correct type.
      */
     public static TypeMirror getTypeMirrorValue(AnnotationValue annotationValue) {
         return !isClass(annotationValue) ? null : (TypeMirror) annotationValue.getValue();
@@ -277,7 +289,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as VariableElement (== enum value).
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as VariableElement, or null if value has not the correct type.
+     * @return the annotationValues value cast as VariableElement, or null if value has not the correct type.
      */
     public static VariableElement getEnumValue(AnnotationValue annotationValue) {
         return !isEnum(annotationValue) ? null : (VariableElement) annotationValue.getValue();
@@ -303,7 +315,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as AnnotationMirror (== annotation value).
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as AnnotationMirror, or null if value has not the correct type.
+     * @return the annotationValues value cast as AnnotationMirror, or null if value has not the correct type.
      */
     public static AnnotationMirror getAnnotationValue(AnnotationValue annotationValue) {
         return !isAnnotation(annotationValue) ? null : (AnnotationMirror) annotationValue.getValue();
@@ -313,7 +325,7 @@ public class AnnotationValueUtils {
      * Tries to get the annotationValues value as List (== array value).
      *
      * @param annotationValue the value to get the value from.
-     * @return the annotationValues value casted as List of Attributes, or null if value has not the correct type.
+     * @return the annotationValues value cast as List of Attributes, or null if value has not the correct type.
      */
     public static List<? extends AnnotationValue> getArrayValue(AnnotationValue annotationValue) {
         return !isArray(annotationValue) ? null : (List<? extends AnnotationValue>) annotationValue.getValue();
@@ -360,7 +372,7 @@ public class AnnotationValueUtils {
      * @param annotatedValues The list to convert
      * @param type            The arrays target type
      * @param <T>             generic Type
-     * @return an array of passed type containing all casted elements of passed annotatedValues list or null if passed annotatedValues are null.
+     * @return an array of passed type containing all cast elements of passed annotatedValues list or null if passed annotatedValues are null.
      * @throws ClassCastException will be thrown if Attributes of List cannot be cast to passed type
      */
     public static <T> T[] convertAndCastAttributeValueListToArray(List<? extends AnnotationValue> annotatedValues, Class<T> type) {
