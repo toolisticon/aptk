@@ -165,7 +165,7 @@ public class ElementWrapper<E extends Element> {
     }
 
     public FluentElementFilter<Element> filterFlattenedEnclosedElementTree(boolean includeSelf) {
-        return filterFlattenedEnclosedElementTree(false, Integer.MAX_VALUE);
+        return filterFlattenedEnclosedElementTree(includeSelf, Integer.MAX_VALUE);
     }
 
     public FluentElementFilter<Element> filterFlattenedEnclosedElementTree(boolean includeSelf, int maxDepth) {
@@ -289,7 +289,7 @@ public class ElementWrapper<E extends Element> {
      * @return a list of all elements of the enclosed element tree plus element itself if includeSelf flag is set
      */
     public List<ElementWrapper<Element>> getFlattenedEnclosedElementTree(boolean includeSelf) {
-        return getFlattenedEnclosedElementTree(false, Integer.MAX_VALUE);
+        return getFlattenedEnclosedElementTree(includeSelf, Integer.MAX_VALUE);
     }
 
     /**

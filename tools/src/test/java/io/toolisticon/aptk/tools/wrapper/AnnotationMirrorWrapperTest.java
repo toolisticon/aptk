@@ -40,6 +40,11 @@ public class AnnotationMirrorWrapperTest {
         MatcherAssert.assertThat(AnnotationMirrorWrapper.wrap(annotationMirror).unwrap(), Matchers.is(annotationMirror));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void test_wrap_null() {
+        AnnotationMirrorWrapper.wrap(null);
+    }
+
     @Test
     public void test_getAttribute() {
 
@@ -51,6 +56,46 @@ public class AnnotationMirrorWrapperTest {
             //MatcherAssert.assertThat("Must not have attribute value for null valued name", !unit.getAttribute(null).isPresent());
 
         }).executeTest();
+
+    }
+
+    @Test
+    public void test_getAttribute_passNullName() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(MyTestClass.class, (processingEnvironment, element) -> {
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(MyTestAnnotation.class).get();
+                        unit.getAttribute(null);
+
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                }).expectedThrownException(IllegalArgumentException.class)
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_getAttribute_invalidAttributeName() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(MyTestClass.class, (processingEnvironment, element) -> {
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(MyTestAnnotation.class).get();
+                        unit.getAttribute("XYZ");
+
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                }).expectedThrownException(IllegalArgumentException.class)
+                .executeTest();
 
     }
 
@@ -72,6 +117,46 @@ public class AnnotationMirrorWrapperTest {
             }
 
         }).executeTest();
+
+    }
+
+    @Test
+    public void test_getAttributeWithDefault_passNullName() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(MyTestClass.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(MyTestAnnotation.class).get();
+                unit.getAttributeWithDefault(null);
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).expectedThrownException(IllegalArgumentException.class)
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_getAttributeWithDefault_invalidAttributeName() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(MyTestClass.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(MyTestAnnotation.class).get();
+                unit.getAttributeWithDefault("XYZ");
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).expectedThrownException(IllegalArgumentException.class)
+                .executeTest();
 
     }
 

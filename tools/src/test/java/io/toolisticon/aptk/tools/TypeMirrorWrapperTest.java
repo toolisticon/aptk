@@ -47,6 +47,31 @@ public class TypeMirrorWrapperTest {
         TypeMirrorWrapper.wrap((String) null);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void test_nullValuedWrapper_class() {
+        TypeMirrorWrapper.wrap((Class<?>) null);
+    }
+
+    @Test
+    public void test_wrap() {
+
+        CompileTestBuilder.unitTest().<Element>defineTest((processingEnvironment, element) -> {
+
+            ToolingProvider.setTooling(processingEnvironment);
+            try {
+
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(TypeMirrorWrapperTest.class).getQualifiedName(), Matchers.is(TypeMirrorWrapperTest.class.getCanonicalName()));
+                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(TypeMirrorWrapperTest.class.getCanonicalName()).getQualifiedName(), Matchers.is(TypeMirrorWrapperTest.class.getCanonicalName()));
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+        }).executeTest();
+
+    }
+
+
     @Test
     public void test_isVoid() {
         MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.VOID)).isVoidType());
@@ -562,7 +587,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
 
-                MatcherAssert.assertThat("Must return empty optional",!TypeMirrorWrapper.wrap(element.asType()).getTypeElement().isPresent());
+                MatcherAssert.assertThat("Must return empty optional", !TypeMirrorWrapper.wrap(element.asType()).getTypeElement().isPresent());
 
             }
         }).executeTest();
@@ -662,5 +687,60 @@ public class TypeMirrorWrapperTest {
         }).executeTest();
     }
 
+    // ---------------------------------------------------------------
+    // -- Assignability
+    // ---------------------------------------------------------------
 
+    interface MyInterface {
+
+    }
+
+    static class MySuperClass implements MyInterface {
+
+    }
+
+    static class MyChildClass extends MySuperClass {
+
+    }
+
+    @Test
+    public void test_assignability() {
+        CompileTestBuilder.unitTest().<Element>defineTest((processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                TypeMirrorWrapper myInterface = TypeMirrorWrapper.wrap(MyInterface.class);
+                TypeMirrorWrapper superClass = TypeMirrorWrapper.wrap(MySuperClass.class);
+                TypeMirrorWrapper childClass = TypeMirrorWrapper.wrap(MyChildClass.class);
+                TypeMirrorWrapper nonMatching = TypeMirrorWrapper.wrap(String.class);
+
+                // Check interface
+                MatcherAssert.assertThat("Should be assignable", myInterface.isAssignableFrom(superClass));
+                MatcherAssert.assertThat("Should be assignable", myInterface.isAssignableFrom(childClass));
+                MatcherAssert.assertThat("Shouldn't be assignable", !myInterface.isAssignableFrom(nonMatching));
+                MatcherAssert.assertThat("Should be assignable", !myInterface.isAssignableTo(superClass));
+                MatcherAssert.assertThat("Should be assignable", !myInterface.isAssignableTo(childClass));
+                MatcherAssert.assertThat("Shouldn't be assignable", !myInterface.isAssignableTo(nonMatching));
+
+                // Check superclass
+                MatcherAssert.assertThat("Should be assignable", superClass.isAssignableFrom(childClass));
+                MatcherAssert.assertThat("Shouldn't be assignable", !superClass.isAssignableFrom(myInterface));
+                MatcherAssert.assertThat("Shouldn't be assignable", !superClass.isAssignableFrom(nonMatching));
+                MatcherAssert.assertThat("Should be assignable", superClass.isAssignableTo(myInterface));
+                MatcherAssert.assertThat("Shoulddn't be assignable", !superClass.isAssignableTo(childClass));
+                MatcherAssert.assertThat("Shouldn't be assignable", !superClass.isAssignableTo(nonMatching));
+
+                // Check childclass
+                MatcherAssert.assertThat("Shoulddn't be assignable", !childClass.isAssignableFrom(superClass));
+                MatcherAssert.assertThat("Shouldn't be assignable", !childClass.isAssignableFrom(myInterface));
+                MatcherAssert.assertThat("Shouldn't be assignable", !childClass.isAssignableFrom(nonMatching));
+                MatcherAssert.assertThat("Should be assignable", childClass.isAssignableTo(myInterface));
+                MatcherAssert.assertThat("Should be assignable", childClass.isAssignableTo(superClass));
+                MatcherAssert.assertThat("Shouldn't be assignable", !childClass.isAssignableTo(nonMatching));
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+        }).executeTest();
+    }
 }

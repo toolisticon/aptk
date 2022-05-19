@@ -1,6 +1,8 @@
 package io.toolisticon.aptk.tools.wrapper;
 
+import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.ValidationMessage;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
 import io.toolisticon.cute.UnitTest;
@@ -12,12 +14,17 @@ import org.mockito.Mockito;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -136,7 +143,7 @@ public class ElementWrapperTest {
 
         CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
             ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
-            MatcherAssert.assertThat( unit.getEnclosingElement().get().asType().getQualifiedName(), Matchers.is(ElementWrapperTest.class.getCanonicalName()));
+            MatcherAssert.assertThat(unit.getEnclosingElement().get().asType().getQualifiedName(), Matchers.is(ElementWrapperTest.class.getCanonicalName()));
         }).executeTest();
 
     }
@@ -152,7 +159,7 @@ public class ElementWrapperTest {
         ElementWrapper<Element> unit = ElementWrapper.wrap(element);
 
         MatcherAssert.assertThat(unit.getAllEnclosingElements().stream().map(ElementWrapper::unwrap).collect(Collectors.toList()), Matchers.contains(packageElement));
-        MatcherAssert.assertThat(unit.getAllEnclosingElements(true).stream().map(ElementWrapper::unwrap).collect(Collectors.toList()), Matchers.contains(element,packageElement));
+        MatcherAssert.assertThat(unit.getAllEnclosingElements(true).stream().map(ElementWrapper::unwrap).collect(Collectors.toList()), Matchers.contains(element, packageElement));
     }
 
 
@@ -248,6 +255,39 @@ public class ElementWrapperTest {
         Mockito.verify(ve, Mockito.times(1)).getAnnotationsByType(PassIn.class);
     }
 
+
+    @Test
+    public void test_getFirstEnclosingElementWithKind() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
+            ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+
+
+            MatcherAssert.assertThat(unit.<TypeElementWrapper>getFirstEnclosingElementWithKind(ElementKind.CLASS).get().getQualifiedName(), Matchers.is(ElementWrapperTest.class.getCanonicalName()));
+            MatcherAssert.assertThat(unit.<PackageElementWrapper>getFirstEnclosingElementWithKind(ElementKind.PACKAGE).get().getQualifiedName(), Matchers.is(ElementWrapperTest.class.getPackage().getName()));
+
+
+
+        }).executeTest();
+
+    }
+
+    @Test
+    public void test_getAnnotationMirror() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
+            ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+
+            Optional<AnnotationMirrorWrapper> annotationMirrorWrapper = unit.getAnnotationMirror(PassIn.class);
+            MatcherAssert.assertThat(annotationMirrorWrapper.get().asElement().getQualifiedName(), Matchers.is(PassIn.class.getCanonicalName()));
+
+            annotationMirrorWrapper = unit.getAnnotationMirror(PassIn.class.getCanonicalName());
+            MatcherAssert.assertThat(annotationMirrorWrapper.get().asElement().getQualifiedName(), Matchers.is(PassIn.class.getCanonicalName()));
+
+        }).executeTest();
+
+    }
+
     @Test
     public void test_getAnnotationMirrors() {
 
@@ -268,6 +308,629 @@ public class ElementWrapperTest {
             MatcherAssert.assertThat("Should find annotation", unit.getAnnotation(PassIn.class).isPresent());
             MatcherAssert.assertThat("Shouldn't find annotation", !unit.getAnnotation(Target.class).isPresent());
         }).executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_NOTE() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        unit.compilerMessage().asNote().write("NOTE");
+                        unit.compilerMessage().asNote().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectNoteMessage().thatIsEqualTo("NOTE")
+                .expectNoteMessage().thatIsEqualTo("VM_NOTE")
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_WARNING() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        unit.compilerMessage().asWarning().write("NOTE");
+                        unit.compilerMessage().asWarning().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectWarningMessage().thatIsEqualTo("NOTE")
+                .expectWarningMessage().thatIsEqualTo("VM_NOTE")
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_MANDATORY_WARNING() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        unit.compilerMessage().asMandatoryWarning().write("NOTE");
+                        unit.compilerMessage().asMandatoryWarning().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectMandatoryWarningMessage().thatIsEqualTo("NOTE")
+                .expectMandatoryWarningMessage().thatIsEqualTo("VM_NOTE")
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_MANDATORY_ERROR() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        unit.compilerMessage().asError().write("NOTE");
+                        unit.compilerMessage().asError().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectErrorMessage().thatIsEqualTo("NOTE")
+                .expectErrorMessage().thatIsEqualTo("VM_NOTE")
+                .compilationShouldFail()
+                .executeTest();
+
+    }
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface CompilerMessageTestAnnotation {
+        String value() default "";
+    }
+
+    @CompilerMessageTestAnnotation(value = "abc")
+    @PassIn
+    static class CompilerMessageTestClass {
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_withAnnotatioMirror_NOTE() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(CompilerMessageTestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+                    AnnotationMirrorWrapper annotationMirrorWrapper = unit.getAnnotationMirror(CompilerMessageTestAnnotation.class).get();
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap()).asNote().write("NOTE");
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap()).asNote().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectNoteMessage().thatIsEqualTo("NOTE")
+                .expectNoteMessage().thatIsEqualTo("VM_NOTE")
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_withAnnotatioMirror_WARNING() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(CompilerMessageTestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+                    AnnotationMirrorWrapper annotationMirrorWrapper = unit.getAnnotationMirror(CompilerMessageTestAnnotation.class).get();
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap()).asWarning().write("NOTE");
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap()).asWarning().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectWarningMessage().thatIsEqualTo("NOTE")
+                .expectWarningMessage().thatIsEqualTo("VM_NOTE")
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_withAnnotatioMirror_MANDATORY_WARNING() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(CompilerMessageTestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+                    AnnotationMirrorWrapper annotationMirrorWrapper = unit.getAnnotationMirror(CompilerMessageTestAnnotation.class).get();
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap()).asMandatoryWarning().write("NOTE");
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap()).asMandatoryWarning().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectMandatoryWarningMessage().thatIsEqualTo("NOTE")
+                .expectMandatoryWarningMessage().thatIsEqualTo("VM_NOTE")
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_withAnnotatioMirror_MANDATORY_ERRO() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(CompilerMessageTestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+                    AnnotationMirrorWrapper annotationMirrorWrapper = unit.getAnnotationMirror(CompilerMessageTestAnnotation.class).get();
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap()).asError().write("NOTE");
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap()).asError().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectErrorMessage().thatIsEqualTo("NOTE")
+                .expectErrorMessage().thatIsEqualTo("VM_NOTE")
+                .compilationShouldFail()
+                .executeTest();
+
+    }
+
+
+    @Test
+    public void test_compilerMessageTest_withAnnotatioMirrorAndValue_NOTE() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(CompilerMessageTestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+                    AnnotationMirrorWrapper annotationMirrorWrapper = unit.getAnnotationMirror(CompilerMessageTestAnnotation.class).get();
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        AnnotationValueWrapper annotationValueWrapper = annotationMirrorWrapper.getAttributeWithDefault();
+
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap(), annotationValueWrapper.unwrap()).asNote().write("NOTE");
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap(), annotationValueWrapper.unwrap()).asNote().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectNoteMessage().thatIsEqualTo("NOTE")
+                .expectNoteMessage().thatIsEqualTo("VM_NOTE")
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_withAnnotatioMirrorAndValue_WARNING() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(CompilerMessageTestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+                    AnnotationMirrorWrapper annotationMirrorWrapper = unit.getAnnotationMirror(CompilerMessageTestAnnotation.class).get();
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        AnnotationValueWrapper annotationValueWrapper = annotationMirrorWrapper.getAttributeWithDefault();
+
+
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap(), annotationValueWrapper.unwrap()).asWarning().write("NOTE");
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap(), annotationValueWrapper.unwrap()).asWarning().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectWarningMessage().thatIsEqualTo("NOTE")
+                .expectWarningMessage().thatIsEqualTo("VM_NOTE")
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_withAnnotatioMirrorAndValue_MANDATORY_WARNING() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(CompilerMessageTestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+                    AnnotationMirrorWrapper annotationMirrorWrapper = unit.getAnnotationMirror(CompilerMessageTestAnnotation.class).get();
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+                        AnnotationValueWrapper annotationValueWrapper = annotationMirrorWrapper.getAttributeWithDefault();
+
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap(), annotationValueWrapper.unwrap()).asMandatoryWarning().write("NOTE");
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap(), annotationValueWrapper.unwrap()).asMandatoryWarning().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectMandatoryWarningMessage().thatIsEqualTo("NOTE")
+                .expectMandatoryWarningMessage().thatIsEqualTo("VM_NOTE")
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_compilerMessageTest_withAnnotatioMirrorAndValue_MANDATORY_ERRO() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(CompilerMessageTestClass.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+                    AnnotationMirrorWrapper annotationMirrorWrapper = unit.getAnnotationMirror(CompilerMessageTestAnnotation.class).get();
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+                        AnnotationValueWrapper annotationValueWrapper = annotationMirrorWrapper.getAttributeWithDefault();
+
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap(), annotationValueWrapper.unwrap()).asError().write("NOTE");
+                        unit.compilerMessage(annotationMirrorWrapper.unwrap(), annotationValueWrapper.unwrap()).asError().write(new ValidationMessage() {
+                            @Override
+                            public String getCode() {
+                                return "";
+                            }
+
+                            @Override
+                            public String getMessage() {
+                                return "VM_NOTE";
+                            }
+                        });
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .expectErrorMessage().thatIsEqualTo("NOTE")
+                .expectErrorMessage().thatIsEqualTo("VM_NOTE")
+                .compilationShouldFail()
+                .executeTest();
+
+    }
+
+
+    @Test
+    public void test_toTypeElementWrapper() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(CompilerMessageTestClass.class, PassIn.class, (processingEnvironment, element) -> {
+                    ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+                        MatcherAssert.assertThat(ElementWrapper.toTypeElement(unit), Matchers.notNullValue());
+
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .compilationShouldSucceed()
+                .executeTest();
+    }
+
+    public static class MethodTest {
+
+        @PassIn
+        public void myMethod() {
+
+        }
+
+    }
+
+    @Test
+    public void test_isMethod() {
+
+        CompileTestBuilder.unitTest().<ExecutableElement>defineTestWithPassedInElement(MethodTest.class, PassIn.class, (processingEnvironment, element) -> {
+                    ElementWrapper<ExecutableElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+                        MatcherAssert.assertThat("Shoulb detected correctly", unit.isMethod());
+                        MatcherAssert.assertThat("Shoulb detected correctly", unit.isExecutableElement());
+
+                        // failing validations
+                        MatcherAssert.assertThat("Should return false", !unit.isPackage());
+                        MatcherAssert.assertThat("Should return false", !unit.isClass());
+                        MatcherAssert.assertThat("Should return false", !unit.isInterface());
+                        MatcherAssert.assertThat("Should return false", !unit.isEnum());
+                        MatcherAssert.assertThat("Should return false", !unit.isAnnotation());
+                        MatcherAssert.assertThat("Should return false", !unit.isAnnotationAttribute());
+                        MatcherAssert.assertThat("Should return false", !unit.isConstructor());
+                        MatcherAssert.assertThat("Should return false", !unit.isField());
+                        MatcherAssert.assertThat("Should return false", !unit.isPackage());
+                        MatcherAssert.assertThat("Should return false", !unit.isConstructorParameter());
+                        MatcherAssert.assertThat("Should return false", !unit.isMethodParameter());
+
+                        MatcherAssert.assertThat("Should return false", !unit.isModuleElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isPackageElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isTypeElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isTypeParameterElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isVariableElement());
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .compilationShouldSucceed()
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_toExecutableElementWrapper() {
+
+        CompileTestBuilder.unitTest().<ExecutableElement>defineTestWithPassedInElement(MethodTest.class, PassIn.class, (processingEnvironment, element) -> {
+                    ElementWrapper<ExecutableElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+                        MatcherAssert.assertThat(ElementWrapper.toExecutableElementWrapper(unit), Matchers.notNullValue());
+
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .compilationShouldSucceed()
+                .executeTest();
+    }
+
+    public static class ConstructorTest {
+
+        @PassIn
+        public ConstructorTest() {
+
+        }
+
+    }
+
+    @Test
+    public void test_isConstructor() {
+
+        CompileTestBuilder.unitTest().<ExecutableElement>defineTestWithPassedInElement(ConstructorTest.class, PassIn.class, (processingEnvironment, element) -> {
+                    ElementWrapper<ExecutableElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+                        MatcherAssert.assertThat("Shoul detected correctly", unit.isConstructor());
+                        MatcherAssert.assertThat("Shoul detected correctly", unit.isExecutableElement());
+
+                        // failing validations
+                        MatcherAssert.assertThat("Should return false", !unit.isMethod());
+                        MatcherAssert.assertThat("Should return false", !unit.isPackage());
+                        MatcherAssert.assertThat("Should return false", !unit.isClass());
+                        MatcherAssert.assertThat("Should return false", !unit.isInterface());
+                        MatcherAssert.assertThat("Should return false", !unit.isEnum());
+                        MatcherAssert.assertThat("Should return false", !unit.isAnnotation());
+                        MatcherAssert.assertThat("Should return false", !unit.isAnnotationAttribute());
+                        MatcherAssert.assertThat("Should return false", !unit.isField());
+                        MatcherAssert.assertThat("Should return false", !unit.isPackage());
+                        MatcherAssert.assertThat("Should return false", !unit.isConstructorParameter());
+                        MatcherAssert.assertThat("Should return false", !unit.isMethodParameter());
+
+                        MatcherAssert.assertThat("Should return false", !unit.isModuleElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isPackageElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isTypeElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isTypeParameterElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isVariableElement());
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .compilationShouldSucceed()
+                .executeTest();
+
+    }
+
+    public static class FieldTest {
+
+        @PassIn
+        private int myField;
+
+    }
+
+    @Test
+    public void test_isField() {
+
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(FieldTest.class, PassIn.class, (processingEnvironment, element) -> {
+                    ElementWrapper<VariableElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+                        MatcherAssert.assertThat("Shoulb detected correctly", unit.isField());
+                        MatcherAssert.assertThat("Shoulb detected correctly", unit.isVariableElement());
+
+                        // failing validations
+                        MatcherAssert.assertThat("Should return false", !unit.isMethod());
+                        MatcherAssert.assertThat("Should return false", !unit.isPackage());
+                        MatcherAssert.assertThat("Should return false", !unit.isClass());
+                        MatcherAssert.assertThat("Should return false", !unit.isInterface());
+                        MatcherAssert.assertThat("Should return false", !unit.isEnum());
+                        MatcherAssert.assertThat("Should return false", !unit.isAnnotation());
+                        MatcherAssert.assertThat("Should return false", !unit.isAnnotationAttribute());
+                        MatcherAssert.assertThat("Should return false", !unit.isMethod());
+                        MatcherAssert.assertThat("Should return false", !unit.isConstructor());
+                        MatcherAssert.assertThat("Should return false", !unit.isPackage());
+                        MatcherAssert.assertThat("Should return false", !unit.isConstructorParameter());
+                        MatcherAssert.assertThat("Should return false", !unit.isMethodParameter());
+
+                        MatcherAssert.assertThat("Should return false", !unit.isModuleElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isPackageElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isTypeElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isTypeParameterElement());
+                        MatcherAssert.assertThat("Should return false", !unit.isExecutableElement());
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .compilationShouldSucceed()
+                .executeTest();
+
+    }
+
+    @Test
+    public void test_toVariableElementWrapper() {
+
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(FieldTest.class, PassIn.class, (processingEnvironment, element) -> {
+                    ElementWrapper<VariableElement> unit = ElementWrapper.wrap(element);
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+                        MatcherAssert.assertThat(ElementWrapper.toVariableElementWrapper(unit), Matchers.notNullValue());
+
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+
+                })
+                .compilationShouldSucceed()
+                .executeTest();
 
     }
 
