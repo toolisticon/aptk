@@ -286,6 +286,7 @@ public class ElementWrapper<E extends Element> {
     /**
      * Returns the flattened enclosed element tree as a list.
      *
+     * @param includeSelf flag to configure if wrapped element should be included in result or not
      * @return a list of all elements of the enclosed element tree plus element itself if includeSelf flag is set
      */
     public List<ElementWrapper<Element>> getFlattenedEnclosedElementTree(boolean includeSelf) {
@@ -295,6 +296,8 @@ public class ElementWrapper<E extends Element> {
     /**
      * Returns the flattened enclosed element tree as a list. All elements up to a max depth will be included in the result.
      *
+     * @param includeSelf flag to configure if wrapped element should be included in result or not
+     * @param maxDepth    The max tree depth to be included in result
      * @return a list of all elements up to the max depth of the enclosed element tree plus element itself if includeSelf flag is set
      */
     public List<ElementWrapper<Element>> getFlattenedEnclosedElementTree(boolean includeSelf, int maxDepth) {
@@ -348,8 +351,10 @@ public class ElementWrapper<E extends Element> {
     /**
      * Applies a visitor to this element.
      *
-     * @param v the visitor operating on this element
-     * @param p additional parameter to the visitor
+     * @param v   the visitor operating on this element
+     * @param p   additional parameter to the visitor
+     * @param <P> the type of the additional parameter to the visitor's methods
+     * @param <R> the return type of the visitor's methods
      * @return a visitor-specified result
      */
     public <R, P> R accept(ElementVisitor<R, P> v, P p) {
@@ -401,6 +406,7 @@ public class ElementWrapper<E extends Element> {
      * Wraps an Element.
      *
      * @param element the Element to wrap
+     * @param <T>     The ElementWrappers wrapped Element type
      * @return an ElementWrapper instance
      */
     public static <T extends Element> ElementWrapper<T> wrap(T element) {
@@ -411,6 +417,7 @@ public class ElementWrapper<E extends Element> {
      * Wraps list of Elements.
      *
      * @param elements The list of Elements to wrap
+     * @param <T>      The ElementWrappers wrapped Element type
      * @return a List of Wrapped Elements, or an empty list
      */
     public static <T extends Element> List<ElementWrapper<T>> wrap(List<T> elements) {
@@ -449,7 +456,6 @@ public class ElementWrapper<E extends Element> {
     }
 
 
-
     /**
      * Checks if wrapped element represents an interface.
      *
@@ -477,7 +483,6 @@ public class ElementWrapper<E extends Element> {
     public boolean isAnnotation() {
         return ElementUtils.CheckKindOfElement.isAnnotation(this.element);
     }
-
 
 
     /**
@@ -508,7 +513,6 @@ public class ElementWrapper<E extends Element> {
     }
 
 
-
     /**
      * Checks if wrapped element represents an annotation attribute.
      *
@@ -528,7 +532,6 @@ public class ElementWrapper<E extends Element> {
     }
 
 
-
     /**
      * Checks if wrapped element represents a method parameter.
      *
@@ -539,7 +542,6 @@ public class ElementWrapper<E extends Element> {
     }
 
 
-
     /**
      * Checks if wrapped element is a PackageElement.
      *
@@ -548,7 +550,6 @@ public class ElementWrapper<E extends Element> {
     public boolean isPackageElement() {
         return ElementUtils.CastElement.isPackageElement(element);
     }
-
 
 
     /**
@@ -571,7 +572,6 @@ public class ElementWrapper<E extends Element> {
     }
 
 
-
     /**
      * Checks if wrapped element is a VariableElement.
      *
@@ -586,7 +586,7 @@ public class ElementWrapper<E extends Element> {
      *
      * @return true if wrapped element is a TypeParameterElement, otherwise false
      */
-    public  boolean isTypeParameterElement() {
+    public boolean isTypeParameterElement() {
         return ElementUtils.CastElement.isTypeParameterElement(element);
     }
 

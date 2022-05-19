@@ -8,7 +8,6 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import java.lang.annotation.Annotation;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -80,7 +79,7 @@ public class AnnotationMirrorWrapper {
     }
 
     /**
-     * Returns the annotations attribute of a specific name with it's default value if not set explicitely.
+     * Returns the annotations attribute of a specific name with its default value if not set explicitly.
      *
      * @param name the name of the attribute
      * @return an Optional of AnnotationValueWrapper
@@ -107,7 +106,7 @@ public class AnnotationMirrorWrapper {
      *
      * @param element    the element to read the annotation from
      * @param annotation the annotation class
-     * @return an Optional<AnnotationMirrorWrapper>
+     * @return an Optional of AnnotationMirrorWrapper
      */
     public static Optional<AnnotationMirrorWrapper> get(Element element, Class<? extends Annotation> annotation) {
 
@@ -124,7 +123,7 @@ public class AnnotationMirrorWrapper {
      *
      * @param element       the element to read the annotation from
      * @param annotationFqn the annotations fully qualified name
-     * @return an Optional<AnnotationMirrorWrapper>
+     * @return an Optional of AnnotationMirrorWrapper
      */
     public static Optional<AnnotationMirrorWrapper> get(Element element, String annotationFqn) {
 
@@ -142,7 +141,7 @@ public class AnnotationMirrorWrapper {
      * @return a set containing all attribute names
      */
     public Set<String> getAttributeNames() {
-        return new HashSet<String>(this.annotationMirror.getAnnotationType().asElement().getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.METHOD).map(e -> e.getSimpleName().toString()).collect(Collectors.toList()));
+        return this.annotationMirror.getAnnotationType().asElement().getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.METHOD).map(e -> e.getSimpleName().toString()).collect(Collectors.toSet());
     }
 
     /**
@@ -157,7 +156,7 @@ public class AnnotationMirrorWrapper {
 
 
     /**
-     * Returns the element corresponding to this AnnotationMiror.
+     * Returns the element corresponding to the wrapped AnnotationMirror.
      *
      * @return the TypeElement corresponding to this type
      */
@@ -169,7 +168,7 @@ public class AnnotationMirrorWrapper {
      * Wraps a TypeMirror instance
      *
      * @param annotationMirror the AnnotationMirror to set
-     * @return
+     * @return The wrapper instance
      */
     public static AnnotationMirrorWrapper wrap(AnnotationMirror annotationMirror) {
         return new AnnotationMirrorWrapper(annotationMirror);

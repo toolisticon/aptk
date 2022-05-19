@@ -45,8 +45,8 @@ public class ElementWrapperValidatorInterface {
 
         /**
          * Adds a validation check.
-         * @param predicate
-         * @return
+         * @param predicate the Predicate to check for
+         * @return the next fluent api instance
          */
         FollowUpValidationOrEndValidation<WRAPPER> check(Predicate<WRAPPER> predicate);
 

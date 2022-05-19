@@ -1,7 +1,6 @@
 package io.toolisticon.aptk.tools.wrapper;
 
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
-import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 
 import javax.lang.model.element.ExecutableElement;
 import java.util.HashSet;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
  */
 public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> {
 
-    
+
     /**
      * Hidden constructor.
      *
@@ -128,6 +127,7 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
 
     /**
      * Returns all Type Parameters of the wrapped Executable Element.
+     *
      * @return a list containing all  wrapped TypeParameters, or an empty list if none are present.
      */
     public List<TypeParameterElementWrapper> getTypeParameters() {
@@ -138,6 +138,7 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
     /**
      * Returns the return type of the Executable Element.
      * Wraps a NoType with kind VOID if this executable is not a method, or is a method that does not return a value.
+     *
      * @return a TypeMirrorWrapper instance
      */
     public TypeMirrorWrapper getReturnType() {
@@ -163,8 +164,9 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
     }
 
     /**
-     * Returns if wrapped ExecutableElement has a vararg parameter
-     * @return
+     * Returns if wrapped ExecutableElement has a vararg parameter.
+     *
+     * @return true if wrapped ExecutableElement has a vararg parameter, otherwise false.
      */
     public boolean isVarArgs() {
         return this.element.isVarArgs();
@@ -172,6 +174,7 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
 
     /**
      * Returns if wrapped ExecutableElement is a default implementation.
+     *
      * @return true if wrapped ExecutableElement is a default implementation, otherwise false
      */
     public boolean isDefault() {
@@ -181,6 +184,7 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
 
     /**
      * Returns the exceptions and other throwables listed in this method or constructor's throws clause in declaration order.
+     *
      * @return the exceptions and other throwables listed in the throws clause, or an empty list if there are none
      */
     public List<TypeMirrorWrapper> getThrownTypes() {
@@ -189,6 +193,7 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
 
     /**
      * Returns an Optional containing the default value if this executable is an annotation type element and if a default value is present.
+     *
      * @return the Optional containing the default value if present
      */
     public Optional<AnnotationValueWrapper> getDefaultValue() {
@@ -196,10 +201,10 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
     }
 
 
-
     /**
      * Wraps an ExecutableElement.
      * Throws IllegalArgumentException if passed executableElement is null
+     *
      * @param executableElement the element to wrap, must not be null
      * @return the wrapper instance
      */

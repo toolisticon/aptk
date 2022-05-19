@@ -11,7 +11,7 @@ public interface ImplicitMatcher<E extends Element> extends BaseMatcher<E> {
 
     /**
      * Checks if element matches implicit criteria.
-     *
+     * @param element the element to check
      * @return true, if element matches implicit criteria, otherwise false.
      */
     boolean check(E element);
