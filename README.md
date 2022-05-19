@@ -36,7 +36,8 @@ compile time and runtime model by shading common pitfalls behind it's api.
 - provides generic Element based filters, validator and matchers
 - provides fluent element validation and filtering api
 - provides support for template based creation of java source and resource files
-- compatible with all java versions >=7 (java >=9 compatibility since version 0.12.0)
+- compatible with all java versions >=8 (dropped java 7 compatibility with version 0.20.0)
+
 
 # How does it work?
 
@@ -116,8 +117,39 @@ some kind of class to store those annotation configurations of the annotation.
 
 The APTK provides an annotation processor that generates wrapper classes that allow you to access like if you are
 accessing the annotation directly. Only difference is that Class type based attributes will be accessible as FQN String,
-TypeMirror or TypeMirrorWrapper. Annotation type based attributes will be also wrapped to ease access. Please
-check [annotation wrapper processor](annotationwrapper) for further information.
+TypeMirror or TypeMirrorWrapper. Annotation type based attributes will be also wrapped to ease access. 
+
+A small example: 
+
+Annotation :
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PrettyExample {
+    String aStringBasedValue();
+    Class<?> typeBasedAttribute();
+}
+```
+
+can be accessed the following way:
+```java
+PrettyExampleWrapper wrapper = PrettyExampleWrapper.wrap(element);
+
+// access annotated element
+Element annotatedElement = wrapper._annotatedElement();
+
+// access annotation mirror
+AnnotationMirror annotationMirror = wrapper._annotationMirror();
+
+// read type based attributes
+TypeMirror typeMirror = wrapper.typeBasedAttributeAsTypeMirror();
+TypeMirrorWrapper typeMirrorWrapper = wrapper.typeBasedAttributeAsTypeMirrorWrapper();
+String fqn = wrapper.typeBasedAttributeAsFqn();
+
+```
+Annotation based attributes will be accessible via their AnnotationWrappers as well.
+
+Please check [annotation wrapper processor](annotationwrapper) for further information.
 
 ## Element Wrappers
 
