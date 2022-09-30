@@ -88,7 +88,7 @@
 
         <java.version>1.8</java.version>
 
-        <spiap.version>0.8.0</spiap.version>
+        <spiap.version>0.11.0</spiap.version>
         <cute.version>0.12.0</cute.version>
 
         <!-- versions of test dependencies -->
