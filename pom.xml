@@ -94,7 +94,7 @@
         <!-- versions of test dependencies -->
         <junit.version>4.13.2</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <mockito.version>4.3.1</mockito.version>
+        <mockito.version>4.8.0</mockito.version>
         <lombok.version>1.18.22</lombok.version>
 
         <!-- plugin versions -->
