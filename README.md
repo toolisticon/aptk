@@ -38,6 +38,10 @@ compile time and runtime model by shading common pitfalls behind it's api.
 - provides support for template based creation of java source and resource files
 - compatible with all java versions >=8 (dropped java 7 compatibility with version 0.20.0)
 
+# Getting started
+
+Best way to start is to use the [APTK maven archetype](https://github.com/toolisticon/annotationprocessor-archetype) to create a basic project based on the APTK stack. The generated code contains some example code demonstrating how the APTK framework can be used.
+It's generally a good starting point for your annotation processor project or can be used as a sandbox to get in touch with the framework.
 
 # How does it work?
 
