@@ -311,7 +311,7 @@
                     </plugin>
                     <plugin>
                         <artifactId>maven-pmd-plugin</artifactId>
-                        <version>3.3</version>
+                        <version>3.20.0</version>
                     </plugin>
                 </plugins>
             </build>
