@@ -1,6 +1,8 @@
 # Annotation Wrapper
 
-Generates wrapper classes for making reading of annotations more user friendly.
+Generates wrapper classes to provide simplified access to annotation attributes.
+This is really helpful for accessing type or annotation based attributes.
+
 
 ## Getting started
 First please add the processor to your processors compiler configuration:
@@ -46,9 +48,10 @@ import AnnotationWrapper;
 - By default wrapper classes of all referenced annotation types will be created automatically - this can be deactivated by using the *AnnotationWrapper.automaticallyWrapEmbeddedAnnotations* attribute.
 
 ## Extending Wrapper Api
-It's possible to extend the wrapper by custom code methods.
+It's possible to extend the wrapper api by custom methods.
 
-Custom Code methods must be annotated with the *CustomCodeMethod* annotation:
+Custom methods can be located in any kind of class and must be annotated with the *CustomCodeMethod* annotation, a matching method will be generated in the annotation wrapper that is used to forward calls to the annotated method:
+
 ```java
 package io.toolisticon.aptk.annotationwrapper.test;
 
@@ -83,7 +86,7 @@ package io.toolisticon.aptk.annotationwrapper.test;
 import io.toolisticon.aptk.annotationwrapper.api.AnnotationWrapper;
 ```
 
-##Example
+## Example
 
 For annotation *PrettyExample*:
 ```java
