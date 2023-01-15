@@ -166,11 +166,11 @@ Some examples:
 
 // validation - lambda style
 Element element = null;
-    ElementWrapper.wrap(element).validate()
-        .asError().withCustomMessage("Annotation must be placed on static inner class with public or protected modifier")
-        .check( ElementWrapper::isClass)
-        .and(e -> e.hasModifiers(Modifier.STATIC) && (e.hasModifiers(Modifier.PUBLIC) || e.hasModifiers(Modifier.PROTECTED)))
-        .validate();
+ElementWrapper.wrap(element).validate()
+    .asError().withCustomMessage("Annotation must be placed on static inner class with public or protected modifier")
+    .check( ElementWrapper::isClass)
+    .and(e -> e.hasModifiers(Modifier.STATIC) && (e.hasModifiers(Modifier.PUBLIC) || e.hasModifiers(Modifier.PROTECTED)))
+    .validate();
 
 // same validation APTK style - with generic compiler messages
 ElementWrapper.wrap(element).validateWithFluentElementValidator()
@@ -187,8 +187,8 @@ List<TypeElementWrapper> allStaticInnerClasses = ElementWrapper.wrap(element).ge
     .collect(Collectors.toList());
 
 // getting methods of TypeElement
-    TypeElement typeElement = null;
-    Optional<ExecutableElementWrapper> method = TypeElementWrapper.wrap(typeElement).getMethod("methodName", String.class, Long.class);
+TypeElement typeElement = null;
+Optional<ExecutableElementWrapper> method = TypeElementWrapper.wrap(typeElement).getMethod("methodName", String.class, Long.class);
 
 // ...
 
@@ -214,19 +214,19 @@ There are some more helpful utility classes:
 Example:
 
 ```java
-     // Check if TypeMirror is Array
-     boolean isArray=TypeUtils.CheckTypeKind.isArray(aTypeMirror);
+// Check if TypeMirror is Array
+boolean isArray=TypeUtils.CheckTypeKind.isArray(aTypeMirror);
 
-             // get TypeElement or TypeMirrors easily
-             TypeElement typeElement1=TypeUtils.TypeRetrieval.getTypeElement("fqn.name.of.Clazz");
-             TypeElement typeElement2=TypeUtils.TypeRetrieval.getTypeElement(Clazz.class);
-        TypeMirror typeMirror1=TypeUtils.TypeRetrieval.getTypeMirror("fqn.name.of.Clazz");
-        TypeMirror typeMirror2=TypeUtils.TypeRetrieval.getTypeMirror(Clazz.class);
+// get TypeElement or TypeMirrors easily
+TypeElement typeElement1=TypeUtils.TypeRetrieval.getTypeElement("fqn.name.of.Clazz");
+TypeElement typeElement2=TypeUtils.TypeRetrieval.getTypeElement(Clazz.class);
+TypeMirror typeMirror1=TypeUtils.TypeRetrieval.getTypeMirror("fqn.name.of.Clazz");
+TypeMirror typeMirror2=TypeUtils.TypeRetrieval.getTypeMirror(Clazz.class);
 
-        boolean checkAssignability=TypeUtils.TypeComparison.isAssignableTo(typeMirror1,typeMirror2);
+boolean checkAssignability=TypeUtils.TypeComparison.isAssignableTo(typeMirror1,typeMirror2);
 
-        // get all enclosed elements annotated with Deprecated annotation
-        List<?extends Element> enclosedElements=ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element,Deprecated.class);
+// get all enclosed elements annotated with Deprecated annotation
+List<?extends Element> enclosedElements=ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element,Deprecated.class);
 ```
 
 These are just a few examples of the provided tools. Please check the javadoc for more information.
@@ -246,38 +246,38 @@ filters and validations by providing a simple and powerful fluent api.
 Please check following examples:
 
 ```java
-    List<Element> elements=new ArrayList<Element>();
+List<Element> elements=new ArrayList<Element>();
 
-        // validator already will print output so additional actions are not necessary
-        FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castToTypeElement(element))
-        .applyValidator(AptkCoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(SpecificInterface.class)
-        .validateAndIssueMessages();
+// validator already will print output so additional actions are not necessary
+FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castToTypeElement(element))
+.applyValidator(AptkCoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(SpecificInterface.class)
+.validateAndIssueMessages();
 
-        // Matcher checks for a single criteria
-        boolean isPublic=AptkCoreMatchers.BY_MODIFIER.getMatcher().checkForMatchingCharacteristic(element,Modifier.PUBLIC);
+// Matcher checks for a single criteria
+boolean isPublic=AptkCoreMatchers.BY_MODIFIER.getMatcher().checkForMatchingCharacteristic(element,Modifier.PUBLIC);
 
-        // Validator checks for multiple criteria : none of, one of, at least one of or all of
-        boolean isPublicAndStatic=AptkCoreMatchers.BY_MODIFIER.getValidator().hasAllOf(element,Modifier.PUBLIC,Modifier.STATIC);
+// Validator checks for multiple criteria : none of, one of, at least one of or all of
+boolean isPublicAndStatic=AptkCoreMatchers.BY_MODIFIER.getValidator().hasAllOf(element,Modifier.PUBLIC,Modifier.STATIC);
 
-        // Filter checks for multiple criteria and returns a List that contains all matching elements
-        List<Element> isPublicAndStaticElements=AptkCoreMatchers.BY_MODIFIER.getFilter().filterByAllOf(elements,Modifier.PUBLIC,Modifier.STATIC);
+// Filter checks for multiple criteria and returns a List that contains all matching elements
+List<Element> isPublicAndStaticElements=AptkCoreMatchers.BY_MODIFIER.getFilter().filterByAllOf(elements,Modifier.PUBLIC,Modifier.STATIC);
 
-        // Just validates without sending messages
-        boolean isPublicAndStatic2=FluentElementValidator.createFluentElementValidator(element)
-        .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
-        .justValidate();
+// Just validates without sending messages
+boolean isPublicAndStatic2=FluentElementValidator.createFluentElementValidator(element)
+.applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
+.justValidate();
 
-        // Validate and send messages in case of failing validation
-        FluentElementValidator.createFluentElementValidator(element)
-        .applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
-        .validateAndIssueMessages();
+// Validate and send messages in case of failing validation
+FluentElementValidator.createFluentElementValidator(element)
+.applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC,Modifier.STATIC)
+.validateAndIssueMessages();
 
 
-        // Filters list by criteria : returns all method Elements that are public and static
-        List<ExecutableElement> filteredElements=FluentElementFilter.createFluentElementFilter(elements)
-        .applyFilter(AptkCoreMatchers.IS_METHOD)
-        .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC,Modifier.STATIC)
-        .getResult();
+// Filters list by criteria : returns all method Elements that are public and static
+List<ExecutableElement> filteredElements=FluentElementFilter.createFluentElementFilter(elements)
+.applyFilter(AptkCoreMatchers.IS_METHOD)
+.applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC,Modifier.STATIC)
+.getResult();
 ```
 
 ## Template based java source and resource file creation
@@ -298,38 +298,26 @@ supports dynamic text replacement and for and if control blocks.
 ### Sample code : Resource file creation
 
 ```java
-    String[]textArray={"A","B","C"};
+String[]textArray={"A","B","C"};
 
-        // create Model
-        Map<String, Object> model=new HashMap<String, Object>();
-        model.put("textArray",textArray);
+// create Model
+Map<String, Object> model=new HashMap<String, Object>();
+model.put("textArray",textArray);
 
 final String package="io.toolisticon.example";
 final String fileName="generatedExample.txt";
 
-        try{
-        // template is loaded resource
-        SimpleResourceWriter resourceWriter=FilerUtils.createResource(StandardLocation.CLASS_OUTPUT,package,fileName);
-        resourceWriter.writeTemplate("example.tpl",model);
-        resourceWriter.close();
-        }catch(IOException e){
-        MessagerUtils.error(null,"Example file creation failed for package '${0}' and filename '${1}'",package,fileName);
-        }
+try{
+    // template is loaded resource
+    SimpleResourceWriter resourceWriter=FilerUtils.createResource(StandardLocation.CLASS_OUTPUT,package,fileName);
+    resourceWriter.writeTemplate("example.tpl",model);
+    resourceWriter.close();
+}catch(IOException e){
+    MessagerUtils.error(null,"Example file creation failed for package '${0}' and filename '${1}'",package,fileName);
+}
 ```
 
 Please check [template engine](templating) for further information.
-
-# Recent Changes
-
-Unfortunately some incompatible changes have to be introduced with version 0.15.0/0.18.0 as preparation for Release
-1.0.0:
-
-- Maven GroupId has changed to *io.toolisticon.aptk*
-- All artifactIds are now prefixed with 'aptk-'
-- Main artifactId name has changed from *annotationprocessor* to *aptk-tools*
-- Base package name has changed to *io.toolisticon.aptk*
-- AbstractAnnotationProcessor class has been relocated to *io.toolisticon.aptk.tools*
-- ToolingProvider class has been relocated to *io.toolisticon.aptk.common*
 
 # Projects using this toolkit library
 
