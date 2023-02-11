@@ -137,6 +137,87 @@ public class TypeMirrorWrapper {
     }
 
     /**
+     * Checks if wrapped TypeMirror represents an interface.
+     *
+     * @return true if wrapped TypeMirror represents an interface, otherwise false
+     */
+    public boolean isInterface () {
+        return isInterface(this.typeMirror);
+    }
+
+
+    /**
+     * Checks if wrapped TypeMirror represents an interface.
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return true if wrapped TypeMirror represents a Class, otherwise false
+     */
+    public static boolean isInterface(TypeMirror typeMirror) {
+        Optional<TypeElementWrapper> typeMirrorWrapper = getTypeElement(typeMirror);
+        return typeMirrorWrapper.isPresent() && typeMirrorWrapper.get().isInterface();
+    }
+
+    /**
+     * Checks if wrapped TypeMirror represents an enum.
+     *
+     * @return true if wrapped TypeMirror represents an enum, otherwise false
+     */
+    public boolean isEnum() {
+        return isEnum(typeMirror);
+    }
+
+    /**
+     * Checks if passed TypeMirror represents an enum.
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return true if wrapped TypeMirror represents an enum, otherwise false
+     */
+    public static boolean isEnum(TypeMirror typeMirror) {
+        Optional<TypeElementWrapper> typeMirrorWrapper = getTypeElement(typeMirror);
+        return typeMirrorWrapper.isPresent() && typeMirrorWrapper.get().isEnum();
+    }
+
+    /**
+     * Checks if wrapped TypeMirror represents a Class.
+     *
+     * @return true if wrapped TypeMirror represents a Class, otherwise false
+     */
+    public boolean isClass() {
+        return isClass(typeMirror);
+    }
+
+    /**
+     * Checks if passed TypeMirror represents a Class.
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return true if passed TypeMirror represents a Class, otherwise false
+     */
+    public static boolean isClass(TypeMirror typeMirror) {
+        Optional<TypeElementWrapper> typeMirrorWrapper = getTypeElement(typeMirror);
+        return typeMirrorWrapper.isPresent() && typeMirrorWrapper.get().isClass();
+    }
+
+    /**
+     * Checks if wrapped TypeMirror represents an annotation.
+     *
+     * @return true if wrapped TypeMirror represents an annotation, otherwise false
+     */
+    public boolean isAnnotation() {
+        return isAnnotation(typeMirror);
+    }
+
+    /**
+     * Checks if passed TypeMirror represents an annotation.
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return true if passed TypeMirror represents an annotation, otherwise false
+     */
+    public static boolean isAnnotation(TypeMirror typeMirror) {
+        Optional<TypeElementWrapper> typeMirrorWrapper = getTypeElement(typeMirror);
+        return typeMirrorWrapper.isPresent() && typeMirrorWrapper.get().isAnnotation();
+    }
+
+    /**
      * Checks if wrapped TypeMirror represents a Collection.
      *
      * @return true if wrapped TypeMirror represents a Collection, otherwise false
@@ -146,10 +227,10 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Checks if wrapped TypeMirror represents a Collection.
+     * Checks if passed TypeMirror represents a Collection.
      *
      * @param typeMirror the TypeMirror to check
-     * @return true if wrapped TypeMirror represents a Collection, otherwise false
+     * @return true if passed TypeMirror represents a Collection, otherwise false
      */
     public static boolean isCollection(TypeMirror typeMirror) {
 
@@ -168,10 +249,10 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Checks if wrapped TypeMirror is an array.
+     * Checks if passed TypeMirror is an array.
      *
      * @param typeMirror the TypeMirror to check
-     * @return true if wrapped TypeMirror is an array, otherwise false
+     * @return true if passed TypeMirror is an array, otherwise false
      */
     public static boolean isArray(TypeMirror typeMirror) {
         return TypeUtils.CheckTypeKind.isArray(typeMirror);
@@ -187,10 +268,10 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets wrapped TypeMirror as a ArrayType
+     * Gets passed TypeMirror as a ArrayType
      *
      * @param typeMirror the TypeMirror to check
-     * @return the wrapped TypeMirror cast to an ArrayType, or null if TypeMirror does not represent an array type.
+     * @return the passed TypeMirror cast to an ArrayType, or null if TypeMirror does not represent an array type.
      */
     public static ArrayType getArrayType(TypeMirror typeMirror) {
         return isArray(typeMirror) ? (ArrayType) typeMirror : null;
@@ -216,9 +297,9 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets wrapped TypeMirror as a DeclaredType
+     * Gets passed TypeMirror as a DeclaredType
      *
-     * @return the wrapped TypeMirror cast to a DeclaredType, or null if TypeMirror does not represent a declared type.
+     * @return the passed TypeMirror cast to a DeclaredType, or null if TypeMirror does not represent a declared type.
      */
     public DeclaredType getDeclaredType() {
         return getDeclaredType(typeMirror);
@@ -244,10 +325,10 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Checks if wrapped TypeMirror is the void type.
+     * Checks if passed TypeMirror is the void type.
      *
      * @param typeMirror the TypeMirror to check
-     * @return true if wrapped TypeMirror is the void type, otherwise false
+     * @return true if passed TypeMirror is the void type, otherwise false
      */
     public static boolean isVoidType(TypeMirror typeMirror) {
         return TypeUtils.CheckTypeKind.isVoid(typeMirror);
@@ -263,10 +344,10 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Checks if wrapped TypeMirror is a WildcardTYpe.
+     * Checks if passed TypeMirror is a WildcardTYpe.
      *
      * @param typeMirror the TypeMirror to check
-     * @return true if wrapped TypeMirror is a WildcardTYpe, otherwise false
+     * @return true if passed TypeMirror is a WildcardTYpe, otherwise false
      */
     public static boolean isWildcardType(TypeMirror typeMirror) {
         return TypeUtils.CheckTypeKind.isWildcard(typeMirror);

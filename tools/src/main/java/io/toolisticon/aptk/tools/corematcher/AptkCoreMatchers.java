@@ -29,6 +29,7 @@ import io.toolisticon.aptk.tools.matcher.impl.HasVoidReturnTypeMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsAnnotationTypeMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsAssignableToFqnMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsAssignableToMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.IsAssignableToTypeMirrorMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsAttributeFieldMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsClassMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsConstructorMatcher;
@@ -188,6 +189,12 @@ public class AptkCoreMatchers {
      * Matcher to check if an Element is assignable to a specific type
      */
     public final static ExclusiveCriteriaElementBasedCoreMatcher<String> IS_ASSIGNABLE_TO_FQN = new ExclusiveCriteriaElementBasedCoreMatcher<>(new IsAssignableToFqnMatcher(), CoreMatcherValidationMessages.IS_ASSIGNABLE_TO);
+
+    /**
+     * Matcher to check if an Element is assignable to a specific type
+     */
+    public final static ExclusiveCriteriaElementBasedCoreMatcher<TypeMirror> IS_ASSIGNABLE_TO_TYPE_MIRROR = new ExclusiveCriteriaElementBasedCoreMatcher<>(new IsAssignableToTypeMirrorMatcher(), CoreMatcherValidationMessages.IS_ASSIGNABLE_TO);
+
 
     /**
      * Matcher to check if an Element is assignable to a specific type
