@@ -4,7 +4,7 @@
 
     <groupId>io.toolisticon.aptk</groupId>
     <artifactId>aptk-parent</artifactId>
-    <version>0.20.0</version>
+    <version>0.20.1</version>
     <packaging>pom</packaging>
 
     <name>aptk-parent</name>
@@ -88,8 +88,8 @@
 
         <java.version>1.8</java.version>
 
-        <spiap.version>0.8.0</spiap.version>
-        <cute.version>0.12.0</cute.version>
+        <spiap.version>0.11.0</spiap.version>
+        <cute.version>0.12.1</cute.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.13.2</junit.version>

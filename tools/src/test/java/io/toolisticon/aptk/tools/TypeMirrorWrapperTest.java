@@ -20,6 +20,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.WildcardType;
 import java.io.Serializable;
+import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -95,6 +96,91 @@ public class TypeMirrorWrapperTest {
         // expect null for non matching type kind
         MatcherAssert.assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).getWildcardType(), Matchers.nullValue());
 
+    }
+
+
+    public static class ClassType {
+
+    }
+
+
+    public static enum EnumType {
+
+    }
+
+
+    public interface InterfaceType {
+
+    }
+
+    @Test
+    public void test_isClassType() {
+        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+
+                MatcherAssert.assertThat("must return true for Class", TypeMirrorWrapper.wrap(ClassType.class).isClass());
+                MatcherAssert.assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isClass());
+                MatcherAssert.assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isClass());
+                MatcherAssert.assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isClass());
+
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_isEnumType() {
+        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+
+                MatcherAssert.assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isEnum());
+                MatcherAssert.assertThat("must return true for Enum", TypeMirrorWrapper.wrap(EnumType.class).isEnum());
+                MatcherAssert.assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isEnum());
+                MatcherAssert.assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isEnum());
+
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_isInterfaceType() {
+        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+
+                MatcherAssert.assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isInterface());
+                MatcherAssert.assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isInterface());
+                MatcherAssert.assertThat("must return true for Interface", TypeMirrorWrapper.wrap(InterfaceType.class).isInterface());
+                MatcherAssert.assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isInterface());
+
+
+            }
+        }).executeTest();
+    }
+
+    @Test
+    public void test_isAnnotationType() {
+        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
+            @Override
+            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+
+                ToolingProvider.setTooling(processingEnvironment);
+
+                MatcherAssert.assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isAnnotation());
+                MatcherAssert.assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isAnnotation());
+                MatcherAssert.assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isAnnotation());
+                MatcherAssert.assertThat("must return true for annotation", TypeMirrorWrapper.wrap(Target.class).isAnnotation());
+
+
+            }
+        }).executeTest();
     }
 
     @Test

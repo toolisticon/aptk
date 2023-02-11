@@ -7,7 +7,7 @@ import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
-import io.toolisticon.spiap.api.Service;
+import io.toolisticon.spiap.api.SpiService;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -20,7 +20,7 @@ import java.util.Set;
  * Test annotation processor which demonstrates the usage of the annotation processor toolkit.
  */
 @SupportedAnnotationTypes("io.toolisticon.aptk.example.annotations.ImplementsSpecificInterfaceCheckAnnotation")
-@Service(Processor.class)
+@SpiService(Processor.class)
 public class ImplementsSpecificInterfaceCheckAnnotationProcessor extends AbstractAnnotationProcessor {
 
     // Overriding the getSupportedAnnotationTypes instead of using the SupportedAnnotationTypes annotation

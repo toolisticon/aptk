@@ -19,7 +19,7 @@ import io.toolisticon.aptk.tools.wrapper.PackageElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeParameterElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.VariableElementWrapper;
-import io.toolisticon.spiap.api.Service;
+import io.toolisticon.spiap.api.SpiService;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  * Annotation processor to generate wrapper class that eases reading of annotations attributes.
  * This circumvents the need to read attribute values by AnnotationMirror/Value api.
  */
-@Service(Processor.class)
+@SpiService(Processor.class)
 public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
     /**

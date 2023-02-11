@@ -6,7 +6,7 @@ import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
-import io.toolisticon.spiap.api.Service;
+import io.toolisticon.spiap.api.SpiService;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -20,7 +20,7 @@ import java.util.Set;
  */
 @SupportedAnnotationTypes(
         "io.toolisticon.aptk.example.annotations.MethodWithOneStringParameterAndVoidReturnTypeAnnotation")
-@Service(Processor.class)
+@SpiService(Processor.class)
 public class MethodHasStringParameterAndVoidReturnTypeCheckAnnotationProcessor extends AbstractAnnotationProcessor {
 
 
