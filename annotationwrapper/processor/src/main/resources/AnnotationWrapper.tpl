@@ -66,13 +66,22 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      }
 
 !{for attribute : atw.attributes}
+
+    /**
+     * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation as AnnotationValue.
+     * @return the attributes AnnotationValue
+     */
+    ${state.visibilityModifier}AnnotationValue ${attribute.name}AsAnnotationValue() {
+        return AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}");
+    }
+
 !{if !attribute.isArray}!{if attribute.isPrimitiveOrString}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
     ${state.visibilityModifier}${attribute.attributeType} ${attribute.name}() {
-        return (${attribute.attributeType})AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue();
+        return (${attribute.attributeType})${attribute.name}AsAnnotationValue().getValue();
     }
 !{/if}!{if attribute.isEnum}
     /**
@@ -80,7 +89,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * @return the attribute value
      */
     ${state.visibilityModifier}${attribute.attributeType} ${attribute.name}() {
-        VariableElement enumValue = ((VariableElement)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue());
+        VariableElement enumValue = ((VariableElement)${attribute.name}AsAnnotationValue().getValue());
         return ${attribute.attributeType}.valueOf(enumValue.getSimpleName().toString());
     }
 !{/if}!{if attribute.isClass}
@@ -89,7 +98,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * @return the attribute value as a TypeMirror
      */
     ${state.visibilityModifier}TypeMirror ${attribute.name}AsTypeMirror() {
-        return (TypeMirror)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue();
+        return (TypeMirror)${attribute.name}AsAnnotationValue().getValue();
     }
 
     /**
@@ -97,7 +106,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * @return the attribute value as a TypeMirror
      */
     ${state.visibilityModifier}TypeMirrorWrapper ${attribute.name}AsTypeMirrorWrapper() {
-        return TypeMirrorWrapper.wrap((TypeMirror)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue());
+        return TypeMirrorWrapper.wrap((TypeMirror)${attribute.name}AsAnnotationValue().getValue());
     }
 
     /**
@@ -113,7 +122,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * @return the attribute value
      */
     ${state.visibilityModifier}AnnotationMirror ${attribute.name}AsAnnotationMirror() {
-        return (AnnotationMirror)(AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue());
+        return (AnnotationMirror)(${attribute.name}AsAnnotationValue().getValue());
     }
 
 !{if attribute.isWrappedAnnotationType}
@@ -122,7 +131,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * @return the attribute value
      */
     ${state.visibilityModifier}${attribute.targetWrapperAnnotationName} ${attribute.name}() {
-        return ${attribute.targetWrapperAnnotationName}.wrap(this.annotatedElement, (AnnotationMirror)(AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue()));
+        return ${attribute.targetWrapperAnnotationName}.wrap(this.annotatedElement, (AnnotationMirror)(${attribute.name}AsAnnotationValue().getValue()));
     }
 !{/if}!{/if}!{/if}!{if attribute.isArray}!{if attribute.isPrimitiveArrayType}
     /**
@@ -131,7 +140,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     */
     ${state.visibilityModifier}${attribute.wrappedTypeMirror.getTypeDeclaration} ${attribute.name}() {
 
-       List<AnnotationValue> values = (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue();
+       List<AnnotationValue> values = (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue();
 
        ${attribute.getComponentAttributeType}[] result = new ${attribute.getComponentAttributeType}[values.size()];
 
@@ -149,7 +158,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      ${state.visibilityModifier}String[] ${attribute.name}() {
 
          List<String> result = new ArrayList<>();
-         for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
+         for(AnnotationValue value : (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue() ) {
               result.add((String)value.getValue());
          }
 
@@ -163,7 +172,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     ${state.visibilityModifier}${attribute.wrappedTypeMirror.getTypeDeclaration} ${attribute.name}() {
 
         List<${attribute.getComponentAttributeType}> result = new ArrayList<>();
-        for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
+        for(AnnotationValue value : (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue() ) {
             VariableElement enumValue = ((VariableElement)value.getValue());
             result.add( ${attribute.getComponentAttributeType}.valueOf(enumValue.getSimpleName().toString()));
         }
@@ -178,7 +187,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     ${state.visibilityModifier}TypeMirror[] ${attribute.name}AsTypeMirror() {
 
         List<TypeMirror> result = new ArrayList<>();
-        for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
+        for(AnnotationValue value : (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue() ) {
             result.add( ((TypeMirror)value.getValue()));
         }
 
@@ -192,7 +201,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     ${state.visibilityModifier}TypeMirrorWrapper[] ${attribute.name}AsTypeMirrorWrapper() {
 
         List<TypeMirrorWrapper> result = new ArrayList<>();
-        for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
+        for(AnnotationValue value : (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue() ) {
             result.add(TypeMirrorWrapper.wrap((TypeMirror)value.getValue()));
         }
 
@@ -206,7 +215,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     ${state.visibilityModifier}String[] ${attribute.name}AsFqn() {
 
         List<String> result = new ArrayList<>();
-        for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
+        for(AnnotationValue value : (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue() ) {
             result.add( TypeUtils.TypeConversion.convertToFqn((TypeMirror)value.getValue()));
         }
 
@@ -219,7 +228,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      */
     ${state.visibilityModifier}AnnotationMirror[] ${attribute.name}AsAnnotationMirrorArray() {
         List<AnnotationMirror> result = new ArrayList<>();
-        for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
+        for(AnnotationValue value : (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue() ) {
             result.add( ((AnnotationMirror)value.getValue()));
         }
 
@@ -233,7 +242,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      */
     ${state.visibilityModifier}${attribute.targetWrapperAnnotationName}[] ${attribute.name}() {
         List<${attribute.targetWrapperAnnotationName}> result = new ArrayList<>();
-        for(AnnotationValue value : (List<AnnotationValue>)AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}").getValue() ) {
+        for(AnnotationValue value : (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue() ) {
             result.add( ${attribute.targetWrapperAnnotationName}.wrap(this.annotatedElement, (AnnotationMirror)value.getValue()));
         }
 
