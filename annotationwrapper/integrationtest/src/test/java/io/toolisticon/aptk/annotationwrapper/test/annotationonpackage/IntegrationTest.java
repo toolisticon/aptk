@@ -31,21 +31,20 @@ public class IntegrationTest {
     @Before
     public void init() {
         MessagerUtils.setPrintMessageCodes(true);
-
     }
 
     @PassIn
     @TestAnnotation(
-            stringAttribute = "WTF",
-            doubleAttribute = 1.0,
-            longAttribute = 1L,
-            enumAttribute = TestEnum.TWO,
-            typeAttribute = String.class,
-            annotationAttribute = @EmbeddedAnnotation(1),
-            stringArrayAttribute = {"1", "2", "3"},
-            typeArrayAttribute = {Long.class, String.class},
-            enumArrayAttribute = {TestEnum.TWO, TestEnum.THREE},
-            annotationArrayAttribute = {@EmbeddedAnnotation(1), @EmbeddedAnnotation(2)}
+        stringAttribute = "WTF",
+        doubleAttribute = 1.0,
+        longAttribute = 1L,
+        enumAttribute = TestEnum.TWO,
+        typeAttribute = String.class,
+        annotationAttribute = @EmbeddedAnnotation(1),
+        stringArrayAttribute = {"1", "2", "3"},
+        typeArrayAttribute = {Long.class, String.class},
+        enumArrayAttribute = {TestEnum.TWO, TestEnum.THREE},
+        annotationArrayAttribute = {@EmbeddedAnnotation(1), @EmbeddedAnnotation(2)}
 
     )
     public static class TestUsage {
@@ -61,7 +60,7 @@ public class IntegrationTest {
 
                 // check if element is returned correctly
                 MatcherAssert.assertThat(testAnnotationWrapper._annotatedElement(), Matchers.is((Element) typeElement));
-                MatcherAssert.assertThat(testAnnotationWrapper.annotationAttribute()._annotatedElement(), Matchers.is((Element)typeElement));
+                MatcherAssert.assertThat(testAnnotationWrapper.annotationAttribute()._annotatedElement(), Matchers.is((Element) typeElement));
 
 
                 // single attribute values
@@ -109,8 +108,8 @@ public class IntegrationTest {
                 MatcherAssert.assertThat(embeddedAnnotationWrappers[1].value(), Matchers.is(2L));
             }
         })
-                .compilationShouldSucceed()
-                .executeTest();
+        .compilationShouldSucceed()
+        .executeTest();
     }
 
     @PassIn
@@ -122,24 +121,23 @@ public class IntegrationTest {
     @Test
     public void testDefaultValueDetection() {
         unitTestBuilder.defineTestWithPassedInElement(DefaultTestCase.class, new APTKUnitTestProcessor<TypeElement>() {
-            @Override
-            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
-
-                // single attribute values
-                TestDefaultsAnnotationWrapper wrappedAnnotation = TestDefaultsAnnotationWrapper.wrap(typeElement);
-                MatcherAssert.assertThat(wrappedAnnotation.withDefaultIsDefaultValue(), Matchers.is(true));
-                MatcherAssert.assertThat(wrappedAnnotation.withoutDefaultIsDefaultValue(), Matchers.is(false));
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
+            // single attribute values
+            TestDefaultsAnnotationWrapper wrappedAnnotation = TestDefaultsAnnotationWrapper.wrap(typeElement);
+            MatcherAssert.assertThat(wrappedAnnotation.withDefaultIsDefaultValue(), Matchers.is(true));
+            MatcherAssert.assertThat(wrappedAnnotation.withoutDefaultIsDefaultValue(), Matchers.is(false));
             }
         })
-                .compilationShouldSucceed()
-                .executeTest();
+        .compilationShouldSucceed()
+        .executeTest();
     }
 
     @Test
     public void testCustomCodeForwarding() {
         unitTestBuilder.defineTestWithPassedInElement(TestUsage.class, new APTKUnitTestProcessor<TypeElement>() {
-            @Override
-            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
                 // single attribute values
                 TestAnnotationWrapper wrappedAnnotation = TestAnnotationWrapper.wrap(typeElement);
@@ -149,7 +147,55 @@ public class IntegrationTest {
 
             }
         })
-                .compilationShouldSucceed()
-                .executeTest();
+        .compilationShouldSucceed()
+        .executeTest();
     }
+
+    @Test
+    public void testCompilerMessageTriggeredByAnnotationWrapper() {
+        unitTestBuilder.defineTestWithPassedInElement(TestUsage.class, new APTKUnitTestProcessor<TypeElement>() {
+            @Override
+            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
+
+                // single attribute values
+                TestAnnotationWrapper wrappedAnnotation = TestAnnotationWrapper.wrap(typeElement);
+                wrappedAnnotation.compilerMessage().asNote().write("NOTE");
+                wrappedAnnotation.compilerMessage().asWarning().write("WARNING");
+                wrappedAnnotation.compilerMessage().asMandatoryWarning().write("MWARNING");
+                wrappedAnnotation.compilerMessage().asError().write("ERROR");
+
+            }
+        })
+        .compilationShouldFail()
+        .expectNoteMessage().thatIsEqualTo("NOTE")
+        .expectWarningMessage().thatIsEqualTo("WARNING")
+        .expectMandatoryWarningMessage().thatIsEqualTo("MWARNING")
+        .expectErrorMessage().thatIsEqualTo("ERROR")
+        .executeTest();
+    }
+
+    @Test
+    public void testCompilerMessageTriggeredByAnnotationValueWrapper() {
+        unitTestBuilder.defineTestWithPassedInElement(TestUsage.class, new APTKUnitTestProcessor<TypeElement>() {
+            @Override
+            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
+
+                // single attribute values
+                TestAnnotationWrapper wrappedAnnotation = TestAnnotationWrapper.wrap(typeElement);
+
+                wrappedAnnotation.annotationAttribute().compilerMessage().asNote().write("NOTE");
+                wrappedAnnotation.annotationAttribute().compilerMessage().asWarning().write("WARNING");
+                wrappedAnnotation.annotationAttribute().compilerMessage().asMandatoryWarning().write("MWARNING");
+                wrappedAnnotation.annotationAttribute().compilerMessage().asError().write("ERROR");
+
+            }
+        })
+        .compilationShouldFail()
+        .expectNoteMessage().thatIsEqualTo("NOTE")
+        .expectWarningMessage().thatIsEqualTo("WARNING")
+        .expectMandatoryWarningMessage().thatIsEqualTo("MWARNING")
+        .expectErrorMessage().thatIsEqualTo("ERROR")
+        .executeTest();
+    }
+
 }

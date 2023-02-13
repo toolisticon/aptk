@@ -499,6 +499,16 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
             return attribute.getSimpleName().toString();
         }
 
+        /**
+         * Gets the attribute name with capitalized named.
+         *
+         * @return the capitalizedName
+         */
+        public String getCapitalizedName() {
+            String simpleName = attribute.getSimpleName();
+            return simpleName.substring(0, 1) + (simpleName.length() > 1 ? simpleName.substring(1, simpleName.length()) : "");
+        }
+
         public boolean isArray() {
             return attribute.getReturnType().isArray();
         }
@@ -547,7 +557,7 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
                 returnType = returnType.getWrappedComponentType();
             }
 
-            return returnType.isPrimitive() ? TypeUtils.getTypes().boxedClass(returnType.getPrimitiveType()).getSimpleName().toString(): null;
+            return returnType.isPrimitive() ? TypeUtils.getTypes().boxedClass(returnType.getPrimitiveType()).getSimpleName().toString() : null;
         }
 
         /**
