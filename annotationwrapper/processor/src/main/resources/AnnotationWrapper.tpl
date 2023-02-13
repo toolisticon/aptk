@@ -151,7 +151,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     ${state.visibilityModifier}${attribute.attributeType} ${attribute.name}() {
         return (${attribute.attributeType})${attribute.name}AsAnnotationValue().getValue();
     }
-!{/if}!{if attribute.isEnum}
+!{elseif attribute.isEnum}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
@@ -160,7 +160,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
         VariableElement enumValue = ((VariableElement)${attribute.name}AsAnnotationValue().getValue());
         return ${attribute.attributeType}.valueOf(enumValue.getSimpleName().toString());
     }
-!{/if}!{if attribute.isClass}
+!{elseif attribute.isClass}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
@@ -218,7 +218,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
 
        return result;
     }
-!{/if}!{if attribute.isStringArrayType}
+!{elseif attribute.isStringArrayType}
      /**
       * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
       * @return the attribute value
@@ -232,7 +232,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
 
          return result.toArray(new String[result.size()]);
      }
-!{/if}!{if attribute.isEnum}
+!{elseif attribute.isEnum}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
@@ -247,7 +247,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
 
         return result.toArray(new ${attribute.getComponentAttributeType}[result.size()]);
     }
-!{/if}!{if attribute.isClass}
+!{elseif attribute.isClass}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
