@@ -18,6 +18,7 @@ import java.util.List;
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.TypeUtils;
+import io.toolisticon.aptk.tools.wrapper.CompileMessageWriter;
 !{if atw.customInterfaces != null}!{for customInterface : atw.customInterfaces}import ${customInterface.qualifiedName};
 !{/for}!{/if}
 
@@ -75,6 +76,73 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
         return AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, "${attribute.name}");
     }
 
+    /**
+     * The Wrapper type for the annotation attribute '${attribute.name}'.
+     */
+    ${state.visibilityModifier}class ${atw.simpleName}Attribute${attribute.capitalizedName}Wrapper{
+
+        !{if attribute.isClass}
+        /**
+         * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
+         * @return the attribute value as a TypeMirror
+         */
+        ${state.visibilityModifier}TypeMirror!{if attribute.isArray}[]!{/if} ${attribute.name}AsTypeMirror() {
+            return ${atw.simpleName}Wrapper.this.${attribute.name}AsTypeMirror();
+        }
+
+        /**
+         * Gets the ${atw.simpleName}.${attribute.name} as TypeMirrorWrapper from wrapped annotation.
+         * @return the attribute value as a TypeMirror
+         */
+        ${state.visibilityModifier}TypeMirrorWrapper!{if attribute.isArray}[]!{/if} ${attribute.name}AsTypeMirrorWrapper() {
+            return ${atw.simpleName}Wrapper.this.${attribute.name}AsTypeMirrorWrapper();
+        }
+
+        /**
+         * Gets the ${atw.simpleName}.${attribute.name} as fully fqn from wrapped annotation.
+         * @return the attribute value as a fqn
+         */
+        ${state.visibilityModifier}String!{if attribute.isArray}[]!{/if} ${attribute.name}AsFqn() {
+            return ${atw.simpleName}Wrapper.this.${attribute.name}AsFqn();
+        }
+
+        !{elseif attribute.isAnnotationType}
+        /**
+         * Gets the ${atw.simpleName}.${attribute.name} as AnnotationMirror from wrapped annotation.
+         * @return the attribute value
+         */
+        ${state.visibilityModifier}AnnotationMirror!{if attribute.isArray}[]!{/if} ${attribute.name}AsAnnotationMirror!{if attribute.isArray}Array!{/if}() {
+            return ${atw.simpleName}Wrapper.this.${attribute.name}AsAnnotationMirror!{if attribute.isArray}Array!{/if}();
+        }
+
+        !{else}
+        /**
+         * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
+         * @return the attribute value
+         */
+        ${state.visibilityModifier}${attribute.attributeType}!{if attribute.isArray}[]!{/if} getValue() {
+            return ${atw.simpleName}Wrapper.this.${attribute.name}();
+        }
+        !{/if}
+
+        /**
+         * Writes compiler message and binds them to annotation.
+         * @return a compiler message builder
+         */
+        ${state.visibilityModifier}CompileMessageWriter.CompileMessageWriterStart compilerMessage() {
+            return CompileMessageWriter.at(${atw.simpleName}Wrapper.this.annotatedElement, ${atw.simpleName}Wrapper.this.annotationMirror, ${attribute.name}AsAnnotationValue());
+        }
+
+    }
+
+    /**
+     * Gets the ${atw.simpleName}.${attribute.name} as wrapped attribute from wrapped annotation.
+     * @return the attribute value
+     */
+    ${state.visibilityModifier}${atw.simpleName}Attribute${attribute.capitalizedName}Wrapper ${attribute.name}AsAttributeWrapper() {
+        return new ${atw.simpleName}Attribute${attribute.capitalizedName}Wrapper();
+    }
+
 !{if !attribute.isArray}!{if attribute.isPrimitiveOrString}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
@@ -83,7 +151,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     ${state.visibilityModifier}${attribute.attributeType} ${attribute.name}() {
         return (${attribute.attributeType})${attribute.name}AsAnnotationValue().getValue();
     }
-!{/if}!{if attribute.isEnum}
+!{elseif attribute.isEnum}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
@@ -92,7 +160,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
         VariableElement enumValue = ((VariableElement)${attribute.name}AsAnnotationValue().getValue());
         return ${attribute.attributeType}.valueOf(enumValue.getSimpleName().toString());
     }
-!{/if}!{if attribute.isClass}
+!{elseif attribute.isClass}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
@@ -150,7 +218,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
 
        return result;
     }
-!{/if}!{if attribute.isStringArrayType}
+!{elseif attribute.isStringArrayType}
      /**
       * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
       * @return the attribute value
@@ -164,7 +232,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
 
          return result.toArray(new String[result.size()]);
      }
-!{/if}!{if attribute.isEnum}
+!{elseif attribute.isEnum}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
@@ -179,7 +247,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
 
         return result.toArray(new ${attribute.getComponentAttributeType}[result.size()]);
     }
-!{/if}!{if attribute.isClass}
+!{elseif attribute.isClass}
     /**
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
@@ -274,6 +342,14 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      */
     ${state.visibilityModifier}static boolean isAnnotated(Element element) {
         return element != null && element.getAnnotation(${atw.simpleName}.class) != null;
+    }
+
+    /**
+     * Writes compiler message and binds them to annotation.
+     * @return a compiler message builder
+     */
+    ${state.visibilityModifier} CompileMessageWriter.CompileMessageWriterStart compilerMessage() {
+        return CompileMessageWriter.at(${atw.simpleName}Wrapper.this.annotatedElement, ${atw.simpleName}Wrapper.this.annotationMirror);
     }
 
      /**
