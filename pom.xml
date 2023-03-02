@@ -23,6 +23,9 @@
         <!-- wrapper processor -->
         <module>annotationwrapper</module>
 
+        <!-- processor for compiler messages -->
+        <module>compilermessages</module>
+
         <!-- support for toolisticon cute -->
         <module>cute</module>
 
@@ -512,6 +515,12 @@
             <dependency>
                 <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>aptk-templating</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-annotationwrapper-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
