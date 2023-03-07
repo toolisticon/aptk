@@ -9,7 +9,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-compilermessages-parent</artifactId>
-        <version>0.20.3-SNAPSHOT</version>
+        <version>0.21.0</version>
     </parent>
 
     <name>aptk-compilermessages-processor</name>
