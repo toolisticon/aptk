@@ -4,7 +4,7 @@
 
     <groupId>io.toolisticon.aptk</groupId>
     <artifactId>aptk-parent</artifactId>
-    <version>0.20.2</version>
+    <version>0.21.0</version>
     <packaging>pom</packaging>
 
     <name>aptk-parent</name>
@@ -22,6 +22,9 @@
 
         <!-- wrapper processor -->
         <module>annotationwrapper</module>
+
+        <!-- processor for compiler messages -->
+        <module>compilermessages</module>
 
         <!-- support for toolisticon cute -->
         <module>cute</module>
@@ -512,6 +515,12 @@
             <dependency>
                 <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>aptk-templating</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-annotationwrapper-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

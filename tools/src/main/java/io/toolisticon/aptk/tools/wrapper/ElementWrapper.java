@@ -15,6 +15,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Repeatable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -337,6 +338,24 @@ public class ElementWrapper<E extends Element> {
     }
 
     /**
+     * Checks if passed annotation is present.
+     * @param annotation the annotation tom check
+     * @return true if passed annotation is present, otherwise false
+     */
+    public boolean hasAnnotation(Class<? extends Annotation> annotation) {
+        return getAnnotationMirror(annotation).isPresent();
+    }
+
+    /**
+     * Checks if passed annotation is present.
+     * @param annotationFqn the annotation tom check
+     * @return true if passed annotation is present, otherwise false
+     */
+    public boolean hasAnnotation(String annotationFqn) {
+        return getAnnotationMirror(annotationFqn).isPresent();
+    }
+
+    /**
      * Returns an annotation of a specific type.
      * This should only be used if annotation doesn't have Class based attributes, since Classes might not be compiled already.
      *
@@ -346,6 +365,24 @@ public class ElementWrapper<E extends Element> {
      */
     public <A extends Annotation> Optional<A> getAnnotation(Class<A> annotationType) {
         return Optional.ofNullable(element.getAnnotation(annotationType));
+    }
+
+    public Optional<List<AnnotationMirrorWrapper>> getRepeatableAnnotation (Class<? extends Annotation> annotationType) {
+
+        List<AnnotationMirrorWrapper> result = new ArrayList<>();
+
+        /*-
+        // handle repeatable annotation
+        TypeElementWrapper annotationTypeElement = TypeElementWrapper.getByClass(annotationType).get();
+         repeatableAnnotations = annotationTypeElement.getAnnotation(this.ge)
+
+        if(annotationTypeElement.isRepeatableAnnotation() && this.this.getRepeatableAnnotation(annotationType)) {
+
+        }
+
+        if ()
+            */
+        return Optional.of(result);
     }
 
     /**
@@ -484,6 +521,22 @@ public class ElementWrapper<E extends Element> {
         return ElementUtils.CheckKindOfElement.isAnnotation(this.element);
     }
 
+    /**
+     * Checks if wrapped element is a repeatable annotation.
+     * @return if wrapped element represents a repeatable annotation, otherwise false
+     */
+    public boolean isRepeatableAnnotation(){
+        return isAnnotation() && hasAnnotation(Repeatable.class);
+    }
+
+    public Optional<TypeMirrorWrapper> getRepeatableWrapperType(){
+
+        if(isRepeatableAnnotation()){
+            return Optional.of(getAnnotationMirror(Repeatable.class).get().getAttribute().get().getClassValue());
+        }
+
+        return Optional.empty();
+    }
 
     /**
      * Checks if wrapped element represents a constructor.

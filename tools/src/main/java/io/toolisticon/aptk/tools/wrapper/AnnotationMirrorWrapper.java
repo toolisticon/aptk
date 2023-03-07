@@ -8,6 +8,7 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -172,5 +173,15 @@ public class AnnotationMirrorWrapper {
      */
     public static AnnotationMirrorWrapper wrap(AnnotationMirror annotationMirror) {
         return new AnnotationMirrorWrapper(annotationMirror);
+    }
+
+    /**
+     * Wraps an array of AnnotationMirror instances.
+     *
+     * @param annotationMirrors the annotation mirror instance array to wrap
+     * @return an array that contains the wrapped instances
+     */
+    public static AnnotationMirrorWrapper[] wrap(AnnotationMirror[] annotationMirrors) {
+        return annotationMirrors != null ? Arrays.stream(annotationMirrors).map(e -> AnnotationMirrorWrapper.wrap(e)).toArray(AnnotationMirrorWrapper[]::new): null;
     }
 }

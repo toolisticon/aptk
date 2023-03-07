@@ -6,6 +6,7 @@ import io.toolisticon.aptk.tools.annotationutilstestclasses.DefaultValueAnnotati
 import io.toolisticon.aptk.tools.annotationutilstestclasses.NoAttributeAnnotation;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
+import io.toolisticon.aptk.tools.wrapper.AnnotationMirrorWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
@@ -19,8 +20,10 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import java.lang.annotation.Repeatable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -530,6 +533,82 @@ public class AnnotationUtilsTest {
 
             }
         })
+                .compilationShouldSucceed()
+                .executeTest();
+    }
+
+    // --------------------------------------------
+    // -- isRepeatableAnnotation
+    // --------------------------------------------
+
+    public @interface NotRepeatable{
+
+    }
+
+    @Test
+    public void isRepeatableAnnotation() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        MatcherAssert.assertThat("Should return true for Repeatable annotation", AnnotationUtils.isRepeatableAnnotation(IsRepeatable.class));
+                        MatcherAssert.assertThat("Should return false for non Repeatable annotation", !AnnotationUtils.isRepeatableAnnotation(NotRepeatable.class));
+                        MatcherAssert.assertThat("Should return false for null value", !AnnotationUtils.isRepeatableAnnotation(null));
+
+                    }
+                })
+                .compilationShouldSucceed()
+                .executeTest();
+    }
+
+
+    // --------------------------------------------
+    // -- getRepeatableAnnotationWrapperClass
+    // --------------------------------------------
+
+    @Test
+    public void getRepeatableAnnotationWrapperClass() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+
+                        MatcherAssert.assertThat(AnnotationUtils.getRepeatableAnnotationWrapperClass(IsRepeatable.class).get(), Matchers.is(IsRepeatableWrapper.class));
+                        MatcherAssert.assertThat("Should return empty Optional for non Repeatable annotation", !AnnotationUtils.getRepeatableAnnotationWrapperClass(NotRepeatable.class).isPresent());
+                        MatcherAssert.assertThat("Should return empty Optional for null value", !AnnotationUtils.getRepeatableAnnotationWrapperClass(null).isPresent());
+
+                    }
+                })
+                .compilationShouldSucceed()
+                .executeTest();
+    }
+
+    // --------------------------------------------
+    // -- getRepeatableAnnotation
+    // --------------------------------------------
+
+
+
+    @IsRepeatable("A")
+    @IsRepeatable("B")
+    static class CompilerMessageAnchor{
+
+    }
+
+    @Test
+    public void getRepeatableAnnotation() {
+
+        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
+                    @Override
+                    protected void testCase(TypeElement element) {
+                        TypeElement typeElement = TypeUtils.TypeRetrieval.getTypeElement(CompilerMessageAnchor.class);
+                        MatcherAssert.assertThat(AnnotationUtils.getRepeatableAnnotation(typeElement,IsRepeatable.class).get().stream().map(e -> AnnotationMirrorWrapper.wrap(e).getAttributeWithDefault().getStringValue()).collect(Collectors.toList()), Matchers.containsInAnyOrder("A", "B"));
+                        //MatcherAssert.assertThat("Should return empty Optional for non Repeatable annotation", !AnnotationUtils.getRepeatableAnnotationWrapperClass(NotRepeatable.class).isPresent());
+                        //MatcherAssert.assertThat("Should return empty Optional for null value", !AnnotationUtils.getRepeatableAnnotationWrapperClass(null).isPresent());
+
+                    }
+                })
                 .compilationShouldSucceed()
                 .executeTest();
     }

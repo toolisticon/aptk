@@ -14,7 +14,10 @@ import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.TypeUtils;
@@ -352,6 +355,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
         return CompileMessageWriter.at(${atw.simpleName}Wrapper.this.annotatedElement, ${atw.simpleName}Wrapper.this.annotationMirror);
     }
 
+!{if !atw.isRepeatable}
      /**
       * Gets the AnnotationMirror from passed element for this wrappers annotation type and creates a wrapper instance.
       * @param element The element to read the annotations from
@@ -370,6 +374,17 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     ${state.visibilityModifier}static ${atw.simpleName}Wrapper wrap(AnnotationMirror annotationMirror) {
         return new ${atw.simpleName}Wrapper(null, annotationMirror);
     }
+!{else}
+    /**
+      * Gets the AnnotationMirror from passed element for this wrappers annotation type and creates a wrapper instance.
+      * @param element The element to read the annotations from
+      * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
+      */
+    ${state.visibilityModifier}static List<${atw.simpleName}Wrapper> wrap(Element element) {
+        Optional<List<AnnotationMirror>> repeatableAnnotations = AnnotationUtils.getRepeatableAnnotation(element, ${atw.simpleName}.class);
+        return repeatableAnnotations.isPresent() ? repeatableAnnotations.get().stream().map(e -> wrap(element, e)).collect(Collectors.toList()) : Collections.EMPTY_LIST;
+    }
+!{/if}
 
    /**
      * Wraps an AnnotationMirror.

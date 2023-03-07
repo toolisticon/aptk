@@ -8,11 +8,14 @@ import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Repeatable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -100,8 +103,16 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
         if (annotationTypes != null) {
             for (Class<? extends Annotation> annotationType : annotationTypes) {
 
-                if (annotationType != null) {
-                    result.add(annotationType.getCanonicalName());
+                // skip null values
+                if(annotationType == null) {
+                    continue;
+                }
+
+                result.add(annotationType.getCanonicalName());
+
+                Repeatable repeatableAnnotation = annotationType.getAnnotation(Repeatable.class);
+                if (repeatableAnnotation != null) {
+                    result.add(repeatableAnnotation.value().getCanonicalName());
                 }
 
             }
@@ -111,11 +122,32 @@ public abstract class AbstractAnnotationProcessor extends AbstractProcessor {
     }
 
     /**
+     * Gets all elements from round environment that are annotated with passed annotation or its wrapper type in case of a repeatable annotation.
+     *
+     * @param roundEnvironment the round environment to get the elements under processing from
+     * @param annotation       the annotation type
+     * @return a set containing all annotated elements annotated with either the passed annotation or its repeatable wrapper type.
+     */
+    public static Set<Element> getAnnotatedElements(RoundEnvironment roundEnvironment, Class<? extends Annotation> annotation) {
+
+        Set<Element> result = new HashSet<>(roundEnvironment.getElementsAnnotatedWith(annotation));
+
+        Optional<Class<? extends Annotation>> wrapperAnnotationType = AnnotationUtils.getRepeatableAnnotationWrapperClass(annotation);
+        if (AnnotationUtils.isRepeatableAnnotation(annotation)) {
+            result.addAll(roundEnvironment.getElementsAnnotatedWith(wrapperAnnotationType.get()));
+        }
+
+        return result;
+    }
+
+
+    /**
      * This method can be used to wrap elements to an array.
      *
      * @param element the elements to be wrapped
-     * @param <T> the type of the elements
+     * @param <T>     the type of the elements
      * @return the array containing al passed elements
+     * @deprecated Use getAnnotationClasses for providing supported annotations instead.
      */
     @SafeVarargs
     public static <T> T[] wrapToArray(T... element) {

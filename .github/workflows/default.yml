@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest,macos-latest,windows-latest ]
-        java: [ 8.0.x, 9.0.x, 10,  11.0.x, 12.0.x, 13.0.x, 14.0.x, 15.0.x, 16.0.x, 17.0.x ]
+        java: [ 8.0.x, 9.0.x, 11.0.x, 12.0.x, 13.0.x, 14.0.x, 15.0.x, 16.0.x, 17.0.x ]
 
     steps:
       - name: Checkout Code

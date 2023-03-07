@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
  */
 public final class BeanUtils {
 
-    protected final static String[] GETTER_PREFIXES = {"get", "is", "has"};
-    protected final static String[] SETTER_PREFIXES = {"set"};
+    final static String[] GETTER_PREFIXES = {"get", "is", "has"};
+    final static String[] SETTER_PREFIXES = {"set"};
 
     /**
      * Class to store attribute related data.

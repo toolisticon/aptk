@@ -42,7 +42,7 @@ public class AnnotationMirrorWrapperTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void test_wrap_null() {
-        AnnotationMirrorWrapper.wrap(null);
+        AnnotationMirrorWrapper.wrap((AnnotationMirror) null);
     }
 
     @Test

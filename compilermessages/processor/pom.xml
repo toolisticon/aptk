@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>aptk-compilermessages-processor</artifactId>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>io.toolisticon.aptk</groupId>
+        <artifactId>aptk-compilermessages-parent</artifactId>
+        <version>0.21.0</version>
+    </parent>
+
+    <name>aptk-compilermessages-processor</name>
+
+    <dependencies>
+
+        <!-- runtime dependencies -->
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-compilermessages-api</artifactId>
+        </dependency>
+
+        <!-- shaded artifacts - set to provided -->
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-tools</artifactId>
+        </dependency>
+
+        <!-- dependencies just used during compilation -->
+        <dependency>
+            <groupId>io.toolisticon.spiap</groupId>
+            <artifactId>spiap-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-annotationwrapper-api</artifactId>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-cute</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+
+
+                        <configuration>
+
+                            <artifactSet>
+                                <includes>
+                                    <include>io.toolisticon.aptk:aptk-tools</include>
+                                    <include>io.toolisticon.aptk:aptk-common</include>
+                                    <include>io.toolisticon.aptk:aptk-templating</include>
+                                </includes>
+                            </artifactSet>
+
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+                                    <resource>.txt</resource>
+                                </transformer>
+                            </transformers>
+
+                            <relocations>
+                                <relocation>
+                                    <pattern>io.toolisticon.aptk.tools</pattern>
+                                    <shadedPattern>
+                                        io.toolisticon.aptk.compilermessage._3rdparty.io.toolisticon.aptk.tools
+                                    </shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.toolisticon.aptk.common</pattern>
+                                    <shadedPattern>
+                                        io.toolisticon.aptk.compilermessage._3rdparty.io.toolisticon.aptk.common
+                                    </shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.toolisticon.aptk.templating</pattern>
+                                    <shadedPattern>
+                                        io.toolisticon.aptk.compilermessage._3rdparty.io.toolisticon.aptk.templating
+                                    </shadedPattern>
+                                </relocation>
+                            </relocations>
+
+                        </configuration>
+
+                    </execution>
+                </executions>
+
+
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.compile.source.version}</source>
+                    <target>${java.compile.target.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.toolisticon.spiap</groupId>
+                            <artifactId>spiap-processor</artifactId>
+                            <version>${spiap.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.toolisticon.aptk</groupId>
+                            <artifactId>aptk-annotationwrapper-processor</artifactId>
+                            <version>${project.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+
+    </build>
+
+
+</project>
