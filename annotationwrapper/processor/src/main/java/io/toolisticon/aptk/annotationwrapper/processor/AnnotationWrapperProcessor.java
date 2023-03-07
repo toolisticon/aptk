@@ -469,6 +469,12 @@ public class AnnotationWrapperProcessor extends AbstractAnnotationProcessor {
 
             return "";
         }
+
+        public boolean isRepeatable() {
+            return TypeElementWrapper.getByFqn(this.annotationFqn).get().isRepeatableAnnotation();
+        }
+
+
     }
 
     /**

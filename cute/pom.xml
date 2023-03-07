@@ -29,6 +29,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>

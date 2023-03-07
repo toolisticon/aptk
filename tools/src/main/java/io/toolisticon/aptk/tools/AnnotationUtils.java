@@ -1,15 +1,22 @@
 package io.toolisticon.aptk.tools;
 
 
+import io.toolisticon.aptk.tools.wrapper.AnnotationMirrorWrapper;
+import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
+
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Repeatable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Utility class which helps to handle different {@link Annotation} related tasks.
@@ -379,5 +386,66 @@ public final class AnnotationUtils {
         }
 
     }
+
+    /**
+     * Checks if passed annotation is repeatable.
+     * (annotataed with Repeatable annotation)
+     * @param annotation the annotation to check
+     * @return true if the annotation is repeatable, otherwise false
+     */
+    public static boolean isRepeatableAnnotation(Class<? extends Annotation> annotation) {
+        return annotation != null && TypeUtils.TypeRetrieval.getTypeElement(annotation).getAnnotation(Repeatable.class) != null;
+    }
+
+    /**
+     * Gets the repeatable wrapper type of annotation
+     * @param annotation the annotation to get the repeatable annotation wrapper type for
+     * @return an optional containing the repeatable wrapper type or an empty optional if passed annotation is null or annotation is no repeatable.
+     */
+    public static Optional<Class<? extends Annotation>> getRepeatableAnnotationWrapperClass(Class<? extends Annotation> annotation) {
+        if(isRepeatableAnnotation(annotation)) {
+
+            TypeElement annotationTypeElement = TypeUtils.TypeRetrieval.getTypeElement(annotation);
+            AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(annotationTypeElement, Repeatable.class);
+
+            TypeMirror typeMirror = getClassAttributeFromAnnotationAsTypeMirror(annotationMirror, "value");
+
+            try {
+                return Optional.of((Class<? extends Annotation>)Class.forName(typeMirror.toString()));
+            } catch (ClassNotFoundException e) {
+              // ignore - shouldn't happen since
+            }
+
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<List<AnnotationMirror>> getRepeatableAnnotation(Element element, Class<? extends Annotation> annotation) {
+
+        if (annotation == null || element == null || !isRepeatableAnnotation(annotation)) {
+            return Optional.empty();
+        }
+
+        Class<? extends Annotation> repeatableAnnotationWrapperType = getRepeatableAnnotationWrapperClass(annotation).get();
+
+        List<AnnotationMirror> result = new ArrayList<>();
+
+        // 1. single annotation use
+        AnnotationMirror singleUse = getAnnotationMirror(element, annotation);
+        if (singleUse != null) {
+            result.add(singleUse);
+        }
+
+        // 2. via repeatable annotation
+        AnnotationMirror repeatableAnnotationMirror = getAnnotationMirror(element, repeatableAnnotationWrapperType);
+        if (repeatableAnnotationMirror != null) {
+            AnnotationValue annotationValue = getAnnotationValueOfAttributeWithDefaults(getAnnotationMirror(element, repeatableAnnotationWrapperType));
+            result.addAll(Arrays.asList(AnnotationValueUtils.getAnnotationValueArray(annotationValue)));
+        }
+
+        return Optional.of(result);
+    }
+
+
 
 }

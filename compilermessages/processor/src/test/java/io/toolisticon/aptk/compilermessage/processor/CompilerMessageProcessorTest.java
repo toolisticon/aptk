@@ -41,4 +41,18 @@ public class CompilerMessageProcessorTest {
                 .compilationShouldSucceed()
                 .executeTest();
     }
+
+
+
+    @Test
+    public void test_error_nonUniqueCode() {
+        CompileTestBuilder.compilationTest()
+                .addProcessors(CompilerMessageProcessor.class)
+                .addSources("testcase/error_nonUniqueCode/TestClass.java")
+                .expectErrorMessage().thatContains(CompilerMessageProcessorMessages.ERROR_CODE_MUST_BE_UNIQUE.getCode())
+                .compilationShouldFail()
+                .executeTest();
+    }
+
+
 }

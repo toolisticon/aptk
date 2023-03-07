@@ -2,6 +2,7 @@ package io.toolisticon.aptk.compilermessage.processor;
 
 import io.toolisticon.aptk.compilermessage.api.DeclareCompilerMessage;
 import io.toolisticon.aptk.compilermessage.api.DeclareCompilerMessageCodePrefix;
+import io.toolisticon.aptk.compilermessage.api.DeclareCompilerMessages;
 import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.FilerUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
@@ -16,6 +17,7 @@ import javax.lang.model.element.TypeElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +30,7 @@ public class CompilerMessageProcessor extends AbstractAnnotationProcessor {
     /**
      * The supported annotation types.
      */
-    private final static Set<String> SUPPORTED_ANNOTATIONS = createSupportedAnnotationSet(DeclareCompilerMessage.class, DeclareCompilerMessageCodePrefix.class);
+    private final static Set<String> SUPPORTED_ANNOTATIONS = createSupportedAnnotationSet(DeclareCompilerMessage.class);
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
@@ -88,20 +90,25 @@ public class CompilerMessageProcessor extends AbstractAnnotationProcessor {
 
 
         if (!roundEnv.processingOver()) {
+
             // process Services annotation
-            for (Element element : roundEnv.getElementsAnnotatedWith(DeclareCompilerMessage.class)) {
+            for (Element element : getAnnotatedElements(roundEnv,DeclareCompilerMessage.class)) {
 
 
-                DeclareCompilerMessageWrapper compilerMessageWrapper = DeclareCompilerMessageWrapper.wrap(element);
-                TargetCompilerMessageEnum target = compilerMessageWrapper.getTarget();
-
-                compilerMessagesEnumMap.computeIfAbsent(target, e -> new ArrayList<DeclareCompilerMessageWrapper>()).add(compilerMessageWrapper);
-
+                List<DeclareCompilerMessageWrapper> compilerMessageWrappers = DeclareCompilerMessageWrapper.wrap(element);
+                for (DeclareCompilerMessageWrapper compilerMessageWrapper : compilerMessageWrappers) {
+                    TargetCompilerMessageEnum target = compilerMessageWrapper.getTarget();
+                    compilerMessagesEnumMap.computeIfAbsent(target, e -> new ArrayList<DeclareCompilerMessageWrapper>()).add(compilerMessageWrapper);
+                }
             }
+
         } else {
 
             // create those compiler message enums
             for (Map.Entry<TargetCompilerMessageEnum, List<DeclareCompilerMessageWrapper>> entry : compilerMessagesEnumMap.entrySet()) {
+
+                verify(entry.getValue());
+
                 createCompilerMessageEnum(entry);
             }
 
@@ -110,11 +117,10 @@ public class CompilerMessageProcessor extends AbstractAnnotationProcessor {
 
     }
 
+
     boolean verify (List<DeclareCompilerMessageWrapper> enumValues) {
 
         boolean retValue = true;
-
-
 
 
         Set<String> codeSet = new HashSet<>();
