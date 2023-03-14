@@ -39,13 +39,14 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
 
     IS_CLASS("CM_IS_CLASS", "Element must ${0} represent a Class"),
     IS_ENUM("CM_IS_ENUM", "Element must ${0} represent an enum"),
-    IS_INTERFACE("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent an interface"),
+    IS_INTERFACE("CM_IS_INTERFACE", "Element must ${0} represent an interface"),
+
     IS_METHOD("CM_IS_METHOD", "Element must ${0} represent a method"),
     IS_CONSTRUCTOR("CM_IS_CONSTRUCTOR", "Element must ${0} represent a constructor"),
     IS_ANNOTATION_TYPE("CM_IS_ANNOTATION_TYPE", "Element must ${0} represent an annotation type"),
-    IS_FIELD("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a field"),
-    IS_PARAMETER("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a parameter"),
-    IS_PACKAGE("CM_IS_PACKAGE_ELEMENT", "Element must ${0} represent a package"),
+    IS_FIELD("CM_IS_FIELD", "Element must ${0} represent a field"),
+    IS_PARAMETER("CM_IS_PARAMETER", "Element must ${0} represent a parameter"),
+    IS_PACKAGE("CM_IS_PACKAGE", "Element must ${0} represent a package"),
     ;
 
 
