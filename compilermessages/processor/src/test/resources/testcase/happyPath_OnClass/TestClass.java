@@ -6,6 +6,7 @@ import io.toolisticon.aptk.compilermessage.api.DeclareCompilerMessageCodePrefix;
 
 @DeclareCompilerMessageCodePrefix("WTF")
 @DeclareCompilerMessage(enumValueName = "ON_CLASS", code = "001", message = "TEST 1")
+@DeclareCompilerMessage(enumValueName = "ON_CLASS_WO_CODE", message = "TEST 6")
 public class TestClass {
 
 

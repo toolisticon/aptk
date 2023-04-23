@@ -8,6 +8,7 @@ import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import java.util.Optional;
+import java.util.UUID;
 
 public class CompilerMessageWrapperCustomCode {
 
@@ -47,11 +48,18 @@ public class CompilerMessageWrapperCustomCode {
 
 
 
+
+
         return new CompilerMessageProcessor.TargetCompilerMessageEnum(
                 typeElementWrapper.getPackageName(),
                 typeElementWrapper.getSimpleName() + "CompilerMessages",
                 DeclareCompilerMessageCodePrefixWrapper.isAnnotated(typeElementWrapper.unwrap()) ? DeclareCompilerMessageCodePrefixWrapper.wrap(typeElementWrapper.unwrap()).value(): typeElementWrapper.getSimpleName());
 
+    }
+
+    @CustomCodeMethod(DeclareCompilerMessage.class)
+    public static String getCalculatedCode(DeclareCompilerMessageWrapper compilerMessageWrapper){
+        return compilerMessageWrapper.codeIsDefaultValue() ? compilerMessageWrapper.enumValueName() : compilerMessageWrapper.code();
     }
 
 }

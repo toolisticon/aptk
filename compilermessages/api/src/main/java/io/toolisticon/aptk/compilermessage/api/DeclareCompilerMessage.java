@@ -19,9 +19,10 @@ public @interface DeclareCompilerMessage {
 
     /*+
      * The compiler messages code. Must be unique.
+     * Defaults to empty String which will result in that the enumValueName is going to be used.
      * @return the code of the message
      */
-    String code();
+    String code() default "";
 
 
     /**
