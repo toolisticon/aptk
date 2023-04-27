@@ -9,7 +9,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-annotationwrapper-parent</artifactId>
-        <version>0.21.0</version>
+        <version>0.22.0</version>
     </parent>
 
     <name>aptk-annotationwrapper-integrationTest</name>
@@ -22,13 +22,17 @@
 
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.compile.source.version}</source>
-                    <target>${java.compile.target.version}</target>
+                <configuration combine.self="append">
+                    <verbose>true</verbose>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>io.toolisticon.aptk</groupId>
                             <artifactId>aptk-annotationwrapper-processor</artifactId>
+                            <version>${project.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.toolisticon.aptk</groupId>
+                            <artifactId>aptk-annotationwrapper-api</artifactId>
                             <version>${project.version}</version>
                         </path>
                     </annotationProcessorPaths>

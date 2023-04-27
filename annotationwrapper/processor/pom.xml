@@ -9,7 +9,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-annotationwrapper-parent</artifactId>
-        <version>0.21.0</version>
+        <version>0.22.0</version>
     </parent>
 
     <name>aptk-annotationwrapper-processor</name>
@@ -120,6 +120,11 @@
                         <path>
                             <groupId>io.toolisticon.spiap</groupId>
                             <artifactId>spiap-processor</artifactId>
+                            <version>${spiap.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.toolisticon.spiap</groupId>
+                            <artifactId>spiap-api</artifactId>
                             <version>${spiap.version}</version>
                         </path>
                     </annotationProcessorPaths>

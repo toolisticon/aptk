@@ -10,7 +10,7 @@ import javax.lang.model.element.Element;
 public enum ${enum.enumName} implements ValidationMessage{
 
     !{for compilerMessage : compilerMessages}
-    ${compilerMessage.enumValueName}("${enum.codePrefix}_${compilerMessage.code}", "${compilerMessage.message}"),
+    ${compilerMessage.enumValueName}("${enum.codePrefix}_${compilerMessage.calculatedCode}", "${compilerMessage.message}"),
     !{/for};
 
     /**

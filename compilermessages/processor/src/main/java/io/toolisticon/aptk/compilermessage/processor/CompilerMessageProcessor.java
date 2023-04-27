@@ -1,13 +1,10 @@
 package io.toolisticon.aptk.compilermessage.processor;
 
 import io.toolisticon.aptk.compilermessage.api.DeclareCompilerMessage;
-import io.toolisticon.aptk.compilermessage.api.DeclareCompilerMessageCodePrefix;
-import io.toolisticon.aptk.compilermessage.api.DeclareCompilerMessages;
 import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.FilerUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.generators.SimpleJavaWriter;
-import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.spiap.api.SpiService;
 
 import javax.annotation.processing.Processor;
@@ -17,7 +14,6 @@ import javax.lang.model.element.TypeElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -92,7 +88,7 @@ public class CompilerMessageProcessor extends AbstractAnnotationProcessor {
         if (!roundEnv.processingOver()) {
 
             // process Services annotation
-            for (Element element : getAnnotatedElements(roundEnv,DeclareCompilerMessage.class)) {
+            for (Element element : getAnnotatedElements(roundEnv, DeclareCompilerMessage.class)) {
 
 
                 List<DeclareCompilerMessageWrapper> compilerMessageWrappers = DeclareCompilerMessageWrapper.wrap(element);
@@ -118,7 +114,7 @@ public class CompilerMessageProcessor extends AbstractAnnotationProcessor {
     }
 
 
-    boolean verify (List<DeclareCompilerMessageWrapper> enumValues) {
+    boolean verify(List<DeclareCompilerMessageWrapper> enumValues) {
 
         boolean retValue = true;
 
@@ -127,7 +123,7 @@ public class CompilerMessageProcessor extends AbstractAnnotationProcessor {
         for (DeclareCompilerMessageWrapper enumValue : enumValues) {
 
             // check if enum value name is correct
-            if(!enumValue.enumValueName().matches("([A-Z_][A-Z0-9_]*)")) {
+            if (!enumValue.enumValueName().matches("([A-Z_][A-Z0-9_]*)")) {
                 enumValue.enumValueNameAsAttributeWrapper().compilerMessage().asError().write(CompilerMessageProcessorMessages.ERROR_CODE_ENUM_VALUE_NAME_MUST_VALID, enumValue.enumValueName());
             }
 

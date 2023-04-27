@@ -36,7 +36,8 @@ public class CompilerMessageProcessorTest {
                                 "ON_METHOD(\"WTF_002\", \"TEST 2\"),",
                                 "ON_NESTED_CLASS(\"WTF_003\", \"TEST 3\"),",
                                 "ON_NESTED_CLASS_METHOD(\"WTF_004\", \"TEST 4\"),",
-                                "ON_REMOTE_CLASS(\"WTF_005\", \"TEST 5\"),"
+                                "ON_REMOTE_CLASS(\"WTF_005\", \"TEST 5\"),",
+                                "ON_CLASS_WO_CODE(\"WTF_ON_CLASS_WO_CODE\", \"TEST 6\"),"
                         ))
                 .compilationShouldSucceed()
                 .executeTest();
