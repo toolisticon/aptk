@@ -228,6 +228,43 @@ public class InterfaceUtils {
         public List<VariableElementWrapper> getParameters() {
             return super.getParameters().stream().map(e -> new TVVariableElementWrapper(e.unwrap(), typeVarMap)).collect(Collectors.toList());
         }
+
+        @Override
+        public int hashCode() {
+
+            int hashCode = 0;
+
+            for (VariableElementWrapper parameter : getParameters()) {
+                hashCode += parameter.asType().getTypeDeclaration().hashCode();
+            }
+
+            return getSimpleName().hashCode() + hashCode;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+
+            if (!(obj instanceof TVExecutableElementWrapper)) {
+                return false;
+            }
+            ExecutableElementWrapper otherObj = (ExecutableElementWrapper) obj;
+            if (!this.getSimpleName().equals(otherObj.getSimpleName())) {
+                return false;
+            }
+
+            if (this.getParameters().size() != otherObj.getParameters().size()) {
+                return false;
+            }
+
+            for (int i = 0 ; i < this.getParameters().size(); i++) {
+                if (!this.getParameters().get(i).asType().getTypeDeclaration().equals(otherObj.getParameters().get(i).asType().getTypeDeclaration())) {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
     }
 
 

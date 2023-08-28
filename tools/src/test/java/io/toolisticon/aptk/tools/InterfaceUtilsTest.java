@@ -167,6 +167,8 @@ public class InterfaceUtilsTest {
 
         T midLevel(F midParam);
 
+        void doubledMethod(String parameter);
+
     }
 
     interface MethodsToImplement_Top<T, F> {
@@ -178,6 +180,8 @@ public class InterfaceUtilsTest {
         <K extends Collection<F>> void withMethodTypeVar(K param);
 
         F withMethodTypeVar() throws IOException;
+
+        void doubledMethod(F parameter);
 
     }
 
@@ -198,7 +202,8 @@ public class InterfaceUtilsTest {
                                     "String topLevel(String topParam)",
                                     "void withGenerics(List<? extends String> genParam)",
                                     "<K extends Collection<String>> void withMethodTypeVar(K param)",
-                                    "String withMethodTypeVar() throws IOException"));
+                                    "String withMethodTypeVar() throws IOException",
+                                    "void doubledMethod(String parameter)"));
 
 
                         } finally {
