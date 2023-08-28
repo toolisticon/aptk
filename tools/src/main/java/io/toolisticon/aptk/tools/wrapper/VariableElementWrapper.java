@@ -7,8 +7,7 @@ import javax.lang.model.element.VariableElement;
  */
 public class VariableElementWrapper extends ElementWrapper<VariableElement>{
 
-
-    private VariableElementWrapper(VariableElement variableElement) {
+    protected VariableElementWrapper(VariableElement variableElement) {
         super(variableElement);
     }
 

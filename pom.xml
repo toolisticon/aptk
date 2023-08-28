@@ -309,6 +309,9 @@
                     <configuration>
                         <source>${java.compile.source.version}</source>
                         <target>${java.compile.target.version}</target>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
 
