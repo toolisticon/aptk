@@ -17,8 +17,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This is a convenience wrapper for TypeMirrors.
@@ -657,39 +659,12 @@ public class TypeMirrorWrapper {
             return typeMirror.toString();
         } else if (isDeclared(typeMirror)) {
 
-            /*-
-            String typeMirrorString = typeMirror.toString();
-            String packageName = getPackage(typeMirror);
+            TypeMirrorWrapper tmw = TypeMirrorWrapper.wrap(typeMirror);
 
-            // remove package
-            return typeMirrorString.startsWith(packageName) ? typeMirrorString.substring(packageName.length() + 1) : typeMirrorString;
-            */
+            return tmw.getSimpleName() + (
+                    tmw.hasTypeArguments() ? "<" + tmw.getWrappedTypeArguments().stream().map(e -> getTypeDeclaration(e.unwrap())).collect(Collectors.joining(", ")) +  ">" : ""
+            );
 
-            DeclaredType declaredType = getDeclaredType(typeMirror);
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(getSimpleName(typeMirror));
-
-            if (hasTypeArguments(typeMirror)) {
-
-                stringBuilder.append("<");
-
-                boolean first = true;
-                for (TypeMirror typeArgument : declaredType.getTypeArguments()) {
-
-                    if (first) {
-                        first = false;
-                    } else {
-                        stringBuilder.append(", ");
-                    }
-                    stringBuilder.append(getTypeDeclaration(typeArgument));
-
-                }
-
-                stringBuilder.append(">");
-
-            }
-
-            return stringBuilder.toString();
         } else if (isWildcardType(typeMirror)) {
             WildcardType wildcardType = getWildcardType(typeMirror);
             if (wildcardType.getSuperBound() != null) {

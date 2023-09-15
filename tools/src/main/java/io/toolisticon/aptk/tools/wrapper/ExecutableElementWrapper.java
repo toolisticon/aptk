@@ -5,6 +5,7 @@ import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import javax.lang.model.element.ExecutableElement;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
      *
      * @param executableElement the ExecutableElement to wrap
      */
-    private ExecutableElementWrapper(ExecutableElement executableElement) {
+    protected ExecutableElementWrapper(ExecutableElement executableElement) {
         super(executableElement);
     }
 
@@ -199,6 +200,7 @@ public class ExecutableElementWrapper extends ElementWrapper<ExecutableElement> 
     public Optional<AnnotationValueWrapper> getDefaultValue() {
         return this.element.getDefaultValue() != null ? Optional.of(AnnotationValueWrapper.wrap(element.getDefaultValue())) : Optional.empty();
     }
+
 
 
     /**
