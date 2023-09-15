@@ -16,12 +16,22 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * This class contains helper methods to get all methods to implement by a class implementing the interface.
+ * Resolves the issue of type var replacement by concrete types.
+ */
 public class InterfaceUtils {
 
+    /**
+     * Method to get all methods which must be implemented by implementing types of the interface.
+     * Replaces type variables according to the type hierarchy.
+     * @param typeElementWrapper The TypeElement of the interface to be implemented
+     * @param typesToReplace The types to apply to type variables
+     * @return A set that contains all methods to be implemented
+     */
 
     public static Set<ExecutableElementWrapper> getMethodsToImplement(TypeElementWrapper typeElementWrapper, TypeMirrorWrapper... typesToReplace) {
 
@@ -39,12 +49,11 @@ public class InterfaceUtils {
 
         // Add all methods of parent interfaces
         for (TypeMirrorWrapper parentInterface : typeElementWrapper.getInterfaces()) {
-            result.addAll(getMethodsToImplement(parentInterface.getTypeElement().get(), getTypeArgumentsForParentInterface(parentInterface,typeVarMappings)));
+            result.addAll(getMethodsToImplement(parentInterface.getTypeElement().get(), getTypeArgumentsForParentInterface(parentInterface, typeVarMappings)));
         }
 
         return result;
     }
-
 
     static Map<String, TypeMirrorWrapper> mapTypeVars(TypeElementWrapper interfaceTypeElement, TypeMirrorWrapper... interfacesTypeParameterTypes) {
 
@@ -63,7 +72,7 @@ public class InterfaceUtils {
         List<TypeMirrorWrapper> result = new ArrayList<>();
         for (TypeMirrorWrapper typeMirrorWrapper : parentInterface.getWrappedTypeArguments()) {
 
-            if (typeMirrorWrapper.isTypeVar() && typeVarMappings.containsKey(typeMirrorWrapper.getTypeVar().toString())){
+            if (typeMirrorWrapper.isTypeVar() && typeVarMappings.containsKey(typeMirrorWrapper.getTypeVar().toString())) {
                 result.add(typeVarMappings.get(typeMirrorWrapper.getTypeVar().toString()));
             } else {
                 result.add(typeMirrorWrapper);
@@ -115,16 +124,16 @@ public class InterfaceUtils {
 
                 return typeMirror.getSimpleName() + (
                         typeMirror.hasTypeArguments() ? "<" + typeMirror.getWrappedTypeArguments().stream()
-                                .map(e -> new TVTypeMirrorWrapper(e.unwrap(),typeVarMap))
-                                .map(e -> e.getTypeDeclaration()).collect(Collectors.joining(", ")) +  ">" : ""
+                                .map(e -> new TVTypeMirrorWrapper(e.unwrap(), typeVarMap))
+                                .map(e -> e.getTypeDeclaration()).collect(Collectors.joining(", ")) + ">" : ""
                 );
 
             } else if (typeMirror.isWildcardType()) {
                 WildcardType wildcardType = typeMirror.getWildcardType();
                 if (wildcardType.getSuperBound() != null) {
-                    return "? super " + new TVTypeMirrorWrapper(wildcardType.getSuperBound(),typeVarMap).getTypeDeclaration();
+                    return "? super " + new TVTypeMirrorWrapper(wildcardType.getSuperBound(), typeVarMap).getTypeDeclaration();
                 } else if (wildcardType.getExtendsBound() != null) {
-                    return "? extends " + new TVTypeMirrorWrapper(wildcardType.getExtendsBound(),typeVarMap).getTypeDeclaration();
+                    return "? extends " + new TVTypeMirrorWrapper(wildcardType.getExtendsBound(), typeVarMap).getTypeDeclaration();
                 } else {
                     return "?";
                 }
@@ -133,7 +142,10 @@ public class InterfaceUtils {
             return typeMirror.toString();
         }
 
-
+        @Override
+        public Set<String> getImports() {
+            return getTypeMirrorWithReplacedTypeVars().getImports();
+        }
     }
 
 
@@ -200,7 +212,7 @@ public class InterfaceUtils {
                         );
             } else {
 
-                builder.append(element.getParameters().stream().map(element -> new TVTypeMirrorWrapper(element.asType(),typeVarMap).getTypeDeclaration() + " " + element.getSimpleName()).collect(Collectors.joining(", ")));
+                builder.append(element.getParameters().stream().map(element -> new TVTypeMirrorWrapper(element.asType(), typeVarMap).getTypeDeclaration() + " " + element.getSimpleName()).collect(Collectors.joining(", ")));
 
             }
             builder.append(")");
@@ -219,6 +231,10 @@ public class InterfaceUtils {
             return super.getImports();
         }
 
+        /**
+         * Gets the return type of the method. Type variables will be replaced by concrete types.
+         * @return The return type
+         */
         @Override
         public TypeMirrorWrapper getReturnType() {
             return new TVTypeMirrorWrapper(super.getReturnType().unwrap(), typeVarMap);
@@ -226,6 +242,7 @@ public class InterfaceUtils {
 
         @Override
         public List<VariableElementWrapper> getParameters() {
+
             return super.getParameters().stream().map(e -> new TVVariableElementWrapper(e.unwrap(), typeVarMap)).collect(Collectors.toList());
         }
 
@@ -256,7 +273,7 @@ public class InterfaceUtils {
                 return false;
             }
 
-            for (int i = 0 ; i < this.getParameters().size(); i++) {
+            for (int i = 0; i < this.getParameters().size(); i++) {
                 if (!this.getParameters().get(i).asType().getTypeDeclaration().equals(otherObj.getParameters().get(i).asType().getTypeDeclaration())) {
                     return false;
                 }
@@ -265,6 +282,7 @@ public class InterfaceUtils {
             return true;
 
         }
+
     }
 
 
