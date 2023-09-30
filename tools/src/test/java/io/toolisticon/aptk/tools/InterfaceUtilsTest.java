@@ -216,5 +216,30 @@ public class InterfaceUtilsTest {
                 .executeTest();
     }
 
+    @Test
+    public void getTypeParametersOfInterface() {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(MethodsToImplement_Base.class, new UnitTest<TypeElement>() {
+                    @Override
+                    public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                        ToolingProvider.setTooling(processingEnvironment);
+                        try {
+
+                            List<TypeMirrorWrapper> tyoeAttributes = InterfaceUtils.getTypeParametersOfInterface(TypeElementWrapper.wrap(element), TypeMirrorWrapper.wrap(MethodsToImplement_Top.class));
+
+                            MatcherAssert.assertThat(tyoeAttributes.stream().map(e -> e.toString()).collect(Collectors.toList()), Matchers.contains(String.class
+                                    .getCanonicalName(), String.class
+                                    .getCanonicalName()));
+
+
+                        } finally {
+                            ToolingProvider.clearTooling();
+                        }
+
+                    }
+                })
+                .compilationShouldSucceed()
+                .executeTest();
+    }
 
 }
