@@ -6,7 +6,7 @@
 
 # Why you should use this project?
 
-Nowadays no one could imagine Java development without annotations. They allow you to provide meta-data in your source
+Nowadays, no one could imagine Java development without annotations. They allow you to provide meta-data in your source
 code which can either be processed at runtime via reflection or at compile time by using annotation processors.
 
 Annotation processors allow you
@@ -318,6 +318,13 @@ try{
 ```
 
 Please check [template engine](templating) for further information.
+
+## Alternative way for creating source and resource files
+
+You don't have to use the builtin template library. 
+You can also use any other template library or even java-poet or kotlin-poet for source and resource file creation.
+The FilerUtils utility class also provides a way to write Strings to Source and Resource files.
+
 
 # Projects using this toolkit library
 
