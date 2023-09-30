@@ -28,8 +28,9 @@ public class InterfaceUtils {
     /**
      * Method to get all methods which must be implemented by implementing types of the interface.
      * Replaces type variables according to the type hierarchy.
+     *
      * @param typeElementWrapper The TypeElement of the interface to be implemented
-     * @param typesToReplace The types to apply to type variables
+     * @param typesToReplace     The types to apply to type variables
      * @return A set that contains all methods to be implemented
      */
 
@@ -54,6 +55,62 @@ public class InterfaceUtils {
 
         return result;
     }
+
+    public static List<TypeMirrorWrapper> getTypeParametersOfInterface(TypeElementWrapper typeElementWrapper, TypeMirrorWrapper interfaceToSearch, TypeMirrorWrapper... typesToReplace) {
+
+        // skip for non interfaces
+        if (!typeElementWrapper.isInterface()) {
+            return Collections.emptyList();
+        }
+
+        List<TypeMirrorWrapper> result = new ArrayList<>();
+
+        Map<String, TypeMirrorWrapper> typeVarMappings = mapTypeVars(typeElementWrapper, typesToReplace);
+
+
+        // Add all methods of parent interfaces
+        for (TypeMirrorWrapper parentInterface : typeElementWrapper.getInterfaces()) {
+
+            if (interfaceToSearch.getQualifiedName().equals(parentInterface.getQualifiedName())) {
+
+                for (TypeMirrorWrapper typeArgument : parentInterface.getWrappedTypeArguments()) {
+                    if (typeArgument.isTypeVar()) {
+                        result.add(typeVarMappings.get(typeArgument.toString()));
+                    } else {
+                        result.add(typeArgument);
+                    }
+                }
+
+            } else {
+                result.addAll(getTypeParametersOfInterface(parentInterface.getTypeElement().get(), interfaceToSearch, getTypeArgumentsForParentInterface(parentInterface, typeVarMappings)));
+            }
+
+        }
+
+        return result;
+    }
+
+
+    /*-
+    public static List<TypeMirrorWrapper> getTypeParametersOfInterface(TypeElementWrapper typeElementWrapper, Class<?> superclassToGetTypeArgumentsFor) {
+        TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(superclassToGetTypeArgumentsFor);
+        return typeMirrorWrapper.isDeclared() ? getTypeParametersOfInterface(typeElementWrapper, typeMirrorWrapper) : Collections.emptyList();
+    }
+
+    public static List<TypeMirrorWrapper> getTypeParametersOfInterface(TypeElementWrapper typeElementWrapper, TypeMirrorWrapper superclassToGetTypeArgumentsFor) {
+        List<TypeMirrorWrapper> result = new ArrayList<>();
+        for (TypeMirrorWrapper interfaceTMW : typeElementWrapper.getInterfaces()) {
+            if (interfaceTMW.getQualifiedName().equals(superclassToGetTypeArgumentsFor.getQualifiedName())) {
+                result.addAll(interfaceTMW.getWrappedTypeArguments());
+            } else {
+                result.addAll(getTypeParametersOfInterface(interfaceTMW.getTypeElement().get(), superclassToGetTypeArgumentsFor));
+            }
+        }
+        return result;
+    }
+
+
+     */
 
     static Map<String, TypeMirrorWrapper> mapTypeVars(TypeElementWrapper interfaceTypeElement, TypeMirrorWrapper... interfacesTypeParameterTypes) {
 
@@ -233,6 +290,7 @@ public class InterfaceUtils {
 
         /**
          * Gets the return type of the method. Type variables will be replaced by concrete types.
+         *
          * @return The return type
          */
         @Override
