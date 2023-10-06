@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,11 +31,11 @@ public class InterfaceUtils {
      * Replaces type variables according to the type hierarchy.
      *
      * @param typeElementWrapper The TypeElement of the interface to be implemented
-     * @param typesToReplace     The types to apply to type variables
+     * @param typeArgumentsToReplace     The types to apply to type variables
      * @return A set that contains all methods to be implemented
      */
 
-    public static Set<ExecutableElementWrapper> getMethodsToImplement(TypeElementWrapper typeElementWrapper, TypeMirrorWrapper... typesToReplace) {
+    public static Set<ExecutableElementWrapper> getMethodsToImplement(TypeElementWrapper typeElementWrapper, TypeMirrorWrapper... typeArgumentsToReplace) {
 
         // skip for non interfaces
         if (!typeElementWrapper.isInterface()) {
@@ -43,7 +44,7 @@ public class InterfaceUtils {
 
         Set<ExecutableElementWrapper> result = new HashSet<>();
 
-        Map<String, TypeMirrorWrapper> typeVarMappings = mapTypeVars(typeElementWrapper, typesToReplace);
+        Map<String, TypeMirrorWrapper> typeVarMappings = mapTypeVars(typeElementWrapper, typeArgumentsToReplace);
 
         // Add all methods on this level
         result.addAll(typeElementWrapper.getMethods().stream().map(e -> new InterfaceUtils.TVExecutableElementWrapper(e.unwrap(), typeVarMappings)).collect(Collectors.toList()));
@@ -56,22 +57,40 @@ public class InterfaceUtils {
         return result;
     }
 
-    public static List<TypeMirrorWrapper> getTypeParametersOfInterface(TypeElementWrapper typeElementWrapper, TypeMirrorWrapper interfaceToSearch, TypeMirrorWrapper... typesToReplace) {
-
-        // skip for non interfaces
-        if (!typeElementWrapper.isInterface()) {
-            return Collections.emptyList();
-        }
+    /**
+     * Resolves type argument of parent interface or type based on type the type hierarchy and passed in type arguments.
+     * @param typeElementWrapper The base type element
+     * @param interfaceOrSupertypeToSearch the interface or super type to get the resolved type arguments for
+     * @param typeArgumentsToReplace The type arguments to pass in at typeElementWrapper initialization
+     * @return The resolved type arguments for interfaceOrSupertypeToSearch
+     */
+    public static List<TypeMirrorWrapper> getResolvedTypeArgumentOfSuperTypeOrInterface(TypeElementWrapper typeElementWrapper, TypeMirrorWrapper interfaceOrSupertypeToSearch, TypeMirrorWrapper... typeArgumentsToReplace) {
 
         List<TypeMirrorWrapper> result = new ArrayList<>();
 
-        Map<String, TypeMirrorWrapper> typeVarMappings = mapTypeVars(typeElementWrapper, typesToReplace);
+        Map<String, TypeMirrorWrapper> typeVarMappings = mapTypeVars(typeElementWrapper, typeArgumentsToReplace);
 
+        // check super type
+        Optional<TypeElementWrapper> superclassTEW = typeElementWrapper.getSuperclass().getTypeElement();
+        if (superclassTEW.isPresent()) {
+
+            if (superclassTEW.get().asType().erasure().equals(interfaceOrSupertypeToSearch.erasure())) {
+                for (TypeMirrorWrapper typeArgument : typeElementWrapper.getSuperclass().getWrappedTypeArguments()) {
+                    if (typeArgument.isTypeVar()) {
+                        result.add(typeVarMappings.get(typeArgument.toString()));
+                    } else {
+                        result.add(typeArgument);
+                    }
+                }
+            } else {
+                result.addAll(getResolvedTypeArgumentOfSuperTypeOrInterface(superclassTEW.get(), interfaceOrSupertypeToSearch, getTypeArgumentsForParentInterface(typeElementWrapper.getSuperclass(), typeVarMappings)));
+            }
+        }
 
         // Add all methods of parent interfaces
         for (TypeMirrorWrapper parentInterface : typeElementWrapper.getInterfaces()) {
 
-            if (interfaceToSearch.getQualifiedName().equals(parentInterface.getQualifiedName())) {
+            if (interfaceOrSupertypeToSearch.getQualifiedName().equals(parentInterface.getQualifiedName())) {
 
                 for (TypeMirrorWrapper typeArgument : parentInterface.getWrappedTypeArguments()) {
                     if (typeArgument.isTypeVar()) {
@@ -82,7 +101,7 @@ public class InterfaceUtils {
                 }
 
             } else {
-                result.addAll(getTypeParametersOfInterface(parentInterface.getTypeElement().get(), interfaceToSearch, getTypeArgumentsForParentInterface(parentInterface, typeVarMappings)));
+                result.addAll(getResolvedTypeArgumentOfSuperTypeOrInterface(parentInterface.getTypeElement().get(), interfaceOrSupertypeToSearch, getTypeArgumentsForParentInterface(parentInterface, typeVarMappings)));
             }
 
         }
@@ -90,27 +109,6 @@ public class InterfaceUtils {
         return result;
     }
 
-
-    /*-
-    public static List<TypeMirrorWrapper> getTypeParametersOfInterface(TypeElementWrapper typeElementWrapper, Class<?> superclassToGetTypeArgumentsFor) {
-        TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(superclassToGetTypeArgumentsFor);
-        return typeMirrorWrapper.isDeclared() ? getTypeParametersOfInterface(typeElementWrapper, typeMirrorWrapper) : Collections.emptyList();
-    }
-
-    public static List<TypeMirrorWrapper> getTypeParametersOfInterface(TypeElementWrapper typeElementWrapper, TypeMirrorWrapper superclassToGetTypeArgumentsFor) {
-        List<TypeMirrorWrapper> result = new ArrayList<>();
-        for (TypeMirrorWrapper interfaceTMW : typeElementWrapper.getInterfaces()) {
-            if (interfaceTMW.getQualifiedName().equals(superclassToGetTypeArgumentsFor.getQualifiedName())) {
-                result.addAll(interfaceTMW.getWrappedTypeArguments());
-            } else {
-                result.addAll(getTypeParametersOfInterface(interfaceTMW.getTypeElement().get(), superclassToGetTypeArgumentsFor));
-            }
-        }
-        return result;
-    }
-
-
-     */
 
     static Map<String, TypeMirrorWrapper> mapTypeVars(TypeElementWrapper interfaceTypeElement, TypeMirrorWrapper... interfacesTypeParameterTypes) {
 
@@ -127,14 +125,16 @@ public class InterfaceUtils {
 
     static TypeMirrorWrapper[] getTypeArgumentsForParentInterface(TypeMirrorWrapper parentInterface, Map<String, TypeMirrorWrapper> typeVarMappings) {
         List<TypeMirrorWrapper> result = new ArrayList<>();
-        for (TypeMirrorWrapper typeMirrorWrapper : parentInterface.getWrappedTypeArguments()) {
+        if (parentInterface.hasTypeArguments()) {
+            for (TypeMirrorWrapper typeMirrorWrapper : parentInterface.getWrappedTypeArguments()) {
 
-            if (typeMirrorWrapper.isTypeVar() && typeVarMappings.containsKey(typeMirrorWrapper.getTypeVar().toString())) {
-                result.add(typeVarMappings.get(typeMirrorWrapper.getTypeVar().toString()));
-            } else {
-                result.add(typeMirrorWrapper);
+                if (typeMirrorWrapper.isTypeVar() && typeVarMappings.containsKey(typeMirrorWrapper.getTypeVar().toString())) {
+                    result.add(typeVarMappings.get(typeMirrorWrapper.getTypeVar().toString()));
+                } else {
+                    result.add(typeMirrorWrapper);
+                }
+
             }
-
         }
 
         return result.toArray(new TypeMirrorWrapper[result.size()]);
