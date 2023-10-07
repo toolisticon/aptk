@@ -154,7 +154,7 @@ public class InterfaceUtils {
             if (isTypeVar() && typeVarMap.containsKey(getTypeVar().toString())) {
                 return typeVarMap.get(getTypeVar().toString());
             } else {
-                return this;
+                return TypeMirrorWrapper.wrap(this.unwrap());
             }
         }
 
