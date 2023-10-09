@@ -141,7 +141,7 @@ public class InterfaceUtils {
     }
 
 
-    static class TVTypeMirrorWrapper extends TypeMirrorWrapper {
+    public static class TVTypeMirrorWrapper extends TypeMirrorWrapper {
 
         private final Map<String, TypeMirrorWrapper> typeVarMap;
 
@@ -200,9 +200,31 @@ public class InterfaceUtils {
         }
 
         @Override
+        public Optional<TypeElementWrapper> getTypeElement() {
+            return getTypeMirrorWithReplacedTypeVars().getTypeElement();
+        }
+
+        @Override
+        public String getPackage() {
+            return getTypeMirrorWithReplacedTypeVars().getPackage();
+        }
+
+        @Override
+        public String getQualifiedName() {
+            return getTypeMirrorWithReplacedTypeVars().getQualifiedName();
+        }
+
+        @Override
+        public String getSimpleName() {
+            return getTypeMirrorWithReplacedTypeVars().getSimpleName();
+        }
+
+        @Override
         public Set<String> getImports() {
             return getTypeMirrorWithReplacedTypeVars().getImports();
         }
+
+        
     }
 
 
