@@ -143,18 +143,21 @@ public class InterfaceUtils {
 
     public static class TVTypeMirrorWrapper extends TypeMirrorWrapper {
 
+        private final TypeMirrorWrapper originalTypeMirror;
         private final Map<String, TypeMirrorWrapper> typeVarMap;
 
         TVTypeMirrorWrapper(TypeMirror typeMirror, Map<String, TypeMirrorWrapper> typeVarMap) {
-            super(typeMirror);
+            super(getTypeMirrorWithReplacedTypeVars(typeMirror, typeVarMap).unwrap());
+            this.originalTypeMirror = TypeMirrorWrapper.wrap(typeMirror);
             this.typeVarMap = typeVarMap;
         }
 
-        TypeMirrorWrapper getTypeMirrorWithReplacedTypeVars() {
-            if (isTypeVar() && typeVarMap.containsKey(getTypeVar().toString())) {
-                return typeVarMap.get(getTypeVar().toString());
+        static TypeMirrorWrapper getTypeMirrorWithReplacedTypeVars(TypeMirror typeMirror, Map<String, TypeMirrorWrapper> typeVarMap) {
+            TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(typeMirror);
+            if (typeMirrorWrapper.isTypeVar() && typeVarMap.containsKey(typeMirrorWrapper.getTypeVar().toString())) {
+                return typeVarMap.get(typeMirrorWrapper.getTypeVar().toString());
             } else {
-                return TypeMirrorWrapper.wrap(this.unwrap());
+                return typeMirrorWrapper;
             }
         }
 
@@ -167,26 +170,25 @@ public class InterfaceUtils {
          */
         public String getTypeDeclaration() {
 
-            TypeMirrorWrapper typeMirror = getTypeMirrorWithReplacedTypeVars();
 
-            if (typeMirror.getKind() == TypeKind.VOID) {
+            if (this.getKind() == TypeKind.VOID) {
                 return "void";
-            } else if (typeMirror.isPrimitive()) {
-                return typeMirror.toString();
-            } else if (typeMirror.isArray()) {
-                return getTypeDeclaration(typeMirror.getComponentType()) + "[]";
-            } else if (typeMirror.isTypeVar()) {
-                return typeMirror.toString();
-            } else if (typeMirror.isDeclared()) {
+            } else if (this.isPrimitive()) {
+                return this.toString();
+            } else if (this.isArray()) {
+                return getTypeDeclaration(this.getComponentType()) + "[]";
+            } else if (this.isTypeVar()) {
+                return this.toString();
+            } else if (this.isDeclared()) {
 
-                return typeMirror.getSimpleName() + (
-                        typeMirror.hasTypeArguments() ? "<" + typeMirror.getWrappedTypeArguments().stream()
+                return this.getSimpleName() + (
+                        this.hasTypeArguments() ? "<" + this.getWrappedTypeArguments().stream()
                                 .map(e -> new TVTypeMirrorWrapper(e.unwrap(), typeVarMap))
                                 .map(e -> e.getTypeDeclaration()).collect(Collectors.joining(", ")) + ">" : ""
                 );
 
-            } else if (typeMirror.isWildcardType()) {
-                WildcardType wildcardType = typeMirror.getWildcardType();
+            } else if (this.isWildcardType()) {
+                WildcardType wildcardType = this.getWildcardType();
                 if (wildcardType.getSuperBound() != null) {
                     return "? super " + new TVTypeMirrorWrapper(wildcardType.getSuperBound(), typeVarMap).getTypeDeclaration();
                 } else if (wildcardType.getExtendsBound() != null) {
@@ -196,35 +198,11 @@ public class InterfaceUtils {
                 }
             }
 
-            return typeMirror.toString();
+            return this.toString();
         }
 
-        @Override
-        public Optional<TypeElementWrapper> getTypeElement() {
-            return getTypeMirrorWithReplacedTypeVars().getTypeElement();
-        }
 
-        @Override
-        public String getPackage() {
-            return getTypeMirrorWithReplacedTypeVars().getPackage();
-        }
 
-        @Override
-        public String getQualifiedName() {
-            return getTypeMirrorWithReplacedTypeVars().getQualifiedName();
-        }
-
-        @Override
-        public String getSimpleName() {
-            return getTypeMirrorWithReplacedTypeVars().getSimpleName();
-        }
-
-        @Override
-        public Set<String> getImports() {
-            return getTypeMirrorWithReplacedTypeVars().getImports();
-        }
-
-        
     }
 
 
