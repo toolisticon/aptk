@@ -49,6 +49,12 @@ This project provides the abstract base class _io.toolisticon.annotationprocesso
 which extends the AbstractProcessor class provided by java. Your annotation processor needs to extends this class to be
 able to use the utilities offered by this project and to build your annotation processor.
 
+Nevertheless, you can even use this library when your processor doesn't extend the _io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_. You need to initialize the _ToolingProvider_ manually in your processor - best place to do this is either in your processors _init_ or _processAnnotations_ method:
+
+```java
+ToolingProvider.setTooling(processingEnv);
+```
+
 Since your annotation processor later mostly will be bound as a provided dependency you should use the maven shade
 plugin to embed the annotation-processor-toolkit and all other 3rd party dependency classes into your annotation
 processor artifact. This can be done by adding the following to your annotation processors pom.xml:
