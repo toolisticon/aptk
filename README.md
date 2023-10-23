@@ -49,7 +49,7 @@ This project provides the abstract base class _io.toolisticon.annotationprocesso
 which extends the AbstractProcessor class provided by java. Your annotation processor needs to extends this class to be
 able to use the utilities offered by this project and to build your annotation processor.
 
-Nevertheless, you can even use this library when your processor doesn't extend the _io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_. You need to initialize the _ToolingProvider_ manually in your processor - best place to do this is either in your processors _init_ or _processAnnotations_ method:
+Nevertheless, you can even use this library if your processor doesn't extend the _io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_. You need to initialize the _ToolingProvider_ manually in your processor - best place to do this is either in your processors _init_ or _processAnnotations_ method:
 
 ```java
 ToolingProvider.setTooling(processingEnv);
