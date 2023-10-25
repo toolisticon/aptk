@@ -31,6 +31,7 @@ compile time and runtime model by shading common pitfalls behind it's api.
 # Features
 
 - provides a processor for generating wrapper classes for accessing annotation attributes
+- provides wrappers for _Elements_ and _TypeMirror_ that provide a lot of useful utility functions
 - provides support for Class conversion from runtime to compile time model (Class / FQN to Element and TypeMirror)
 - provides support for accessing the compile time element tree
 - provides generic Element based filters, validator and matchers
@@ -49,7 +50,7 @@ This project provides the abstract base class _io.toolisticon.annotationprocesso
 which extends the AbstractProcessor class provided by java. Your annotation processor needs to extends this class to be
 able to use the utilities offered by this project and to build your annotation processor.
 
-# Manually configure Tools if you don't use the AbstractAnnotationProcessor
+## Manually init ToolingProvider if you don't use the AbstractAnnotationProcessor
 Nevertheless, you can even use this library if your processor doesn't extend the _io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_. You need to initialize the _ToolingProvider_ manually in your processor - best place to do this is either in your processors _init_ or _process_ method:
 
 ```java
@@ -123,10 +124,10 @@ Please check our example provided in the github.
 ## Annotation Wrapper
 
 Reading attribute values can be very complicated if it comes to annotation type or Class based attributes. In this case
-you are often forced to read the attribute values via the AnnotationMirror api. Additionally, you usually have to create
+you are often forced to read the attribute values via the _AnnotationMirror_ api. Additionally, you usually have to create
 some kind of class to store those annotation configurations of the annotation.
 
-The APTK provides an annotation processor that generates wrapper classes that allow you to access like if you are
+The APTK provides an annotation processor that generates wrapper classes that allow you to access the annotation attribiute like if you are
 accessing the annotation directly. Only difference is that Class type based attributes will be accessible as FQN String,
 TypeMirror or TypeMirrorWrapper. Annotation type based attributes will be also wrapped to ease access. 
 
@@ -202,6 +203,14 @@ Optional<ExecutableElementWrapper> method = TypeElementWrapper.wrap(typeElement)
 
 ```                                                
 
+## TypeMirror wrapper
+There is a wrapper for TypeMirrors as well. It's called _TypeMirrorWrapper_ and provides a lot of usefull tools like checking Assignability.
+Usage is similar to the Element wrapper:
+
+```java
+TypeMirrorWrapper.wrap(typeMirror);
+```
+
 
 ## Enhanced utility support
 
@@ -217,6 +226,7 @@ There are some more helpful utility classes:
 
 - _AnnotationUtils_ : provides support for reading annotation attribute values
 - _AnnotationValueUtils_ : provides support for handling _AnnotationValue_;
+- _InterfaceUtils_ : provides support for handling generic interfaces and superclasses, for example to determine concrete types of type variables in super classes or parent interfaces (still experimental)
 
 Example:
 
@@ -238,14 +248,14 @@ List<?extends Element> enclosedElements=ElementUtils.AccessEnclosedElements.getE
 
 These are just a few examples of the provided tools. Please check the javadoc for more information.
 
-## Characteristic matching, validation and filtering of Elements with core mathcers and fluent API
+## Characteristic matching, validation and filtering of Elements with core matchers and fluent API
 
 The framework provides a set of core matchers that can be used to check if an Element matches a specific characteristic.
 
 Those core matchers can also be used for validation - validators allow you to check if an element matches none, one, at
 least one or all of the passed characteristics.
 
-Additionally, the Core matchers can be used to filter a List of Elements by specific characteristics.
+Additionally, the core matchers can be used to filter a List of Elements by specific characteristics.
 
 The framework provides a _FluentElementValidator_ and a _FluentElementFilter_ class that allow you to combine multiple
 filters and validations by providing a simple and powerful fluent api.
@@ -339,16 +349,18 @@ The FilerUtils utility class also provides a way to write Strings to Source and 
   builder classes for bean classes
 - [SPIAP](https://github.com/toolisticon/SPI-Annotation-Processor) : An annotation processor that helps you to generate
   SPI configuration files and service locator classes
+- [FluApiGen](https://github.com/toolisticon/FluApiGen) : An annotation processor that generates fluent api implementation based on annotated interfaces
+- APTK itself provides some annotation processors based on the APTK for generating wrappers for annotations or compiler messages 
 
 # Useful links
 
 ## Compile time testing of annotation processors
 
 - [Toolisticon CUTE](https://github.com/toolisticon/cute) : A simple compile testing framework that allows you to test
-  annotation processors. It was extracted from this project is a great help to unit test your annotation processor code.
+  annotation processors. It was extracted from this project is a great help to unit test your annotation processor code. It supports both unit and black box testing of the processors code.
 - [google compile-testing](https://github.com/google/compile-testing) : Another compile testing framework which was used
   in the past by this framework. It has some flaws like missing compatibility with different Java versions, is binding a
-  lot of common 3rd party libraries, and has almost no documentation
+  lot of common 3rd party libraries, and has almost no documentation.
 
 # Contributing
 
