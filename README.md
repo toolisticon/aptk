@@ -49,15 +49,16 @@ This project provides the abstract base class _io.toolisticon.annotationprocesso
 which extends the AbstractProcessor class provided by java. Your annotation processor needs to extends this class to be
 able to use the utilities offered by this project and to build your annotation processor.
 
-Nevertheless, you can even use this library if your processor doesn't extend the _io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_. You need to initialize the _ToolingProvider_ manually in your processor - best place to do this is either in your processors _init_ or _processAnnotations_ method:
+# Manually configure Tools if you don't use the AbstractAnnotationProcessor
+Nevertheless, you can even use this library if your processor doesn't extend the _io.toolisticon.annotationprocessortoolkit.AbstractAnnotationProcessor_. You need to initialize the _ToolingProvider_ manually in your processor - best place to do this is either in your processors _init_ or _process_ method:
 
 ```java
 ToolingProvider.setTooling(processingEnv);
 ```
 
-Since your annotation processor later mostly will be bound as a provided dependency you should use the maven shade
-plugin to embed the annotation-processor-toolkit and all other 3rd party dependency classes into your annotation
-processor artifact. This can be done by adding the following to your annotation processors pom.xml:
+## Delivering your processor
+In general, you should consider to have as few external dependencies as possible used by your processor.
+It's a good approach to use the maven shade plugin to repackage and embed the annotation-processor-toolkit and all other 3rd party dependencies into your annotation processor artifact. This can be done by adding the following to your annotation processors pom.xml:
 
 ```xml
 
@@ -66,14 +67,14 @@ processor artifact. This can be done by adding the following to your annotation 
     <dependency>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-tools</artifactId>
-        <version>0.18.0</version>
+        <version>0.22.5</version>
     </dependency>
 
     <!-- recommended for testing your annotation processor -->
     <dependency>
         <groupId>io.toolisticon.cute</groupId>
         <artifactId>cute</artifactId>
-        <version>0.11.1</version>
+        <version>0.12.1</version>
         <scope>test</scope>
     </dependency>
 
