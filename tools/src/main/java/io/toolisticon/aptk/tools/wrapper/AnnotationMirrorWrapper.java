@@ -7,6 +7,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.type.DeclaredType;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Optional;
@@ -37,6 +38,24 @@ public class AnnotationMirrorWrapper {
     public AnnotationMirror unwrap() {
         return annotationMirror;
     }
+
+    /**
+     * Get DeclaredType of wrapped annotation.
+     * @return the annotations declared type
+     */
+    DeclaredType getAnnotationType() {
+        return this.annotationMirror.getAnnotationType();
+    }
+
+    /**
+     * Get wrapped DeclaredType of wrapped annotation.
+     * @return the annotations declared type
+     */
+    TypeMirrorWrapper getWrappedAnnotationType() {
+        return TypeMirrorWrapper.wrap(getAnnotationType());
+    }
+
+
 
     /**
      * Returns the "value" attribute

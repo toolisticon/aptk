@@ -174,6 +174,14 @@ public class ElementWrapper<E extends Element> {
     }
 
     /**
+     * Gets all wrapped annotations of element.
+     * @return a list containing all annotations of the element
+     */
+    public List<AnnotationMirrorWrapper> getAnnotations() {
+        return this.element.getAnnotationMirrors().stream().map(AnnotationMirrorWrapper::wrap).collect(Collectors.toList());
+    }
+
+    /**
      * Gets the annotation
      *
      * @param annotationFqn the annotation to get
