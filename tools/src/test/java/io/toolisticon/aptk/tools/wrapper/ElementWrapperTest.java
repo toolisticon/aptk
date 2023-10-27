@@ -185,7 +185,15 @@ public class ElementWrapperTest {
 
     }
 
+    @Test
+    public void test_getAnnotations() {
 
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
+            ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
+            MatcherAssert.assertThat("Should find annotation", unit.getAnnotations(),Matchers.hasSize(1));
+        }).executeTest();
+
+    }
     @Test
     public void test_getAnnotation_byFqnString() {
 
