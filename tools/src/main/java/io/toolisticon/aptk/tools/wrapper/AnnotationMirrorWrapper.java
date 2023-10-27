@@ -10,6 +10,8 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.type.DeclaredType;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,21 +43,30 @@ public class AnnotationMirrorWrapper {
 
     /**
      * Get DeclaredType of wrapped annotation.
+     *
      * @return the annotations declared type
      */
-    DeclaredType getAnnotationType() {
+    public DeclaredType getAnnotationType() {
         return this.annotationMirror.getAnnotationType();
     }
 
     /**
      * Get wrapped DeclaredType of wrapped annotation.
+     *
      * @return the annotations declared type
      */
-    TypeMirrorWrapper getWrappedAnnotationType() {
+    public TypeMirrorWrapper getAnnotationTypeAsWrappedTypeMirror() {
         return TypeMirrorWrapper.wrap(getAnnotationType());
     }
 
-
+    /**
+     * Get wrapped DeclaredType's TypeElement of wrapped annotation.
+     *
+     * @return the annotations declared type as wrapped TypeELement
+     */
+    public TypeElementWrapper getAnnotationTypeAsWrappedTypeElement() {
+        return getAnnotationTypeAsWrappedTypeMirror().getTypeElement().get();
+    }
 
     /**
      * Returns the "value" attribute
@@ -165,6 +176,15 @@ public class AnnotationMirrorWrapper {
     }
 
     /**
+     * Get all attribute names of the annotation.
+     *
+     * @return a list containing all attribute names in declaration order
+     */
+    public List<String> getAttibuteNamesInDeclarationOrder() {
+        return this.annotationMirror.getAnnotationType().asElement().getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.METHOD).map(e -> e.getSimpleName().toString()).collect(Collectors.toList());
+    }
+
+    /**
      * Check if AnnotationMirror has an attribute with passed name.
      *
      * @param name The attribute name to check
@@ -176,12 +196,66 @@ public class AnnotationMirrorWrapper {
 
 
     /**
-     * Returns the element corresponding to the wrapped AnnotationMirror.
+     * Returns the wrapped TypeMirror of the AnnotationMirrors annotation type.
      *
-     * @return the TypeElement corresponding to this type
+     * @return the wrapped TypeMirror corresponding to the wrapped TypeMirror
      */
-    public TypeMirrorWrapper asElement() {
-        return TypeMirrorWrapper.wrap(this.annotationMirror.getAnnotationType().asElement().asType());
+    public TypeMirrorWrapper asTypeMirror() {
+        return getAnnotationTypeAsWrappedTypeMirror();
+    }
+
+    /**
+     * Returns the wrapped TypeElement of the AnnotationMirrors annotation type.
+     *
+     * @return the wrapped TypeElement corresponding to the wrapped TypeMirror
+     */
+    public TypeElementWrapper asElement() {
+        return this.getAnnotationTypeAsWrappedTypeElement();
+    }
+
+    /**
+     * Gets a string representation of the annotation.
+     *
+     * @return
+     */
+    public String getStringRepresentation() {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("@").append(this.asElement().getSimpleName());
+
+        stringBuilder.append(getAttibuteNamesInDeclarationOrder().stream()
+                .map(e -> {
+                    Optional<AnnotationValueWrapper> optionalAnnotationValueWrapper = getAttribute(e);
+                    return optionalAnnotationValueWrapper.isPresent() ? e + " = " + getAnnotationAttributeValueStringRepresentation(optionalAnnotationValueWrapper.get()) : null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(", ", "(", ")")));
+
+        return stringBuilder.toString().replaceAll("[\"]", "\\\\\"");
+    }
+
+    public String getStringRepresentationWithDefaults() {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("@").append(this.asElement().getSimpleName());
+
+        stringBuilder.append(getAttibuteNamesInDeclarationOrder().stream()
+                .map(e -> e + " = " + getAnnotationAttributeValueStringRepresentation(getAttributeWithDefault(e)))
+                .collect(Collectors.joining(", ", "(", ")")));
+
+        return stringBuilder.toString().replaceAll("[\"]", "\\\\\"");
+    }
+
+    String getAnnotationAttributeValueStringRepresentation(AnnotationValueWrapper annotationValueWrapper) {
+        if (annotationValueWrapper.isArray()) {
+            return annotationValueWrapper.getArrayValue().stream().map(e -> getAnnotationAttributeValueStringRepresentation(e)).collect(Collectors.joining(", ", "{", "}"));
+        } else if (annotationValueWrapper.isEnum()) {
+            return annotationValueWrapper.getEnumValue().asType().getSimpleName() + "." + annotationValueWrapper.getEnumValue().getSimpleName();
+        } else if (annotationValueWrapper.isClass()) {
+            return annotationValueWrapper.getClassValue().getSimpleName() + ".class";
+        } else {
+            return annotationValueWrapper.unwrap().toString();
+        }
     }
 
     /**
@@ -201,6 +275,6 @@ public class AnnotationMirrorWrapper {
      * @return an array that contains the wrapped instances
      */
     public static AnnotationMirrorWrapper[] wrap(AnnotationMirror[] annotationMirrors) {
-        return annotationMirrors != null ? Arrays.stream(annotationMirrors).map(e -> AnnotationMirrorWrapper.wrap(e)).toArray(AnnotationMirrorWrapper[]::new): null;
+        return annotationMirrors != null ? Arrays.stream(annotationMirrors).map(e -> AnnotationMirrorWrapper.wrap(e)).toArray(AnnotationMirrorWrapper[]::new) : null;
     }
 }
