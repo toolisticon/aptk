@@ -216,7 +216,7 @@ public class AnnotationMirrorWrapper {
     /**
      * Gets a string representation of the annotation.
      *
-     * @return
+     * @return the annotations string representation
      */
     public String getStringRepresentation() {
 
@@ -234,6 +234,11 @@ public class AnnotationMirrorWrapper {
         return stringBuilder.toString().replaceAll("[\"]", "\\\\\"");
     }
 
+    /**
+     * Gets a string representation of the annotation.
+     *
+     * @return the annotations string representation
+     */
     public String getStringRepresentationWithDefaults() {
 
         StringBuilder stringBuilder = new StringBuilder();
