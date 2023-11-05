@@ -8,6 +8,7 @@ import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
 import org.hamcrest.MatcherAssert;
@@ -62,6 +63,8 @@ public class IntegrationTest {
                 // check if element is returned correctly
                 MatcherAssert.assertThat(testAnnotationWrapper._annotatedElement(), Matchers.is((Element) typeElement));
                 MatcherAssert.assertThat(testAnnotationWrapper.annotationAttribute()._annotatedElement(), Matchers.is((Element)typeElement));
+
+
 
 
                 // single attribute values
@@ -152,4 +155,6 @@ public class IntegrationTest {
                 .compilationShouldSucceed()
                 .executeTest();
     }
+
+
 }

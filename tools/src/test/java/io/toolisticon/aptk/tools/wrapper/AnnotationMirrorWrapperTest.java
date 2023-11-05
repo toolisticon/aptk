@@ -11,8 +11,10 @@ import org.mockito.Mockito;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Optional;
 
 /**
@@ -124,18 +126,18 @@ public class AnnotationMirrorWrapperTest {
     public void test_getAttributeWithDefault_passNullName() {
 
         CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(MyTestClass.class, (processingEnvironment, element) -> {
-            try {
-                ToolingProvider.setTooling(processingEnvironment);
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
 
-                AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(MyTestAnnotation.class).get();
-                unit.getAttributeWithDefault(null);
+                        AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(MyTestAnnotation.class).get();
+                        unit.getAttributeWithDefault(null);
 
 
-            } finally {
-                ToolingProvider.clearTooling();
-            }
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
 
-        }).expectedThrownException(IllegalArgumentException.class)
+                }).expectedThrownException(IllegalArgumentException.class)
                 .executeTest();
 
     }
@@ -144,18 +146,18 @@ public class AnnotationMirrorWrapperTest {
     public void test_getAttributeWithDefault_invalidAttributeName() {
 
         CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(MyTestClass.class, (processingEnvironment, element) -> {
-            try {
-                ToolingProvider.setTooling(processingEnvironment);
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
 
-                AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(MyTestAnnotation.class).get();
-                unit.getAttributeWithDefault("XYZ");
+                        AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(MyTestAnnotation.class).get();
+                        unit.getAttributeWithDefault("XYZ");
 
 
-            } finally {
-                ToolingProvider.clearTooling();
-            }
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
 
-        }).expectedThrownException(IllegalArgumentException.class)
+                }).expectedThrownException(IllegalArgumentException.class)
                 .executeTest();
 
     }
@@ -250,5 +252,98 @@ public class AnnotationMirrorWrapperTest {
 
     }
 
+    enum StringRepresentationTestEnum {
+        ENUM_VALUE,
+        DEFAULT_ENUM_VALUE;
+    }
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface StringRepresentationTestAnnotation {
+
+        String[] arrayValue() default {"1", "2"};
+
+        String stringValue() default "YYY";
+
+        long longValue() default 10L;
+
+        int intValue() default 11;
+
+        float floatValue() default 12.0f;
+
+        double doubleValue() default 13.0;
+
+        boolean booleanValue() default false;
+
+        StringRepresentationTestEnum enumValue() default StringRepresentationTestEnum.DEFAULT_ENUM_VALUE;
+
+        Class<?> classValue() default Long.class;
+
+    }
+
+
+    @PassIn
+    @StringRepresentationTestAnnotation(
+            arrayValue = {"4"},
+            stringValue = "XXX",
+            longValue = 1L,
+            intValue = 2,
+            floatValue = 3.0f,
+            doubleValue = 4.0,
+            booleanValue = true,
+            enumValue = StringRepresentationTestEnum.ENUM_VALUE,
+            classValue = String.class
+
+    )
+    static class StringRepresentationTest {
+
+    }
+
+    @PassIn
+    @StringRepresentationTestAnnotation()
+    static class StringRepresentationWithDefaultsTest {
+
+    }
+
+    @Test
+    public void test_stringRepresentation() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(StringRepresentationTest.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                // By class
+                Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, StringRepresentationTestAnnotation.class);
+                MatcherAssert.assertThat(result.get().getStringRepresentation(), Matchers.is("@StringRepresentationTestAnnotation(arrayValue = {\\\"4\\\"}, stringValue = \\\"XXX\\\", longValue = 1L, intValue = 2, floatValue = 3.0f, doubleValue = 4.0, booleanValue = true, enumValue = StringRepresentationTestEnum.ENUM_VALUE, classValue = String.class)"));
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
+
+
+    @Test
+    public void test_stringRepresentationWithDefaults() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(StringRepresentationWithDefaultsTest.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                // By class
+                Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, StringRepresentationTestAnnotation.class);
+                MatcherAssert.assertThat(result.get().getStringRepresentationWithDefaults(), Matchers.is("@StringRepresentationTestAnnotation(arrayValue = {\\\"1\\\", \\\"2\\\"}, stringValue = \\\"YYY\\\", longValue = 10L, intValue = 11, floatValue = 12.0f, doubleValue = 13.0, booleanValue = false, enumValue = StringRepresentationTestEnum.DEFAULT_ENUM_VALUE, classValue = Long.class)"));
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
 
 }

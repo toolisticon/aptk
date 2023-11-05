@@ -22,6 +22,7 @@ import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.wrapper.CompileMessageWriter;
+import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 !{if atw.customInterfaces != null}!{for customInterface : atw.customInterfaces}import ${customInterface.qualifiedName};
 !{/for}!{/if}
 
@@ -377,12 +378,21 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
 !{else}
     /**
       * Gets the AnnotationMirror from passed element for this wrappers annotation type and creates a wrapper instance.
-      * @param element The element to read the annotations from
+      * @param annotatedElement The element to read the annotations from
       * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
       */
-    ${state.visibilityModifier}static List<${atw.simpleName}Wrapper> wrap(Element element) {
-        Optional<List<AnnotationMirror>> repeatableAnnotations = AnnotationUtils.getRepeatableAnnotation(element, ${atw.simpleName}.class);
-        return repeatableAnnotations.isPresent() ? repeatableAnnotations.get().stream().map(e -> wrap(element, e)).collect(Collectors.toList()) : Collections.EMPTY_LIST;
+    ${state.visibilityModifier}static List<${atw.simpleName}Wrapper> wrap(Element annotatedElement) {
+        Optional<List<AnnotationMirror>> repeatableAnnotations = AnnotationUtils.getRepeatableAnnotation(annotatedElement, ${atw.simpleName}.class);
+        return repeatableAnnotations.isPresent() ? repeatableAnnotations.get().stream().map(e -> wrap(annotatedElement, e)).collect(Collectors.toList()) : Collections.EMPTY_LIST;
+    }
+
+    /**
+      * Gets the AnnotationMirror from passed element for this wrappers annotation type and creates a wrapper instance.
+      * @param annotatedElement The element to read the annotations from
+      * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
+      */
+    ${state.visibilityModifier}static List<${atw.simpleName}Wrapper> wrap(ElementWrapper annotatedElement) {
+        return ${atw.simpleName}Wrapper.wrap(annotatedElement.unwrap());
     }
 !{/if}
 
