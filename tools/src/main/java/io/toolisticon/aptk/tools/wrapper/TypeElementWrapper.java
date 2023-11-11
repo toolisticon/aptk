@@ -126,6 +126,7 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
     public Optional<ExecutableElementWrapper> getMethod(String name, Class<?>... parameterTypes) {
         List<ExecutableElement> filterResult = FluentElementFilter.createFluentElementFilter(this.element.getEnclosedElements())
                 .applyFilter(AptkCoreMatchers.IS_METHOD)
+                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(name)
                 .applyFilter(AptkCoreMatchers.BY_PARAMETER_TYPE).filterByOneOf(parameterTypes)
                 .getResult();
         return Optional.ofNullable(filterResult.size() > 0 ? ExecutableElementWrapper.wrap(filterResult.get(0)) : null);
