@@ -68,6 +68,26 @@ public class AnnotationMirrorWrapper {
         return getAnnotationTypeAsWrappedTypeMirror().getTypeElement().get();
     }
 
+
+    /**
+     * Gets the wrapped type mirror of the 'value' annotation attribute.
+     * @return an optional containing the wrapped type mirror of the annotation attribute or an empty Optional if the attribute doesn't exist.
+     */
+    public Optional<TypeMirrorWrapper> getAttributeTypeMirror() {
+        return getAttributeTypeMirror("value");
+    }
+
+    /**
+     * Gets the wrapped type mirror of an annotation attribute.
+     * @param attributeName the name of the attribute
+     * @return an optional containing the wrapped type mirror of the annotation attribute or an empty Optional if the attribute doesn't exist.
+     */
+    public Optional<TypeMirrorWrapper> getAttributeTypeMirror(String attributeName) {
+        Optional<ExecutableElementWrapper> annotationAttribute = this.getAnnotationTypeAsWrappedTypeElement().getMethod(attributeName);
+        return !annotationAttribute.isPresent() ? Optional.empty() : Optional.of(annotationAttribute.get().getReturnType());
+    }
+
+
     /**
      * Returns the "value" attribute
      *

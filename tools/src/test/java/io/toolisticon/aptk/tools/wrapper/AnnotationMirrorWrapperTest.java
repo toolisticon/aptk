@@ -47,6 +47,16 @@ public class AnnotationMirrorWrapperTest {
         AnnotationMirrorWrapper.wrap((AnnotationMirror) null);
     }
 
+
+    @Test
+    public void test_getAttributesTypeMirror() {
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(MyTestClass.class, (processingEnvironment, element) -> {
+            AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(MyTestAnnotation.class).get();
+
+            MatcherAssert.assertThat(unit.getAttributeTypeMirror().get().getSimpleName(), Matchers.is("String"));
+        }).executeTest();
+    }
+
     @Test
     public void test_getAttribute() {
 
