@@ -537,6 +537,10 @@ public class ElementWrapper<E extends Element> {
         return isAnnotation() && hasAnnotation(Repeatable.class);
     }
 
+    /**
+     * Gets an Optional containing the wrapped repeatable TypeMirror, if the wrapped represents a repeatable annotation.
+     * @return The wrapped repeatable annotation Type Mirror or an empty Optional if it doesn't exist
+     */
     public Optional<TypeMirrorWrapper> getRepeatableWrapperType(){
 
         if(isRepeatableAnnotation()){

@@ -5,6 +5,7 @@ import io.toolisticon.aptk.tools.command.impl.GetAttributesCommand;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
+import io.toolisticon.aptk.tools.wrapper.VariableElementWrapper;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -30,18 +31,18 @@ public final class BeanUtils {
      */
     public static class AttributeResult {
 
-        private VariableElement field;
+        private VariableElementWrapper field;
 
 
         private String setterMethodName;
         private String getterMethodName;
 
 
-        public VariableElement getField() {
+        public VariableElementWrapper getField() {
             return field;
         }
 
-        public void setField(VariableElement field) {
+        public void setField(VariableElementWrapper field) {
             this.field = field;
         }
 
@@ -70,15 +71,11 @@ public final class BeanUtils {
         }
 
         public String getFieldName() {
-            return field.getSimpleName().toString();
+            return field.getSimpleName();
         }
 
-        public TypeMirror getFieldTypeMirror() {
+        public TypeMirrorWrapper getFieldTypeMirror() {
             return field.asType();
-        }
-
-        public TypeElement getFieldTypeElement() {
-            return TypeUtils.TypeRetrieval.getTypeElement(getFieldTypeMirror());
         }
 
         public boolean isValidAttribute() {
@@ -149,7 +146,7 @@ public final class BeanUtils {
         }
 
 
-        TypeElement typeElementFilter = ElementUtils.AccessEnclosingElements.<TypeElement>getFirstEnclosingElementOfKind(element, ElementKind.CLASS);
+        TypeElement typeElementFilter = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(element, ElementKind.CLASS);
 
         // check for number of constructors
         if (!FluentElementFilter.createFluentElementFilter(typeElementFilter.getEnclosedElements())
@@ -180,15 +177,14 @@ public final class BeanUtils {
     }
 
     public static AttributeResult[] getAttributesWithInheritance(TypeElement typeElement) {
-        List<AttributeResult> resultList = new ArrayList<AttributeResult>();
-        resultList.addAll(Arrays.asList(GetAttributesCommand.INSTANCE.execute(typeElement)));
+        List<AttributeResult> resultList = new ArrayList<>(Arrays.asList(GetAttributesCommand.INSTANCE.execute(typeElement)));
 
         // process super types
         for (TypeElement superTypeElement : ElementUtils.AccessTypeHierarchy.getSuperTypeElementsOfKindType(typeElement)) {
             resultList.addAll(Arrays.asList(GetAttributesCommand.INSTANCE.execute(superTypeElement)));
         }
 
-        return resultList.toArray(new AttributeResult[resultList.size()]);
+        return resultList.toArray(new AttributeResult[0]);
 
     }
 
@@ -209,7 +205,7 @@ public final class BeanUtils {
         for (VariableElement field : fields) {
 
             AttributeResult attributeResult = new AttributeResult();
-            attributeResult.setField(field);
+            attributeResult.setField(VariableElementWrapper.wrap(field));
 
             String getterMethodName = BeanUtils.getGetterMethodName(field);
             attributeResult.setGetterMethodName(BeanUtils.getGetterMethodName(field));
@@ -222,7 +218,7 @@ public final class BeanUtils {
             }
         }
 
-        return result.toArray(new AttributeResult[result.size()]);
+        return result.toArray(new AttributeResult[0]);
 
     }
 

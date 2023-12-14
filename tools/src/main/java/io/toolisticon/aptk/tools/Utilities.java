@@ -58,7 +58,7 @@ public final class Utilities {
     @SafeVarargs
     public static <T> Set<T> convertVarargsToSet(T... varargs) {
 
-        return varargs != null ? new HashSet<>(Arrays.asList(varargs)) : new HashSet<T>();
+        return varargs != null ? new HashSet<>(Arrays.asList(varargs)) : new HashSet<>();
 
     }
 
@@ -72,7 +72,7 @@ public final class Utilities {
     @SafeVarargs
     public static <T> List<T> convertVarargsToList(T... varargs) {
 
-        return varargs != null ? Arrays.asList(varargs) : new ArrayList<T>();
+        return varargs != null ? Arrays.asList(varargs) : new ArrayList<>();
 
     }
 
@@ -81,7 +81,7 @@ public final class Utilities {
      *
      * @param varargs the elements to be added to the array
      * @param <T>     the arrays base type
-     * @return a array that contains all varargs arguments or an array of length 0 if no varargs arguments have been used
+     * @return an array that contains all varargs arguments or an array of length 0 if no varargs arguments have been used
      */
     @SafeVarargs
     public static <T> T[] convertVarargsToArray(T... varargs) {

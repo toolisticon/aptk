@@ -16,25 +16,25 @@ public class ElementWrapperValidatorInterface {
     public interface FirstValidation<WRAPPER extends ElementWrapper<?>> {
 
         /**
-         * Set the compiuler message level to NOTE.
+         * Set the compiler message level to NOTE.
          * @return the next builder instance.
          */
         FirstValidationWithScope<WRAPPER> asInfo();
 
         /**
-         * Set the compiuler message level to WARNING.
+         * Set the compiler message level to WARNING.
          * @return the next builder instance.
          */
         FirstValidationWithScope<WRAPPER> asWarning();
 
         /**
-         * Set the compiuler message level to MANDATORY_WARNING.
+         * Set the compiler message level to MANDATORY_WARNING.
          * @return the next builder instance.
          */
         FirstValidationWithScope<WRAPPER> asMandatoryWarning();
 
         /**
-         * Set the compiuler message level to ERROR.
+         * Set the compiler message level to ERROR.
          * @return the next builder instance.
          */
         FirstValidationWithScope<WRAPPER> asError();

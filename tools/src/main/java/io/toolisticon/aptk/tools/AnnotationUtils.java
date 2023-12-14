@@ -1,9 +1,6 @@
 package io.toolisticon.aptk.tools;
 
 
-import io.toolisticon.aptk.tools.wrapper.AnnotationMirrorWrapper;
-import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
-
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
@@ -83,7 +80,7 @@ public final class AnnotationUtils {
                 result.add(entry.getKey().getSimpleName().toString());
             }
         }
-        return result.toArray(new String[result.size()]);
+        return result.toArray(new String[0]);
 
     }
 
@@ -107,7 +104,7 @@ public final class AnnotationUtils {
 
     /**
      * Gets the AnnotationValue for the passed key.
-     * Also implicitly set default values will be found.
+     * Also, implicitly set default values will be found.
      *
      * @param annotationMirror the annotation mirror to get the value from
      * @param key              the attribute key to search for
@@ -124,8 +121,8 @@ public final class AnnotationUtils {
 
 
     /**
-     * Gets the ExecutableElement of a annotation attribute for the passed key.
-     * This can be used to determine the type of an attribute.
+     * Gets the ExecutableElement of an annotation attribute for the passed key.
+     * This can be used to determine the type of the attribute.
      * This is very useful if you want to generate code that uses the annotation.
      *
      * @param annotationMirror the annotation mirror to get the value from
@@ -144,7 +141,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Gets the a FQN of a Class based "value" attribute from annotation.
+     * Gets the FQN of a Class based "value" attribute from annotation.
      *
      * @param element        the element to get the annotation for.
      * @param annotationType the annotation type to get the FQN from
@@ -155,7 +152,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Gets the a FQN of a Class based attribute from annotation.
+     * Gets the FQN of a Class based attribute from annotation.
      *
      * @param element        the element to get the annotation for.
      * @param annotationType the annotation type to get the FQN from
@@ -171,7 +168,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Gets the a FQN of a Class based attribute from annotation.
+     * Gets the FQN of a Class based attribute from annotation.
      *
      * @param annotationMirror the AnnotationMirror to get the attribute from.
      * @param attributeName    the name of the attribute to get
@@ -186,7 +183,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Gets the a FQN of a Class based attribute from annotation.
+     * Gets the FQN of a Class based attribute from annotation.
      *
      * @param annotationMirror the AnnotationMirror to get the value attribute from.
      * @return the FQN of the searched annotation value or null if annotation can't be found or attribute isn't of type class.
@@ -200,7 +197,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Gets the a TypeMirror of a Class based "value" attribute from annotation.
+     * Gets the TypeMirror of a Class based "value" attribute from annotation.
      *
      * @param element        the element to get the annotation for.
      * @param annotationType the annotation type to get the TypeMirror from
@@ -211,7 +208,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Gets the a TypeMirror of a Class based attribute from annotation.
+     * Gets the TypeMirror of a Class based attribute from annotation.
      *
      * @param element        the element to get the annotation for.
      * @param annotationType the annotation type to get the TypeMirror from
@@ -226,7 +223,7 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Gets the a TypeMirror of a Class based attribute from annotation.
+     * Gets the TypeMirror of a Class based attribute from annotation.
      *
      * @param annotationMirror the annotation mirror to get the TypeMirror from
      * @param attributeName    the name of the attribute to get
@@ -389,7 +386,8 @@ public final class AnnotationUtils {
 
     /**
      * Checks if passed annotation is repeatable.
-     * (annotataed with Repeatable annotation)
+     * (annotated with Repeatable annotation)
+     *
      * @param annotation the annotation to check
      * @return true if the annotation is repeatable, otherwise false
      */
@@ -399,11 +397,12 @@ public final class AnnotationUtils {
 
     /**
      * Gets the repeatable wrapper type of annotation
+     *
      * @param annotation the annotation to get the repeatable annotation wrapper type for
      * @return an optional containing the repeatable wrapper type or an empty optional if passed annotation is null or annotation is no repeatable.
      */
     public static Optional<Class<? extends Annotation>> getRepeatableAnnotationWrapperClass(Class<? extends Annotation> annotation) {
-        if(isRepeatableAnnotation(annotation)) {
+        if (isRepeatableAnnotation(annotation)) {
 
             TypeElement annotationTypeElement = TypeUtils.TypeRetrieval.getTypeElement(annotation);
             AnnotationMirror annotationMirror = AnnotationUtils.getAnnotationMirror(annotationTypeElement, Repeatable.class);
@@ -411,9 +410,9 @@ public final class AnnotationUtils {
             TypeMirror typeMirror = getClassAttributeFromAnnotationAsTypeMirror(annotationMirror, "value");
 
             try {
-                return Optional.of((Class<? extends Annotation>)Class.forName(typeMirror.toString()));
+                return Optional.of((Class<? extends Annotation>) Class.forName(typeMirror.toString()));
             } catch (ClassNotFoundException e) {
-              // ignore - shouldn't happen since
+                // ignore - shouldn't happen since
             }
 
         }
@@ -422,7 +421,7 @@ public final class AnnotationUtils {
 
     public static Optional<List<AnnotationMirror>> getRepeatableAnnotation(Element element, Class<? extends Annotation> annotation) {
 
-        if (annotation == null || element == null || !isRepeatableAnnotation(annotation)) {
+        if (element == null || !isRepeatableAnnotation(annotation)) {
             return Optional.empty();
         }
 
@@ -445,7 +444,6 @@ public final class AnnotationUtils {
 
         return Optional.of(result);
     }
-
 
 
 }

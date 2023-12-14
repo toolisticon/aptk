@@ -139,7 +139,7 @@ public final class TypeUtils {
     }
 
     /**
-     * Utilit functions for type conversions.
+     * Utility functions for type conversions.
      */
     public static final class TypeConversion {
 
@@ -215,7 +215,8 @@ public final class TypeUtils {
 
         }
 
-        private static Set<String> primitiveTypeNameSet = new HashSet<>();
+        private final static Set<String> primitiveTypeNameSet = new HashSet<>();
+
         static {
             primitiveTypeNameSet.add("short");
             primitiveTypeNameSet.add("int");
@@ -259,7 +260,7 @@ public final class TypeUtils {
          * @param type the class to get the {@link TypeElement} for
          * @return The {@link TypeElement} that is related with the passed class or null if a TypeElement can't be found for passed class (f.e. for an array)
          */
-        public static TypeElement getTypeElement(Class type) {
+        public static TypeElement getTypeElement(Class<?> type) {
 
             TypeMirror typeMirror = getTypeMirror(type);
             return typeMirror == null ? null : (TypeElement) ProcessingEnvironmentUtils.getTypes().asElement(typeMirror);
@@ -272,7 +273,7 @@ public final class TypeUtils {
          * @param type the class to get the {@link TypeMirror} for
          * @return The {@link TypeMirror} that is related with the passed class
          */
-        public static TypeMirror getTypeMirror(Class type) {
+        public static TypeMirror getTypeMirror(Class<?> type) {
 
             // handle null safety and anonymous types for which we cannot get TypeMirror of a class
             if (type == null || type.isAnonymousClass()) {
@@ -296,7 +297,7 @@ public final class TypeUtils {
          * @param type the class to get the {@link TypeMirror} for
          * @return The {@link TypeMirror} that is related with the passed class
          */
-        public static TypeMirror getErasedTypeMirror(Class type) {
+        public static TypeMirror getErasedTypeMirror(Class<?> type) {
             return ProcessingEnvironmentUtils.getTypes().erasure(getTypeMirror(type));
         }
 
@@ -306,7 +307,7 @@ public final class TypeUtils {
          * @param primitiveType the primitive type to get the type mirror for
          * @return null if passed primitive type is null or doesn't represent a primitive type, otherwise the type mirror of the primitive type.
          */
-        public static TypeMirror getPrimitiveTypeMirror(Class primitiveType) {
+        public static TypeMirror getPrimitiveTypeMirror(Class<?> primitiveType) {
 
             if (primitiveType == null || !primitiveType.isPrimitive()) {
                 return null;
@@ -433,7 +434,7 @@ public final class TypeUtils {
          * @return true if all parameters are not null, the TypeElement for passed class exists and types are equal, otherwise false
          */
 
-        public static boolean isTypeEqual(TypeElement typeElement, Class type) {
+        public static boolean isTypeEqual(TypeElement typeElement, Class<?> type) {
 
             if (typeElement == null || type == null) {
                 return false;
@@ -476,7 +477,7 @@ public final class TypeUtils {
          * @param type       the type in form of a Class to check for
          * @return true if passed type represents same type as passed type, otherwise false
          */
-        public static boolean isTypeEqual(TypeMirror typeMirror, Class type) {
+        public static boolean isTypeEqual(TypeMirror typeMirror, Class<?> type) {
             return typeMirror != null && type != null && isErasedTypeEqual(typeMirror, TypeRetrieval.getTypeMirror(type));
         }
 
@@ -520,7 +521,7 @@ public final class TypeUtils {
     }
 
     /**
-     * Utility functions to check if TypeMirror represents an array and to check for the type of an array.
+     * Utility functions to check if TypeMirror represents an array and to check for the type of the array.
      */
     public static final class Arrays {
 
@@ -535,14 +536,14 @@ public final class TypeUtils {
          * Checks if passed TypeMirror is an array.
          *
          * @param typeMirror the TypeMirror to check
-         * @return true if passed TypeMiroor is not null and of kind array.
+         * @return true if passed TypeMirror is not null and of kind array.
          */
         public static boolean isArray(TypeMirror typeMirror) {
             return typeMirror != null && typeMirror.getKind().equals(TypeKind.ARRAY);
         }
 
         /**
-         * Gets the component type of an array TypeMirror.
+         * Gets the component type of the array TypeMirror.
          *
          * @param typeMirror the TypeMirror to check
          * @return returns the component TypeMirror of the passed array TypeMirror, returns null if passed TypeMirror isn't an array or null
@@ -552,18 +553,18 @@ public final class TypeUtils {
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a an array with passed component type.
+         * Checks whether passed {@link TypeMirror} is an array with passed component type.
          *
          * @param typeMirror the {@link TypeMirror} to check
          * @param type       the component type to check for
          * @return true if passed type mirror is of kind array with component type, otherwise false
          */
-        public static boolean isArrayOfType(TypeMirror typeMirror, Class type) {
+        public static boolean isArrayOfType(TypeMirror typeMirror, Class<?> type) {
             return type != null && isArrayOfType(typeMirror, TypeRetrieval.getTypeMirror(type));
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a an array with passed component type.
+         * Checks whether passed {@link TypeMirror} is an array with passed component type.
          *
          * @param typeMirror             the {@link TypeMirror} to check
          * @param fullQualifiedClassName the component type to check for
@@ -574,7 +575,7 @@ public final class TypeUtils {
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a an array with passed component type.
+         * Checks whether passed {@link TypeMirror} is an array with passed component type.
          *
          * @param typeMirror    the {@link TypeMirror} to check
          * @param componentType the arrays component type to check for
@@ -588,7 +589,7 @@ public final class TypeUtils {
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a an array with passed component type.
+         * Checks whether passed {@link TypeMirror} is an array with passed component type.
          *
          * @param typeMirror  the {@link TypeMirror} to check
          * @param genericType the arrays generic component type to check for
@@ -605,18 +606,18 @@ public final class TypeUtils {
 
 
         /**
-         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         * Checks whether passed {@link TypeMirror} is an array with component type that is assignable to passed type.
          *
          * @param typeMirror the {@link TypeMirror} to check
          * @param type       the component type to check for
          * @return true if passed type mirror is of kind array with component type, otherwise false
          */
-        public static boolean isArrayAssignableTo(TypeMirror typeMirror, Class type) {
+        public static boolean isArrayAssignableTo(TypeMirror typeMirror, Class<?> type) {
             return type != null && isArrayAssignableTo(typeMirror, TypeRetrieval.getTypeMirror(type));
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         * Checks whether passed {@link TypeMirror} is an array with component type that is assignable to passed type.
          *
          * @param typeMirror             the {@link TypeMirror} to check
          * @param fullQualifiedClassName the component type to check for
@@ -627,7 +628,7 @@ public final class TypeUtils {
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         * Checks whether passed {@link TypeMirror} is an array with component type that is assignable to passed type.
          *
          * @param typeMirror    the {@link TypeMirror} to check
          * @param componentType the arrays component type to check for
@@ -641,7 +642,7 @@ public final class TypeUtils {
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         * Checks whether passed {@link TypeMirror} is an array with component type that is assignable to passed type.
          *
          * @param typeMirror  the {@link TypeMirror} to check
          * @param genericType the arrays generic component type to check for
@@ -655,7 +656,7 @@ public final class TypeUtils {
         }
 
         /**
-         * Checks whether passed {@link TypeMirror} is a an array with component type that is assignable to passed type.
+         * Checks whether passed {@link TypeMirror} is an array with component type that is assignable to passed type.
          * Does type erasure on both passed typeMirrors.
          *
          * @param typeMirror1 the {@link TypeMirror} to check
@@ -700,7 +701,7 @@ public final class TypeUtils {
          * @param <T>            the generic type parameter
          * @return the GenericType instance
          */
-        public static <T extends GenericTypeParameter> GenericType createGenericType(Class rawType, T... typeParameters) {
+        public static <T extends GenericTypeParameter> GenericType createGenericType(Class<?> rawType, T... typeParameters) {
             return createGenericType(TypeRetrieval.getTypeMirror(rawType), typeParameters);
         }
 
@@ -727,7 +728,7 @@ public final class TypeUtils {
         }
 
         /**
-         * Creates an super wildcard type parameter.
+         * Creates a super wildcard type parameter.
          *
          * @param superBound the generic type
          * @return the GenericTypeWildcard instance
@@ -737,7 +738,7 @@ public final class TypeUtils {
         }
 
         /**
-         * Creates an pure wildcard type parameter.
+         * Creates a pure wildcard type parameter.
          *
          * @return the GenericTypeWildcard instance
          */
@@ -976,7 +977,7 @@ public final class TypeUtils {
         }
 
 
-        protected static boolean isAssignableToGenericTypeHandleWildcardTypeRecursively(WildcardType wildcardType, GenericTypeParameter genericTypeParameter) {
+        private static boolean isAssignableToGenericTypeHandleWildcardTypeRecursively(WildcardType wildcardType, GenericTypeParameter genericTypeParameter) {
 
             if (wildcardType == null || genericTypeParameter == null) {
                 return false;
@@ -1063,12 +1064,12 @@ public final class TypeUtils {
                         return false;
                     }
 
-                    // Now compare it's type parameters
+                    // Now compare its type parameters
                     return isAssignableToGenericTypeRecursively(declaredType, wildcard.getSuperBound());
 
                 } else
                 // must have extends bound - if not necessary
-                //if (wildcard.hasExtendsBound())
+                // if (wildcard.hasExtendsBound())
                 {
 
                     // type mirrors extends bound type mirror must be assignable to GenericTypes extends bound
@@ -1076,7 +1077,7 @@ public final class TypeUtils {
                         return false;
                     }
 
-                    // Now compare it's type parameters
+                    // Now compare its type parameters
                     return isAssignableToGenericTypeRecursively(declaredType, wildcard.getExtendsBound());
 
                 }
@@ -1091,7 +1092,7 @@ public final class TypeUtils {
                     return false;
                 }
 
-                // Now compare it's type parameters
+                // Now compare its type parameters
                 return isAssignableToGenericTypeRecursively(declaredType, genericType);
             }
 

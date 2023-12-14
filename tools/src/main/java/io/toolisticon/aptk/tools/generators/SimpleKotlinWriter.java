@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 public class SimpleKotlinWriter extends SimpleWriter {
 
     final static String KAPT_KOTLIN_GENERATED = "kapt.kotlin.generated";
-    private final static Pattern PACKAGE_PATTTERN = Pattern.compile("(?:(\\w+?(?:[.]\\w+?)*)[.])\\w*");
-    private final static Pattern CLASSNAME_PATTTERN = Pattern.compile("(?:(?:\\w+?[.])*)(\\w*)");
+    private final static Pattern PACKAGE_PATTERN = Pattern.compile("(\\w+?(?:[.]\\w+?)*)[.]\\w*");
+    private final static Pattern CLASSNAME_PATTERN = Pattern.compile("(?:\\w+?[.])*(\\w*)");
 
     private final String fqn;
     private final Element[] originatingElements;
@@ -89,12 +89,12 @@ public class SimpleKotlinWriter extends SimpleWriter {
     }
 
     static String getPackageFromFqn(String fqn) {
-        Matcher matcher = PACKAGE_PATTTERN.matcher(fqn);
+        Matcher matcher = PACKAGE_PATTERN.matcher(fqn);
         return matcher.matches() ? matcher.group(1) : "";
     }
 
     static String getClassNameFromFqn(String fqn) {
-        Matcher matcher = CLASSNAME_PATTTERN.matcher(fqn);
+        Matcher matcher = CLASSNAME_PATTERN.matcher(fqn);
         return matcher.matches() ? matcher.group(1) : fqn;
     }
 

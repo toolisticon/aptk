@@ -8,7 +8,6 @@ import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import java.util.Optional;
-import java.util.UUID;
 
 public class CompilerMessageWrapperCustomCode {
 
