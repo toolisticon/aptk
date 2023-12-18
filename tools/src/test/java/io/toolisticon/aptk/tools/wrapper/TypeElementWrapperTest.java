@@ -424,4 +424,32 @@ public class TypeElementWrapperTest {
     public static Optional<TypeElementWrapper> getByClass (Class<?> clazz)
     public static Optional<TypeElementWrapper> getTypeMirror (TypeMirror typeMirror)
   */
+
+    @PassIn
+    public enum TestEnum {
+        ABC,
+        DEF,
+        HIJ_KLM;
+    }
+
+    @Test
+    public void test_getEnumValues() {
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestEnum.class, (processingEnvironment, element) -> {
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        // happy path
+                        MatcherAssert.assertThat(TypeElementWrapper.wrap(element).getEnumValues().stream().map(e -> e.getSimpleName()).collect(Collectors.toList()), Matchers.containsInAnyOrder("ABC","DEF", "HIJ_KLM"));
+
+                        // no enum ! => null
+                        MatcherAssert.assertThat(TypeElementWrapper.getByClass(TypeElementWrapperTest.class).get().getEnumValues(), Matchers.nullValue());
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                })
+                .executeTest();
+    }
+
 }

@@ -164,7 +164,7 @@ public final class ElementUtils {
         }
 
         /**
-         * Checks if passed Element instance is an method parameter.
+         * Checks if passed Element instance is a method parameter.
          * Element must be of ElementKind PARAMETER and enclosing Element must be of ElementKind METHOD.
          *
          * @param e the element to check
@@ -199,7 +199,7 @@ public final class ElementUtils {
     }
 
     /**
-     * Convenience utility class for checking if the kind of an {@link Element}.
+     * Convenience utility class for checking if the kind of {@link Element}.
      */
     public static final class CastElement {
 
@@ -450,7 +450,7 @@ public final class ElementUtils {
          * Casts a list of elements to a list of elements.
          *
          * @param elementList  the list to be processed
-         * @param typeToCastTo the Element sub class to cast to
+         * @param typeToCastTo the Element subclass to cast to
          * @param <T>          The expected target element type
          * @return a new list containing all elements of passed elementList
          */
@@ -466,7 +466,7 @@ public final class ElementUtils {
          * @return a new list containing all elements of passed elementList
          */
         public static <T extends Element> List<T> castElementList(List<? extends Element> elementList) {
-            List<T> result = new ArrayList<T>(elementList.size());
+            List<T> result = new ArrayList<>(elementList.size());
             for (Element enclosedElement : elementList) {
                 result.add((T) enclosedElement);
             }
@@ -625,7 +625,7 @@ public final class ElementUtils {
          * Gets the visibility modifier of an element.
          *
          * @param element the element to check
-         * @return the visibility modifierof an element or null for package privates
+         * @return the visibility modifier of an element or null for package privates
          */
         public static Modifier getVisibilityModifier(Element element) {
 
@@ -950,7 +950,6 @@ public final class ElementUtils {
          * @param maxDepth     the maximal tree depth for which the elements should be grabbed
          * @param result       the result array to be used
          * @param currentDepth the current depth in the tree
-         * @return the flattened enclosed element tree of the passed element
          */
         private static void flattenEnclosedElementTree(Element element, int maxDepth, List<Element> result, int currentDepth) {
 
@@ -1009,12 +1008,12 @@ public final class ElementUtils {
 
             }
 
-            return superTypeElements.toArray(new TypeElement[superTypeElements.size()]);
+            return superTypeElements.toArray(new TypeElement[0]);
         }
 
         /**
          * Gets all super types of passed typeElement instance.
-         * The result array contains all super types in hierachical order (bottom up) followed by all implemented interfaces.
+         * The result array contains all super types in hierarchical order (bottom up) followed by all implemented interfaces.
          *
          * @param typeElement the typeElement to get the super types for.
          * @return an array containing all direct super types or an empty array if no super types can be found (f.e. for Object)
@@ -1025,13 +1024,13 @@ public final class ElementUtils {
             TypeElement[] superTypes = getDirectSuperTypeElements(typeElement);
 
 
-            // this is not that performant, but i guess it's ok since it's only used at compile time.
+            // this is not that performant, but I guess it's ok since it's only used at compile time.
             List<TypeElement> superTypeElements = new ArrayList<>();
 
             for (TypeElement superType : superTypes) {
                 superTypeElements.add(superType);
 
-                List<TypeElement> elementsToBeAdded = Arrays.asList(getSuperTypeElements(superType));
+                TypeElement[] elementsToBeAdded = getSuperTypeElements(superType);
 
                 for (TypeElement elementToBeAdded : elementsToBeAdded) {
                     if (!superTypeElements.contains(elementToBeAdded)) {
@@ -1040,7 +1039,7 @@ public final class ElementUtils {
                 }
             }
 
-            return superTypeElements.toArray(new TypeElement[superTypeElements.size()]);
+            return superTypeElements.toArray(new TypeElement[0]);
         }
 
 
@@ -1054,20 +1053,20 @@ public final class ElementUtils {
         public static TypeElement[] getDirectSuperTypeElementsOfKindInterface(TypeElement typeElement) {
 
             List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getDirectSuperTypeElements(typeElement))).applyFilter(AptkCoreMatchers.IS_INTERFACE).getResult();
-            return resultList.toArray(new TypeElement[resultList.size()]);
+            return resultList.toArray(new TypeElement[0]);
         }
 
 
         public static TypeElement[] getSuperTypeElementsOfKindType(TypeElement typeElement) {
 
             List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getSuperTypeElements(typeElement))).applyFilter(AptkCoreMatchers.IS_CLASS).getResult();
-            return resultList.toArray(new TypeElement[resultList.size()]);
+            return resultList.toArray(new TypeElement[0]);
         }
 
         public static TypeElement[] getSuperTypeElementsOfKindInterface(TypeElement typeElement) {
 
             List<TypeElement> resultList = FluentElementFilter.createFluentElementFilter(Arrays.asList(getSuperTypeElements(typeElement))).applyFilter(AptkCoreMatchers.IS_INTERFACE).getResult();
-            return resultList.toArray(new TypeElement[resultList.size()]);
+            return resultList.toArray(new TypeElement[0]);
         }
 
 
@@ -1105,9 +1104,9 @@ public final class ElementUtils {
             // Add throws if present
             if (!executableElement.getTypeParameters().isEmpty()) {
                 builder.append("<");
-                builder.append(String.join(", ", executableElement.getTypeParameters().stream().map(tp -> {
-                    return tp.toString() + " extends " + TypeMirrorWrapper.wrap(tp.getBounds().get(0)).getTypeDeclaration();
-                }).collect(Collectors.toList())));
+                builder.append(executableElement.getTypeParameters().stream().map(
+                        tp -> tp.toString() + " extends " + TypeMirrorWrapper.wrap(tp.getBounds().get(0)).getTypeDeclaration()).collect(Collectors.joining(", "))
+                );
                 builder.append("> ");
             }
 
@@ -1118,17 +1117,15 @@ public final class ElementUtils {
 
             // add parameters
             builder.append("(");
-            builder.append(String.join(", ", executableElement.getParameters().stream().map(element -> {
-                return TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration() + " " + element.getSimpleName().toString();
-            }).collect(Collectors.toList())));
+            builder.append(executableElement.getParameters().stream().map(
+                    element -> TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration() + " " + element.getSimpleName().toString()).collect(Collectors.joining(", "))
+            );
             builder.append(")");
 
             // Add throws if present
             if (!executableElement.getThrownTypes().isEmpty()) {
                 builder.append(" throws ");
-                builder.append(String.join(", ", executableElement.getThrownTypes().stream().map(tm -> {
-                    return TypeMirrorWrapper.wrap(tm).getSimpleName();
-                }).collect(Collectors.toList())));
+                builder.append(executableElement.getThrownTypes().stream().map(tm -> TypeMirrorWrapper.wrap(tm).getSimpleName()).collect(Collectors.joining(", ")));
             }
 
             return builder.toString();

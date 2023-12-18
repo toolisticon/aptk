@@ -10,7 +10,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.lang.reflect.Array;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Utility class which helps to handle different {@link AnnotationValue} related tasks.
@@ -150,13 +149,13 @@ public class AnnotationValueUtils {
      * @param types           the type to check for
      * @return true, if annotationValues type is assignable to at least one of the passed types
      */
-    private static boolean hasAnnotationValueOneOfPassedTypes(AnnotationValue annotationValue, Class... types) {
+    private static boolean hasAnnotationValueOneOfPassedTypes(AnnotationValue annotationValue, Class<?>... types) {
 
-        if (annotationValue == null || types.length == 0) {
+        if (annotationValue == null || types == null || types.length == 0) {
             return false;
         }
 
-        for (Class type : types) {
+        for (Class<?> type : types) {
 
             if (type.isAssignableFrom(annotationValue.getValue().getClass())) {
                 return true;
@@ -300,7 +299,7 @@ public class AnnotationValueUtils {
      *
      * @param enumType        The enum Type
      * @param annotationValue the value to get the value from.
-     * @param <T> The enum type
+     * @param <T>             The enum type
      * @return the annotationValues value as enum value, or null if value has not the correct type.
      */
     public static <T extends Enum<T>> T getEnumValue(Class<T> enumType, AnnotationValue annotationValue) {
@@ -341,10 +340,11 @@ public class AnnotationValueUtils {
      * Gets value as a TypeMirror array for Class array based annotation attributes.
      *
      * @param annotationValue the annotation value
-     * @return The TypeMirror array
+     * @return The TypeMirror array or null if passed in annotationValue is null or doesn't represent an array
      */
     public static TypeMirror[] getTypeAttributeValueArray(AnnotationValue annotationValue) {
-        return getTypeAttributeValueArray(getArrayValue(annotationValue));
+        List<? extends AnnotationValue> arrayValue = getArrayValue(annotationValue);
+        return arrayValue != null ? getTypeAttributeValueArray(arrayValue) : new TypeMirror[0];
     }
 
     /**
@@ -408,10 +408,10 @@ public class AnnotationValueUtils {
      * Convenience method to get long value array from annotation value.
      *
      * @param annotationValues the annotation values
-     * @return the long array containing the attributes's values, or null if passed attributes list is null
+     * @return the long array containing the attributes values, or null if passed attributes list is null
      */
     public static Long[] getLongValueArray(List<? extends AnnotationValue> annotationValues) {
-        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Long.class)) {
+        if (!isAnnotationValueArray(annotationValues, Long.class)) {
             return null;
         }
 
@@ -435,7 +435,7 @@ public class AnnotationValueUtils {
      * @return the integer array containing the attributes values, or null if passed attributes list is null
      */
     public static Integer[] getIntegerValueArray(List<? extends AnnotationValue> annotationValues) {
-        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Integer.class)) {
+        if (!isAnnotationValueArray(annotationValues, Integer.class)) {
             return null;
         }
 
@@ -456,10 +456,10 @@ public class AnnotationValueUtils {
      * Convenience method to get double value array from annotation value.
      *
      * @param annotationValues The annotation Values
-     * @return the double array containing the annotationValues's values, or null if passed annotationValues list is null
+     * @return the double array containing the annotationValues values, or null if passed annotationValues list is null
      */
     public static Double[] getDoubleValueArray(List<? extends AnnotationValue> annotationValues) {
-        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Double.class)) {
+        if (!isAnnotationValueArray(annotationValues, Double.class)) {
             return null;
         }
 
@@ -480,10 +480,10 @@ public class AnnotationValueUtils {
      * Convenience method to get float value array from annotation value.
      *
      * @param annotationValues the annotation values
-     * @return the float array containing the attributes's values, or null if passed attributes list is null
+     * @return the float array containing the attributes values, or null if passed attributes list is null
      */
     public static Float[] getFloatValueArray(List<? extends AnnotationValue> annotationValues) {
-        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Float.class)) {
+        if (!isAnnotationValueArray(annotationValues, Float.class)) {
             return null;
         }
 
@@ -504,10 +504,10 @@ public class AnnotationValueUtils {
      * Convenience method to get boolean value array from annotation value.
      *
      * @param annotationValues the annotation values
-     * @return the boolean array containing the attributes's values, or null if passed attributes list is null
+     * @return the boolean array containing the attributes values, or null if passed attributes list is null
      */
     public static Boolean[] getBooleanValueArray(List<? extends AnnotationValue> annotationValues) {
-        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Boolean.class)) {
+        if (!isAnnotationValueArray(annotationValues, Boolean.class)) {
             return null;
         }
 
@@ -528,10 +528,10 @@ public class AnnotationValueUtils {
      * Convenience method to get char value array from annotation value.
      *
      * @param annotationValues the annotation values
-     * @return the char array containing the attributes's values, or null if passed attributes list is null
+     * @return the char array containing the attributes values, or null if passed attributes list is null
      */
     public static Character[] getCharValueArray(List<? extends AnnotationValue> annotationValues) {
-        if (annotationValues == null || !isAnnotationValueArray(annotationValues, Character.class)) {
+        if (!isAnnotationValueArray(annotationValues, Character.class)) {
             return null;
         }
 
@@ -552,10 +552,10 @@ public class AnnotationValueUtils {
      * Convenience method to get String value array from annotation value.
      *
      * @param annotationValues the annotation values
-     * @return the String array containing the attributes's values, or null if passed attributes list is null
+     * @return the String array containing the attributes values, or null if passed attributes list is null
      */
     public static String[] getStringValueArray(List<? extends AnnotationValue> annotationValues) {
-        if (annotationValues == null || !isAnnotationValueArray(annotationValues, String.class)) {
+        if (!isAnnotationValueArray(annotationValues, String.class)) {
             return null;
         }
 
@@ -577,7 +577,7 @@ public class AnnotationValueUtils {
      * Convenience method to get enum value array from annotation value.
      *
      * @param annotationValues the annotation values
-     * @return the enum array containing the attributes's values, or null if passed attributes list is null
+     * @return the enum array containing the attributes values, or null if passed attributes list is null
      */
     public static VariableElement[] getEnumValueArray(List<? extends AnnotationValue> annotationValues) {
         if (annotationValues == null || !isAnnotationValueArray(annotationValues, VariableElement.class)) {
@@ -601,10 +601,10 @@ public class AnnotationValueUtils {
      * Convenience method to get annotation value array from annotation value.
      *
      * @param annotationValues the annotation values
-     * @return the annotation array containing the annotationValues's values, or null if passed annotationValues list is null
+     * @return the annotation array containing the annotationValues values, or null if passed annotationValues list is null
      */
     public static AnnotationMirror[] getAnnotationValueArray(List<? extends AnnotationValue> annotationValues) {
-        if (annotationValues == null || !isAnnotationValueArray(annotationValues, AnnotationMirror.class)) {
+        if (!isAnnotationValueArray(annotationValues, AnnotationMirror.class)) {
             return null;
         }
 
@@ -737,7 +737,7 @@ public class AnnotationValueUtils {
      * @param type            the array type to check for
      * @return true if annotation value is array of passed type, otherwise false
      */
-    public static boolean isAnnotationValueArray(AnnotationValue annotationValue, Class type) {
+    public static boolean isAnnotationValueArray(AnnotationValue annotationValue, Class<?> type) {
 
         return annotationValue != null && type != null
                 && annotationValue.getValue() instanceof List
@@ -751,7 +751,7 @@ public class AnnotationValueUtils {
      * @param type             the array type to check for
      * @return true if annotation value is array of passed type, otherwise false
      */
-    public static boolean isAnnotationValueArray(List<? extends AnnotationValue> annotationValues, Class type) {
+    public static boolean isAnnotationValueArray(List<? extends AnnotationValue> annotationValues, Class<?> type) {
 
         return annotationValues != null && type != null
                 && annotationValues.size() >= 1

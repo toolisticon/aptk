@@ -8,7 +8,6 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -202,7 +201,7 @@ public class AnnotationValueWrapper {
      */
     public TypeMirrorWrapper getClassValue() {
         TypeMirror typeMirror = AnnotationValueUtils.getTypeMirrorValue(annotationValue);
-        return typeMirror!= null ? TypeMirrorWrapper.wrap(typeMirror) : null;
+        return typeMirror != null ? TypeMirrorWrapper.wrap(typeMirror) : null;
     }
 
     /**
@@ -212,7 +211,7 @@ public class AnnotationValueWrapper {
      */
     public VariableElementWrapper getEnumValue() {
         VariableElement result = AnnotationValueUtils.getEnumValue(annotationValue);
-        return result != null ? VariableElementWrapper.wrap(result):null;
+        return result != null ? VariableElementWrapper.wrap(result) : null;
     }
 
     /**
@@ -223,8 +222,8 @@ public class AnnotationValueWrapper {
      * @return the annotationValues value cast as the enum value type, or null if value has not the correct type.
      */
     public <T extends Enum<T>> T getEnumValue(Class<T> enumType) {
-        return  AnnotationValueUtils.getEnumValue(enumType, annotationValue);
-}
+        return AnnotationValueUtils.getEnumValue(enumType, annotationValue);
+    }
 
     /**
      * Tries to get the annotationValues value as AnnotationMirror (== annotation value).

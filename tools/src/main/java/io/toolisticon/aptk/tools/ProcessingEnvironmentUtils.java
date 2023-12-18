@@ -10,7 +10,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
 /**
- * Convenience class to access tools offered by ProcessingEnvionemt via {@link ToolingProvider}.
+ * Convenience class to access tools offered by ProcessingEnvironment via {@link ToolingProvider}.
  */
 public final class ProcessingEnvironmentUtils {
 

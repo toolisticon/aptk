@@ -137,7 +137,7 @@ public class InterfaceUtils {
             }
         }
 
-        return result.toArray(new TypeMirrorWrapper[result.size()]);
+        return result.toArray(new TypeMirrorWrapper[0]);
     }
 
 

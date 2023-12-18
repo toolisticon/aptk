@@ -209,12 +209,6 @@ public final class MessagerUtils {
         return ProcessingEnvironmentUtils.getMessager();
     }
 
-
-    public static MessagerUtils getMessagerUtils() {
-        return new MessagerUtils();
-    }
-
-
     /**
      * Creates a message by using a custom templating mechanism.
      * Argument placeholder with the following format '${index}'
@@ -272,7 +266,7 @@ public final class MessagerUtils {
 
     }
 
-    protected static String argToString(Object arg) {
+    static String argToString(Object arg) {
 
         if (arg == null) {
 
@@ -304,7 +298,7 @@ public final class MessagerUtils {
             StringBuilder stringBuilder = new StringBuilder("[");
             boolean first = true;
 
-            for (Object argument : (Collection) arg) {
+            for (Object argument : (Collection<?>) arg) {
                 if (first) {
                     first = false;
                 } else {

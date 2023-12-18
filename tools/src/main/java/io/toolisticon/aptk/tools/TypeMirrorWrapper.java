@@ -905,7 +905,17 @@ public class TypeMirrorWrapper {
      * @return The wrapped TypeMirror of the TypeElement
      */
     public static TypeMirrorWrapper wrap(TypeElement typeElement) {
-        return TypeElementWrapper.wrap(typeElement).asType();
+        return wrap(TypeElementWrapper.wrap(typeElement));
+    }
+
+    /**
+     * Gets the TypeElements wrapped TypeMirror.
+     *
+     * @param typeElement the TypeElement to get the TypeMirror for
+     * @return The wrapped TypeMirror of the TypeElement
+     */
+    public static TypeMirrorWrapper wrap(TypeElementWrapper typeElement) {
+        return typeElement.asType();
     }
 
     /**

@@ -16,7 +16,7 @@ import javax.tools.Diagnostic;
 import java.util.Arrays;
 
 /**
- * Unit test for {@link MessagerUtils}.
+ * MessagerUtils test for {@link MessagerUtils}.
  */
 public class MessagerUtilsTest {
 
@@ -26,8 +26,6 @@ public class MessagerUtilsTest {
     final static String MESSSAGE_STR_WITH_REPLACED_ARGUMENTS = "message " + MESSAGE_ARG_1 + " : " + MESSAGE_ARG_2 + "";
     final static String MESSSAGE_STR_WITH_REPLACED_FIRST_ARGUMENTS = "message " + MESSAGE_ARG_1 + " : ${1}";
 
-
-    private MessagerUtils unit;
 
     private Messager messager;
 
@@ -48,9 +46,6 @@ public class MessagerUtilsTest {
         Mockito.when(processingEnvironment.getMessager()).thenReturn(messager);
 
         ToolingProvider.setTooling(processingEnvironment);
-
-        unit = MessagerUtils.getMessagerUtils();
-
     }
 
     // ----------------------------------------------------
@@ -60,7 +55,7 @@ public class MessagerUtilsTest {
     @Test
     public void testGetMessaggerUtils() {
 
-        MatcherAssert.assertThat(unit.getMessager(), Matchers.is(messager));
+        MatcherAssert.assertThat(MessagerUtils.getMessager(), Matchers.is(messager));
 
     }
 
@@ -130,7 +125,7 @@ public class MessagerUtilsTest {
     @Test
     public void testErrorElementMessage1xArgumentEvenMessageHas2Placeholders() {
 
-        unit.error(element, MESSSAGE, MESSAGE_ARG_1);
+        MessagerUtils.error(element, MESSSAGE, MESSAGE_ARG_1);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_FIRST_ARGUMENTS, element);
 
@@ -139,7 +134,7 @@ public class MessagerUtilsTest {
     @Test
     public void testErrorElementMessageWithoutArgumentEvenMessageHas2Placeholders() {
 
-        unit.error(element, MESSSAGE);
+        MessagerUtils.error(element, MESSSAGE);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE, element);
 
@@ -148,7 +143,7 @@ public class MessagerUtilsTest {
     @Test
     public void testErrorElementMessage3xArgumentEvenMessageHas2Placeholders() {
 
-        unit.error(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2, "XXX");
+        MessagerUtils.error(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2, "XXX");
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element);
 
@@ -157,7 +152,7 @@ public class MessagerUtilsTest {
     @Test
     public void testErrorElementMessageNullValuedArgumentEvenMessageHas2Placeholders() {
 
-        unit.error(element, MESSSAGE, null, null);
+        MessagerUtils.error(element, MESSSAGE, null, null);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, "message null : null", element);
 
@@ -165,13 +160,13 @@ public class MessagerUtilsTest {
 
 
     // ----------------------------------------------------
-    // Test string based pribtMessage methods
+    // Test string based printMessage methods
     // ----------------------------------------------------
 
     @Test
     public void printMessage_testStringBasedMessage() {
 
-        unit.printMessage(element, Diagnostic.Kind.ERROR, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.printMessage(element, Diagnostic.Kind.ERROR, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element);
 
@@ -180,7 +175,7 @@ public class MessagerUtilsTest {
     @Test
     public void printMessage_testStringBasedMessageWithAnnotationMirror() {
 
-        unit.printMessage(element, annotationMirror, Diagnostic.Kind.ERROR, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.printMessage(element, annotationMirror, Diagnostic.Kind.ERROR, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror);
 
@@ -189,7 +184,7 @@ public class MessagerUtilsTest {
     @Test
     public void printMessage_testStringBasedMessageWithAnnotationMirrorAndValue() {
 
-        unit.printMessage(element, annotationMirror, annotationValue, Diagnostic.Kind.ERROR, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.printMessage(element, annotationMirror, annotationValue, Diagnostic.Kind.ERROR, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror, annotationValue);
 
@@ -203,7 +198,7 @@ public class MessagerUtilsTest {
     @Test
     public void testErrorElementAnnotationMirrorAnnotationValueMessage2xArgument() {
 
-        unit.error(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.error(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror, annotationValue);
 
@@ -213,7 +208,7 @@ public class MessagerUtilsTest {
     @Test
     public void testWarningElementAnnotationMirrorAnnotationValueMessage2xArgument() {
 
-        unit.warning(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.warning(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.WARNING, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror, annotationValue);
 
@@ -222,7 +217,7 @@ public class MessagerUtilsTest {
     @Test
     public void testMandatoryWarningElementAnnotationAnnotationValueMirrorMessage2xArgument() {
 
-        unit.mandatoryWarning(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.mandatoryWarning(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.MANDATORY_WARNING, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror, annotationValue);
 
@@ -231,7 +226,7 @@ public class MessagerUtilsTest {
     @Test
     public void testInfoElementAnnotationMirrorAnnotationValueMessage2xArgument() {
 
-        unit.info(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.info(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.NOTE, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror, annotationValue);
 
@@ -240,7 +235,7 @@ public class MessagerUtilsTest {
     @Test
     public void testOtherElementAnnotationMirrorAnnotationValueMessage2xArgument() {
 
-        unit.other(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.other(element, annotationMirror, annotationValue, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.OTHER, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror, annotationValue);
 
@@ -254,7 +249,7 @@ public class MessagerUtilsTest {
     @Test
     public void testErrorElementAnnotationMirrorMessage2xArgument() {
 
-        unit.error(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.error(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror);
 
@@ -264,7 +259,7 @@ public class MessagerUtilsTest {
     @Test
     public void testWarningElementAnnotationMirrorMessage2xArgument() {
 
-        unit.warning(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.warning(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.WARNING, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror);
 
@@ -273,7 +268,7 @@ public class MessagerUtilsTest {
     @Test
     public void testMandatoryWarningElementAnnotationMirrorMessage2xArgument() {
 
-        unit.mandatoryWarning(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.mandatoryWarning(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.MANDATORY_WARNING, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror);
 
@@ -282,7 +277,7 @@ public class MessagerUtilsTest {
     @Test
     public void testInfoElementAnnotationMirrorMessage2xArgument() {
 
-        unit.info(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.info(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.NOTE, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror);
 
@@ -291,7 +286,7 @@ public class MessagerUtilsTest {
     @Test
     public void testOtherElementAnnotationMirrorMessage2xArgument() {
 
-        unit.other(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.other(element, annotationMirror, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.OTHER, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element, annotationMirror);
 
@@ -305,7 +300,7 @@ public class MessagerUtilsTest {
     @Test
     public void testErrorElementMessage2xArgument() {
 
-        unit.error(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.error(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
         Mockito.verify(messager).printMessage(Diagnostic.Kind.ERROR, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element);
 
     }
@@ -314,7 +309,7 @@ public class MessagerUtilsTest {
     @Test
     public void testWarningElementMessage2xArgument() {
 
-        unit.warning(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.warning(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.WARNING, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element);
 
@@ -323,7 +318,7 @@ public class MessagerUtilsTest {
     @Test
     public void testMandatoryWarningElementMessage2xArgument() {
 
-        unit.mandatoryWarning(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.mandatoryWarning(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.MANDATORY_WARNING, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element);
 
@@ -332,7 +327,7 @@ public class MessagerUtilsTest {
     @Test
     public void testInfoElementMessage2xArgument() {
 
-        unit.info(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.info(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.NOTE, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element);
 
@@ -341,7 +336,7 @@ public class MessagerUtilsTest {
     @Test
     public void testOtherElementMessage2xArgument() {
 
-        unit.other(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
+        MessagerUtils.other(element, MESSSAGE, MESSAGE_ARG_1, MESSAGE_ARG_2);
 
         Mockito.verify(messager).printMessage(Diagnostic.Kind.OTHER, MESSSAGE_STR_WITH_REPLACED_ARGUMENTS, element);
 

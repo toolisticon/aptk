@@ -5,7 +5,6 @@ import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import javax.lang.model.element.ExecutableElement;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;

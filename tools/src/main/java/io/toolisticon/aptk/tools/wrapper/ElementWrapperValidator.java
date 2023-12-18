@@ -4,7 +4,6 @@ import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.corematcher.ValidationMessage;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 import javax.tools.Diagnostic;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.function.Predicate;
 
 public class ElementWrapperValidator<WRAPPER extends ElementWrapper<?>> {
 
-    static class MessageConfig<WRAPPER extends ElementWrapper<?>> {
+    static class MessageConfig {
         Diagnostic.Kind kind = Diagnostic.Kind.ERROR;
         ValidationMessage customMessage = new DummyValidationMessage(null, "Validation FAILED!");
         Object[] customMessageVars = null;
@@ -24,9 +23,9 @@ public class ElementWrapperValidator<WRAPPER extends ElementWrapper<?>> {
 
     private final WRAPPER wrapper;
 
-    private MessageConfig<WRAPPER> messageConfig = new MessageConfig<WRAPPER>();
+    private final MessageConfig messageConfig = new MessageConfig();
 
-    private List<Predicate<WRAPPER>> checks = new ArrayList<>();
+    private final List<Predicate<WRAPPER>> checks = new ArrayList<>();
 
     public ElementWrapperValidatorInterface.FirstValidation<WRAPPER> start() {
         return new FirstValidationImpl();
@@ -155,8 +154,8 @@ public class ElementWrapperValidator<WRAPPER extends ElementWrapper<?>> {
         }
     }
 
-    public static<WRAPPER extends ElementWrapper<? extends Element>> ElementWrapperValidatorInterface.FirstValidation<WRAPPER> startValidation (WRAPPER wrapper) {
-        return new ElementWrapperValidator<WRAPPER>(wrapper).start();
+    public static <WRAPPER extends ElementWrapper<? extends Element>> ElementWrapperValidatorInterface.FirstValidation<WRAPPER> startValidation(WRAPPER wrapper) {
+        return new ElementWrapperValidator<>(wrapper).start();
     }
 
 }
