@@ -38,6 +38,10 @@ public class TypeParameterElementWrapper extends ElementWrapper<TypeParameterEle
         return this.element.toString();
     }
 
+    public String toStringWithExtendsAndBounds() {
+        List<TypeMirrorWrapper> extendedTypes = getBounds();
+        return toString() + (extendedTypes.size() == 0 ? "" : extendedTypes.stream().map(e -> e.getTypeDeclaration()).collect(Collectors.joining(" & ", " extends ","")));
+    }
     /**
      * Wraps a TypeParameterElement.
      * Will throw IllegalArgumentException if passed element is null.

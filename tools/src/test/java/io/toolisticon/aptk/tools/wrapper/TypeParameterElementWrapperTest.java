@@ -1,15 +1,21 @@
 package io.toolisticon.aptk.tools.wrapper;
 
+import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.PassIn;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.TypeMirror;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +64,28 @@ public class TypeParameterElementWrapperTest {
     }
 
 
+    @PassIn
+    public static class TypeVarTestcase<T extends Collection<?> & Serializable> {
+
+    }
+
+
+    @Test
+    public void test_toStringWithExtendsAndBounds() {
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TypeVarTestcase.class, (processingEnvironment, element) -> {
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        // happy path
+                        MatcherAssert.assertThat(TypeElementWrapper.wrap(element).getTypeParameters().get(0).toStringWithExtendsAndBounds(), Matchers.is("T extends Collection<?> & Serializable"));
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                })
+                .executeTest();
+    }
 
 
 }
