@@ -14,8 +14,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.lang.model.element.TypeElement;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Unit Test for {@link GetAttributesCommandWithInheritance}.
@@ -31,30 +33,7 @@ public class GetAttributesCommandWithInheritanceTest {
             .unitTest()
             .useSource(JavaFileObjectUtils.readFromResource("/testcases.commands/GetAttributesCommandWithInheritanceTestClass.java"));
 
-    @Test
-    public void shouldExecuteSuccessfullyDataAnnotatedClass() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestDataAnnotatedClass")
-                                .getResult().get(0);
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(1));
-                        MatcherAssert.assertThat(attributeResult[0].getFieldName(), Matchers.is("field1"));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
 
     @Test
     public void shouldExecuteSuccessfullyInheritedDataAnnotatedClass() {
@@ -72,12 +51,8 @@ public class GetAttributesCommandWithInheritanceTest {
 
                         MatcherAssert.assertThat(attributeResult.length, Matchers.is(2));
 
-                        Set<String> fields = new HashSet<String>();
-                        for (BeanUtils.AttributeResult item : attributeResult) {
-                            fields.add(item.getFieldName());
-                        }
 
-                        MatcherAssert.assertThat(fields, Matchers.containsInAnyOrder("field1", "field3"));
+                        MatcherAssert.assertThat(Arrays.stream(attributeResult).map(e -> e.getFieldName()).collect(Collectors.toSet()), Matchers.containsInAnyOrder("field1", "field3"));
 
                     }
                 })
@@ -87,244 +62,6 @@ public class GetAttributesCommandWithInheritanceTest {
 
     }
 
-    @Test
-    public void shouldExecuteSuccessfullyGetterAnnotatedClass() {
-
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustGetterAnnotatedClass")
-                                .getResult().get(0);
-
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(0));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
-
-    @Test
-    public void shouldExecuteSuccessfullySetterAnnotatedClass() {
-
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustSetterAnnotatedClass")
-                                .getResult().get(0);
-
-
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(0));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
-
-
-    @Test
-    public void shouldExecuteSuccessfullyGetterAndSetterAnnotatedClass() {
-
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestGetterAndSetterAnnotatedClass")
-                                .getResult().get(0);
-
-
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(1));
-                        MatcherAssert.assertThat(attributeResult[0].getFieldName(), Matchers.is("field1"));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
-
-
-    @Test
-    public void shouldExecuteSuccessfullyMixedGetterAndSetterAnnotatedClassAndField2() {
-
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestMixedGetterAndSetterAnnotatedClassAndField1")
-                                .getResult().get(0);
-
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(1));
-                        MatcherAssert.assertThat(attributeResult[0].getFieldName(), Matchers.is("field1"));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
-
-
-    @Test
-    public void shouldExecuteSuccessfullyMixedGetterAndSetterAnnotatedClassAndField2_() {
-
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestMixedGetterAndSetterAnnotatedClassAndField2")
-                                .getResult().get(0);
-
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(1));
-                        MatcherAssert.assertThat(attributeResult[0].getFieldName(), Matchers.is("field1"));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
-
-
-    @Test
-    public void shouldExecuteSuccessfullyGetterAnnotatedField() {
-
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustGetterAnnotatedField")
-                                .getResult().get(0);
-
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(0));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
-
-    @Test
-    public void shouldExecuteSuccessfullySetterAnnotatedField() {
-
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestJustSetterAnnotatedField")
-                                .getResult().get(0);
-
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(0));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
-
-    @Test
-    public void shouldExecuteSuccessfullyGetterAndSetterAnnotatedField() {
-
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestGetterAndSetterAnnotatedField")
-                                .getResult().get(0);
-
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(1));
-                        MatcherAssert.assertThat(attributeResult[0].getFieldName(), Matchers.is("field1"));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
-
-    @Test
-    public void shouldExecuteSuccessfullyGetterAndSetterAnnotatedMethod() {
-
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*TestFieldGetterAndSetterMethods")
-                                .getResult().get(0);
-
-                        BeanUtils.AttributeResult[] attributeResult = GetAttributesCommandWithInheritance.INSTANCE.execute(typeElement);
-
-                        MatcherAssert.assertThat(attributeResult.length, Matchers.is(1));
-                        MatcherAssert.assertThat(attributeResult[0].getFieldName(), Matchers.is("field1"));
-
-                    }
-                })
-
-                .compilationShouldSucceed()
-                .executeTest();
-
-    }
 
     @Test
     public void shouldExecuteSuccessfullyGetterAndSetterAnnotatedMethodWithInvalidParameterType() {

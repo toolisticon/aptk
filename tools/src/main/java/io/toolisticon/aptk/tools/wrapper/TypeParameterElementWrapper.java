@@ -5,6 +5,7 @@ import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeParameterElement;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +43,15 @@ public class TypeParameterElementWrapper extends ElementWrapper<TypeParameterEle
         List<TypeMirrorWrapper> extendedTypes = getBounds();
         return toString() + (extendedTypes.size() == 0 ? "" : extendedTypes.stream().map(e -> e.getTypeDeclaration()).collect(Collectors.joining(" & ", " extends ","")));
     }
+
+    /**
+     * Gets a Set containing the fully qualified names of all bounds.
+     * @return a Set containing all fqn of all bounds
+     */
+    public Set<String> getImports() {
+        return getBounds().stream().map(TypeMirrorWrapper::getQualifiedName).collect(Collectors.toSet());
+    }
+
     /**
      * Wraps a TypeParameterElement.
      * Will throw IllegalArgumentException if passed element is null.
