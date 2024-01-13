@@ -1,84 +1,24 @@
 package io.toolisticon.aptk.test;
 
 import io.toolisticon.aptk.tools.TestAnnotation;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @TestAnnotation
 public class GetAttributesCommandWithInheritanceTestClass {
-    @Data
+
+
     private static class TestDataAnnotatedClass {
 
         private String field1;
         private static String field2;
 
+        public String getField1() {
+            return field1;
+        }
+
+        public void setField1(String field1) {
+            this.field1 = field1;
+        }
     }
-
-    @Getter
-    private static class TestJustGetterAnnotatedClass {
-
-        private String field1;
-        private static String field2;
-
-    }
-
-    @Getter
-    private static class TestJustSetterAnnotatedClass {
-
-        private String field1;
-        private static String field2;
-
-    }
-
-    @Getter
-    @Setter
-    private static class TestGetterAndSetterAnnotatedClass {
-
-        private String field1;
-        private static String field2;
-
-    }
-
-    @Setter
-    private static class TestMixedGetterAndSetterAnnotatedClassAndField1 {
-
-        @Getter
-        private String field1;
-
-    }
-
-    @Getter
-    private static class TestMixedGetterAndSetterAnnotatedClassAndField2 {
-
-        @Setter
-        private String field1;
-
-    }
-
-
-    private static class TestJustSetterAnnotatedField {
-
-        @Setter
-        private String field1;
-
-    }
-
-    private static class TestJustGetterAnnotatedField {
-
-        @Setter
-        private String field1;
-
-    }
-
-    private static class TestGetterAndSetterAnnotatedField {
-
-        @Setter
-        @Getter
-        private String field1;
-
-    }
-
 
     private static class TestFieldGetterAndSetterMethods {
 
@@ -108,12 +48,19 @@ public class GetAttributesCommandWithInheritanceTestClass {
 
     }
 
-    @Data
-    private static class TestInheritedDataAnnotatedClass extends TestDataAnnotatedClass{
+
+    private static class TestInheritedDataAnnotatedClass extends TestDataAnnotatedClass {
 
         private String field3;
         private static String field4;
 
+        public String getField3() {
+            return field3;
+        }
+
+        public void setField3(String field3) {
+            this.field3 = field3;
+        }
     }
 
 }

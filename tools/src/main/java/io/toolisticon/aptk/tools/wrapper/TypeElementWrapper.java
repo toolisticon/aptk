@@ -5,7 +5,6 @@ import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 
-import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -115,6 +114,15 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
      */
     public List<TypeParameterElementWrapper> getTypeParameters() {
         return this.element.getTypeParameters().stream().map(TypeParameterElementWrapper::wrap).collect(Collectors.toList());
+    }
+
+    /**
+     * Checks if wrapped TypeElement has type parameters.
+     *
+     * @return true, if TypeElement has type parameters, otherwise false.
+     */
+    public boolean hasTypeParameters() {
+        return getTypeParameters().size() > 0;
     }
 
     /**
@@ -239,6 +247,7 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
 
     /**
      * Gets all enum constant names of enum as VariableElements.
+     *
      * @return A list containing all enum constant names or null if wrapped TypeElement is no enum.
      */
     public List<VariableElementWrapper> getEnumValues() {

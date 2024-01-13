@@ -5,6 +5,7 @@ import io.toolisticon.aptk.tools.command.impl.GetAttributesCommand;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
+import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.VariableElementWrapper;
 
 import javax.lang.model.element.ElementKind;
@@ -15,7 +16,10 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -166,7 +170,7 @@ public final class BeanUtils {
             return false;
         }
 
-        return Pattern.compile("^\\s*super\\(\\)[;]{0,1}\\s*$").matcher(statements.get(0).toString()).matches();
+        return Pattern.compile("^\\s*super\\(\\);?\\s*$").matcher(statements.get(0).toString()).matches();
 
     }
 
@@ -176,12 +180,21 @@ public final class BeanUtils {
 
     }
 
-    public static AttributeResult[] getAttributesWithInheritance(TypeElement typeElement) {
-        List<AttributeResult> resultList = new ArrayList<>(Arrays.asList(GetAttributesCommand.INSTANCE.execute(typeElement)));
+    public static AttributeResult[] getAttributesWithInheritance(TypeElement typeElement, TypeMirrorWrapper... typeArguments) {
+
+
+        // this doesn't support getting generic fields in parent classes
+        List<AttributeResult> resultList = new ArrayList<>(Arrays.asList(GetAttributesCommand.createCommand().execute(typeElement)));
 
         // process super types
         for (TypeElement superTypeElement : ElementUtils.AccessTypeHierarchy.getSuperTypeElementsOfKindType(typeElement)) {
-            resultList.addAll(Arrays.asList(GetAttributesCommand.INSTANCE.execute(superTypeElement)));
+            TypeElementWrapper wrappedSuperTypeElement = TypeElementWrapper.wrap(superTypeElement);
+            Map<String, TypeMirrorWrapper> resolvedTypeArgumentMap = new HashMap<>();
+            if (wrappedSuperTypeElement.hasTypeParameters()) {
+                List<TypeMirrorWrapper> resolvedTypeArgumentTypes = InterfaceUtils.getResolvedTypeArgumentOfSuperTypeOrInterface(TypeElementWrapper.wrap(typeElement), TypeMirrorWrapper.wrap(superTypeElement), typeArguments);
+                resolvedTypeArgumentMap = InterfaceUtils.mapTypeVars(wrappedSuperTypeElement, resolvedTypeArgumentTypes.toArray(new TypeMirrorWrapper[0]));
+            }
+            resultList.addAll(Arrays.asList(GetAttributesCommand.createCommand(resolvedTypeArgumentMap).execute(superTypeElement)));
         }
 
         return resultList.toArray(new AttributeResult[0]);
@@ -204,18 +217,18 @@ public final class BeanUtils {
 
         for (VariableElement field : fields) {
 
-            AttributeResult attributeResult = new AttributeResult();
-            attributeResult.setField(VariableElementWrapper.wrap(field));
-
-            String getterMethodName = BeanUtils.getGetterMethodName(field);
-            attributeResult.setGetterMethodName(BeanUtils.getGetterMethodName(field));
-            attributeResult.setSetterMethodName(BeanUtils.getSetterMethodName(field));
-
-
             // just add those fields with both getters and setters
-            if (attributeResult.hasGetter() && attributeResult.hasSetter()) {
+            Optional<String> getterMethodName = BeanUtils.getGetterMethodName(field);
+            Optional<String> setterMethodName = BeanUtils.getSetterMethodName(field);
+            if (getterMethodName.isPresent() && setterMethodName.isPresent()) {
+
+                AttributeResult attributeResult = new AttributeResult();
+                attributeResult.setField(VariableElementWrapper.wrap(field));
+                attributeResult.setGetterMethodName(getterMethodName.get());
+                attributeResult.setSetterMethodName(setterMethodName.get());
                 result.add(attributeResult);
             }
+
         }
 
         return result.toArray(new AttributeResult[0]);
@@ -236,14 +249,10 @@ public final class BeanUtils {
             return false;
         }
 
-        TypeElement typeElement = ElementUtils.AccessEnclosingElements.<TypeElement>getFirstEnclosingElementOfKind(field, ElementKind.CLASS);
+        TypeElement typeElement = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(field, ElementKind.CLASS);
 
 
-        return checkLombokDataAnnotation(typeElement)
-                || checkLombokGetterAnnotationOnType(typeElement)
-                || checkLombokGetterAnnotationOnField(field)
-                || checkHasGetterMethod(field, typeElement)
-                ;
+        return checkHasGetterMethod(field, typeElement);
 
     }
 
@@ -260,50 +269,13 @@ public final class BeanUtils {
             return false;
         }
 
-        TypeElement typeElement = ElementUtils.AccessEnclosingElements.<TypeElement>getFirstEnclosingElementOfKind(field, ElementKind.CLASS);
+        TypeElement typeElement = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(field, ElementKind.CLASS);
 
 
-        return checkLombokDataAnnotation(typeElement)
-                || checkLombokSetterAnnotationOnType(typeElement)
+        return checkLombokSetterAnnotationOnType(typeElement)
                 || checkLombokSetterAnnotationOnField(field)
                 || checkHasSetterMethod(field, typeElement)
                 ;
-
-    }
-
-    /**
-     * Checks if lombok.Data annotation is present on passed TypeElement.
-     *
-     * @param typeElement the TypeElement to check
-     * @return true if Data annotation can be found on passed typeElement otherwise false
-     */
-    public static boolean checkLombokDataAnnotation(TypeElement typeElement) {
-
-        return AnnotationUtils.getAnnotationMirror(typeElement, "lombok.Data") != null;
-
-    }
-
-    /**
-     * Checks if lombok.Getter annotation is present on passed TypeElement.
-     *
-     * @param typeElement the TypeElement to check
-     * @return true if Getter annotation can be found on passed TypeElement otherwise false
-     */
-    public static boolean checkLombokGetterAnnotationOnType(TypeElement typeElement) {
-
-        return AnnotationUtils.getAnnotationMirror(typeElement, "lombok.Getter") != null;
-
-    }
-
-    /**
-     * Checks if lombok.Getter annotation is present on passed TypeElement.
-     *
-     * @param variableElement the VariableElement to check
-     * @return true if Getter annotation can be found on passed VariableElement otherwise false
-     */
-    public static boolean checkLombokGetterAnnotationOnField(VariableElement variableElement) {
-
-        return AnnotationUtils.getAnnotationMirror(variableElement, "lombok.Getter") != null;
 
     }
 
@@ -314,30 +286,21 @@ public final class BeanUtils {
      * @param field The field
      * @return the getters method name or null if field has no getter
      */
-    public static String getGetterMethodName(VariableElement field) {
+    public static Optional<String> getGetterMethodName(VariableElement field) {
 
         if (field == null || field.getKind() != ElementKind.FIELD) {
-            return null;
+            return Optional.empty();
         }
 
-        TypeElement typeElement = (TypeElement) ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(field, ElementKind.CLASS);
-
+        TypeElement typeElement = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(field, ElementKind.CLASS);
 
         ExecutableElement getterMethod = getGetterMethod(field, typeElement);
 
         if (getterMethod != null) {
-            return getterMethod.getSimpleName().toString();
+            return Optional.of(getterMethod.getSimpleName().toString());
         }
 
-        if (checkLombokDataAnnotation(typeElement)
-                || checkLombokGetterAnnotationOnType(typeElement)
-                || checkLombokGetterAnnotationOnField(field)) {
-
-            return TypeUtils.TypeComparison.isTypeEqual(field.asType(), TypeUtils.TypeRetrieval.getTypeMirror(boolean.class)) ? getPrefixedName("is", field.getSimpleName().toString()) : getPrefixedName("get", field.getSimpleName().toString());
-
-        }
-
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -346,12 +309,12 @@ public final class BeanUtils {
      * @param field the fields VariableElement
      * @return the name of the setter method
      */
-    public static String getSetterMethodName(VariableElement field) {
+    public static Optional<String> getSetterMethodName(VariableElement field) {
         if (field == null || field.getKind() != ElementKind.FIELD) {
-            return null;
+            return Optional.empty();
         }
 
-        return checkHasSetter(field) ? getPrefixedName("set", field.getSimpleName().toString()) : null;
+        return checkHasSetter(field) ? Optional.of(getPrefixedName("set", field.getSimpleName().toString())) : Optional.empty();
     }
 
     /**
@@ -361,13 +324,13 @@ public final class BeanUtils {
      * @param typeElement the TypeElement
      * @return true if field has a getter method, otherwise false
      */
-    protected static boolean checkHasGetterMethod(VariableElement field, TypeElement typeElement) {
+    static boolean checkHasGetterMethod(VariableElement field, TypeElement typeElement) {
 
-        return getGetterMethod(field, ElementUtils.AccessEnclosingElements.<TypeElement>getFirstEnclosingElementOfKind(field, ElementKind.CLASS)) != null;
+        return getGetterMethod(field, ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(field, ElementKind.CLASS)) != null;
 
     }
 
-    protected static ExecutableElement getGetterMethod(VariableElement field, TypeElement typeElement) {
+    static ExecutableElement getGetterMethod(VariableElement field, TypeElement typeElement) {
         List<ExecutableElement> result = FluentElementFilter.createFluentElementFilter(typeElement.getEnclosedElements())
                 .applyFilter(AptkCoreMatchers.IS_METHOD)
                 .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByAllOf(Modifier.PUBLIC)
@@ -380,7 +343,7 @@ public final class BeanUtils {
         return result.size() >= 1 ? result.get(0) : null;
     }
 
-    protected static boolean checkHasSetterMethod(VariableElement field, TypeElement typeElement) {
+    static boolean checkHasSetterMethod(VariableElement field, TypeElement typeElement) {
 
 
         return getSetterMethod(field, typeElement) != null;
@@ -388,7 +351,7 @@ public final class BeanUtils {
 
     }
 
-    protected static ExecutableElement getSetterMethod(VariableElement field, TypeElement typeElement) {
+    static ExecutableElement getSetterMethod(VariableElement field, TypeElement typeElement) {
 
         TypeMirror[] parameters = {field.asType()};
 
@@ -404,7 +367,7 @@ public final class BeanUtils {
         return result.size() >= 1 ? result.get(0) : null;
     }
 
-    protected static String[] getPossibleGetterOrSetterNames(VariableElement field, String[] prefixes) {
+    static String[] getPossibleGetterOrSetterNames(VariableElement field, String[] prefixes) {
         String[] result = new String[prefixes.length];
 
         for (int i = 0; i < prefixes.length; i++) {

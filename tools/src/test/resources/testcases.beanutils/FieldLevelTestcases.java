@@ -2,8 +2,6 @@ package io.toolisticon.aptk.test;
 
 
 import io.toolisticon.aptk.tools.TestAnnotation;
-import lombok.Getter;
-import lombok.Setter;
 
 
 @TestAnnotation
@@ -22,29 +20,6 @@ public class FieldLevelTestcases {
     public void setFieldWithImplementedGetterAndSetters(String fieldWithImplementedGetterAndSetters) {
         this.fieldWithImplementedGetterAndSetters = fieldWithImplementedGetterAndSetters;
     }
-
-    // --------------------------------------------------------------
-
-    @Setter
-    private String fieldWithImplementedGetterAndSetterAnnotation;
-
-    public String getFieldWithImplementedGetterAndSetterAnnotation() {
-        return fieldWithImplementedGetterAndSetterAnnotation;
-    }
-
-    // --------------------------------------------------------------
-
-    @Getter
-    private String fieldWithImplementedSetterAndGetterAnnotation;
-
-    public void setFieldWithImplementedSetterAndGetterAnnotation(String fieldWithImplementedSetterAndGetterAnnotation) {
-        this.fieldWithImplementedSetterAndGetterAnnotation = fieldWithImplementedSetterAndGetterAnnotation;
-    }
-
-    // --------------------------------------------------------------
-
-    @Getter
-    private boolean booleanFieldWithGetterAnnotation;
 
     // --------------------------------------------------------------
 
