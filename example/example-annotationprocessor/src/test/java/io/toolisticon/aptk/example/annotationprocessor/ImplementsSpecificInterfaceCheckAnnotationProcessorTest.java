@@ -3,6 +3,7 @@ package io.toolisticon.aptk.example.annotationprocessor;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import org.junit.Test;
 public class ImplementsSpecificInterfaceCheckAnnotationProcessorTest {
 
 
-    private CompileTestBuilder.CompilationTestBuilder compilationTestBuilder = CompileTestBuilder.compilationTest()
+    private CompileTestBuilderApi.CompilationTestBuilder compilationTestBuilder = CompileTestBuilder.compilationTest()
             .addProcessors(ImplementsSpecificInterfaceCheckAnnotationProcessor.class);
 
     @Before

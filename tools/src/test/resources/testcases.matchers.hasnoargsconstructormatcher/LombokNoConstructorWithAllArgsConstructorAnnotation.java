@@ -1,6 +1,6 @@
 package io.toolisticon.aptk;
 
-import io.toolisticon.aptk.tools.TestAnnotation;
+import io.toolisticon.cute.TestAnnotation;
 import lombok.AllArgsConstructor;
 
 @TestAnnotation

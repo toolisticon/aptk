@@ -1,6 +1,6 @@
 package io.toolisticon.annotationprocessor;
 
-import io.toolisticon.aptk.tools.TestAnnotation;
+import io.toolisticon.cute.TestAnnotation;
 import io.toolisticon.aptk.tools.annotationvalueutilstestclasses.AnnotationValueTestAnnotation;
 
 import javax.tools.StandardLocation;

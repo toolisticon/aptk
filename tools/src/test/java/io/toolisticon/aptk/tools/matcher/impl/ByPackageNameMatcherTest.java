@@ -1,18 +1,18 @@
 package io.toolisticon.aptk.tools.matcher.impl;
 
 import io.toolisticon.aptk.common.ToolingProvider;
+import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.PassIn;
-import io.toolisticon.cute.UnitTest;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
 
@@ -23,7 +23,7 @@ import javax.lang.model.element.TypeElement;
 public class ByPackageNameMatcherTest {
 
 
-    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
+    private CompileTestBuilderApi.UnitTestBuilder unitTestBuilder = CompileTestBuilder
             .unitTest();
 
 
@@ -35,13 +35,14 @@ public class ByPackageNameMatcherTest {
     @Test
     public void getStringRepresentationOfPassedCharacteristic_happyPath() {
 
-        unitTestBuilder.defineTest(new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-                MatcherAssert.assertThat("Should return qualified package name", AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().getStringRepresentationOfPassedCharacteristic("abc").equals("abc"));
+        unitTestBuilder.defineTest(new APTKUnitTestProcessor<TypeElement>() {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-            }
-        })
+                        MatcherAssert.assertThat("Should return qualified package name", AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().getStringRepresentationOfPassedCharacteristic("abc").equals("abc"));
+
+                    }
+                })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -49,13 +50,14 @@ public class ByPackageNameMatcherTest {
     @Test
     public void getStringRepresentationOfPassedCharacteristic_passedNullValue_shouldReturnNull() {
 
-        unitTestBuilder.defineTest(new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-                MatcherAssert.assertThat("Should return null for null valued parameter", AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().getStringRepresentationOfPassedCharacteristic(null) == null);
+        unitTestBuilder.defineTest(new APTKUnitTestProcessor<TypeElement>() {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-            }
-        })
+                        MatcherAssert.assertThat("Should return null for null valued parameter", AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().getStringRepresentationOfPassedCharacteristic(null) == null);
+
+                    }
+                })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -64,14 +66,15 @@ public class ByPackageNameMatcherTest {
     @Test
     public void checkForMatchingCharacteristic_match() {
 
-        unitTestBuilder.<TypeElement>defineTestWithPassedInElement(this.getClass(), new UnitTest<TypeElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+        unitTestBuilder.<TypeElement>defineTestWithPassedInElement(this.getClass(), new APTKUnitTestProcessor<TypeElement>() {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat("Should find match correctly", AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(element, this.getClass().getPackage().getName()));
 
-            }
-        })
+                        MatcherAssert.assertThat("Should find match correctly", AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(element, this.getClass().getPackage().getName()));
+
+                    }
+                })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -79,13 +82,14 @@ public class ByPackageNameMatcherTest {
     @Test
     public void checkForMatchingCharacteristic_mismatch() {
 
-        unitTestBuilder.<TypeElement>defineTestWithPassedInElement(this.getClass(), new UnitTest<TypeElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
-                MatcherAssert.assertThat("Should find match correctly", !AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(element, "xyz"));
+        unitTestBuilder.<TypeElement>defineTestWithPassedInElement(this.getClass(), new APTKUnitTestProcessor<TypeElement>() {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-            }
-        })
+                        MatcherAssert.assertThat("Should find match correctly", !AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(element, "xyz"));
+
+                    }
+                })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -93,19 +97,20 @@ public class ByPackageNameMatcherTest {
     @Test
     public void checkForMatchingCharacteristic_mismatch_checkErrorMessage() {
 
-        unitTestBuilder.<TypeElement>defineTestWithPassedInElement(this.getClass(), new UnitTest<TypeElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
-                ToolingProvider.setTooling(processingEnvironment);
-                AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(element, "xyz");
-                FluentElementValidator.createFluentElementValidator(element)
-                        .applyValidator(AptkCoreMatchers.BY_PACKAGE_NAME)
-                        .hasOneOf("abc")
-                        .validateAndIssueMessages();
-                ToolingProvider.clearTooling();
+        unitTestBuilder.<TypeElement>defineTestWithPassedInElement(this.getClass(), new APTKUnitTestProcessor<TypeElement>() {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-            }
-        })
+                        ToolingProvider.setTooling(processingEnvironment);
+                        AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(element, "xyz");
+                        FluentElementValidator.createFluentElementValidator(element)
+                                .applyValidator(AptkCoreMatchers.BY_PACKAGE_NAME)
+                                .hasOneOf("abc")
+                                .validateAndIssueMessages();
+                        ToolingProvider.clearTooling();
+
+                    }
+                })
                 .compilationShouldFail()
                 .expectErrorMessageThatContains("(enclosing) PackageElement must  have one of the following qualified names: [abc]")
                 .executeTest();
@@ -114,13 +119,14 @@ public class ByPackageNameMatcherTest {
     @Test
     public void checkForMatchingCharacteristic_nullValuedElement() {
 
-        unitTestBuilder.defineTest(new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-                MatcherAssert.assertThat("Should return false in case of null valued element", !AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(null, "xyz"));
+        unitTestBuilder.defineTest(new APTKUnitTestProcessor<TypeElement>() {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-            }
-        })
+                        MatcherAssert.assertThat("Should return false in case of null valued element", !AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(null, "xyz"));
+
+                    }
+                })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -128,13 +134,14 @@ public class ByPackageNameMatcherTest {
     @Test
     public void checkForMatchingCharacteristic_nullValuedRawType() {
 
-        unitTestBuilder.<TypeElement>defineTestWithPassedInElement(this.getClass(), new UnitTest<TypeElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
-                MatcherAssert.assertThat("Should return false in case of null valued element", !AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(element, null));
+        unitTestBuilder.<TypeElement>defineTestWithPassedInElement(this.getClass(), new APTKUnitTestProcessor<TypeElement>() {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-            }
-        })
+                        MatcherAssert.assertThat("Should return false in case of null valued element", !AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(element, null));
+
+                    }
+                })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -142,13 +149,14 @@ public class ByPackageNameMatcherTest {
     @Test
     public void checkForMatchingCharacteristic_nullValuedElementAndRawType() {
 
-        unitTestBuilder.defineTest(new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-                MatcherAssert.assertThat("Should return false in case of null valued element", !AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(null, null));
+        unitTestBuilder.defineTest(new APTKUnitTestProcessor<TypeElement>() {
+                    @Override
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-            }
-        })
+                        MatcherAssert.assertThat("Should return false in case of null valued element", !AptkCoreMatchers.BY_PACKAGE_NAME.getMatcher().checkForMatchingCharacteristic(null, null));
+
+                    }
+                })
                 .compilationShouldSucceed()
                 .executeTest();
     }

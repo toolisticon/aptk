@@ -2,7 +2,8 @@ package io.toolisticon.annotationprocessor;
 
 import io.toolisticon.aptk.tools.FilterTestAnnotation1;
 import io.toolisticon.aptk.tools.FilterTestAnnotation2;
-import io.toolisticon.aptk.tools.TestAnnotation;
+import io.toolisticon.cute.TestAnnotation;
+
 
 import java.util.Comparator;
 import java.util.List;

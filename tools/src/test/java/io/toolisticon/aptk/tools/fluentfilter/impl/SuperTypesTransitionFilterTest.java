@@ -1,17 +1,19 @@
 package io.toolisticon.aptk.tools.fluentfilter.impl;
 
-import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentfilter.TransitionFilters;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class SuperTypesTransitionFilterTest {
         MessagerUtils.setPrintMessageCodes(true);
     }
 
-    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
+    private CompileTestBuilderApi.UnitTestBuilder unitTestBuilder = CompileTestBuilder
             .unitTest()
             .useSource(JavaFileObjectUtils.readFromResource("/AnnotationClassAttributeTestClass.java"));
 
@@ -47,30 +49,31 @@ public class SuperTypesTransitionFilterTest {
     @Test
     public void parentElementTransitionFilter_testTransitionWithSingleInputElements() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-                        TypeElement testElement = TypeUtils.TypeRetrieval.getTypeElement(InheritingClass.class);
-
-                        MatcherAssert.assertThat("PRECONDITION : testELement must not be null", testElement, Matchers.notNullValue());
-
-                        TypeElement expectedSuperType1 = TypeUtils.TypeRetrieval.getTypeElement(SuperClass.class);
-                        TypeElement expectedSuperType2 = TypeUtils.TypeRetrieval.getTypeElement(Object.class);
-                        TypeElement expectedSuperType3 = TypeUtils.TypeRetrieval.getTypeElement(TestInterface.class);
-
-                        MatcherAssert.assertThat("PRECONDITION : expectedSuperType1 must not be null", expectedSuperType1, Matchers.notNullValue());
-                        MatcherAssert.assertThat("PRECONDITION : expectedSuperType2 must not be null", expectedSuperType2, Matchers.notNullValue());
-                        MatcherAssert.assertThat("PRECONDITION : expectedSuperType3 must not be null", expectedSuperType3, Matchers.notNullValue());
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
 
-                        List<TypeElement> list = FluentElementFilter.createFluentElementFilter(testElement).applyTransitionFilter(TransitionFilters.SUPER_TYPE_ELEMENTS).getResult();
-                        MatcherAssert.assertThat(list, Matchers.containsInAnyOrder(expectedSuperType1, expectedSuperType2, expectedSuperType3));
+                                TypeElement testElement = TypeUtils.TypeRetrieval.getTypeElement(InheritingClass.class);
+
+                                MatcherAssert.assertThat("PRECONDITION : testELement must not be null", testElement, Matchers.notNullValue());
+
+                                TypeElement expectedSuperType1 = TypeUtils.TypeRetrieval.getTypeElement(SuperClass.class);
+                                TypeElement expectedSuperType2 = TypeUtils.TypeRetrieval.getTypeElement(Object.class);
+                                TypeElement expectedSuperType3 = TypeUtils.TypeRetrieval.getTypeElement(TestInterface.class);
+
+                                MatcherAssert.assertThat("PRECONDITION : expectedSuperType1 must not be null", expectedSuperType1, Matchers.notNullValue());
+                                MatcherAssert.assertThat("PRECONDITION : expectedSuperType2 must not be null", expectedSuperType2, Matchers.notNullValue());
+                                MatcherAssert.assertThat("PRECONDITION : expectedSuperType3 must not be null", expectedSuperType3, Matchers.notNullValue());
 
 
-                    }
-                })
+                                List<TypeElement> list = FluentElementFilter.createFluentElementFilter(testElement).applyTransitionFilter(TransitionFilters.SUPER_TYPE_ELEMENTS).getResult();
+                                MatcherAssert.assertThat(list, Matchers.containsInAnyOrder(expectedSuperType1, expectedSuperType2, expectedSuperType3));
+
+
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
 
@@ -79,30 +82,30 @@ public class SuperTypesTransitionFilterTest {
     @Test
     public void parentElementTransitionFilter_testTransitionWithMultipleInputElements() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        TypeElement testElement = TypeUtils.TypeRetrieval.getTypeElement(InheritingClass.class);
+                                TypeElement testElement = TypeUtils.TypeRetrieval.getTypeElement(InheritingClass.class);
 
-                        MatcherAssert.assertThat("PRECONDITION : testELement must not be null", testElement, Matchers.notNullValue());
+                                MatcherAssert.assertThat("PRECONDITION : testELement must not be null", testElement, Matchers.notNullValue());
 
-                        TypeElement expectedSuperType1 = TypeUtils.TypeRetrieval.getTypeElement(SuperClass.class);
-                        TypeElement expectedSuperType2 = TypeUtils.TypeRetrieval.getTypeElement(Object.class);
-                        TypeElement expectedSuperType3 = TypeUtils.TypeRetrieval.getTypeElement(TestInterface.class);
+                                TypeElement expectedSuperType1 = TypeUtils.TypeRetrieval.getTypeElement(SuperClass.class);
+                                TypeElement expectedSuperType2 = TypeUtils.TypeRetrieval.getTypeElement(Object.class);
+                                TypeElement expectedSuperType3 = TypeUtils.TypeRetrieval.getTypeElement(TestInterface.class);
 
-                        MatcherAssert.assertThat("PRECONDITION : expectedSuperType1 must not be null", expectedSuperType1, Matchers.notNullValue());
-                        MatcherAssert.assertThat("PRECONDITION : expectedSuperType2 must not be null", expectedSuperType2, Matchers.notNullValue());
-                        MatcherAssert.assertThat("PRECONDITION : expectedSuperType3 must not be null", expectedSuperType3, Matchers.notNullValue());
-
-
-                        List<TypeElement> list = FluentElementFilter.createFluentElementFilter(testElement, testElement).applyTransitionFilter(TransitionFilters.SUPER_TYPE_ELEMENTS).getResult();
-                        MatcherAssert.assertThat(list, Matchers.containsInAnyOrder(expectedSuperType1, expectedSuperType2, expectedSuperType3, expectedSuperType1, expectedSuperType2, expectedSuperType3));
+                                MatcherAssert.assertThat("PRECONDITION : expectedSuperType1 must not be null", expectedSuperType1, Matchers.notNullValue());
+                                MatcherAssert.assertThat("PRECONDITION : expectedSuperType2 must not be null", expectedSuperType2, Matchers.notNullValue());
+                                MatcherAssert.assertThat("PRECONDITION : expectedSuperType3 must not be null", expectedSuperType3, Matchers.notNullValue());
 
 
-                    }
-                })
+                                List<TypeElement> list = FluentElementFilter.createFluentElementFilter(testElement, testElement).applyTransitionFilter(TransitionFilters.SUPER_TYPE_ELEMENTS).getResult();
+                                MatcherAssert.assertThat(list, Matchers.containsInAnyOrder(expectedSuperType1, expectedSuperType2, expectedSuperType3, expectedSuperType1, expectedSuperType2, expectedSuperType3));
+
+
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
 

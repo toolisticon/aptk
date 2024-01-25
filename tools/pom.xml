@@ -32,6 +32,18 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-cute</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute-legacy</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 

@@ -1,23 +1,25 @@
 package io.toolisticon.aptk.tools.fluentvalidator;
 
-import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.ProcessingEnvironmentUtils;
+import io.toolisticon.aptk.tools.TestCoreMatcherFactory;
 import io.toolisticon.aptk.tools.command.Command;
 import io.toolisticon.aptk.tools.command.CommandWithReturnType;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.corematcher.CoreMatcherValidationMessages;
 import io.toolisticon.aptk.tools.corematcher.PlainValidationMessage;
 import io.toolisticon.aptk.tools.corematcher.ValidationMessage;
-import io.toolisticon.aptk.tools.TestCoreMatcherFactory;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -36,23 +38,23 @@ public class FluentElementValidatorTest {
         MessagerUtils.setPrintMessageCodes(true);
     }
 
-    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
+    private CompileTestBuilderApi.UnitTestBuilder unitTestBuilder = CompileTestBuilder
             .unitTest()
             .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java"));
 
     @Test
     public void validateByNoneOfCriteriaWithDefaults() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
 
                 .compilationShouldSucceed()
                 .executeTest();
@@ -62,16 +64,16 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByNoneOfCriteriaWithDefaults_failingValidation() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
 
                 .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
                 .compilationShouldFail()
@@ -83,16 +85,16 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByOneOfCriteriaWithDefaults() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
 
                 .compilationShouldSucceed()
                 .executeTest();
@@ -103,16 +105,16 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByOneOfCriteriaWithDefaults_failingValidation() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
 
 
                 .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
@@ -125,16 +127,16 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByAllOfCriteriaWithDefaults() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
 
                 .compilationShouldSucceed()
                 .executeTest();
@@ -144,16 +146,16 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByAllOfCriteriaWithDefaults_failingValidation() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
                 .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
                 .compilationShouldFail()
                 .executeTest();
@@ -163,14 +165,14 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByAtLeastOneOfCriteriaWithDefaults() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
-                    }
-                })
+                                FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
 
@@ -179,16 +181,16 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByAtLeastOneOfCriteriaWithDefaults_failingValidation() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
 
                 .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode())
                 .compilationShouldFail()
@@ -199,16 +201,16 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByIsCriteria_elementBasedAndTypeElementBased_withDefaults() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_TYPE_ELEMENT).is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_TYPE_ELEMENT).is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
 
@@ -217,16 +219,16 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByIsCriteria_elementBasedAndTypeElementBased_withDefaults_failingValidation_ELEMENT_CHECK() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
 
                 .expectErrorMessageThatContains(CoreMatcherValidationMessages.IS_EXECUTABLE_ELEMENT.getCode())
 
@@ -239,16 +241,16 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByIsCriteria_elementBasedAndTypeElementBased_withDefaults_failingValidation_ELEMENT_KIND_CHECK() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_TYPE_ELEMENT).is(AptkCoreMatchers.IS_INTERFACE).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_TYPE_ELEMENT).is(AptkCoreMatchers.IS_INTERFACE).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
                 .compilationShouldFail()
                 .expectErrorMessageThatContains(CoreMatcherValidationMessages.IS_INTERFACE.getCode())
 
@@ -261,21 +263,21 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByImplicitCriteria_hasReturnType_withDefaults() {
 
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
-                        MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
-                        MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
-
-
-                        FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+                                List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
+                                MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
+                                MatcherAssert.assertThat("Precondition : element must be method", ElementUtils.CheckKindOfElement.isMethod(methods.get(0)));
 
 
-                    }
-                })
+                                FluentElementValidator.createFluentElementValidator(ElementUtils.CastElement.castMethod(methods.get(0))).applyValidator(AptkCoreMatchers.HAS_VOID_RETURN_TYPE).validateAndIssueMessages();
+
+
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
 
@@ -285,10 +287,10 @@ public class FluentElementValidatorTest {
     @Test
     public void validateByImplicitCriteria_hasReturnType_withDefaults_failibgValidation() {
         unitTestBuilder.compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
                                 MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
@@ -314,30 +316,30 @@ public class FluentElementValidatorTest {
 
     @Test
     public void validateByNoneOfCriteriaWithCustomSettings() {
-        unitTestBuilder.useProcessor(
-                new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
+                                FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
 
-                    }
-                })
+                            }
+                        })
 
                 .compilationShouldSucceed()
                 .executeTest();
-        
+
     }
 
     @Test
     public void validateByNoneOfCriteriaWithCustomSettings_failingValidation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -348,7 +350,7 @@ public class FluentElementValidatorTest {
 
                 .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
                 .executeTest();
-        
+
     }
 
 
@@ -356,10 +358,10 @@ public class FluentElementValidatorTest {
     public void validatByOneOfCriteriaWithCustomSettings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -368,7 +370,7 @@ public class FluentElementValidatorTest {
                         }
                 )
                 .executeTest();
-        
+
     }
 
 
@@ -376,10 +378,10 @@ public class FluentElementValidatorTest {
     public void validateByOneOfCriteriaWithCustomSettings_failingValidation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
@@ -400,10 +402,10 @@ public class FluentElementValidatorTest {
     public void validateByAllOfCriteriaWithCustomSettings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -421,10 +423,10 @@ public class FluentElementValidatorTest {
     public void validateByAllOfCriteriaWithCustomSettings_failingValidation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
@@ -435,7 +437,7 @@ public class FluentElementValidatorTest {
 
                 .expectErrorMessageThatContains(CoreMatcherValidationMessages.BY_MODIFIER.getCode(), "UPS")
                 .executeTest();
-        
+
     }
 
 
@@ -443,10 +445,10 @@ public class FluentElementValidatorTest {
     public void validateByAtLeastOneOfCriteriaWithCustomSettings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).warning().applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -464,10 +466,10 @@ public class FluentElementValidatorTest {
     public void validate_by_at_least_one_of_criteria_with_custom_settings__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
 
@@ -488,10 +490,10 @@ public class FluentElementValidatorTest {
     public void validateby_is_criteria__element_based_and_type_element_based__with_custom_settings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(AptkCoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
@@ -509,10 +511,10 @@ public class FluentElementValidatorTest {
     public void validate_by_is_criteria__element_based_and_type_element_based__with_custom_settings__failing_validation__ELEMENT_CHECK() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").is(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).is(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
@@ -533,10 +535,10 @@ public class FluentElementValidatorTest {
     public void validate_by_is_criteria__element_based_and_type_element_based__with_custom_settings__failing_validation__ELEMENT_KIND_CHECK() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator((Element) element).is(AptkCoreMatchers.IS_TYPE_ELEMENT).setCustomMessage("UPS").is(AptkCoreMatchers.IS_INTERFACE).validateAndIssueMessages();
 
@@ -557,10 +559,10 @@ public class FluentElementValidatorTest {
     public void validate_by_implicit_criteria__has_return_type__with_custom_settings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
                                 MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
@@ -583,10 +585,10 @@ public class FluentElementValidatorTest {
     public void validate_by_implicit_criteria__has_return_type__with_custom_settings__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
                                 MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
@@ -616,10 +618,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_none_of_criteria_with_defaults() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -637,10 +639,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_none_of_criteria_with_defaults__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
@@ -661,10 +663,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_one_of_criteria_with_defaults() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
@@ -682,10 +684,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_one_of_criteria_with_defaults__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -706,10 +708,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_all_of_criteria_with_defaults() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED, Modifier.FINAL).validateAndIssueMessages();
 
@@ -727,10 +729,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_all_of_criteria_with_defaults__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -751,10 +753,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_at_least_one_of_criteria_with_defaults() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
 
@@ -772,10 +774,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_at_least_one_of_criteria_with_defaults__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC, Modifier.ABSTRACT).validateAndIssueMessages();
 
@@ -796,10 +798,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_defaults() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator((Element) element).isNot(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(AptkCoreMatchers.IS_INTERFACE).validateAndIssueMessages();
 
@@ -817,10 +819,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_defaults__failing_validation__ELEMENT_CHECK() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator((Element) element).isNot(AptkCoreMatchers.IS_TYPE_ELEMENT).isNot(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
@@ -841,10 +843,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_defaults__failing_validation__ELEMENT_KIND_CHECK() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator((Element) element).isNot(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).isNot(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
@@ -865,10 +867,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_implicit_criteria__has_return_type__with_defaults() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
                                 MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
@@ -890,10 +892,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_implicit_criteria__has_return_type__with_defaults__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
                                 MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
@@ -921,10 +923,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_none_of_criteria_with_custom_settings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -942,10 +944,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_none_of_criteria_with_custom_settings__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
@@ -966,10 +968,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_one_of_criteria_with_custom_settings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PROTECTED).validateAndIssueMessages();
 
@@ -987,10 +989,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_one_of_criteria_with_custom_settings__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasOneOf(Modifier.ABSTRACT, Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -1011,10 +1013,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_all_of_criteria_with_custom_settings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PROTECTED).validateAndIssueMessages();
 
@@ -1032,10 +1034,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_all_of_criteria_with_custom_settings__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -1056,10 +1058,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_at_least_one_of_criteria_with_custom_settings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).warning().applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PROTECTED, Modifier.ABSTRACT).validateAndIssueMessages();
 
@@ -1077,10 +1079,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_at_least_one_of_criteria_with_custom_settings__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).setCustomMessage("UPS").applyInvertedValidator(AptkCoreMatchers.BY_MODIFIER).hasAtLeastOneOf(Modifier.PUBLIC).validateAndIssueMessages();
 
@@ -1101,10 +1103,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_custom_settings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(AptkCoreMatchers.IS_INTERFACE).validateAndIssueMessages();
 
@@ -1122,10 +1124,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_custom_settings__failing_validation__ELEMENT_CHECK() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator((Element) element).setCustomMessage("UPS").isNot(AptkCoreMatchers.IS_TYPE_ELEMENT).isNot(AptkCoreMatchers.IS_METHOD).validateAndIssueMessages();
 
@@ -1146,10 +1148,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_is_criteria__element_based_and_type_element_based__with_custom_settings__failing_validation__ELEMENT_KIND_CHECK() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator((Element) element).isNot(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).setCustomMessage("UPS").isNot(AptkCoreMatchers.IS_CLASS).validateAndIssueMessages();
 
@@ -1170,10 +1172,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_implicit_criteria__has_return_type__with_custom_settings() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "methodWithReturnTypeAndParameters");
                                 MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
@@ -1196,10 +1198,10 @@ public class FluentElementValidatorTest {
     public void validate_inverted_by_implicit_criteria__has_return_type__with_custom_settings__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
                                 MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
@@ -1225,10 +1227,10 @@ public class FluentElementValidatorTest {
     public void validate_note_warning_and_error_message__failing_validation_with_setCustomMessage_done_upfront() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
                                 MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
@@ -1268,10 +1270,10 @@ public class FluentElementValidatorTest {
     public void validate_note_warning_and_error_message__failing_validation() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 List<? extends Element> methods = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "synchronizedMethod");
                                 MatcherAssert.assertThat("Precondition : must have found exactly one element", methods.size() == 1);
@@ -1311,10 +1313,10 @@ public class FluentElementValidatorTest {
     public void validate_Implicit_Element_based_validator() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1339,10 +1341,10 @@ public class FluentElementValidatorTest {
     public void validate_Implicit_validator() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1368,10 +1370,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Implicit_Element_based_validator() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1397,10 +1399,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Implicit_validator() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1426,10 +1428,10 @@ public class FluentElementValidatorTest {
     public void validate_Inclusive_Characteristics_Element_based_validator__none_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1455,10 +1457,10 @@ public class FluentElementValidatorTest {
     public void validate_Inclusive_Characteristics_validator__none_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1484,10 +1486,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Inclusive_Characteristics_Element_based_validator__none_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1518,10 +1520,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Inclusive_Characteristics_validator__none_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1552,10 +1554,10 @@ public class FluentElementValidatorTest {
     public void validate_Inclusive_Characteristics_Element_based_validator__one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1581,10 +1583,10 @@ public class FluentElementValidatorTest {
     public void validate_Inclusive_Characteristics_validator__one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1610,10 +1612,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Inclusive_Characteristics_Element_based_validator__one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1644,10 +1646,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Inclusive_Characteristics_validator__one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1678,10 +1680,10 @@ public class FluentElementValidatorTest {
     public void validate_Inclusive_Characteristics_Element_based_validator___at_least_one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1712,10 +1714,10 @@ public class FluentElementValidatorTest {
     public void validate_Inclusive_Characteristics_validator__at_least_one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1746,10 +1748,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Inclusive_Characteristics_Element_based_validator___at_least_one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1780,10 +1782,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Inclusive_Characteristics_validator__at_least_one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1814,10 +1816,10 @@ public class FluentElementValidatorTest {
     public void validate_Inclusive_Characteristics_Element_based_validator__all_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1843,10 +1845,10 @@ public class FluentElementValidatorTest {
     public void validate_Inclusive_Characteristics_validator__all_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1872,10 +1874,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Inclusive_Characteristics_Element_based_validator__all_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1906,10 +1908,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Inclusive_Characteristics_validator__all_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1941,10 +1943,10 @@ public class FluentElementValidatorTest {
     public void validate_Exclusive_Characteristics_Element_based_validator__none_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1970,10 +1972,10 @@ public class FluentElementValidatorTest {
     public void validate_Exclusive_Characteristics_validator__none_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -1999,10 +2001,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Exclusive_Characteristics_Element_based_validator__none_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -2033,10 +2035,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Exclusive_Characteristics_validator__none_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -2067,10 +2069,10 @@ public class FluentElementValidatorTest {
     public void validate_Exclusive_Characteristics_Element_based_validator__one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -2096,10 +2098,10 @@ public class FluentElementValidatorTest {
     public void validate_Exclusive_Characteristics_validator__one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -2130,10 +2132,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Exclusive_Characteristics_Element_based_validator__one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -2164,10 +2166,10 @@ public class FluentElementValidatorTest {
     public void validate_INVERTED_Exclusive_Characteristics_validator__one_of() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element)
@@ -2193,10 +2195,10 @@ public class FluentElementValidatorTest {
     public void validate_IS_Element_based_validator() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator((Element) element).is(TestCoreMatcherFactory.createElementBasedIsCoreMatcher(TypeElement.class, "SUCCESS", true)).validateAndIssueMessages()
@@ -2220,10 +2222,10 @@ public class FluentElementValidatorTest {
     public void validate_IS_validator() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 MatcherAssert.assertThat(
                                         FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true)).validateAndIssueMessages()
@@ -2247,10 +2249,10 @@ public class FluentElementValidatorTest {
     public void execute_command__if_validation_succeeds() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
 
                                 FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "SUCCESS", true))
@@ -2279,10 +2281,10 @@ public class FluentElementValidatorTest {
     public void execute_command_with_return_value__if_validation_succeeds() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
 
                                 MatcherAssert.assertThat(
@@ -2314,20 +2316,21 @@ public class FluentElementValidatorTest {
     public void dont_execute_command_but_trigger_validation_message__if_validation_fails() {
         unitTestBuilder
                 .compilationShouldSucceed()
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                                  @Override
-                                  protected void testCase(TypeElement element) {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                                      FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
-                                              .executeCommand(
-                                                      new Command<TypeElement>() {
-                                                          @Override
-                                                          public void execute(TypeElement element) {
-                                                              ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
-                                                          }
-                                                      });
-                                  }
-                              }
+                                FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                        .executeCommand(
+                                                new Command<TypeElement>() {
+                                                    @Override
+                                                    public void execute(TypeElement element) {
+                                                        ProcessingEnvironmentUtils.getMessager().printMessage(Diagnostic.Kind.ERROR, "EXECUTED COMMAND");
+                                                    }
+                                                });
+                            }
+                        }
                 )
                 .executeTest();
 
@@ -2339,10 +2342,10 @@ public class FluentElementValidatorTest {
     public void dont_execute_command__if_validation_fails() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
                                         .executeCommandAndIssueMessages(
@@ -2368,10 +2371,10 @@ public class FluentElementValidatorTest {
     public void dont_execute_command_with_return_value__if_validation_fails() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
                                         .executeCommandAndIssueMessages(
@@ -2397,25 +2400,25 @@ public class FluentElementValidatorTest {
     public void custom_message__with_ValidationMessage_class_and_Messageargs() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element)
                                         .error().setCustomMessage(
-                                        new ValidationMessage() {
-                                            @Override
-                                            public String getCode() {
-                                                return "XXX";
-                                            }
+                                                new ValidationMessage() {
+                                                    @Override
+                                                    public String getCode() {
+                                                        return "XXX";
+                                                    }
 
-                                            @Override
-                                            public String getMessage() {
-                                                return "ERROR ${0} ${0} ${1}!";
-                                            }
-                                        }, "YES", "AGAIN"
-                                ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                                    @Override
+                                                    public String getMessage() {
+                                                        return "ERROR ${0} ${0} ${1}!";
+                                                    }
+                                                }, "YES", "AGAIN"
+                                        ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
                                         .validateAndIssueMessages();
                             }
                         }
@@ -2432,16 +2435,16 @@ public class FluentElementValidatorTest {
     public void custom_message__with_ValidationMessage_class_without_MessageArgs() {
         unitTestBuilder
                 .compilationShouldFail()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
                                 FluentElementValidator.createFluentElementValidator(element)
                                         .error().setCustomMessage(
-                                        PlainValidationMessage.create("XXX", "ERROR!")
+                                                PlainValidationMessage.create("XXX", "ERROR!")
 
-                                ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
+                                        ).is(TestCoreMatcherFactory.createIsCoreMatcher(TypeElement.class, TypeElement.class, "FAILURE", false))
                                         .validateAndIssueMessages();
                             }
                         }

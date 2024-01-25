@@ -1,15 +1,15 @@
 package io.toolisticon.aptk.annotationwrapper.test.annotationontype;
 
 import io.toolisticon.aptk.annotationwrapper.test.EmbeddedAnnotation;
-import io.toolisticon.aptk.annotationwrapper.test.TestAnnotation;
+import io.toolisticon.aptk.annotationwrapper.test.ExampleTestAnnotation;
 import io.toolisticon.aptk.annotationwrapper.test.TestDefaultsAnnotation;
 import io.toolisticon.aptk.annotationwrapper.test.TestEnum;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
-import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.PassIn;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -27,7 +27,7 @@ import javax.lang.model.type.TypeMirror;
  */
 public class IntegrationTest {
 
-    CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder.unitTest();
+    CompileTestBuilderApi.UnitTestBuilder unitTestBuilder = CompileTestBuilder.unitTest();
 
     @Before
     public void init() {
@@ -36,7 +36,7 @@ public class IntegrationTest {
     }
 
     @PassIn
-    @TestAnnotation(
+    @ExampleTestAnnotation(
             stringAttribute = "WTF",
             doubleAttribute = 1.0,
             longAttribute = 1L,
@@ -58,7 +58,7 @@ public class IntegrationTest {
             @Override
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
-                TestAnnotationWrapper testAnnotationWrapper = TestAnnotationWrapper.wrap(typeElement);
+                ExampleTestAnnotationWrapper testAnnotationWrapper = ExampleTestAnnotationWrapper.wrap(typeElement);
 
                 // check if element is returned correctly
                 MatcherAssert.assertThat(testAnnotationWrapper._annotatedElement(), Matchers.is((Element) typeElement));
@@ -145,7 +145,7 @@ public class IntegrationTest {
             public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
                 // single attribute values
-                TestAnnotationWrapper wrappedAnnotation = TestAnnotationWrapper.wrap(typeElement);
+                ExampleTestAnnotationWrapper wrappedAnnotation = ExampleTestAnnotationWrapper.wrap(typeElement);
                 MatcherAssert.assertThat(wrappedAnnotation.forwardedMethod("yes"), Matchers.is("it worked : " + "yes"));
                 wrappedAnnotation.forwardedMethodWithNoReturnValue("yes");
                 wrappedAnnotation.autoDetectedMethod("yes");

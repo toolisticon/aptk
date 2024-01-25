@@ -2,6 +2,7 @@ package io.toolisticon.aptk.tools;
 
 import io.toolisticon.aptk.tools.generators.FileObjectUtilsTestAnnotationProcessor;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,16 +17,16 @@ public class FilerUtilsTest {
         MessagerUtils.setPrintMessageCodes(true);
     }
 
-    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
-            .unitTest()
-            .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java"));
+    private CompileTestBuilderApi.CompilationTestBuilder compilationTestBuilder = CompileTestBuilder
+            .compilationTest()
+            .addSources(JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java"));
 
 
     @Test
     public void testValidUsage() {
 
-        unitTestBuilder.useProcessor(new FileObjectUtilsTestAnnotationProcessor())
-                .useSource(JavaFileObjectUtils.readFromResource("/testcases/generators/FilerUtilsTestClass.java"))
+        compilationTestBuilder.addProcessors(FileObjectUtilsTestAnnotationProcessor.class)
+                .addSources(JavaFileObjectUtils.readFromResource("/testcases/generators/FilerUtilsTestClass.java"))
                 .compilationShouldSucceed()
                 .expectThatFileObjectExists(StandardLocation.CLASS_OUTPUT, "", "testOutput.txt", JavaFileObjectUtils.readFromResource("/testcases/generators/expectedResult.txt"))
                 .executeTest();

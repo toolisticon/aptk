@@ -112,6 +112,12 @@
             <artifactId>cute</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute-legacy</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 

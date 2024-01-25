@@ -2,6 +2,7 @@ package io.toolisticon.aptk.tools.wrapper;
 
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.PassIn;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class ExecutableElementWrapperTest {
 
-    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
+    private CompileTestBuilderApi.UnitTestBuilder unitTestBuilder = CompileTestBuilder
             .unitTest();
 
     @Before
