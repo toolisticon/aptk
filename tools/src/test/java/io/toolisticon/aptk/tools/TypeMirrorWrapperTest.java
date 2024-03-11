@@ -4,7 +4,6 @@ import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
 import io.toolisticon.cute.UnitTest;
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -60,7 +59,7 @@ public class TypeMirrorWrapperTest {
     @Test
     public void test_wrap() {
 
-        CompileTestBuilder.unitTest().<Element>defineTest((processingEnvironment, element) -> {
+        CompileTestBuilder.unitTest().defineTest((processingEnvironment, element) -> {
 
             ToolingProvider.setTooling(processingEnvironment);
             try {
@@ -108,7 +107,7 @@ public class TypeMirrorWrapperTest {
     }
 
 
-    public static enum EnumType {
+    public enum EnumType {
 
     }
 
@@ -119,71 +118,59 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_isClassType() {
-        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+        CompileTestBuilder.unitTest().defineTest((processingEnvironment, element) -> {
 
-                ToolingProvider.setTooling(processingEnvironment);
+            ToolingProvider.setTooling(processingEnvironment);
 
-                assertThat("must return true for Class", TypeMirrorWrapper.wrap(ClassType.class).isClass());
-                assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isClass());
-                assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isClass());
-                assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isClass());
+            assertThat("must return true for Class", TypeMirrorWrapper.wrap(ClassType.class).isClass());
+            assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isClass());
+            assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isClass());
+            assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isClass());
 
-            }
         }).executeTest();
     }
 
     @Test
     public void test_isEnumType() {
-        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+        CompileTestBuilder.unitTest().defineTest((processingEnvironment, element) -> {
 
-                ToolingProvider.setTooling(processingEnvironment);
+            ToolingProvider.setTooling(processingEnvironment);
 
-                assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isEnum());
-                assertThat("must return true for Enum", TypeMirrorWrapper.wrap(EnumType.class).isEnum());
-                assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isEnum());
-                assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isEnum());
+            assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isEnum());
+            assertThat("must return true for Enum", TypeMirrorWrapper.wrap(EnumType.class).isEnum());
+            assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isEnum());
+            assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isEnum());
 
-            }
         }).executeTest();
     }
 
     @Test
     public void test_isInterfaceType() {
-        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+        CompileTestBuilder.unitTest().defineTest((processingEnvironment, element) -> {
 
-                ToolingProvider.setTooling(processingEnvironment);
+            ToolingProvider.setTooling(processingEnvironment);
 
-                assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isInterface());
-                assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isInterface());
-                assertThat("must return true for Interface", TypeMirrorWrapper.wrap(InterfaceType.class).isInterface());
-                assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isInterface());
+            assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isInterface());
+            assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isInterface());
+            assertThat("must return true for Interface", TypeMirrorWrapper.wrap(InterfaceType.class).isInterface());
+            assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isInterface());
 
 
-            }
         }).executeTest();
     }
 
     @Test
     public void test_isAnnotationType() {
-        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
+        CompileTestBuilder.unitTest().defineTest((processingEnvironment, element) -> {
 
-                ToolingProvider.setTooling(processingEnvironment);
+            ToolingProvider.setTooling(processingEnvironment);
 
-                assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isAnnotation());
-                assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isAnnotation());
-                assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isAnnotation());
-                assertThat("must return true for annotation", TypeMirrorWrapper.wrap(Target.class).isAnnotation());
+            assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isAnnotation());
+            assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isAnnotation());
+            assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isAnnotation());
+            assertThat("must return true for annotation", TypeMirrorWrapper.wrap(Target.class).isAnnotation());
 
 
-            }
         }).executeTest();
     }
 
@@ -452,16 +439,14 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getImports() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(ImportTest.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(ImportTest.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> {
 
-                Set<String> imports = TypeMirrorWrapper.wrap(element.asType()).getImports();
+                    Set<String> imports = TypeMirrorWrapper.wrap(element.asType()).getImports();
 
-                assertThat(imports, Matchers.containsInAnyOrder(List.class.getCanonicalName(), Map.class.getCanonicalName(), Serializable.class.getCanonicalName()));
+                    assertThat(imports, Matchers.containsInAnyOrder(List.class.getCanonicalName(), Map.class.getCanonicalName(), Serializable.class.getCanonicalName()));
 
-            }
-        }).executeTest();
+                }).executeTest();
     }
 
     // ---------------------------------------------------------------
@@ -470,44 +455,38 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getTypeDeclaration_withTypeParameters() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(ImportTest.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(ImportTest.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> {
 
-                String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
+                    String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
 
-                assertThat(typeDeclaration, is("Map<? super Long, List<? extends Serializable>[]>"));
+                    assertThat(typeDeclaration, is("Map<? super Long, List<? extends Serializable>[]>"));
 
-            }
-        }).executeTest();
+                }).executeTest();
     }
 
     @Test
     public void test_getTypeDeclaration_withoutTypeParameters() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(ImportTest_NonGeneric.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(ImportTest_NonGeneric.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> {
 
-                String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
+                    String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
 
-                assertThat(typeDeclaration, is("String"));
+                    assertThat(typeDeclaration, is("String"));
 
-            }
-        }).executeTest();
+                }).executeTest();
     }
 
     @Test
     public void test_getTypeDeclaration_withPrimitive() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(ImportTest_Primitive.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(ImportTest_Primitive.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> {
 
-                String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
+                    String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
 
-                assertThat(typeDeclaration, is("long"));
+                    assertThat(typeDeclaration, is("long"));
 
-            }
-        }).executeTest();
+                }).executeTest();
     }
 
     // ---------------------------------------------------------------
@@ -521,18 +500,16 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_hasTypeArguments() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(TypeArgumentsTest.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(TypeArgumentsTest.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> {
 
-                // with type arguments
-                assertThat("expect true for Map", TypeMirrorWrapper.wrap(element.asType()).hasTypeArguments());
+                    // with type arguments
+                    assertThat("expect true for Map", TypeMirrorWrapper.wrap(element.asType()).hasTypeArguments());
 
-                // No Type arguments
-                assertThat("expect false for String", !TypeMirrorWrapper.wrap(processingEnvironment.getElementUtils().getTypeElement(String.class.getCanonicalName()).asType()).hasTypeArguments());
+                    // No Type arguments
+                    assertThat("expect false for String", !TypeMirrorWrapper.wrap(processingEnvironment.getElementUtils().getTypeElement(String.class.getCanonicalName()).asType()).hasTypeArguments());
 
-            }
-        }).executeTest();
+                }).executeTest();
     }
 
     // ---------------------------------------------------------------
@@ -541,26 +518,24 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getTypeArguments() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(TypeArgumentsTest.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(TypeArgumentsTest.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> {
 
-                try {
-                    ToolingProvider.setTooling(processingEnvironment);
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
 
-                    List<? extends TypeMirror> typeArgumentTypeMirrors = TypeMirrorWrapper.wrap(element.asType()).getTypeArguments();
-                    assertThat(typeArgumentTypeMirrors, Matchers.hasSize(2));
-                    assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(0)), is(String.class.getCanonicalName()));
-                    assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(1)), is(Long.class.getCanonicalName()));
+                        List<? extends TypeMirror> typeArgumentTypeMirrors = TypeMirrorWrapper.wrap(element.asType()).getTypeArguments();
+                        assertThat(typeArgumentTypeMirrors, Matchers.hasSize(2));
+                        assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(0)), is(String.class.getCanonicalName()));
+                        assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(1)), is(Long.class.getCanonicalName()));
 
-                    // check for non typeArgument class
-                    assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getTypeArguments(), Matchers.nullValue());
+                        // check for non typeArgument class
+                        assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getTypeArguments(), Matchers.nullValue());
 
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-            }
-        }).executeTest();
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                }).executeTest();
     }
 
     // ---------------------------------------------------------------
@@ -569,26 +544,24 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getWrappedTypeArguments() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(TypeArgumentsTest.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(TypeArgumentsTest.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> {
 
-                try {
-                    ToolingProvider.setTooling(processingEnvironment);
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
 
-                    List<? extends TypeMirrorWrapper> typeArgumentTypeMirrorWrappers = TypeMirrorWrapper.wrap(element.asType()).getWrappedTypeArguments();
-                    assertThat(typeArgumentTypeMirrorWrappers, Matchers.hasSize(2));
-                    assertThat(typeArgumentTypeMirrorWrappers.get(0).getQualifiedName(), is(String.class.getCanonicalName()));
-                    assertThat(typeArgumentTypeMirrorWrappers.get(1).getQualifiedName(), is(Long.class.getCanonicalName()));
+                        List<? extends TypeMirrorWrapper> typeArgumentTypeMirrorWrappers = TypeMirrorWrapper.wrap(element.asType()).getWrappedTypeArguments();
+                        assertThat(typeArgumentTypeMirrorWrappers, Matchers.hasSize(2));
+                        assertThat(typeArgumentTypeMirrorWrappers.get(0).getQualifiedName(), is(String.class.getCanonicalName()));
+                        assertThat(typeArgumentTypeMirrorWrappers.get(1).getQualifiedName(), is(Long.class.getCanonicalName()));
 
-                    // check for non typeArgument class
-                    assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getWrappedTypeArguments(), Matchers.nullValue());
+                        // check for non typeArgument class
+                        assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getWrappedTypeArguments(), Matchers.nullValue());
 
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-            }
-        }).executeTest();
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                }).executeTest();
     }
 
     // ---------------------------------------------------------------
@@ -602,14 +575,8 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getPackage() {
-        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(PackageTest.class, new UnitTest<TypeElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), is(PackageTest.class.getPackage().getName()));
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(PackageTest.class,
+                (UnitTest<TypeElement>) (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), is(PackageTest.class.getPackage().getName()))).executeTest();
     }
 
 
@@ -621,14 +588,8 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getPackageOfArray() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(PackageTestOfArray.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), is(PackageTest.class.getPackage().getName()));
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(PackageTestOfArray.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), is(PackageTest.class.getPackage().getName()))).executeTest();
     }
 
     public static class PackageTestOfPrimitive {
@@ -639,14 +600,8 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getPackageOfPrimitiveArray() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(PackageTestOfPrimitive.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), Matchers.nullValue());
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(PackageTestOfPrimitive.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), Matchers.nullValue())).executeTest();
     }
 
     // ---------------------------------------------------------------
@@ -661,14 +616,8 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getTypeElement() {
-        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(GetTypeElement.class, new UnitTest<TypeElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getTypeElement().get().getQualifiedName().toString(), is(GetTypeElement.class.getCanonicalName()));
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(GetTypeElement.class,
+                (UnitTest<TypeElement>) (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getTypeElement().get().getQualifiedName().toString(), is(GetTypeElement.class.getCanonicalName()))).executeTest();
     }
 
 
@@ -679,14 +628,8 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getTypeElement_ofPrimitive() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(GetTypeElement_ofPrimitive.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
-
-                assertThat("Must return empty optional", !TypeMirrorWrapper.wrap(element.asType()).getTypeElement().isPresent());
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(GetTypeElement_ofPrimitive.class,
+                (UnitTest<VariableElement>) (processingEnvironment, element) -> assertThat("Must return empty optional", !TypeMirrorWrapper.wrap(element.asType()).getTypeElement().isPresent())).executeTest();
     }
 
     // ---------------------------------------------------------------
@@ -709,38 +652,20 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getSimpleName() {
-        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName.class, new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), is(GetName.class.getSimpleName()));
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(GetName.class,
+                (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), is(GetName.class.getSimpleName()))).executeTest();
     }
 
     @Test
     public void test_getSimpleName_ofPrimitive() {
-        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName_ofPrimitive.class, new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), is("long"));
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(GetName_ofPrimitive.class,
+                (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), is("long"))).executeTest();
     }
 
     @Test
     public void test_getSimpleName_ofArray() {
-        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName_ofArray.class, new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), is(GetName.class.getSimpleName()));
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(GetName_ofArray.class,
+                (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), is(GetName.class.getSimpleName()))).executeTest();
     }
 
     // ---------------------------------------------------------------
@@ -749,38 +674,20 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_getQualifiedName() {
-        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName.class, new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), is(GetName.class.getCanonicalName()));
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(GetName.class,
+                (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), is(GetName.class.getCanonicalName()))).executeTest();
     }
 
     @Test
     public void test_getQualifiedName_ofPrimitive() {
-        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName_ofPrimitive.class, new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), is("long"));
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(GetName_ofPrimitive.class,
+                (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), is("long"))).executeTest();
     }
 
     @Test
     public void test_getQualifiedName_ofArray() {
-        CompileTestBuilder.unitTest().<Element>defineTestWithPassedInElement(GetName_ofArray.class, new UnitTest<Element>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-
-                assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), is(GetName.class.getCanonicalName()));
-
-            }
-        }).executeTest();
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(GetName_ofArray.class,
+                (processingEnvironment, element) -> assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), is(GetName.class.getCanonicalName()))).executeTest();
     }
 
     // ---------------------------------------------------------------
@@ -801,7 +708,7 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_assignability() {
-        CompileTestBuilder.unitTest().<Element>defineTest((processingEnvironment, element) -> {
+        CompileTestBuilder.unitTest().defineTest((processingEnvironment, element) -> {
             try {
                 ToolingProvider.setTooling(processingEnvironment);
 
