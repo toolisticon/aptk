@@ -241,6 +241,27 @@ public class TypeMirrorWrapper {
 
     }
 
+    /**
+     * Checks if wrapped TypeMirror represents a Collection.
+     *
+     * @return true if wrapped TypeMirror represents a Collection, otherwise false
+     */
+    public boolean isIterable() {
+        return isIterable(typeMirror);
+    }
+
+    /**
+     * Checks if passed TypeMirror represents a Collection.
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return true if passed TypeMirror represents a Collection, otherwise false
+     */
+    public static boolean isIterable(TypeMirror typeMirror) {
+
+        return isDeclared(typeMirror) && TypeUtils.TypeComparison.isAssignableTo(TypeUtils.getTypes().erasure(typeMirror), TypeUtils.TypeRetrieval.getTypeMirror(Iterable.class));
+
+    }
+
 
     /**
      * Checks if wrapped TypeMirror is an array.
@@ -437,7 +458,7 @@ public class TypeMirrorWrapper {
             return ((ArrayType) typeMirror).getComponentType();
         }
 
-        if (isCollection(typeMirror)) {
+        if (isCollection(typeMirror)||isIterable(typeMirror)) {
             if (hasTypeArguments(typeMirror)) {
 
                 List<? extends TypeMirror> typeArgumentTypeMirrors = getTypeArguments(typeMirror);

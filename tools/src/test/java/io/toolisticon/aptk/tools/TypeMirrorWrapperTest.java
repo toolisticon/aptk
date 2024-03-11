@@ -26,6 +26,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 /**
  * Unit test for {@link TypeMirrorWrapper}.
  */
@@ -62,8 +65,8 @@ public class TypeMirrorWrapperTest {
             ToolingProvider.setTooling(processingEnvironment);
             try {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(TypeMirrorWrapperTest.class).getQualifiedName(), Matchers.is(TypeMirrorWrapperTest.class.getCanonicalName()));
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(TypeMirrorWrapperTest.class.getCanonicalName()).getQualifiedName(), Matchers.is(TypeMirrorWrapperTest.class.getCanonicalName()));
+                assertThat(TypeMirrorWrapper.wrap(TypeMirrorWrapperTest.class).getQualifiedName(), is(TypeMirrorWrapperTest.class.getCanonicalName()));
+                assertThat(TypeMirrorWrapper.wrap(TypeMirrorWrapperTest.class.getCanonicalName()).getQualifiedName(), is(TypeMirrorWrapperTest.class.getCanonicalName()));
 
 
             } finally {
@@ -76,26 +79,26 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_isVoid() {
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.VOID)).isVoidType());
-        MatcherAssert.assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isVoidType());
-        MatcherAssert.assertThat("Expected false for null", !TypeMirrorWrapper.isVoidType(mockTypeCheck(null)));
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.VOID)).isVoidType());
+        assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isVoidType());
+        assertThat("Expected false for null", !TypeMirrorWrapper.isVoidType(mockTypeCheck(null)));
     }
 
     @Test
     public void test_isWildcardType() {
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.WILDCARD)).isWildcardType());
-        MatcherAssert.assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isWildcardType());
-        MatcherAssert.assertThat("Expected false for null", !TypeMirrorWrapper.isWildcardType(mockTypeCheck(null)));
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.WILDCARD)).isWildcardType());
+        assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isWildcardType());
+        assertThat("Expected false for null", !TypeMirrorWrapper.isWildcardType(mockTypeCheck(null)));
     }
 
     @Test
     public void test_getWildcardType() {
         // Expect cast instance of TypeMirror
         TypeMirror typeMirror = mockTypeCheck(WildcardType.class, TypeKind.WILDCARD);
-        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(typeMirror).getWildcardType(), Matchers.is(typeMirror));
+        assertThat(TypeMirrorWrapper.wrap(typeMirror).getWildcardType(), is(typeMirror));
 
         // expect null for non matching type kind
-        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).getWildcardType(), Matchers.nullValue());
+        assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).getWildcardType(), Matchers.nullValue());
 
     }
 
@@ -122,10 +125,10 @@ public class TypeMirrorWrapperTest {
 
                 ToolingProvider.setTooling(processingEnvironment);
 
-                MatcherAssert.assertThat("must return true for Class", TypeMirrorWrapper.wrap(ClassType.class).isClass());
-                MatcherAssert.assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isClass());
-                MatcherAssert.assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isClass());
-                MatcherAssert.assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isClass());
+                assertThat("must return true for Class", TypeMirrorWrapper.wrap(ClassType.class).isClass());
+                assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isClass());
+                assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isClass());
+                assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isClass());
 
             }
         }).executeTest();
@@ -139,10 +142,10 @@ public class TypeMirrorWrapperTest {
 
                 ToolingProvider.setTooling(processingEnvironment);
 
-                MatcherAssert.assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isEnum());
-                MatcherAssert.assertThat("must return true for Enum", TypeMirrorWrapper.wrap(EnumType.class).isEnum());
-                MatcherAssert.assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isEnum());
-                MatcherAssert.assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isEnum());
+                assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isEnum());
+                assertThat("must return true for Enum", TypeMirrorWrapper.wrap(EnumType.class).isEnum());
+                assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isEnum());
+                assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isEnum());
 
             }
         }).executeTest();
@@ -156,10 +159,10 @@ public class TypeMirrorWrapperTest {
 
                 ToolingProvider.setTooling(processingEnvironment);
 
-                MatcherAssert.assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isInterface());
-                MatcherAssert.assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isInterface());
-                MatcherAssert.assertThat("must return true for Interface", TypeMirrorWrapper.wrap(InterfaceType.class).isInterface());
-                MatcherAssert.assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isInterface());
+                assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isInterface());
+                assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isInterface());
+                assertThat("must return true for Interface", TypeMirrorWrapper.wrap(InterfaceType.class).isInterface());
+                assertThat("must return false for annotation", !TypeMirrorWrapper.wrap(Target.class).isInterface());
 
 
             }
@@ -174,10 +177,10 @@ public class TypeMirrorWrapperTest {
 
                 ToolingProvider.setTooling(processingEnvironment);
 
-                MatcherAssert.assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isAnnotation());
-                MatcherAssert.assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isAnnotation());
-                MatcherAssert.assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isAnnotation());
-                MatcherAssert.assertThat("must return true for annotation", TypeMirrorWrapper.wrap(Target.class).isAnnotation());
+                assertThat("must return false for Class", !TypeMirrorWrapper.wrap(ClassType.class).isAnnotation());
+                assertThat("must return false for Enum", !TypeMirrorWrapper.wrap(EnumType.class).isAnnotation());
+                assertThat("must return false for Interface", !TypeMirrorWrapper.wrap(InterfaceType.class).isAnnotation());
+                assertThat("must return true for annotation", TypeMirrorWrapper.wrap(Target.class).isAnnotation());
 
 
             }
@@ -186,27 +189,27 @@ public class TypeMirrorWrapperTest {
 
     @Test
     public void test_isErrorType() {
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.ERROR)).isErrorType());
-        MatcherAssert.assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isErrorType());
-        MatcherAssert.assertThat("Expected false for null", !TypeMirrorWrapper.isErrorType(mockTypeCheck(null)));
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.ERROR)).isErrorType());
+        assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isErrorType());
+        assertThat("Expected false for null", !TypeMirrorWrapper.isErrorType(mockTypeCheck(null)));
     }
 
 
     @Test
     public void test_isDeclaredType() {
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isDeclared());
-        MatcherAssert.assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.ARRAY)).isDeclared());
-        MatcherAssert.assertThat("Expected false for null", !TypeMirrorWrapper.isDeclared(null));
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isDeclared());
+        assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.ARRAY)).isDeclared());
+        assertThat("Expected false for null", !TypeMirrorWrapper.isDeclared(null));
     }
 
     @Test
     public void test_getDeclaredType() {
         // Expect cast instance of TypeMirror
         TypeMirror typeMirror = mockTypeCheck(DeclaredType.class, TypeKind.DECLARED);
-        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(typeMirror).getDeclaredType(), Matchers.is(typeMirror));
+        assertThat(TypeMirrorWrapper.wrap(typeMirror).getDeclaredType(), is(typeMirror));
 
         // expect null for non matching type kind
-        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.WILDCARD)).getDeclaredType(), Matchers.nullValue());
+        assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.WILDCARD)).getDeclaredType(), Matchers.nullValue());
 
     }
 
@@ -230,6 +233,21 @@ public class TypeMirrorWrapperTest {
         Map<String, String> noCollectionField;
     }
 
+    public static class IterableCheck_Iterable {
+        @PassIn
+        Iterable<String> iterableField;
+    }
+
+    public static class IterableCheck_IterableWithoutComponentType {
+        @PassIn
+        Iterable collectionField;
+    }
+
+    public static class IterableCheck_NonIterable {
+        @PassIn
+        Map<String, String> nonIterableField;
+    }
+
     private void executeTest(Class<?> clazz, Consumer<VariableElement> test){
         CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(clazz,
                 (processingEnvironment, element) -> {
@@ -243,10 +261,17 @@ public class TypeMirrorWrapperTest {
     }
 
     @Test
+    public void test_isIterable_Iterable()
+    {
+        executeTest(IterableCheck_Iterable.class,(element) ->
+                assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isIterable())
+                );
+    }
+    @Test
     public void test_isCollection_List()
     {
         executeTest(CollectionCheck_List.class, (element) ->
-                MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection())
+                assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection())
         );
     }
 
@@ -254,7 +279,7 @@ public class TypeMirrorWrapperTest {
     public void test_isCollection_Set()
     {
         executeTest(CollectionCheck_Set.class, (element) ->
-                MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection())
+                assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection())
         );
     }
 
@@ -262,7 +287,15 @@ public class TypeMirrorWrapperTest {
     public void test_isCollection_noCollection()
     {
         executeTest(CollectionCheck_NoCollection.class, (element) ->
-                MatcherAssert.assertThat("Expected false for no collection type", !TypeMirrorWrapper.wrap(element.asType()).isCollection())
+                assertThat("Expected false for no collection type", !TypeMirrorWrapper.wrap(element.asType()).isCollection())
+        );
+    }
+
+    @Test
+    public void test_isIterable_nonIterable()
+    {
+        executeTest(IterableCheck_NonIterable.class, (element) ->
+                assertThat("Expected false for non iterable type", !TypeMirrorWrapper.wrap(element.asType()).isIterable())
         );
     }
 
@@ -271,8 +304,17 @@ public class TypeMirrorWrapperTest {
     public void test_getComponentType_forList() {
         executeTest(CollectionCheck_Set.class, (element) -> {
                     TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
-                    MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
-                    MatcherAssert.assertThat(typeMirrorWrapper.getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
+                    assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+                    assertThat(typeMirrorWrapper.getComponentType().toString(), is(String.class.getCanonicalName()));
+        });
+    }
+
+    @Test
+    public void test_getComponentType_forIterable() {
+        executeTest(IterableCheck_Iterable.class, (element) -> {
+            TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+            assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+            assertThat(typeMirrorWrapper.getComponentType().toString(), is(String.class.getCanonicalName()));
         });
     }
 
@@ -281,9 +323,20 @@ public class TypeMirrorWrapperTest {
     {
         executeTest(CollectionCheck_ListWithoutComponentType.class, (element) -> {
             TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
-            MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
-            MatcherAssert.assertThat(typeMirrorWrapper.getWrappedComponentType().getQualifiedName(),
-                    Matchers.is(Object.class.getCanonicalName()));
+            assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+            assertThat(typeMirrorWrapper.getWrappedComponentType().getQualifiedName(),
+                    is(Object.class.getCanonicalName()));
+        });
+    }
+
+    @Test
+    public void test_getComponentType_forIterableWithoutComponentType()
+    {
+        executeTest(IterableCheck_IterableWithoutComponentType.class, (element) -> {
+            TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+            assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+            assertThat(typeMirrorWrapper.getWrappedComponentType().getQualifiedName(),
+                    is(Object.class.getCanonicalName()));
         });
     }
 
@@ -292,8 +345,8 @@ public class TypeMirrorWrapperTest {
     {
         executeTest(CollectionCheck_Set.class, (element) -> {
             TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
-            MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
-            MatcherAssert.assertThat(typeMirrorWrapper.getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
+            assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+            assertThat(typeMirrorWrapper.getComponentType().toString(), is(String.class.getCanonicalName()));
         });
     }
 
@@ -302,41 +355,41 @@ public class TypeMirrorWrapperTest {
     {
         executeTest(CollectionCheck_NoCollection.class, (element) -> {
             TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
-            MatcherAssert.assertThat("Should be false", !typeMirrorWrapper.hasComponentType());
-            MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType(), Matchers.nullValue());
+            assertThat("Should be false", !typeMirrorWrapper.hasComponentType());
+            assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType(), Matchers.nullValue());
         });
     }
 
     @Test
     public void test_isArrayType() {
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.ARRAY)).isArray());
-        MatcherAssert.assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isArray());
-        MatcherAssert.assertThat("Expected false for null", !TypeMirrorWrapper.isArray(null));
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.ARRAY)).isArray());
+        assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isArray());
+        assertThat("Expected false for null", !TypeMirrorWrapper.isArray(null));
     }
 
     @Test
     public void test_getArrayType() {
         // Expect cast instance of TypeMirror
         TypeMirror typeMirror = mockTypeCheck(ArrayType.class, TypeKind.ARRAY);
-        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(typeMirror).getArrayType(), Matchers.is(typeMirror));
+        assertThat(TypeMirrorWrapper.wrap(typeMirror).getArrayType(), is(typeMirror));
 
         // expect null for non matching type kind
-        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.WILDCARD)).getArrayType(), Matchers.nullValue());
+        assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.WILDCARD)).getArrayType(), Matchers.nullValue());
 
     }
 
     @Test
     public void test_isPrimitiveType() {
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.LONG)).isPrimitive());
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.SHORT)).isPrimitive());
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DOUBLE)).isPrimitive());
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.FLOAT)).isPrimitive());
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.BYTE)).isPrimitive());
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.BOOLEAN)).isPrimitive());
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.INT)).isPrimitive());
-        MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.CHAR)).isPrimitive());
-        MatcherAssert.assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isPrimitive());
-        MatcherAssert.assertThat("Expected false for null", !TypeMirrorWrapper.isPrimitive(null));
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.LONG)).isPrimitive());
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.SHORT)).isPrimitive());
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DOUBLE)).isPrimitive());
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.FLOAT)).isPrimitive());
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.BYTE)).isPrimitive());
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.BOOLEAN)).isPrimitive());
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.INT)).isPrimitive());
+        assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.CHAR)).isPrimitive());
+        assertThat("Expected false for non matching kind", !TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.DECLARED)).isPrimitive());
+        assertThat("Expected false for null", !TypeMirrorWrapper.isPrimitive(null));
     }
 
     @Test
@@ -352,14 +405,14 @@ public class TypeMirrorWrapperTest {
         testGetPrimitiveType(TypeKind.CHAR);
 
         // expect null for non matching type kind
-        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.WILDCARD)).getPrimitiveType(), Matchers.nullValue());
+        assertThat(TypeMirrorWrapper.wrap(mockTypeCheck(TypeKind.WILDCARD)).getPrimitiveType(), Matchers.nullValue());
 
     }
 
     private void testGetPrimitiveType(TypeKind typeKind) {
         // Expect cast instance of TypeMirror
         TypeMirror typeMirror = mockTypeCheck(PrimitiveType.class, typeKind);
-        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(typeMirror).getPrimitiveType(), Matchers.is(typeMirror));
+        assertThat(TypeMirrorWrapper.wrap(typeMirror).getPrimitiveType(), is(typeMirror));
     }
 
     private <T extends TypeMirror> TypeMirror mockTypeCheck(Class<T> type, TypeKind typeKind) {
@@ -405,7 +458,7 @@ public class TypeMirrorWrapperTest {
 
                 Set<String> imports = TypeMirrorWrapper.wrap(element.asType()).getImports();
 
-                MatcherAssert.assertThat(imports, Matchers.containsInAnyOrder(List.class.getCanonicalName(), Map.class.getCanonicalName(), Serializable.class.getCanonicalName()));
+                assertThat(imports, Matchers.containsInAnyOrder(List.class.getCanonicalName(), Map.class.getCanonicalName(), Serializable.class.getCanonicalName()));
 
             }
         }).executeTest();
@@ -423,7 +476,7 @@ public class TypeMirrorWrapperTest {
 
                 String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
 
-                MatcherAssert.assertThat(typeDeclaration, Matchers.is("Map<? super Long, List<? extends Serializable>[]>"));
+                assertThat(typeDeclaration, is("Map<? super Long, List<? extends Serializable>[]>"));
 
             }
         }).executeTest();
@@ -437,7 +490,7 @@ public class TypeMirrorWrapperTest {
 
                 String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
 
-                MatcherAssert.assertThat(typeDeclaration, Matchers.is("String"));
+                assertThat(typeDeclaration, is("String"));
 
             }
         }).executeTest();
@@ -451,7 +504,7 @@ public class TypeMirrorWrapperTest {
 
                 String typeDeclaration = TypeMirrorWrapper.wrap(element.asType()).getTypeDeclaration();
 
-                MatcherAssert.assertThat(typeDeclaration, Matchers.is("long"));
+                assertThat(typeDeclaration, is("long"));
 
             }
         }).executeTest();
@@ -473,10 +526,10 @@ public class TypeMirrorWrapperTest {
             public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
 
                 // with type arguments
-                MatcherAssert.assertThat("expect true for Map", TypeMirrorWrapper.wrap(element.asType()).hasTypeArguments());
+                assertThat("expect true for Map", TypeMirrorWrapper.wrap(element.asType()).hasTypeArguments());
 
                 // No Type arguments
-                MatcherAssert.assertThat("expect false for String", !TypeMirrorWrapper.wrap(processingEnvironment.getElementUtils().getTypeElement(String.class.getCanonicalName()).asType()).hasTypeArguments());
+                assertThat("expect false for String", !TypeMirrorWrapper.wrap(processingEnvironment.getElementUtils().getTypeElement(String.class.getCanonicalName()).asType()).hasTypeArguments());
 
             }
         }).executeTest();
@@ -496,12 +549,12 @@ public class TypeMirrorWrapperTest {
                     ToolingProvider.setTooling(processingEnvironment);
 
                     List<? extends TypeMirror> typeArgumentTypeMirrors = TypeMirrorWrapper.wrap(element.asType()).getTypeArguments();
-                    MatcherAssert.assertThat(typeArgumentTypeMirrors, Matchers.hasSize(2));
-                    MatcherAssert.assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(0)), Matchers.is(String.class.getCanonicalName()));
-                    MatcherAssert.assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(1)), Matchers.is(Long.class.getCanonicalName()));
+                    assertThat(typeArgumentTypeMirrors, Matchers.hasSize(2));
+                    assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(0)), is(String.class.getCanonicalName()));
+                    assertThat(TypeUtils.TypeConversion.convertToFqn(typeArgumentTypeMirrors.get(1)), is(Long.class.getCanonicalName()));
 
                     // check for non typeArgument class
-                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getTypeArguments(), Matchers.nullValue());
+                    assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getTypeArguments(), Matchers.nullValue());
 
                 } finally {
                     ToolingProvider.clearTooling();
@@ -524,12 +577,12 @@ public class TypeMirrorWrapperTest {
                     ToolingProvider.setTooling(processingEnvironment);
 
                     List<? extends TypeMirrorWrapper> typeArgumentTypeMirrorWrappers = TypeMirrorWrapper.wrap(element.asType()).getWrappedTypeArguments();
-                    MatcherAssert.assertThat(typeArgumentTypeMirrorWrappers, Matchers.hasSize(2));
-                    MatcherAssert.assertThat(typeArgumentTypeMirrorWrappers.get(0).getQualifiedName(), Matchers.is(String.class.getCanonicalName()));
-                    MatcherAssert.assertThat(typeArgumentTypeMirrorWrappers.get(1).getQualifiedName(), Matchers.is(Long.class.getCanonicalName()));
+                    assertThat(typeArgumentTypeMirrorWrappers, Matchers.hasSize(2));
+                    assertThat(typeArgumentTypeMirrorWrappers.get(0).getQualifiedName(), is(String.class.getCanonicalName()));
+                    assertThat(typeArgumentTypeMirrorWrappers.get(1).getQualifiedName(), is(Long.class.getCanonicalName()));
 
                     // check for non typeArgument class
-                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getWrappedTypeArguments(), Matchers.nullValue());
+                    assertThat(TypeMirrorWrapper.wrap(element.getEnclosingElement().asType()).getWrappedTypeArguments(), Matchers.nullValue());
 
                 } finally {
                     ToolingProvider.clearTooling();
@@ -553,7 +606,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), Matchers.is(PackageTest.class.getPackage().getName()));
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), is(PackageTest.class.getPackage().getName()));
 
             }
         }).executeTest();
@@ -572,7 +625,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), Matchers.is(PackageTest.class.getPackage().getName()));
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), is(PackageTest.class.getPackage().getName()));
 
             }
         }).executeTest();
@@ -590,7 +643,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), Matchers.nullValue());
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getPackage(), Matchers.nullValue());
 
             }
         }).executeTest();
@@ -612,7 +665,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getTypeElement().get().getQualifiedName().toString(), Matchers.is(GetTypeElement.class.getCanonicalName()));
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getTypeElement().get().getQualifiedName().toString(), is(GetTypeElement.class.getCanonicalName()));
 
             }
         }).executeTest();
@@ -630,7 +683,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
 
-                MatcherAssert.assertThat("Must return empty optional", !TypeMirrorWrapper.wrap(element.asType()).getTypeElement().isPresent());
+                assertThat("Must return empty optional", !TypeMirrorWrapper.wrap(element.asType()).getTypeElement().isPresent());
 
             }
         }).executeTest();
@@ -660,7 +713,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), Matchers.is(GetName.class.getSimpleName()));
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), is(GetName.class.getSimpleName()));
 
             }
         }).executeTest();
@@ -672,7 +725,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), Matchers.is("long"));
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), is("long"));
 
             }
         }).executeTest();
@@ -684,7 +737,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), Matchers.is(GetName.class.getSimpleName()));
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getSimpleName(), is(GetName.class.getSimpleName()));
 
             }
         }).executeTest();
@@ -700,7 +753,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), Matchers.is(GetName.class.getCanonicalName()));
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), is(GetName.class.getCanonicalName()));
 
             }
         }).executeTest();
@@ -712,7 +765,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), Matchers.is("long"));
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), is("long"));
 
             }
         }).executeTest();
@@ -724,7 +777,7 @@ public class TypeMirrorWrapperTest {
             @Override
             public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
 
-                MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), Matchers.is(GetName.class.getCanonicalName()));
+                assertThat(TypeMirrorWrapper.wrap(element.asType()).getQualifiedName(), is(GetName.class.getCanonicalName()));
 
             }
         }).executeTest();
@@ -758,28 +811,28 @@ public class TypeMirrorWrapperTest {
                 TypeMirrorWrapper nonMatching = TypeMirrorWrapper.wrap(String.class);
 
                 // Check interface
-                MatcherAssert.assertThat("Should be assignable", myInterface.isAssignableFrom(superClass));
-                MatcherAssert.assertThat("Should be assignable", myInterface.isAssignableFrom(childClass));
-                MatcherAssert.assertThat("Shouldn't be assignable", !myInterface.isAssignableFrom(nonMatching));
-                MatcherAssert.assertThat("Should be assignable", !myInterface.isAssignableTo(superClass));
-                MatcherAssert.assertThat("Should be assignable", !myInterface.isAssignableTo(childClass));
-                MatcherAssert.assertThat("Shouldn't be assignable", !myInterface.isAssignableTo(nonMatching));
+                assertThat("Should be assignable", myInterface.isAssignableFrom(superClass));
+                assertThat("Should be assignable", myInterface.isAssignableFrom(childClass));
+                assertThat("Shouldn't be assignable", !myInterface.isAssignableFrom(nonMatching));
+                assertThat("Should be assignable", !myInterface.isAssignableTo(superClass));
+                assertThat("Should be assignable", !myInterface.isAssignableTo(childClass));
+                assertThat("Shouldn't be assignable", !myInterface.isAssignableTo(nonMatching));
 
                 // Check superclass
-                MatcherAssert.assertThat("Should be assignable", superClass.isAssignableFrom(childClass));
-                MatcherAssert.assertThat("Shouldn't be assignable", !superClass.isAssignableFrom(myInterface));
-                MatcherAssert.assertThat("Shouldn't be assignable", !superClass.isAssignableFrom(nonMatching));
-                MatcherAssert.assertThat("Should be assignable", superClass.isAssignableTo(myInterface));
-                MatcherAssert.assertThat("Shoulddn't be assignable", !superClass.isAssignableTo(childClass));
-                MatcherAssert.assertThat("Shouldn't be assignable", !superClass.isAssignableTo(nonMatching));
+                assertThat("Should be assignable", superClass.isAssignableFrom(childClass));
+                assertThat("Shouldn't be assignable", !superClass.isAssignableFrom(myInterface));
+                assertThat("Shouldn't be assignable", !superClass.isAssignableFrom(nonMatching));
+                assertThat("Should be assignable", superClass.isAssignableTo(myInterface));
+                assertThat("Shouldn't be assignable", !superClass.isAssignableTo(childClass));
+                assertThat("Shouldn't be assignable", !superClass.isAssignableTo(nonMatching));
 
                 // Check childclass
-                MatcherAssert.assertThat("Shoulddn't be assignable", !childClass.isAssignableFrom(superClass));
-                MatcherAssert.assertThat("Shouldn't be assignable", !childClass.isAssignableFrom(myInterface));
-                MatcherAssert.assertThat("Shouldn't be assignable", !childClass.isAssignableFrom(nonMatching));
-                MatcherAssert.assertThat("Should be assignable", childClass.isAssignableTo(myInterface));
-                MatcherAssert.assertThat("Should be assignable", childClass.isAssignableTo(superClass));
-                MatcherAssert.assertThat("Shouldn't be assignable", !childClass.isAssignableTo(nonMatching));
+                assertThat("Shouldn't be assignable", !childClass.isAssignableFrom(superClass));
+                assertThat("Shouldn't be assignable", !childClass.isAssignableFrom(myInterface));
+                assertThat("Shouldn't be assignable", !childClass.isAssignableFrom(nonMatching));
+                assertThat("Should be assignable", childClass.isAssignableTo(myInterface));
+                assertThat("Should be assignable", childClass.isAssignableTo(superClass));
+                assertThat("Shouldn't be assignable", !childClass.isAssignableTo(nonMatching));
 
             } finally {
                 ToolingProvider.clearTooling();
