@@ -24,6 +24,7 @@ import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Unit test for {@link TypeMirrorWrapper}.
@@ -229,125 +230,81 @@ public class TypeMirrorWrapperTest {
         Map<String, String> noCollectionField;
     }
 
-    @Test
-    public void test_isCollection_List() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_List.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
-
-                ToolingProvider.setTooling(processingEnvironment);
-                try {
-                    MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection());
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-            }
-        }).executeTest();
+    private void executeTest(Class<?> clazz, Consumer<VariableElement> test){
+        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(clazz,
+                (processingEnvironment, element) -> {
+                    ToolingProvider.setTooling(processingEnvironment);
+                    try {
+                        test.accept(element);
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                }).executeTest();
     }
 
     @Test
-    public void test_isCollection_Set() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_Set.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
-
-                ToolingProvider.setTooling(processingEnvironment);
-                try {
-                    MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection());
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-            }
-        }).executeTest();
+    public void test_isCollection_List()
+    {
+        executeTest(CollectionCheck_List.class, (element) ->
+                MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection())
+        );
     }
 
     @Test
-    public void test_isCollection_noCollection() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_NoCollection.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+    public void test_isCollection_Set()
+    {
+        executeTest(CollectionCheck_Set.class, (element) ->
+                MatcherAssert.assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection())
+        );
+    }
 
-                ToolingProvider.setTooling(processingEnvironment);
-                try {
-                    MatcherAssert.assertThat("Expected false for no collection type", !TypeMirrorWrapper.wrap(element.asType()).isCollection());
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-            }
-        }).executeTest();
+    @Test
+    public void test_isCollection_noCollection()
+    {
+        executeTest(CollectionCheck_NoCollection.class, (element) ->
+                MatcherAssert.assertThat("Expected false for no collection type", !TypeMirrorWrapper.wrap(element.asType()).isCollection())
+        );
     }
 
 
     @Test
     public void test_getComponentType_forList() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_Set.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
-
-                ToolingProvider.setTooling(processingEnvironment);
-                try {
+        executeTest(CollectionCheck_Set.class, (element) -> {
                     TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
                     MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
                     MatcherAssert.assertThat(typeMirrorWrapper.getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-            }
-        }).executeTest();
+        });
     }
 
     @Test
-    public void test_getComponentType_forListWithoutComponentType() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_ListWithoutComponentType.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
-
-                ToolingProvider.setTooling(processingEnvironment);
-                try {
-                    TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
-                    MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
-                    MatcherAssert.assertThat(typeMirrorWrapper.getWrappedComponentType().getQualifiedName(), Matchers.is(Object.class.getCanonicalName()));
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-            }
-        }).executeTest();
+    public void test_getComponentType_forListWithoutComponentType()
+    {
+        executeTest(CollectionCheck_ListWithoutComponentType.class, (element) -> {
+            TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+            MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+            MatcherAssert.assertThat(typeMirrorWrapper.getWrappedComponentType().getQualifiedName(),
+                    Matchers.is(Object.class.getCanonicalName()));
+        });
     }
 
     @Test
-    public void test_getComponentType_forSet() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_Set.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
-
-                ToolingProvider.setTooling(processingEnvironment);
-                try {
-                    TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
-                    MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
-                    MatcherAssert.assertThat(typeMirrorWrapper.getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-            }
-        }).executeTest();
+    public void test_getComponentType_forSet()
+    {
+        executeTest(CollectionCheck_Set.class, (element) -> {
+            TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+            MatcherAssert.assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+            MatcherAssert.assertThat(typeMirrorWrapper.getComponentType().toString(), Matchers.is(String.class.getCanonicalName()));
+        });
     }
 
     @Test
-    public void test_getComponentType_nonCollection() {
-        CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(CollectionCheck_NoCollection.class, new UnitTest<VariableElement>() {
-            @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
-
-                ToolingProvider.setTooling(processingEnvironment);
-                try {
-                    TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
-                    MatcherAssert.assertThat("Should be false", !typeMirrorWrapper.hasComponentType());
-                    MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType(), Matchers.nullValue());
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-            }
-        }).executeTest();
+    public void test_getComponentType_nonCollection()
+    {
+        executeTest(CollectionCheck_NoCollection.class, (element) -> {
+            TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+            MatcherAssert.assertThat("Should be false", !typeMirrorWrapper.hasComponentType());
+            MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getComponentType(), Matchers.nullValue());
+        });
     }
 
     @Test
