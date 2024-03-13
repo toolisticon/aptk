@@ -38,6 +38,23 @@
         </dependency>
 
 
+        <!-- enforcing build order as test dependency -->
+        <!-- Sorry this is a really shitty way to achieve this, but mvn seems to ignore annotation processor path dependencies-->
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-annotationwrapper-processor</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-compilermessages-processor</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
         <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>
