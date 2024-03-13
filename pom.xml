@@ -18,6 +18,7 @@
         <module>tools</module>
         <module>example</module>
         <module>templating</module>
+        <module>constraints</module>
         <module>integrationtest</module>
 
         <!-- wrapper processor -->
@@ -83,6 +84,7 @@
         <!-- project dependency versions -->
         <spiap.version>0.11.0</spiap.version>
         <cute.version>1.7.0</cute.version>
+
 
         <!-- versions of test dependencies -->
         <junit.version>4.13.2</junit.version>
@@ -829,6 +831,25 @@
                 <artifactId>aptk-templating</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-compilermessages-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-constraint-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-constraint-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>io.toolisticon.aptk</groupId>
