@@ -1,4 +1,4 @@
-package io.toolisticon.aptk.annotationwrapper.processor;
+package io.toolisticon.aptk.constraints.processor;
 
 import io.toolisticon.aptk.annotationwrapper.api.AnnotationWrapper;
 import io.toolisticon.aptk.annotationwrapper.api.CustomCodeMethod;

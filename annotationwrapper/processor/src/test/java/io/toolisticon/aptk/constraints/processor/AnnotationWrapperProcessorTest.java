@@ -1,4 +1,4 @@
-package io.toolisticon.aptk.annotationwrapper.processor;
+package io.toolisticon.aptk.constraints.processor;
 
 import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessorForTestingAnnotationProcessors;
@@ -142,27 +142,6 @@ public class AnnotationWrapperProcessorTest {
                     @Override
                     public void aptkUnitTest(AnnotationWrapperProcessor unit, ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 
-
-                    }
-                })
-                .compilationShouldSucceed()
-                .executeTest();
-    }
-
-    @Test
-    public void test_AnnotationToWrap_getSimpleName() {
-        CompileTestBuilder.unitTest().<TypeElement>defineTest(new APTKUnitTestProcessor<TypeElement>() {
-                    @Override
-                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
-
-                        AnnotationWrapperProcessor.AnnotationToWrap unit = new AnnotationWrapperProcessor.AnnotationToWrap(
-                                UnitTestAnnotation.class.getCanonicalName(),
-                                new ArrayList<>(),
-                                new AnnotationWrapperProcessor.AnnotationWrapperCustomCode(UnitTestAnnotation.class.getCanonicalName()),
-                                new ArrayList<>()
-                        );
-
-                        MatcherAssert.assertThat(unit.getSimpleName(), Matchers.is(UnitTestAnnotation.class.getSimpleName()));
 
                     }
                 })

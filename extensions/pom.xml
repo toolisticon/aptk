@@ -12,7 +12,6 @@
 
     <name>extension-parent</name>
 
-
     <!-- activate module support for Java 9 -->
     <profiles>
         <profile>

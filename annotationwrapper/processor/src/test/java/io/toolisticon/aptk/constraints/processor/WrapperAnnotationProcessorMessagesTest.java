@@ -1,4 +1,4 @@
-package io.toolisticon.aptk.annotationwrapper.processor;
+package io.toolisticon.aptk.constraints.processor;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
