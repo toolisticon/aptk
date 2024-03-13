@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>constraint-parent</artifactId>
+    <artifactId>aptk-constraint-parent</artifactId>
     <packaging>pom</packaging>
 
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-parent</artifactId>
-        <version>0.22.12-SNAPSHOT</version>
+        <version>0.22.12-constraints-SNAPSHOT</version>
     </parent>
 
     <name>constraint-parent</name>

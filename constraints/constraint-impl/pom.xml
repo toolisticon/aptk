@@ -7,8 +7,8 @@
 
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
-        <artifactId>extension-parent</artifactId>
-        <version>0.22.12-SNAPSHOT</version>
+        <artifactId>aptk-constraint-parent</artifactId>
+        <version>0.22.12-constraints-SNAPSHOT</version>
     </parent>
 
     <name>aptk-constraint-impl</name>
@@ -35,6 +35,23 @@
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
             <artifactId>aptk-tools</artifactId>
+        </dependency>
+
+
+        <!-- enforcing build order as test dependency -->
+        <!-- Sorry this is a really shitty way to achieve this, but mvn seems to ignore annotation processor path dependencies-->
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-annotationwrapper-processor</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-compilermessages-processor</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
 
 
