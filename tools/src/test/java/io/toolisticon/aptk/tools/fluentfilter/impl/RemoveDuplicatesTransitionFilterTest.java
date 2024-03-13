@@ -1,6 +1,6 @@
 package io.toolisticon.aptk.tools.fluentfilter.impl;
 
-import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentfilter.TransitionFilters;
@@ -11,6 +11,7 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import java.util.List;
@@ -30,10 +31,10 @@ public class RemoveDuplicatesTransitionFilterTest {
     public void removeDuplicatesTransitionFilter_testTransitionToRemoveDuplicateValues() {
 
         CompileTestBuilder.unitTest()
-                .useProcessor(
-                        new AbstractUnitTestAnnotationProcessorClass() {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
                             @Override
-                            protected void testCase(TypeElement element) {
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
 
                                 List<Element> list = FluentElementFilter.createFluentElementFilter(element, element).applyTransitionFilter(TransitionFilters.REMOVE_DUPLICATES_ELEMENTS).getResult();

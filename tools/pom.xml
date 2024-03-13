@@ -8,7 +8,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-parent</artifactId>
-        <version>0.22.11</version>
+        <version>0.23.0</version>
     </parent>
 
     <name>aptk-tools</name>
@@ -29,6 +29,18 @@
         <dependency>
             <groupId>io.toolisticon.cute</groupId>
             <artifactId>cute</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-cute</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute-legacy</artifactId>
             <scope>test</scope>
         </dependency>
 

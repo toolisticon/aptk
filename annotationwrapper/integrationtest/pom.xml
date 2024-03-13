@@ -9,7 +9,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-annotationwrapper-parent</artifactId>
-        <version>0.22.11</version>
+        <version>0.23.0</version>
     </parent>
 
     <name>aptk-annotationwrapper-integrationTest</name>
@@ -111,6 +111,12 @@
             <groupId>io.toolisticon.cute</groupId>
             <artifactId>cute</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute-legacy</artifactId>
+        </dependency>
+
 
     </dependencies>
 

@@ -1,9 +1,11 @@
 package io.toolisticon.aptk.tools;
 
 import io.toolisticon.aptk.common.ToolingProvider;
+import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.PassIn;
 import io.toolisticon.cute.UnitTest;
 import org.hamcrest.MatcherAssert;
@@ -11,7 +13,6 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import java.io.IOException;
@@ -72,9 +73,10 @@ public class InterfaceUtilsTest {
     @Test
     public void getStringRepresentationWithReplaceTypeVars() {
 
-        CompileTestBuilder.unitTest().defineTestWithPassedInElement(TypeVarReplacement.class, new UnitTest<VariableElement>() {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(TypeVarReplacement.class, new APTKUnitTestProcessor<VariableElement>() {
                     @Override
-                    public void unitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, VariableElement element) {
+
 
                         ToolingProvider.setTooling(processingEnvironment);
                         try {
@@ -108,9 +110,10 @@ public class InterfaceUtilsTest {
 
     @Test
     public void mapTypeVars_withPassedInTypes() {
-        CompileTestBuilder.unitTest().defineTestWithPassedInElement(TypeVarMappingTest.class, new UnitTest<TypeElement>() {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(TypeVarMappingTest.class, new APTKUnitTestProcessor<TypeElement>() {
                     @Override
-                    public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
 
                         ToolingProvider.setTooling(processingEnvironment);
                         try {
@@ -133,9 +136,10 @@ public class InterfaceUtilsTest {
 
     @Test
     public void mapTypeVars_withoutPassedInTypes() {
-        CompileTestBuilder.unitTest().defineTestWithPassedInElement(TypeVarMappingTest.class, new UnitTest<TypeElement>() {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(TypeVarMappingTest.class, new APTKUnitTestProcessor<TypeElement>() {
                     @Override
-                    public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
 
                         ToolingProvider.setTooling(processingEnvironment);
                         try {
@@ -188,28 +192,22 @@ public class InterfaceUtilsTest {
 
     @Test
     public void getMethodsToImplement() {
-        CompileTestBuilder.unitTest().defineTestWithPassedInElement(MethodsToImplement_Base.class, new UnitTest<TypeElement>() {
+        CompileTestBuilder.unitTest().defineTestWithPassedInElement(MethodsToImplement_Base.class, new APTKUnitTestProcessor<TypeElement>() {
                     @Override
-                    public void unitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
-
-                        ToolingProvider.setTooling(processingEnvironment);
-                        try {
-
-                            Set<ExecutableElementWrapper> methods = InterfaceUtils.getMethodsToImplement(TypeElementWrapper.wrap(element));
-
-                            MatcherAssert.assertThat(methods.stream().map(e -> e.getMethodSignature()).collect(Collectors.toList()), Matchers.containsInAnyOrder(
-                                    "T groundLevel(F baseParam)",
-                                    "String midLevel(Integer midParam)",
-                                    "String topLevel(String topParam)",
-                                    "void withGenerics(List<? extends String> genParam)",
-                                    "<K extends Collection<String>> void withMethodTypeVar(K param)",
-                                    "String withMethodTypeVar() throws IOException",
-                                    "void doubledMethod(String parameter)"));
+                    public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
 
-                        } finally {
-                            ToolingProvider.clearTooling();
-                        }
+                        Set<ExecutableElementWrapper> methods = InterfaceUtils.getMethodsToImplement(TypeElementWrapper.wrap(element));
+
+                        MatcherAssert.assertThat(methods.stream().map(e -> e.getMethodSignature()).collect(Collectors.toList()), Matchers.containsInAnyOrder(
+                                "T groundLevel(F baseParam)",
+                                "String midLevel(Integer midParam)",
+                                "String topLevel(String topParam)",
+                                "void withGenerics(List<? extends String> genParam)",
+                                "<K extends Collection<String>> void withMethodTypeVar(K param)",
+                                "String withMethodTypeVar() throws IOException",
+                                "void doubledMethod(String parameter)"));
+
 
                     }
                 })
@@ -244,7 +242,7 @@ public class InterfaceUtilsTest {
     }
 
 
-    CompileTestBuilder.UnitTestBuilder unitTestBuilder;
+    CompileTestBuilderApi.UnitTestBuilder unitTestBuilder;
 
     public interface FluentApiConverter<SOURCE, TARGET> {
 
@@ -267,7 +265,7 @@ public class InterfaceUtilsTest {
         }
     }
 
-    public abstract static class SuperClass <SOURCE, TARGET> implements FluentApiConverter<SOURCE, TARGET> {
+    public abstract static class SuperClass<SOURCE, TARGET> implements FluentApiConverter<SOURCE, TARGET> {
 
 
     }
@@ -292,46 +290,31 @@ public class InterfaceUtilsTest {
 
     @Test
     public void test_getResolvedTypeArgumentOfSuperTypeOrInterface_with_superclass() {
-        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
+        CompileTestBuilder.unitTest().defineTest(new APTKUnitTestProcessor<TypeElement>() {
             @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-                try {
-                    ToolingProvider.setTooling(processingEnvironment);
-
-                    List<TypeMirrorWrapper> typeParameters = InterfaceUtils.getResolvedTypeArgumentOfSuperTypeOrInterface(TypeElementWrapper.getByClass(MyConverter.class).get(), TypeMirrorWrapper.wrap(FluentApiConverter.class));
-                    MatcherAssert.assertThat(typeParameters.stream().map(e -> e.getSimpleName()).collect(Collectors.toList()), Matchers.contains(String.class.getSimpleName().toString(), TargetType.class.getSimpleName().toString()));
-
-                    typeParameters = InterfaceUtils.getResolvedTypeArgumentOfSuperTypeOrInterface(TypeElementWrapper.getByClass(MyConverter.class).get(), TypeMirrorWrapper.wrap(SuperClass.class));
-                    MatcherAssert.assertThat(typeParameters.stream().map(e -> e.getSimpleName()).collect(Collectors.toList()), Matchers.contains(String.class.getSimpleName().toString(), TargetType.class.getSimpleName().toString()));
+            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
 
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
+                List<TypeMirrorWrapper> typeParameters = InterfaceUtils.getResolvedTypeArgumentOfSuperTypeOrInterface(TypeElementWrapper.getByClass(MyConverter.class).get(), TypeMirrorWrapper.wrap(FluentApiConverter.class));
+                MatcherAssert.assertThat(typeParameters.stream().map(e -> e.getSimpleName()).collect(Collectors.toList()), Matchers.contains(String.class.getSimpleName().toString(), TargetType.class.getSimpleName().toString()));
 
+                typeParameters = InterfaceUtils.getResolvedTypeArgumentOfSuperTypeOrInterface(TypeElementWrapper.getByClass(MyConverter.class).get(), TypeMirrorWrapper.wrap(SuperClass.class));
+                MatcherAssert.assertThat(typeParameters.stream().map(e -> e.getSimpleName()).collect(Collectors.toList()), Matchers.contains(String.class.getSimpleName().toString(), TargetType.class.getSimpleName().toString()));
 
             }
         }).executeTest();
     }
 
 
-
     @Test
     public void test_getResolvedTypeArgumentOfSuperTypeOrInterface_without_superclass() {
-        CompileTestBuilder.unitTest().defineTest(new UnitTest<Element>() {
+        CompileTestBuilder.unitTest().defineTest(new APTKUnitTestProcessor<TypeElement>() {
             @Override
-            public void unitTest(ProcessingEnvironment processingEnvironment, Element element) {
-                try {
-                    ToolingProvider.setTooling(processingEnvironment);
+            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                    List<TypeMirrorWrapper> typeParameters = InterfaceUtils.getResolvedTypeArgumentOfSuperTypeOrInterface(TypeElementWrapper.getByClass(My2ndConverter.class).get(), TypeMirrorWrapper.wrap(FluentApiConverter.class));
+                List<TypeMirrorWrapper> typeParameters = InterfaceUtils.getResolvedTypeArgumentOfSuperTypeOrInterface(TypeElementWrapper.getByClass(My2ndConverter.class).get(), TypeMirrorWrapper.wrap(FluentApiConverter.class));
 
-                    MatcherAssert.assertThat(typeParameters.stream().map(e -> e.getSimpleName()).collect(Collectors.toList()), Matchers.contains(String.class.getSimpleName().toString(), TargetType.class.getSimpleName().toString()));
-
-                } finally {
-                    ToolingProvider.clearTooling();
-                }
-
+                MatcherAssert.assertThat(typeParameters.stream().map(e -> e.getSimpleName()).collect(Collectors.toList()), Matchers.contains(String.class.getSimpleName().toString(), TargetType.class.getSimpleName().toString()));
 
             }
         }).executeTest();

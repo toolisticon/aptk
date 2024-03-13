@@ -4,7 +4,7 @@
 
     <groupId>io.toolisticon.aptk</groupId>
     <artifactId>aptk-parent</artifactId>
-    <version>0.22.11</version>
+    <version>0.23.0</version>
     <packaging>pom</packaging>
 
     <name>aptk-parent</name>
@@ -87,7 +87,7 @@
 
         <!-- project dependency versions -->
         <spiap.version>0.11.0</spiap.version>
-        <cute.version>0.12.1</cute.version>
+        <cute.version>1.0.0_RC1</cute.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.13.2</junit.version>
@@ -718,6 +718,11 @@
             <artifactId>cute</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute-legacy</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -744,6 +749,13 @@
 
             <dependency>
                 <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-cute</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>aptk-annotationwrapper-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -765,6 +777,13 @@
             <dependency>
                 <groupId>io.toolisticon.cute</groupId>
                 <artifactId>cute</artifactId>
+                <version>${cute.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.cute</groupId>
+                <artifactId>cute-legacy</artifactId>
                 <version>${cute.version}</version>
                 <scope>test</scope>
             </dependency>

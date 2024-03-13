@@ -1,7 +1,7 @@
 package io.toolisticon.annotationprocessor;
 
 import io.toolisticon.aptk.tools.generators.FileObjectUtilsTestAnnotation;
-import io.toolisticon.aptk.tools.TestAnnotation;
+import io.toolisticon.cute.TestAnnotation;
 
 /**
  * Test class for annotation processor tools.

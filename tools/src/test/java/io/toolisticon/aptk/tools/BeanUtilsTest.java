@@ -1,15 +1,18 @@
 package io.toolisticon.aptk.tools;
 
 import com.sun.source.tree.StatementTree;
+import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -23,7 +26,7 @@ import java.util.Set;
  */
 public class BeanUtilsTest {
 
-    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
+    private CompileTestBuilderApi.UnitTestBuilder unitTestBuilder = CompileTestBuilder
             .unitTest()
             .useSource(JavaFileObjectUtils.readFromResource("/AnnotationValueUtilsTestClass.java"));
 
@@ -36,13 +39,15 @@ public class BeanUtilsTest {
     @Test
     public void getPossibleGetterOrSetterNames_getter() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
-                MatcherAssert.assertThat(Arrays.asList(BeanUtils.getPrefixedName("get", "testField")), Matchers.contains("getTestField"));
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-            }
-        })
+                                MatcherAssert.assertThat(Arrays.asList(BeanUtils.getPrefixedName("get", "testField")), Matchers.contains("getTestField"));
+
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -56,19 +61,21 @@ public class BeanUtilsTest {
     public void fieldWithImplementedGetterAndSetters_checkHasGetter() {
 
         unitTestBuilder.useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/FieldLevelTestcases.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_FIELD)
-                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
+                                        .getResult().get(0);
 
 
-                        // shouldn't find nonexisting
-                        MatcherAssert.assertThat("Should detect getter ", BeanUtils.checkHasGetter(field));
-                    }
-                })
+                                // shouldn't find nonexisting
+                                MatcherAssert.assertThat("Should detect getter ", BeanUtils.checkHasGetter(field));
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -78,44 +85,45 @@ public class BeanUtilsTest {
     public void fieldWithImplementedGetterAndSetters_checkHasSetter() {
 
         unitTestBuilder.useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/FieldLevelTestcases.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_FIELD)
-                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
+                                        .getResult().get(0);
 
 
-                        // shouldn't find nonexisting
-                        MatcherAssert.assertThat("Should detect setter ", BeanUtils.checkHasSetter(field));
-                    }
-                })
+                                // shouldn't find nonexisting
+                                MatcherAssert.assertThat("Should detect setter ", BeanUtils.checkHasSetter(field));
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
-
-
-
 
 
     @Test
     public void fieldWithoutGetter_checkHasGetter() {
 
         unitTestBuilder.useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/FieldLevelTestcases.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_FIELD)
-                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutGetter")
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutGetter")
+                                        .getResult().get(0);
 
 
-                        // shouldn't find nonexisting
-                        MatcherAssert.assertThat("Should not detect getter ", !BeanUtils.checkHasGetter(field));
-                    }
-                })
+                                // shouldn't find nonexisting
+                                MatcherAssert.assertThat("Should not detect getter ", !BeanUtils.checkHasGetter(field));
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -124,24 +132,23 @@ public class BeanUtilsTest {
     public void fieldWithoutSetter_checkHasSetter() {
 
         unitTestBuilder.useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/FieldLevelTestcases.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_FIELD)
-                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutSetter")
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutSetter")
+                                        .getResult().get(0);
 
 
-                        MatcherAssert.assertThat("Should not detect setter ", !BeanUtils.checkHasSetter(field));
-                    }
-                })
+                                MatcherAssert.assertThat("Should not detect setter ", !BeanUtils.checkHasSetter(field));
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
-
-
-
 
 
     // -----------------------
@@ -153,18 +160,20 @@ public class BeanUtilsTest {
 
         unitTestBuilder
                 .useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/FieldLevelTestcases.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_FIELD)
-                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithImplementedGetterAndSetters")
+                                        .getResult().get(0);
 
 
-                        MatcherAssert.assertThat("Must return true for field with getter and setter", BeanUtils.isAttribute(field));
-                    }
-                })
+                                MatcherAssert.assertThat("Must return true for field with getter and setter", BeanUtils.isAttribute(field));
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -174,18 +183,20 @@ public class BeanUtilsTest {
 
         unitTestBuilder
                 .useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/FieldLevelTestcases.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_FIELD)
-                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutGetter")
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutGetter")
+                                        .getResult().get(0);
 
 
-                        MatcherAssert.assertThat("Must return true for field without setter", !BeanUtils.isAttribute(field));
-                    }
-                })
+                                MatcherAssert.assertThat("Must return true for field without setter", !BeanUtils.isAttribute(field));
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -195,18 +206,20 @@ public class BeanUtilsTest {
 
         unitTestBuilder
                 .useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/FieldLevelTestcases.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_FIELD)
-                                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutSetter")
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                VariableElement field = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_FIELD)
+                                        .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf("fieldWithoutSetter")
+                                        .getResult().get(0);
 
 
-                        MatcherAssert.assertThat("Must return true for field without getter", !BeanUtils.isAttribute(field));
-                    }
-                })
+                                MatcherAssert.assertThat("Must return true for field without getter", !BeanUtils.isAttribute(field));
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -221,26 +234,28 @@ public class BeanUtilsTest {
 
         unitTestBuilder
                 .useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/TypeHierarchyTestClass.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*InheritingType")
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                        .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*InheritingType")
+                                        .getResult().get(0);
 
 
-                        BeanUtils.AttributeResult[] results = BeanUtils.getAttributes(typeElement);
+                                BeanUtils.AttributeResult[] results = BeanUtils.getAttributes(typeElement);
 
-                        Set<String> attributeNames = new HashSet<String>();
+                                Set<String> attributeNames = new HashSet<String>();
 
-                        for (BeanUtils.AttributeResult result : results) {
-                            attributeNames.add(result.getFieldName());
-                        }
+                                for (BeanUtils.AttributeResult result : results) {
+                                    attributeNames.add(result.getFieldName());
+                                }
 
-                        MatcherAssert.assertThat(attributeNames, Matchers.contains("booleanField", "stringField"));
-                    }
-                })
+                                MatcherAssert.assertThat(attributeNames, Matchers.contains("booleanField", "stringField"));
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -250,27 +265,29 @@ public class BeanUtilsTest {
 
         unitTestBuilder
                 .useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/TypeHierarchyTestClass.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CLASS)
-                                .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*InheritingType")
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                TypeElement typeElement = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_CLASS)
+                                        .applyFilter(AptkCoreMatchers.BY_REGEX_NAME).filterByOneOf(".*InheritingType")
+                                        .getResult().get(0);
 
 
-                        BeanUtils.AttributeResult[] results = BeanUtils.getAttributesWithInheritance(typeElement);
+                                BeanUtils.AttributeResult[] results = BeanUtils.getAttributesWithInheritance(typeElement);
 
-                        Set<String> attributeNames = new HashSet<String>();
+                                Set<String> attributeNames = new HashSet<String>();
 
-                        for (BeanUtils.AttributeResult result : results) {
-                            attributeNames.add(result.getFieldName());
-                        }
+                                for (BeanUtils.AttributeResult result : results) {
+                                    attributeNames.add(result.getFieldName());
+                                }
 
-                        MatcherAssert.assertThat(attributeNames, Matchers.containsInAnyOrder("booleanField", "stringField", "superBooleanField", "superStringField"));
+                                MatcherAssert.assertThat(attributeNames, Matchers.containsInAnyOrder("booleanField", "stringField", "superBooleanField", "superStringField"));
 
-                    }
-                })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -285,19 +302,21 @@ public class BeanUtilsTest {
 
         unitTestBuilder
                 .useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/DefaultNoargConstructorTest.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
+                                        .getResult().get(0);
 
 
-                        MatcherAssert.assertThat("Should return true for default constructor", BeanUtils.isDefaultNoargConstructor(constructor));
-                        MatcherAssert.assertThat("Should return true for default constructor", BeanUtils.hasDefaultNoargsConstructor(element));
+                                MatcherAssert.assertThat("Should return true for default constructor", BeanUtils.isDefaultNoargConstructor(constructor));
+                                MatcherAssert.assertThat("Should return true for default constructor", BeanUtils.hasDefaultNoargsConstructor(element));
 
-                    }
-                })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -307,19 +326,21 @@ public class BeanUtilsTest {
 
         unitTestBuilder
                 .useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/ExplicitNoargConstructorTest.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
+
+                                ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
+                                        .getResult().get(0);
 
 
-                        MatcherAssert.assertThat("Should return false for explicit constructor", !BeanUtils.isDefaultNoargConstructor(constructor));
-                        MatcherAssert.assertThat("Should return false for explicit constructor", !BeanUtils.hasDefaultNoargsConstructor(element));
+                                MatcherAssert.assertThat("Should return false for explicit constructor", !BeanUtils.isDefaultNoargConstructor(constructor));
+                                MatcherAssert.assertThat("Should return false for explicit constructor", !BeanUtils.hasDefaultNoargsConstructor(element));
 
-                    }
-                })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -329,21 +350,23 @@ public class BeanUtilsTest {
 
         unitTestBuilder
                 .useSource(JavaFileObjectUtils.readFromResource("testcases.beanutils/ExplicitNoargConstructorTest2.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-                        ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
-                                .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
-                                .getResult().get(0);
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(constructor).getBody().getStatements();
+                                ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
+                                        .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
+                                        .getResult().get(0);
+
+                                List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(constructor).getBody().getStatements();
 
 
-                        MatcherAssert.assertThat("Should return true for explicit constructor that looks like default constructor", BeanUtils.isDefaultNoargConstructor(constructor));
-                        MatcherAssert.assertThat("Should return true for explicit constructor that looks like default constructor", BeanUtils.hasDefaultNoargsConstructor(element));
+                                MatcherAssert.assertThat("Should return true for explicit constructor that looks like default constructor", BeanUtils.isDefaultNoargConstructor(constructor));
+                                MatcherAssert.assertThat("Should return true for explicit constructor that looks like default constructor", BeanUtils.hasDefaultNoargsConstructor(element));
 
-                    }
-                })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }

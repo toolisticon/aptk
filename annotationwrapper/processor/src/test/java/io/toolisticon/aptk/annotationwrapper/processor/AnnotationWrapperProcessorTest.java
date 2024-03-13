@@ -9,6 +9,7 @@ import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
+import io.toolisticon.cute.UnitTest;
 import io.toolisticon.cute.matchers.CoreGeneratedFileObjectMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -450,7 +451,7 @@ public class AnnotationWrapperProcessorTest {
 
     @Test
     public void test_AnnotationToWrap_isAnnotationType() {
-        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(UnitTestAnnotation.class, new APTKUnitTestProcessor<TypeElement>() {
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(UnitTestAnnotation.class,  new APTKUnitTestProcessor<TypeElement>() {
                     @Override
                     public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
 

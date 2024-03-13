@@ -8,7 +8,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-example-parent</artifactId>
-        <version>0.22.11</version>
+        <version>0.23.0</version>
     </parent>
 
     <name>aptk-example-annotationprocessor</name>
@@ -21,6 +21,8 @@
             <artifactId>aptk-tools</artifactId>
         </dependency>
 
+
+
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
             <artifactId>aptk-example-annotations</artifactId>
@@ -32,6 +34,21 @@
             <artifactId>spiap-api</artifactId>
         </dependency>
 
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.cute</groupId>
+            <artifactId>cute-legacy</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-cute</artifactId>
+        </dependency>
 
     </dependencies>
 

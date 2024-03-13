@@ -1,6 +1,6 @@
 package io.toolisticon.aptk.tools.matcher.impl;
 
-import io.toolisticon.aptk.tools.AbstractUnitTestAnnotationProcessorClass;
+import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
@@ -9,6 +9,7 @@ import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import java.util.List;
@@ -51,18 +52,20 @@ public class IsAttributeFieldMatcherTest {
         CompileTestBuilder
                 .unitTest()
                 .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
-
-                        // Do test
-                        MatcherAssert.assertThat("Should return true for non static field with getter and setter : ",
-                                AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("validAttributeField")));
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
 
-                    }
+                                // Do test
+                                MatcherAssert.assertThat("Should return true for non static field with getter and setter : ",
+                                        AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("validAttributeField")));
 
-                })
+
+                            }
+
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
         ;
@@ -75,18 +78,19 @@ public class IsAttributeFieldMatcherTest {
         CompileTestBuilder
                 .unitTest()
                 .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        // Do test
-                        MatcherAssert.assertThat("Should return false for non static field without getter : ",
-                                !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("fieldWithoutGetter")));
+                                // Do test
+                                MatcherAssert.assertThat("Should return false for non static field without getter : ",
+                                        !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("fieldWithoutGetter")));
 
 
-                    }
+                            }
 
-                })
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
         ;
@@ -99,18 +103,19 @@ public class IsAttributeFieldMatcherTest {
         CompileTestBuilder
                 .unitTest()
                 .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        // Do test
-                        MatcherAssert.assertThat("Should return false for non static field without setter : ",
-                                !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("fieldWithoutSetter")));
+                                // Do test
+                                MatcherAssert.assertThat("Should return false for non static field without setter : ",
+                                        !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("fieldWithoutSetter")));
 
 
-                    }
+                            }
 
-                })
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
         ;
@@ -123,18 +128,19 @@ public class IsAttributeFieldMatcherTest {
         CompileTestBuilder
                 .unitTest()
                 .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        // Do test
-                        MatcherAssert.assertThat("Should return false for static field : ",
-                                !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("staticField")));
+                                // Do test
+                                MatcherAssert.assertThat("Should return false for static field : ",
+                                        !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(getField("staticField")));
 
 
-                    }
+                            }
 
-                })
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
         ;
@@ -147,18 +153,19 @@ public class IsAttributeFieldMatcherTest {
         CompileTestBuilder
                 .unitTest()
                 .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorUnitTestClassInternal.java"))
-                .useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-                    @Override
-                    protected void testCase(TypeElement element) {
+                .defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                        // Do test
-                        MatcherAssert.assertThat("Should return false for passed null value : ",
-                                !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(null));
+                                // Do test
+                                MatcherAssert.assertThat("Should return false for passed null value : ",
+                                        !AptkCoreMatchers.IS_ATTRIBUTE_FIELD.getMatcher().check(null));
 
 
-                    }
+                            }
 
-                })
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
         ;
@@ -168,8 +175,8 @@ public class IsAttributeFieldMatcherTest {
 
     private static VariableElement getField(String fieldName) {
         List<VariableElement> variableElement = FluentElementFilter.createFluentElementFilter(
-                TypeUtils.TypeRetrieval.getTypeElement(TestClass.class)
-                        .getEnclosedElements())
+                        TypeUtils.TypeRetrieval.getTypeElement(TestClass.class)
+                                .getEnclosedElements())
                 .applyFilter(AptkCoreMatchers.IS_FIELD)
                 .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(fieldName)
                 .getResult();

@@ -1,13 +1,16 @@
 package io.toolisticon.aptk.tools;
 
+import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -23,7 +26,7 @@ import java.util.List;
  */
 public class ElementUtilsTest {
 
-    private CompileTestBuilder.UnitTestBuilder unitTestBuilder = CompileTestBuilder
+    private CompileTestBuilderApi.UnitTestBuilder unitTestBuilder = CompileTestBuilder
             .unitTest()
             .useSource(JavaFileObjectUtils.readFromResource("/AnnotationProcessorTestClass.java"));
 
@@ -36,23 +39,24 @@ public class ElementUtilsTest {
     @Test
     public void getEnclosedElementsByName() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                // find field
-                List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "privateField");
-                MatcherAssert.assertThat(result, Matchers.hasSize(1));
-                MatcherAssert.assertThat(result.get(0).getKind(), Matchers.is(ElementKind.FIELD));
-                MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("privateField"));
+                                // find field
+                                List<? extends Element> result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "privateField");
+                                MatcherAssert.assertThat(result, Matchers.hasSize(1));
+                                MatcherAssert.assertThat(result.get(0).getKind(), Matchers.is(ElementKind.FIELD));
+                                MatcherAssert.assertThat(result.get(0).getSimpleName().toString(), Matchers.is("privateField"));
 
 
-                // shouldn't find nonexisting
-                result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "XXXXXXXX");
-                MatcherAssert.assertThat(result, Matchers.<Element>empty());
+                                // shouldn't find nonexisting
+                                result = ElementUtils.AccessEnclosedElements.getEnclosedElementsByName(element, "XXXXXXXX");
+                                MatcherAssert.assertThat(result, Matchers.<Element>empty());
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -61,23 +65,24 @@ public class ElementUtilsTest {
     @Test
     public void getEnclosedElementsByNameRegex() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                List<? extends Element> results = ElementUtils.AccessEnclosedElements.getEnclosedElementsByNameRegex(element, ".*ublic.*");
-                MatcherAssert.assertThat(results, Matchers.hasSize(4));
-                for (Element result : results) {
-                    MatcherAssert.assertThat(result.getKind(), Matchers.is(ElementKind.FIELD));
-                    MatcherAssert.assertThat(result.getSimpleName().toString(), Matchers.startsWith("public"));
-                }
+                                List<? extends Element> results = ElementUtils.AccessEnclosedElements.getEnclosedElementsByNameRegex(element, ".*ublic.*");
+                                MatcherAssert.assertThat(results, Matchers.hasSize(4));
+                                for (Element result : results) {
+                                    MatcherAssert.assertThat(result.getKind(), Matchers.is(ElementKind.FIELD));
+                                    MatcherAssert.assertThat(result.getSimpleName().toString(), Matchers.startsWith("public"));
+                                }
 
-                // shouldn't find nonexisting
-                results = ElementUtils.AccessEnclosedElements.getEnclosedElementsByNameRegex(element, "XXXXXXXX");
-                MatcherAssert.assertThat(results, Matchers.<Element>empty());
+                                // shouldn't find nonexisting
+                                results = ElementUtils.AccessEnclosedElements.getEnclosedElementsByNameRegex(element, "XXXXXXXX");
+                                MatcherAssert.assertThat(results, Matchers.<Element>empty());
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -85,16 +90,17 @@ public class ElementUtilsTest {
     @Test
     public void hasModifiers() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat("Class should have public modifier", AptkCoreMatchers.BY_MODIFIER.getValidator().hasAllOf(element, Modifier.PUBLIC));
-                MatcherAssert.assertThat("Class should not have abstract modifier", !AptkCoreMatchers.BY_MODIFIER.getValidator().hasAllOf(element, Modifier.PUBLIC, Modifier.ABSTRACT));
+                                MatcherAssert.assertThat("Class should have public modifier", AptkCoreMatchers.BY_MODIFIER.getValidator().hasAllOf(element, Modifier.PUBLIC));
+                                MatcherAssert.assertThat("Class should not have abstract modifier", !AptkCoreMatchers.BY_MODIFIER.getValidator().hasAllOf(element, Modifier.PUBLIC, Modifier.ABSTRACT));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -102,19 +108,20 @@ public class ElementUtilsTest {
     @Test
     public void hasPublicModifier() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat("Class should  be detected to have public modifier", ElementUtils.CheckModifierOfElement.hasPublicModifier(element));
+                                MatcherAssert.assertThat("Class should  be detected to have public modifier", ElementUtils.CheckModifierOfElement.hasPublicModifier(element));
 
-                MatcherAssert.assertThat("Class should not be detected to have public modifier", !ElementUtils.CheckModifierOfElement.hasPublicModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
+                                MatcherAssert.assertThat("Class should not be detected to have public modifier", !ElementUtils.CheckModifierOfElement.hasPublicModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have public modifier", !ElementUtils.CheckModifierOfElement.hasPublicModifier(null));
+                                MatcherAssert.assertThat("Class should not be detected to have public modifier", !ElementUtils.CheckModifierOfElement.hasPublicModifier(null));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -122,19 +129,20 @@ public class ElementUtilsTest {
     @Test
     public void hasProtectedModifier() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat("Class should  be detected to have protected modifier", ElementUtils.CheckModifierOfElement.hasProtectedModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "protectedField").get(0)));
+                                MatcherAssert.assertThat("Class should  be detected to have protected modifier", ElementUtils.CheckModifierOfElement.hasProtectedModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "protectedField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have protected modifier", !ElementUtils.CheckModifierOfElement.hasProtectedModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
+                                MatcherAssert.assertThat("Class should not be detected to have protected modifier", !ElementUtils.CheckModifierOfElement.hasProtectedModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have protected modifier", !ElementUtils.CheckModifierOfElement.hasProtectedModifier(null));
+                                MatcherAssert.assertThat("Class should not be detected to have protected modifier", !ElementUtils.CheckModifierOfElement.hasProtectedModifier(null));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -142,19 +150,20 @@ public class ElementUtilsTest {
     @Test
     public void hasPrivateModifier() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat("Class should be detected to have private modifier", ElementUtils.CheckModifierOfElement.hasPrivateModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
+                                MatcherAssert.assertThat("Class should be detected to have private modifier", ElementUtils.CheckModifierOfElement.hasPrivateModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have private modifier", !ElementUtils.CheckModifierOfElement.hasPrivateModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "protectedField").get(0)));
+                                MatcherAssert.assertThat("Class should not be detected to have private modifier", !ElementUtils.CheckModifierOfElement.hasPrivateModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "protectedField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have private modifier", !ElementUtils.CheckModifierOfElement.hasPrivateModifier(null));
+                                MatcherAssert.assertThat("Class should not be detected to have private modifier", !ElementUtils.CheckModifierOfElement.hasPrivateModifier(null));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -162,22 +171,23 @@ public class ElementUtilsTest {
     @Test
     public void hasAbstractModifier() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                Element abstractType = AptkCoreMatchers.BY_MODIFIER.getFilter().filterByAllOf(AptkCoreMatchers.BY_ELEMENT_KIND.getFilter().filterByOneOf(element.getEnclosedElements(), ElementKind.CLASS), Modifier.ABSTRACT).get(0);
+                                Element abstractType = AptkCoreMatchers.BY_MODIFIER.getFilter().filterByAllOf(AptkCoreMatchers.BY_ELEMENT_KIND.getFilter().filterByOneOf(element.getEnclosedElements(), ElementKind.CLASS), Modifier.ABSTRACT).get(0);
 
-                MatcherAssert.assertThat("Class should be detected to have abstract modifier", ElementUtils.CheckModifierOfElement.hasAbstractModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(abstractType.getEnclosedElements(), "abstractMethod").get(0)))
-                ;
+                                MatcherAssert.assertThat("Class should be detected to have abstract modifier", ElementUtils.CheckModifierOfElement.hasAbstractModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(abstractType.getEnclosedElements(), "abstractMethod").get(0)))
+                                ;
 
-                MatcherAssert.assertThat("Class should not be detected to have abstract modifier", !ElementUtils.CheckModifierOfElement.hasAbstractModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
+                                MatcherAssert.assertThat("Class should not be detected to have abstract modifier", !ElementUtils.CheckModifierOfElement.hasAbstractModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have abstract modifier", !ElementUtils.CheckModifierOfElement.hasAbstractModifier(null));
+                                MatcherAssert.assertThat("Class should not be detected to have abstract modifier", !ElementUtils.CheckModifierOfElement.hasAbstractModifier(null));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -185,19 +195,20 @@ public class ElementUtilsTest {
     @Test
     public void hasStaticModifier() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat("Class should  be detected to have static modifier", ElementUtils.CheckModifierOfElement.hasStaticModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "publicStaticField").get(0)));
+                                MatcherAssert.assertThat("Class should  be detected to have static modifier", ElementUtils.CheckModifierOfElement.hasStaticModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "publicStaticField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have static modifier", !ElementUtils.CheckModifierOfElement.hasStaticModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
+                                MatcherAssert.assertThat("Class should not be detected to have static modifier", !ElementUtils.CheckModifierOfElement.hasStaticModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have static modifier", !ElementUtils.CheckModifierOfElement.hasStaticModifier(null));
+                                MatcherAssert.assertThat("Class should not be detected to have static modifier", !ElementUtils.CheckModifierOfElement.hasStaticModifier(null));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -205,19 +216,20 @@ public class ElementUtilsTest {
     @Test
     public void hasFinalModifier() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat("Class should be detected to have final modifier", ElementUtils.CheckModifierOfElement.hasFinalModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "publicFinalField").get(0)));
+                                MatcherAssert.assertThat("Class should be detected to have final modifier", ElementUtils.CheckModifierOfElement.hasFinalModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "publicFinalField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have final modifier", !ElementUtils.CheckModifierOfElement.hasFinalModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
+                                MatcherAssert.assertThat("Class should not be detected to have final modifier", !ElementUtils.CheckModifierOfElement.hasFinalModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have final modifier", !ElementUtils.CheckModifierOfElement.hasFinalModifier(null));
+                                MatcherAssert.assertThat("Class should not be detected to have final modifier", !ElementUtils.CheckModifierOfElement.hasFinalModifier(null));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -225,19 +237,20 @@ public class ElementUtilsTest {
     @Test
     public void hasTransientModifier() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat("Class should  be detected to have transient modifier", ElementUtils.CheckModifierOfElement.hasTransientModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "publicTransientField").get(0)));
+                                MatcherAssert.assertThat("Class should  be detected to have transient modifier", ElementUtils.CheckModifierOfElement.hasTransientModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "publicTransientField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have transient modifier", !ElementUtils.CheckModifierOfElement.hasTransientModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
+                                MatcherAssert.assertThat("Class should not be detected to have transient modifier", !ElementUtils.CheckModifierOfElement.hasTransientModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have transient modifier", !ElementUtils.CheckModifierOfElement.hasTransientModifier(null));
+                                MatcherAssert.assertThat("Class should not be detected to have transient modifier", !ElementUtils.CheckModifierOfElement.hasTransientModifier(null));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -245,19 +258,20 @@ public class ElementUtilsTest {
     @Test
     public void hasSynchronizedModifier() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                MatcherAssert.assertThat("Class should be detected to have synchronized modifier", ElementUtils.CheckModifierOfElement.hasSynchronizedModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "synchronizedMethod").get(0)));
+                                MatcherAssert.assertThat("Class should be detected to have synchronized modifier", ElementUtils.CheckModifierOfElement.hasSynchronizedModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "synchronizedMethod").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have synchronized modifier", !ElementUtils.CheckModifierOfElement.hasSynchronizedModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
+                                MatcherAssert.assertThat("Class should not be detected to have synchronized modifier", !ElementUtils.CheckModifierOfElement.hasSynchronizedModifier(AptkCoreMatchers.BY_NAME.getFilter().filterByOneOf(element.getEnclosedElements(), "privateField").get(0)));
 
-                MatcherAssert.assertThat("Class should not be detected to have synchronized modifier", !ElementUtils.CheckModifierOfElement.hasSynchronizedModifier(null));
+                                MatcherAssert.assertThat("Class should not be detected to have synchronized modifier", !ElementUtils.CheckModifierOfElement.hasSynchronizedModifier(null));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -265,21 +279,22 @@ public class ElementUtilsTest {
     @Test
     public void getEnclosedFields() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                List<? extends VariableElement> fields = ElementUtils.AccessEnclosedElements.getEnclosedFields(element);
+                                List<? extends VariableElement> fields = ElementUtils.AccessEnclosedElements.getEnclosedFields(element);
 
-                MatcherAssert.assertThat(fields, Matchers.notNullValue());
-                MatcherAssert.assertThat(fields, Matchers.not(Matchers.<VariableElement>empty()));
+                                MatcherAssert.assertThat(fields, Matchers.notNullValue());
+                                MatcherAssert.assertThat(fields, Matchers.not(Matchers.<VariableElement>empty()));
 
-                for (VariableElement field : fields) {
-                    MatcherAssert.assertThat(field.getKind(), Matchers.is(ElementKind.FIELD));
-                }
+                                for (VariableElement field : fields) {
+                                    MatcherAssert.assertThat(field.getKind(), Matchers.is(ElementKind.FIELD));
+                                }
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -287,20 +302,21 @@ public class ElementUtilsTest {
     @Test
     public void getEnclosedMethods() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                List<? extends ExecutableElement> methods = ElementUtils.AccessEnclosedElements.getEnclosedMethods(element);
+                                List<? extends ExecutableElement> methods = ElementUtils.AccessEnclosedElements.getEnclosedMethods(element);
 
-                MatcherAssert.assertThat(methods, Matchers.notNullValue());
-                MatcherAssert.assertThat(methods, Matchers.not(Matchers.<ExecutableElement>empty()));
+                                MatcherAssert.assertThat(methods, Matchers.notNullValue());
+                                MatcherAssert.assertThat(methods, Matchers.not(Matchers.<ExecutableElement>empty()));
 
-                for (ExecutableElement method : methods) {
-                    MatcherAssert.assertThat(method.getKind(), Matchers.is(ElementKind.METHOD));
-                }
-            }
-        })
+                                for (ExecutableElement method : methods) {
+                                    MatcherAssert.assertThat(method.getKind(), Matchers.is(ElementKind.METHOD));
+                                }
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -308,20 +324,21 @@ public class ElementUtilsTest {
     @Test
     public void getEnclosedConstructors() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                List<? extends ExecutableElement> constructors = ElementUtils.AccessEnclosedElements.getEnclosedConstructors(element);
+                                List<? extends ExecutableElement> constructors = ElementUtils.AccessEnclosedElements.getEnclosedConstructors(element);
 
-                MatcherAssert.assertThat(constructors, Matchers.notNullValue());
-                MatcherAssert.assertThat(constructors, Matchers.not(Matchers.<ExecutableElement>empty()));
+                                MatcherAssert.assertThat(constructors, Matchers.notNullValue());
+                                MatcherAssert.assertThat(constructors, Matchers.not(Matchers.<ExecutableElement>empty()));
 
-                for (ExecutableElement constructor : constructors) {
-                    MatcherAssert.assertThat(constructor.getKind(), Matchers.is(ElementKind.CONSTRUCTOR));
-                }
-            }
-        })
+                                for (ExecutableElement constructor : constructors) {
+                                    MatcherAssert.assertThat(constructor.getKind(), Matchers.is(ElementKind.CONSTRUCTOR));
+                                }
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -329,21 +346,22 @@ public class ElementUtilsTest {
     @Test
     public void getEnclosedTypes() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                List<? extends TypeElement> types = ElementUtils.AccessEnclosedElements.getEnclosedTypes(element);
+                                List<? extends TypeElement> types = ElementUtils.AccessEnclosedElements.getEnclosedTypes(element);
 
-                MatcherAssert.assertThat(types, Matchers.notNullValue());
-                MatcherAssert.assertThat(types, Matchers.not(Matchers.<TypeElement>empty()));
+                                MatcherAssert.assertThat(types, Matchers.notNullValue());
+                                MatcherAssert.assertThat(types, Matchers.not(Matchers.<TypeElement>empty()));
 
-                for (TypeElement type : types) {
-                    MatcherAssert.assertThat(type.getKind(), Matchers.is(ElementKind.CLASS));
-                }
+                                for (TypeElement type : types) {
+                                    MatcherAssert.assertThat(type.getKind(), Matchers.is(ElementKind.CLASS));
+                                }
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -351,21 +369,22 @@ public class ElementUtilsTest {
     @Test
     public void getEnclosedElementsWithAllAnnotationsOf() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                List<Element> elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element, FilterTestAnnotation1.class);
+                                List<Element> elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element, FilterTestAnnotation1.class);
 
-                MatcherAssert.assertThat(elements, Matchers.notNullValue());
-                MatcherAssert.assertThat(elements, Matchers.not(Matchers.<Element>empty()));
+                                MatcherAssert.assertThat(elements, Matchers.notNullValue());
+                                MatcherAssert.assertThat(elements, Matchers.not(Matchers.<Element>empty()));
 
-                for (Element element1 : elements) {
-                    MatcherAssert.assertThat(element1.getAnnotation(FilterTestAnnotation1.class), Matchers.notNullValue());
-                }
+                                for (Element element1 : elements) {
+                                    MatcherAssert.assertThat(element1.getAnnotation(FilterTestAnnotation1.class), Matchers.notNullValue());
+                                }
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }
@@ -373,25 +392,26 @@ public class ElementUtilsTest {
     @Test
     public void getEnclosedElementsWithAllAnnotationsOf_withNullValuedElementOrAnnotation() {
 
-        unitTestBuilder.useProcessor(new AbstractUnitTestAnnotationProcessorClass() {
-            @Override
-            protected void testCase(TypeElement element) {
+        unitTestBuilder.defineTest(
+                        new APTKUnitTestProcessor<TypeElement>() {
+                            @Override
+                            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement element) {
 
-                List<Element> elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(null, FilterTestAnnotation1.class);
+                                List<Element> elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(null, FilterTestAnnotation1.class);
 
-                MatcherAssert.assertThat(elements, Matchers.<Element>empty());
+                                MatcherAssert.assertThat(elements, Matchers.<Element>empty());
 
-                elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element, null);
+                                elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element, null);
 
-                MatcherAssert.assertThat(elements, Matchers.hasSize(element.getEnclosedElements().size()));
+                                MatcherAssert.assertThat(elements, Matchers.hasSize(element.getEnclosedElements().size()));
 
-                elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element);
+                                elements = (List<Element>) ElementUtils.AccessEnclosedElements.getEnclosedElementsWithAllAnnotationsOf(element);
 
-                MatcherAssert.assertThat(elements, Matchers.hasSize(element.getEnclosedElements().size()));
+                                MatcherAssert.assertThat(elements, Matchers.hasSize(element.getEnclosedElements().size()));
 
 
-            }
-        })
+                            }
+                        })
                 .compilationShouldSucceed()
                 .executeTest();
     }

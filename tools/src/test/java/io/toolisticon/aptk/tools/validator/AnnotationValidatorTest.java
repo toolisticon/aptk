@@ -1,10 +1,10 @@
 package io.toolisticon.aptk.tools.validator;
 
 import io.toolisticon.aptk.tools.FilterTestAnnotation2;
-import io.toolisticon.aptk.tools.TestAnnotation;
 import io.toolisticon.aptk.tools.matcher.CriteriaMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.ByAnnotationMatcher;
 import io.toolisticon.aptk.tools.DummyValidatorMessage;
+import io.toolisticon.cute.TestAnnotation;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.mockito.Mockito;
