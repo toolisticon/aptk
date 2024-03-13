@@ -242,19 +242,19 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Checks if wrapped TypeMirror represents a Collection.
+     * Checks if wrapped TypeMirror represents an Iterable.
      *
-     * @return true if wrapped TypeMirror represents a Collection, otherwise false
+     * @return true if wrapped TypeMirror represents an Iterable, otherwise false
      */
     public boolean isIterable() {
         return isIterable(typeMirror);
     }
 
     /**
-     * Checks if passed TypeMirror represents a Collection.
+     * Checks if passed TypeMirror represents an Iterable.
      *
      * @param typeMirror the TypeMirror to check
-     * @return true if passed TypeMirror represents a Collection, otherwise false
+     * @return true if passed TypeMirror represents an Iterable, otherwise false
      */
     public static boolean isIterable(TypeMirror typeMirror) {
 
@@ -436,8 +436,8 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets the ComponentType of TypeMirror representing an array or collection.
-     * Will return TypeMirror of Object if collections component type isn't explicitly set.
+     * Gets the ComponentType of TypeMirror representing an array, a Collection or an Iterable.
+     * Will return TypeMirror of Object if Collections/Iterables component type isn't explicitly set.
      *
      * @return The component TypeMirror when passed typeMirror represents an array or collection, otherwise null.
      */
@@ -446,11 +446,11 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Gets the ComponentType of TypeMirror representing an array or collection.
-     * Will return TypeMirror of Object if collections component type isn't explicitly set.
+     * Gets the ComponentType of TypeMirror representing an array, a Collection or an Iterable.
+     * Will return TypeMirror of Object if Collections/Iterablea component type isn't explicitly set.
      *
      * @param typeMirror the TypeMirror to check
-     * @return The component TypeMirror when passed typeMirror represents an array a collection, otherwise null.
+     * @return The component TypeMirror when passed typeMirror represents an array, a Collection or Iterable, otherwise null.
      */
     public static TypeMirror getComponentType(TypeMirror typeMirror) {
 
@@ -458,7 +458,7 @@ public class TypeMirrorWrapper {
             return ((ArrayType) typeMirror).getComponentType();
         }
 
-        if (isCollection(typeMirror)||isIterable(typeMirror)) {
+        if (isCollection(typeMirror) || isIterable(typeMirror)) {
             if (hasTypeArguments(typeMirror)) {
 
                 List<? extends TypeMirror> typeArgumentTypeMirrors = getTypeArguments(typeMirror);
