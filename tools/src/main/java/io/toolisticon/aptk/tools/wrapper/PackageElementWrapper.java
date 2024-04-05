@@ -1,6 +1,9 @@
 package io.toolisticon.aptk.tools.wrapper;
 
+import io.toolisticon.aptk.common.ToolingProvider;
+
 import javax.lang.model.element.PackageElement;
+import java.util.Optional;
 
 /**
  * Wrapper for PackageElement.
@@ -43,6 +46,18 @@ public class PackageElementWrapper extends ElementWrapper<PackageElement> {
      */
     public static PackageElementWrapper wrap(PackageElement element) {
         return new PackageElementWrapper(element);
+    }
+
+    /**
+     * Gets the PackageElementWrapper by using a fully qualified package name.
+     * @param fqn the fully qualified name of the package
+     * @return an Optional containing the PackageElementWrapper or an empty Optional if the package element can't be found
+     */
+    public static Optional<PackageElementWrapper> getByFqn(String fqn) {
+
+        PackageElement packageElement = ToolingProvider.getTooling().getElements().getPackageElement(fqn);
+        return packageElement != null ? Optional.of(PackageElementWrapper.wrap(packageElement)) : Optional.empty();
+
     }
 
 }
