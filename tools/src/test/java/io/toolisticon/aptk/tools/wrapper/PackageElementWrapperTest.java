@@ -1,5 +1,6 @@
 package io.toolisticon.aptk.tools.wrapper;
 
+import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.PassIn;
 import org.hamcrest.MatcherAssert;
@@ -7,6 +8,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
@@ -22,6 +24,46 @@ public class PackageElementWrapperTest {
         CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(PackageElementWrapperTest.class, (processingEnvironment, element) -> {
             PackageElementWrapper packageElementWrapper = TypeElementWrapper.wrap(element).getPackage();
             MatcherAssert.assertThat(packageElementWrapper.getQualifiedName(), Matchers.is(PackageElementWrapperTest.class.getPackage().getName().toString()));
+        }).executeTest();
+
+    }
+
+    @Test
+    public void test_getByFqn() {
+
+        CompileTestBuilder.unitTest().<Element>defineTest((processingEnvironment, element) -> {
+
+            try {
+
+                ToolingProvider.setTooling(processingEnvironment);
+
+                String fqn = PackageElementWrapperTest.class.getPackage().getName();
+                MatcherAssert.assertThat(PackageElementWrapper.getByFqn(fqn).get().getQualifiedName(), Matchers.is(fqn));
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
+
+    @Test
+    public void test_getByFqn_nonExistingPackage() {
+
+        CompileTestBuilder.unitTest().<Element>defineTest((processingEnvironment, element) -> {
+
+            try {
+
+                ToolingProvider.setTooling(processingEnvironment);
+
+                String fqn = "xyz.xyz.xyz";
+                MatcherAssert.assertThat("Package must not be found", !PackageElementWrapper.getByFqn(fqn).isPresent());
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
         }).executeTest();
 
     }

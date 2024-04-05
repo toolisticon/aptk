@@ -8,6 +8,7 @@ import io.toolisticon.cute.PassIn;
 import io.toolisticon.cute.UnitTest;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -25,6 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -190,10 +192,11 @@ public class ElementWrapperTest {
 
         CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestClass.class, (processingEnvironment, element) -> {
             ElementWrapper<TypeElement> unit = ElementWrapper.wrap(element);
-            MatcherAssert.assertThat("Should find annotation", unit.getAnnotations(),Matchers.hasSize(1));
+            MatcherAssert.assertThat("Should find annotation", unit.getAnnotations(), Matchers.hasSize(1));
         }).executeTest();
 
     }
+
     @Test
     public void test_getAnnotation_byFqnString() {
 
@@ -273,7 +276,6 @@ public class ElementWrapperTest {
 
             MatcherAssert.assertThat(unit.<TypeElementWrapper>getFirstEnclosingElementWithKind(ElementKind.CLASS).get().getQualifiedName(), Matchers.is(ElementWrapperTest.class.getCanonicalName()));
             MatcherAssert.assertThat(unit.<PackageElementWrapper>getFirstEnclosingElementWithKind(ElementKind.PACKAGE).get().getQualifiedName(), Matchers.is(ElementWrapperTest.class.getPackage().getName()));
-
 
 
         }).executeTest();
@@ -940,6 +942,28 @@ public class ElementWrapperTest {
                 .compilationShouldSucceed()
                 .executeTest();
 
+    }
+
+
+    static class FlattenedNestedTestClass {
+
+    }
+    @Test
+    @Ignore
+    public void test_filterFlattenedEnclosedElementTree() {
+        CompileTestBuilder.unitTest().defineTest((processingEnvironment, element) -> {
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+                        PackageElementWrapper packageElementWrapper = PackageElementWrapper.getByFqn(ElementWrapperTest.class.getPackage().getName()).get();
+                        Set<String> types = packageElementWrapper.filterFlattenedEnclosedElementTree().applyFilter(AptkCoreMatchers.IS_TYPE_ELEMENT).getResult().stream().map(e -> e.getQualifiedName().toString()).collect(Collectors.toSet());
+                        MatcherAssert.assertThat("Must find this class", types.contains(ElementWrapperTest.class.getCanonicalName()));
+                        MatcherAssert.assertThat("Must find nested class", types.contains(FlattenedNestedTestClass.class.getCanonicalName()));
+                    }finally {
+                        ToolingProvider.clearTooling();
+                    }
+                })
+                .compilationShouldSucceed()
+                .executeTest();
     }
 
 

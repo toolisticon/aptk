@@ -310,8 +310,8 @@ public class ElementWrapper<E extends Element> {
      * @return a list of all elements up to the max depth of the enclosed element tree plus element itself if includeSelf flag is set
      */
     public List<ElementWrapper<Element>> getFlattenedEnclosedElementTree(boolean includeSelf, int maxDepth) {
-        return ElementUtils.AccessEnclosingElements.getFlattenedEnclosingElementsTree(this.unwrap(), includeSelf, maxDepth)
-                .stream().map(ExecutableElementWrapper::wrap).collect(Collectors.toList());
+        return ElementUtils.AccessEnclosedElements.flattenEnclosedElementTree(this.unwrap(), includeSelf, maxDepth)
+                .stream().map(ElementWrapper::wrap).collect(Collectors.toList());
     }
 
     /**
