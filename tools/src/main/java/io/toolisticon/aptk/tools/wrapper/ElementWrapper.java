@@ -710,6 +710,7 @@ public class ElementWrapper<E extends Element> {
         return ElementUtils.CastElement.isModuleElement(this.element);
     }
 
+
     /**
      * Converts wrapper to a PackageElementWrapper by casting and re-wrapping wrapped element.
      *
@@ -765,8 +766,6 @@ public class ElementWrapper<E extends Element> {
         return ExecutableElementWrapper.wrap(ElementUtils.CastElement.castToExecutableElement(wrapper.unwrap()));
     }
 
-
-
     protected <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(String interfaceName, String methodName) {
         return ElementWrapper.<TARGET_TYPE>invokeParameterlessMethodOfElement(element, interfaceName, methodName);
     }
@@ -793,5 +792,5 @@ public class ElementWrapper<E extends Element> {
             return false;
         }
     }
-
+    
 }

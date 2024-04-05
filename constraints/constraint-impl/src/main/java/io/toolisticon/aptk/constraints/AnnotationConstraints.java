@@ -18,13 +18,13 @@ class AnnotationConstraints {
 
     }
 
-    void addConstraintOnType(AnnotationMirrorWrapper annotationMirror) {
+    void addConstraintOnAttribute(AnnotationMirrorWrapper annotationMirror) {
         if (annotationMirror != null) {
             constraintsOnAnnotationType.add(annotationMirror);
         }
     }
 
-    void addConstraintOnType(AnnotationAttributeConstraints annotationAttributeConstraints) {
+    void addConstraintOnAttribute(AnnotationAttributeConstraints annotationAttributeConstraints) {
         if (annotationAttributeConstraints != null) {
             constraintsOnAnnotationAttributes.add(annotationAttributeConstraints);
         }

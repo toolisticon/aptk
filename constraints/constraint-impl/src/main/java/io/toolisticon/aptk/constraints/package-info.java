@@ -4,7 +4,8 @@
 @AnnotationWrapper(
         value = {
                 On.class,
-                OnAnnotationAttributeOfType.class
+                OnAnnotationAttributeOfType.class,
+                StringMustMatch.class
         })
 package io.toolisticon.aptk.constraints;
 

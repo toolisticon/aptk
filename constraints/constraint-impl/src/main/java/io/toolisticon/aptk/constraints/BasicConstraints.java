@@ -23,6 +23,7 @@ import java.util.ServiceLoader;
 @DeclareCompilerMessage(code = "BASE_002", enumValueName = "BASE_ERROR_MUST_BE_PLACE_ON_ANNOTATION_TYPE", message = "Constraint must be placed on annotation type", processorClass = BasicConstraints.class)
 @DeclareCompilerMessage(code = "BASE_003", enumValueName = "BASE_ERROR_MUST_BE_PLACE_ON_ANNOTATION_ATTRIBUTE", message = "Constraint must be placed on annotation attribute", processorClass = BasicConstraints.class)
 @DeclareCompilerMessage(code = "BASE_004", enumValueName = "BASE_WARNING_CONSTRAINT_SPI_IMPLEMENTATION_NOT_FOUND", message = "Couldn't find and apply annotation constraint implementation for constraint ${0} in annotation ${1}.", processorClass = BasicConstraints.class)
+@DeclareCompilerMessage(code = "BASE_005", enumValueName = "BASE_WARNING_INVALID_USAGE_OF_CONSTRAINT", message = "Constraint annotation ${} isn't used correctly and will be ignmored!", processorClass = BasicConstraints.class)
 public class BasicConstraints {
 
     private static BasicConstraints INSTANCE = null;
@@ -53,8 +54,6 @@ public class BasicConstraints {
             if (manualConstraintSpi != null) {
                 manualConstraintSpi.checkManualConstraints(elementWrapper.unwrap(),elementWrapper.getAnnotationMirror(annotationFQN).get().unwrap());
             }
-
-
 
 
             AnnotationConstraints annotationConstraints = onAnnotationConstraintsLUT.get(annotationFQN);
@@ -117,7 +116,7 @@ public class BasicConstraints {
         for (AnnotationMirrorWrapper annotation : annotationTypeElement.getAnnotationMirrors()) {
 
             if (hasConstraintAnnotationOnTypeElement(annotation)) {
-                annotationConstraints.addConstraintOnType(annotation);
+                annotationConstraints.addConstraintOnAttribute(annotation);
             }
 
         }
@@ -141,7 +140,7 @@ public class BasicConstraints {
 
             if (detectedConstraints.size() > 0) {
                 // detected constraint
-                annotationConstraints.addConstraintOnType(new AnnotationAttributeConstraints(name, detectedConstraints));
+                annotationConstraints.addConstraintOnAttribute(new AnnotationAttributeConstraints(name, detectedConstraints));
             }
 
         }
