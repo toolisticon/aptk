@@ -26,6 +26,18 @@
             </modules>
 
         </profile>
+        <profile>
+            <id>java-16</id>
+            <activation>
+                <jdk>[16,)</jdk>
+            </activation>
+
+            <modules>
+                <module>java9</module>
+                <module>java16</module>
+            </modules>
+
+        </profile>
     </profiles>
 
 </project>

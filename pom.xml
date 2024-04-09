@@ -87,7 +87,7 @@
 
         <!-- project dependency versions -->
         <spiap.version>0.11.0</spiap.version>
-        <cute.version>1.0.0_RC1</cute.version>
+        <cute.version>1.5.0</cute.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.13.2</junit.version>
@@ -689,8 +689,6 @@
     <dependencies>
 
 
-
-
         <!-- Test dependencies -->
         <dependency>
             <groupId>junit</groupId>
@@ -757,6 +755,18 @@
             <dependency>
                 <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>aptk-annotationwrapper-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-tools-java9</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-tools-java16</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
