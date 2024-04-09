@@ -16,6 +16,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Repeatable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -744,6 +745,14 @@ public class ElementWrapper<E extends Element> {
      */
     public static ExecutableElementWrapper toExecutableElementWrapper(ElementWrapper<? extends Element> wrapper) {
         return ExecutableElementWrapper.wrap(ElementUtils.CastElement.castToExecutableElement(wrapper.unwrap()));
+    }
+
+    protected <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(String methodName, TARGET_TYPE defaultReturnValue) {
+        try {
+            return (TARGET_TYPE) this.element.getClass().getMethod(methodName).invoke(element);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            return defaultReturnValue;
+        }
     }
 
 }
