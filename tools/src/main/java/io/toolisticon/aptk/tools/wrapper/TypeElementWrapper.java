@@ -279,6 +279,16 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
     }
 
     /**
+     * Returns the permitted classes of this class or interface element in declaration order.
+     * @return the permitted classes, or an empty list if there are none
+     */
+    public List<TypeMirrorWrapper> getPermittedSubclasses() {
+        List<TypeMirror> typeMirrors = this.<List<TypeMirror>>invokeParameterlessMethodOfElement("getPermittedSubclasses", Collections.EMPTY_LIST);
+        return typeMirrors.stream().map(TypeMirrorWrapper::wrap).collect(Collectors.toList());
+    }
+
+
+    /**
      * Wraps a TypeElement.
      *
      * @param element the TypeElement to wrap
