@@ -2,25 +2,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>aptk-tools-java16</artifactId>
+    <artifactId>aptk-tools-java9</artifactId>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
-        <artifactId>extension-parent</artifactId>
+        <artifactId>integrationtest-parent</artifactId>
         <version>0.24.1-148_records-SNAPSHOT</version>
     </parent>
 
-    <name>aptk-tools-java16</name>
+    <name>aptk-tools-java9</name>
 
 
     <dependencies>
-
-        <!-- Should transitively bind all extensions for lesser java versions -->
-        <dependency>
-            <groupId>io.toolisticon.aptk</groupId>
-            <artifactId>aptk-tools-java9</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
@@ -57,7 +51,6 @@
                                     </excludes>
                                     <includes>
                                         <include>io.toolisticon.aptk:aptk-tools:*</include>
-                                        <include>io.toolisticon.aptk:aptk-tools-java9:*</include>
                                         <include>*:*:*:*:test:*</include>
                                         <include>*:*:*:*:provided:*</include>
                                     </includes>
@@ -71,8 +64,8 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>16</source>
-                    <target>16</target>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
             </plugin>
 
@@ -84,6 +77,13 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
 
         </plugins>
 

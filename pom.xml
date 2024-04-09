@@ -18,7 +18,7 @@
         <module>tools</module>
         <module>example</module>
         <module>templating</module>
-        <module>extensions</module>
+        <module>integrationtest</module>
 
         <!-- wrapper processor -->
         <module>annotationwrapper</module>

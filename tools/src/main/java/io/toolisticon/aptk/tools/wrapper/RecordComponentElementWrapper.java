@@ -31,6 +31,11 @@ public class RecordComponentElementWrapper extends ElementWrapper<Element> {
         return ExecutableElementWrapper.wrap(this.<ExecutableElement>invokeParameterlessMethodOfElement("getAccessor", null));
     }
 
+    /**
+     * Re-wraps an ElementWrapper to a RecordComponentElementWrapper.
+     * @param element the wrapper to re-wrap
+     * @return The RecordComponentElementWrapper or null if the passed ElementWrapper doesn't wrap a RecordComponentElement
+     */
     public static RecordComponentElementWrapper toRecordComponentElement(ElementWrapper<?> element) {
         if (element == null) {
             return null;
@@ -38,6 +43,12 @@ public class RecordComponentElementWrapper extends ElementWrapper<Element> {
         return RecordComponentElementWrapper.wrap(element.unwrap());
     }
 
+    /**
+     * Wraps an element with the RecordComponentElementWrapper.
+     *
+     * @param element the element to wrap
+     * @return the wrapped element, or null if passed element isn't an RecordComponentElement
+     */
     public static RecordComponentElementWrapper wrap(Element element) {
         if (element == null || !"RECORD_COMPONENT".equals(element.getKind().name())) {
             return null;

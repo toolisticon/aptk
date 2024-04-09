@@ -2,16 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>aptk-tools-java9</artifactId>
+    <artifactId>aptk-tools-java16</artifactId>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
-        <artifactId>extension-parent</artifactId>
+        <artifactId>integrationtest-parent</artifactId>
         <version>0.24.1-148_records-SNAPSHOT</version>
     </parent>
 
-    <name>aptk-tools-java9</name>
+    <name>aptk-tools-java16</name>
 
 
     <dependencies>
@@ -64,14 +64,22 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>animal-sniffer-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
