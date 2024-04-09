@@ -5,6 +5,7 @@ import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -12,6 +13,7 @@ import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -259,6 +261,21 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
                         .stream().map(e -> VariableElementWrapper.wrap((VariableElement) e))
                         .collect(Collectors.toList())
                 : null;
+    }
+
+    /**
+     * Returns the record components of this class or interface element in declaration order.
+     * @return the record components, or an empty list if there are none
+     */
+    public List<RecordComponentElementWrapper> getRecordComponents() {
+
+        if (!isRecord()) {
+            return Collections.EMPTY_LIST;
+        }
+        List<? extends Element> recordComponentElements = this.invokeParameterlessMethodOfElement("getRecordComponents", Collections.EMPTY_LIST);
+
+        return recordComponentElements.stream().map(RecordComponentElementWrapper::wrap).collect(Collectors.toList());
+
     }
 
     /**

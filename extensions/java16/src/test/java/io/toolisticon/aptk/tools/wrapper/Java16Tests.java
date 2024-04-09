@@ -15,11 +15,12 @@ import java.util.stream.Collectors;
 public class Java16Tests {
 
     @PassIn
-    record MyRecord(String name, String surname){}
+    record MyRecord(String name, String surname) {
+    }
 
     @Test
     public void test_records_isRecord() {
-        Cute.unitTest().when().passInElement().fromClass(MyRecord.class).intoUnitTest( (processingEnvironment, element) -> {
+        Cute.unitTest().when().passInElement().fromClass(MyRecord.class).intoUnitTest((processingEnvironment, element) -> {
             try {
                 ToolingProvider.setTooling(processingEnvironment);
 
@@ -38,7 +39,7 @@ public class Java16Tests {
 
     @Test
     public void test_records_isTypeElement() {
-        Cute.unitTest().when().passInElement().fromClass(MyRecord.class).intoUnitTest( (processingEnvironment, element) -> {
+        Cute.unitTest().when().passInElement().fromClass(MyRecord.class).intoUnitTest((processingEnvironment, element) -> {
             try {
                 ToolingProvider.setTooling(processingEnvironment);
 
@@ -61,7 +62,7 @@ public class Java16Tests {
 
     @Test
     public void test_recordComponent_isRecordComponent() {
-        Cute.unitTest().when().passInElement().fromClass(MyRecord.class).intoUnitTest( (processingEnvironment, element) -> {
+        Cute.unitTest().when().passInElement().fromClass(MyRecord.class).intoUnitTest((processingEnvironment, element) -> {
             try {
                 ToolingProvider.setTooling(processingEnvironment);
 
@@ -82,7 +83,7 @@ public class Java16Tests {
 
     @Test
     public void test_recordComponent_isTypeElement() {
-        Cute.unitTest().when().passInElement().fromClass(MyRecord.class).intoUnitTest( (processingEnvironment, element) -> {
+        Cute.unitTest().when().passInElement().fromClass(MyRecord.class).intoUnitTest((processingEnvironment, element) -> {
             try {
                 ToolingProvider.setTooling(processingEnvironment);
 
@@ -107,13 +108,13 @@ public class Java16Tests {
 
 
     public void test_recordComponent_simpleName() {
-        Cute.unitTest().when().passInElement().fromClass(MyRecord.class).intoUnitTest( (processingEnvironment, element) -> {
+        Cute.unitTest().when().passInElement().<TypeElement>fromClass(MyRecord.class).intoUnitTest((processingEnvironment, element) -> {
             try {
                 ToolingProvider.setTooling(processingEnvironment);
-                TypeElement typeElement = (TypeElement) element;
+                TypeElementWrapper typeElement = TypeElementWrapper.wrap(element);
 
-                RecordComponentElementWrapper elementWrapper = RecordComponentElementWrapper.wrap(typeElement.getRecordComponents().get(0));
-                MatcherAssert.assertThat( elementWrapper.getSimpleName(), Matchers.is("name"));
+                RecordComponentElementWrapper elementWrapper = typeElement.getRecordComponents().get(0);
+                MatcherAssert.assertThat(elementWrapper.getSimpleName(), Matchers.is("name"));
 
             } finally {
                 ToolingProvider.clearTooling();
@@ -125,14 +126,14 @@ public class Java16Tests {
 
     @Test
     public void test_recordComponent_filtering_byTypeElement() {
-        Cute.unitTest().when( (processingEnvironment) -> {
+        Cute.unitTest().when((processingEnvironment) -> {
             try {
                 ToolingProvider.setTooling(processingEnvironment);
                 TypeElementWrapper typeElement = TypeElementWrapper.getByClass(Java16Tests.class).get();
 
-                Set<String> enclosedTypeElements  = typeElement.filterFlattenedEnclosedElementTree().applyFilter(AptkCoreMatchers.IS_TYPE_ELEMENT).getResult().stream().map(e -> e.getQualifiedName().toString()).collect(Collectors.toSet());
+                Set<String> enclosedTypeElements = typeElement.filterFlattenedEnclosedElementTree().applyFilter(AptkCoreMatchers.IS_TYPE_ELEMENT).getResult().stream().map(e -> e.getQualifiedName().toString()).collect(Collectors.toSet());
 
-                MatcherAssert.assertThat( enclosedTypeElements, Matchers.contains(MyRecord.class.getCanonicalName()));
+                MatcherAssert.assertThat(enclosedTypeElements, Matchers.contains(MyRecord.class.getCanonicalName()));
 
             } finally {
                 ToolingProvider.clearTooling();
@@ -144,15 +145,15 @@ public class Java16Tests {
 
     @Test
     public void test_recordComponent_filtering_byRecord() {
-        Cute.unitTest().when( (processingEnvironment) -> {
+        Cute.unitTest().when((processingEnvironment) -> {
             try {
                 ToolingProvider.setTooling(processingEnvironment);
                 TypeElementWrapper typeElement = TypeElementWrapper.getByClass(Java16Tests.class).get();
 
-                Set<String> enclosedTypeElements  = typeElement.filterFlattenedEnclosedElementTree().applyFilter(AptkCoreMatchers.IS_RECORD).getResult().stream().map(e -> e.getQualifiedName().toString()).collect(Collectors.toSet());
+                Set<String> enclosedTypeElements = typeElement.filterFlattenedEnclosedElementTree().applyFilter(AptkCoreMatchers.IS_RECORD).getResult().stream().map(e -> e.getQualifiedName().toString()).collect(Collectors.toSet());
 
                 MatcherAssert.assertThat(enclosedTypeElements, Matchers.hasSize(1));
-                MatcherAssert.assertThat( enclosedTypeElements, Matchers.contains(MyRecord.class.getCanonicalName()));
+                MatcherAssert.assertThat(enclosedTypeElements, Matchers.contains(MyRecord.class.getCanonicalName()));
 
             } finally {
                 ToolingProvider.clearTooling();
