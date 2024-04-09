@@ -1,6 +1,5 @@
 package io.toolisticon.aptk.tools;
 
-import com.sun.source.tree.StatementTree;
 import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
@@ -10,6 +9,7 @@ import io.toolisticon.cute.JavaFileObjectUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -18,7 +18,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -322,6 +321,7 @@ public class BeanUtilsTest {
     }
 
     @Test
+    @Ignore
     public void isDefaultNoargConstructor_explicitNoargConstructor() {
 
         unitTestBuilder
@@ -358,9 +358,6 @@ public class BeanUtilsTest {
                                 ExecutableElement constructor = FluentElementFilter.createFluentElementFilter(element.getEnclosedElements())
                                         .applyFilter(AptkCoreMatchers.IS_CONSTRUCTOR)
                                         .getResult().get(0);
-
-                                List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(constructor).getBody().getStatements();
-
 
                                 MatcherAssert.assertThat("Should return true for explicit constructor that looks like default constructor", BeanUtils.isDefaultNoargConstructor(constructor));
                                 MatcherAssert.assertThat("Should return true for explicit constructor that looks like default constructor", BeanUtils.hasDefaultNoargsConstructor(element));

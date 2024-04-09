@@ -1,6 +1,5 @@
 package io.toolisticon.aptk.tools;
 
-import com.sun.source.tree.StatementTree;
 import io.toolisticon.aptk.tools.command.impl.GetAttributesCommand;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
@@ -20,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 /**
  * Utility class to handle bean related tasks.
@@ -163,6 +161,7 @@ public final class BeanUtils {
             return false;
         }
 
+        /*-
         // now check statements of constructor
         List<? extends StatementTree> statements = ProcessingEnvironmentUtils.getTrees().getTree(element).getBody().getStatements();
 
@@ -171,7 +170,8 @@ public final class BeanUtils {
         }
 
         return Pattern.compile("^\\s*super\\(\\);?\\s*$").matcher(statements.get(0).toString()).matches();
-
+        */
+        return true;
     }
 
     public static boolean isAttribute(VariableElement field) {

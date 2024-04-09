@@ -39,6 +39,9 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
 
     IS_CLASS("CM_IS_CLASS", "Element must ${0} represent a Class"),
     IS_ENUM("CM_IS_ENUM", "Element must ${0} represent an enum"),
+
+    IS_RECORD("CM_IS_ENUM", "Element must ${0} represent a record"),
+
     IS_INTERFACE("CM_IS_INTERFACE", "Element must ${0} represent an interface"),
 
     IS_METHOD("CM_IS_METHOD", "Element must ${0} represent a method"),

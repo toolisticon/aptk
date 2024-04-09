@@ -521,6 +521,24 @@ public class ElementWrapper<E extends Element> {
     }
 
     /**
+     * Checks if wrapped element represents a record.
+     *
+     * @return true if wrapped element represents a record, otherwise false
+     */
+    public boolean isRecord() {
+        return ElementUtils.CheckKindOfElement.isRecord(this.element);
+    }
+
+    /**
+     * Checks if wrapped element represents a record.
+     *
+     * @return true if wrapped element represents a record, otherwise false
+     */
+    public boolean isRecordComponent() {
+        return ElementUtils.CheckKindOfElement.isRecordComponent(this.element);
+    }
+
+    /**
      * Checks if wrapped element represents an annotation.
      *
      * @return true if wrapped element represents an annotation, otherwise false
@@ -528,6 +546,7 @@ public class ElementWrapper<E extends Element> {
     public boolean isAnnotation() {
         return ElementUtils.CheckKindOfElement.isAnnotation(this.element);
     }
+
 
     /**
      * Checks if wrapped element is a repeatable annotation.
@@ -626,6 +645,14 @@ public class ElementWrapper<E extends Element> {
         return ElementUtils.CastElement.isTypeElement(element);
     }
 
+    /**
+     * Checks if wrapped element is a RecordComponentElement.
+     *
+     * @return true if wrapped element is a RecordComponentElement, otherwise false
+     */
+    public boolean isRecordComponentElement() {
+        return ElementUtils.CastElement.isRecordComponentElement(element);
+    }
 
     /**
      * Checks if wrapped element is a ExecutableElement.

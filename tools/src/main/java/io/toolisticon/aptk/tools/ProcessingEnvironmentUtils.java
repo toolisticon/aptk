@@ -1,6 +1,5 @@
 package io.toolisticon.aptk.tools;
 
-import com.sun.source.util.Trees;
 import io.toolisticon.aptk.common.ToolingProvider;
 
 import javax.annotation.processing.Filer;
@@ -66,15 +65,5 @@ public final class ProcessingEnvironmentUtils {
     public static ProcessingEnvironment getProcessingEnvironment() {
         return ToolingProvider.getTooling().getProcessingEnvironment();
     }
-
-    /**
-     * Gets Trees instance.
-     *
-     * @return The trees instance
-     */
-    public static Trees getTrees() {
-        return Trees.instance(ToolingProvider.getTooling().getProcessingEnvironment());
-    }
-
 
 }
