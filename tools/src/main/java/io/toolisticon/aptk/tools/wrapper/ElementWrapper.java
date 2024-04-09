@@ -748,8 +748,12 @@ public class ElementWrapper<E extends Element> {
     }
 
     protected <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(String methodName, TARGET_TYPE defaultReturnValue) {
+        return ElementWrapper.<TARGET_TYPE>invokeParameterlessMethodOfElement(element, methodName, defaultReturnValue);
+    }
+
+    protected static <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(Object instance, String methodName, TARGET_TYPE defaultReturnValue) {
         try {
-            return (TARGET_TYPE) this.element.getClass().getMethod(methodName).invoke(element);
+            return (TARGET_TYPE) instance.getClass().getMethod(methodName).invoke(instance);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             return defaultReturnValue;
         }
