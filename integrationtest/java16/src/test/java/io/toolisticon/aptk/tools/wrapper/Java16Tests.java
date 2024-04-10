@@ -106,8 +106,8 @@ public class Java16Tests {
 
     }
 
-
-    public void test_recordComponent_simpleName() {
+    @Test
+    public void test_recordComponent_accessWrapperMethods() {
         Cute.unitTest().when().passInElement().<TypeElement>fromClass(MyRecord.class).intoUnitTest((processingEnvironment, element) -> {
             try {
                 ToolingProvider.setTooling(processingEnvironment);
@@ -115,6 +115,10 @@ public class Java16Tests {
 
                 RecordComponentElementWrapper elementWrapper = typeElement.getRecordComponents().get(0);
                 MatcherAssert.assertThat(elementWrapper.getSimpleName(), Matchers.is("name"));
+                MatcherAssert.assertThat("Must be methods", elementWrapper.getAccessor().isMethod());
+                MatcherAssert.assertThat(elementWrapper.getEnclosingRecordTypeElement().getQualifiedName(), Matchers.is(MyRecord.class.getCanonicalName()));
+                MatcherAssert.assertThat(TypeElementWrapper.toTypeElement(elementWrapper.getEnclosingElement().get()).getQualifiedName(), Matchers.is(MyRecord.class.getCanonicalName()));
+
 
             } finally {
                 ToolingProvider.clearTooling();
@@ -123,6 +127,7 @@ public class Java16Tests {
         }).thenExpectThat().compilationSucceeds().executeTest();
 
     }
+
 
     @Test
     public void test_recordComponent_filtering_byTypeElement() {
