@@ -1,15 +1,30 @@
 package io.toolisticon.aptk.tools.wrapper;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Target;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ModuleElementWrapper extends ElementWrapper<Element> {
+
+    private final static String MODULE_ELEMENT_CLASS_NAME = "javax.lang.model.element.ModuleElement";
+    private final static String DIRECTIVE_CLASS_NAME = MODULE_ELEMENT_CLASS_NAME + "$Directive";
+    private final static String EXPORTS_DIRECTIVE_CLASS_NAME = MODULE_ELEMENT_CLASS_NAME + "$ExportsDirective";
+
+    private final static String PROVIDES_DIRECTIVE_CLASS_NAME = MODULE_ELEMENT_CLASS_NAME + "$ProvidesDirective";
+
+    private final static String USES_DIRECTIVE_CLASS_NAME = MODULE_ELEMENT_CLASS_NAME + "$UsesDirective";
+
+
+    private final static String OPENS_DIRECTIVE_CLASS_NAME = MODULE_ELEMENT_CLASS_NAME + "$OpensDirective";
+
+    private final static String REQUIRES_DIRECTIVE_CLASS_NAME = MODULE_ELEMENT_CLASS_NAME + "$RequiresDirective";
+
 
     public abstract static class Directive {
 
@@ -24,11 +39,11 @@ public class ModuleElementWrapper extends ElementWrapper<Element> {
         }
 
         private static boolean isExportDirective(Object instance) {
-            return "EXPORTS".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, "getKind", null).toString());
+            return "EXPORTS".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, DIRECTIVE_CLASS_NAME, "getKind").get().toString());
         }
 
         public ExportsDirective toExportsDirective() {
-            return isExportDirective() ? (ExportsDirective) this : null;
+            return (ExportsDirective) this;
         }
 
 
@@ -37,11 +52,11 @@ public class ModuleElementWrapper extends ElementWrapper<Element> {
         }
 
         private static boolean isOpensDirective(Object instance) {
-            return "OPENS".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, "getKind", null).toString());
+            return "OPENS".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, DIRECTIVE_CLASS_NAME, "getKind").get().toString());
         }
 
         public OpensDirective toOpensDirective() {
-            return isOpensDirective() ? (OpensDirective) this : null;
+            return (OpensDirective) this;
         }
 
         public boolean isProvidesDirective() {
@@ -49,23 +64,23 @@ public class ModuleElementWrapper extends ElementWrapper<Element> {
         }
 
         private static boolean isProvidesDirective(Object instance) {
-            return "PROVIDES".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, "getKind", null).toString());
+            return "PROVIDES".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, DIRECTIVE_CLASS_NAME, "getKind").get().toString());
         }
 
         public ProvidesDirective toProvidesDirective() {
-            return isProvidesDirective() ? (ProvidesDirective) this : null;
+            return (ProvidesDirective) this;
         }
 
         public boolean isRequiresDirective() {
             return isRequiresDirective(wrappedDirective);
         }
 
-        private static  boolean isRequiresDirective(Object instance) {
-            return "REQUIRES".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, "getKind", null).toString());
+        private static boolean isRequiresDirective(Object instance) {
+            return "REQUIRES".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, DIRECTIVE_CLASS_NAME, "getKind").get().toString());
         }
 
         public RequiresDirective toRequiresDirective() {
-            return isRequiresDirective() ? (RequiresDirective) this : null;
+            return (RequiresDirective) this;
         }
 
         public boolean isUsesDirective() {
@@ -73,150 +88,206 @@ public class ModuleElementWrapper extends ElementWrapper<Element> {
         }
 
         private static boolean isUsesDirective(Object instance) {
-            return "USES".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, "getKind", null).toString());
+            return "USES".equals(ElementWrapper.invokeParameterlessMethodOfElement(instance, DIRECTIVE_CLASS_NAME, "getKind").get().toString());
         }
+
 
         public UsesDirective toUsesDirective() {
-            return isRequiresDirective() ? (UsesDirective) this : null;
+            return (UsesDirective) this;
         }
 
 
     }
 
 
-    public static class ExportsDirective extends Directive {
-
-
-        private ExportsDirective(Object wrappedDirective) {
-            super(wrappedDirective);
-        }
+    public interface ExportsDirective {
 
         /**
          * Returns the package being exported.
          *
          * @return the package being exported
          */
-        public PackageElementWrapper getPackage() {
-            return PackageElementWrapper.wrap(ElementWrapper.<PackageElement>invokeParameterlessMethodOfElement(wrappedDirective, "getPackage", null));
-        }
+        PackageElementWrapper getPackage();
 
         /**
          * Returns the specific modules to which the package is being exported, or null, if the package is exported to all modules which have readability to this module.
          *
          * @return the specific modules to which the package is being exported
          */
-        public List<ModuleElementWrapper> getTargetModules() {
-            return ModuleElementWrapper.wrapList(ElementWrapper.<List<? extends Element>>invokeParameterlessMethodOfElement(wrappedDirective, "getTargetModules", Collections.EMPTY_LIST));
-        }
-
+        List<ModuleElementWrapper> getTargetModules();
 
     }
 
-    public static class OpensDirective extends Directive {
+    static class ExportsDirectiveImpl extends Directive implements ExportsDirective {
 
 
-        private OpensDirective(Object wrappedDirective) {
+        private ExportsDirectiveImpl(Object wrappedDirective) {
             super(wrappedDirective);
         }
 
-        /**
-         * Returns the package being exported.
-         *
-         * @return the package being exported
-         */
+        @Override
         public PackageElementWrapper getPackage() {
-            return PackageElementWrapper.wrap(ElementWrapper.<PackageElement>invokeParameterlessMethodOfElement(wrappedDirective, "getPackage", null));
+            Optional<PackageElement> result = ElementWrapper.<PackageElement>invokeParameterlessMethodOfElement(wrappedDirective, EXPORTS_DIRECTIVE_CLASS_NAME, "getPackage");
+            return PackageElementWrapper.wrap(result.get());
         }
 
-        /**
-         * Returns the specific modules to which the package is being exported, or null, if the package is exported to all modules which have readability to this module.
-         *
-         * @return the specific modules to which the package is being exported
-         */
+        @Override
         public List<ModuleElementWrapper> getTargetModules() {
-            return ModuleElementWrapper.wrapList(ElementWrapper.<List<? extends Element>>invokeParameterlessMethodOfElement(wrappedDirective, "getTargetModules", Collections.EMPTY_LIST));
+            return ModuleElementWrapper.wrapList(ElementWrapper.<List<Element>>invokeParameterlessMethodOfElement(wrappedDirective, EXPORTS_DIRECTIVE_CLASS_NAME, "getTargetModules").get());
+        }
+
+
+    }
+
+    public interface OpensDirective {
+
+
+        /**
+         * Returns the package being opened.
+         *
+         * @return the package being opened
+         */
+        PackageElementWrapper getPackage();
+
+        /**
+         * Returns the specific modules to which the package is being open or null, if the package is open all modules which have readability to this module.
+         *
+         * @return the specific modules to which the package is being opened
+         */
+        List<ModuleElementWrapper> getTargetModules();
+
+    }
+
+    static class OpensDirectiveImpl extends Directive implements OpensDirective {
+
+
+        private OpensDirectiveImpl(Object wrappedDirective) {
+            super(wrappedDirective);
+        }
+
+        @Override
+        public PackageElementWrapper getPackage() {
+            return PackageElementWrapper.wrap(ElementWrapper.<PackageElement>invokeParameterlessMethodOfElement(wrappedDirective, OPENS_DIRECTIVE_CLASS_NAME, "getPackage").get());
+        }
+
+        @Override
+        public List<ModuleElementWrapper> getTargetModules() {
+            return ModuleElementWrapper.wrapList(ElementWrapper.<List<Element>>invokeParameterlessMethodOfElement(wrappedDirective, OPENS_DIRECTIVE_CLASS_NAME, "getTargetModules").get());
         }
 
     }
 
-    public static class ProvidesDirective extends Directive {
-
-
-        private ProvidesDirective(Object wrappedDirective) {
-            super(wrappedDirective);
-        }
+    public interface ProvidesDirective {
 
         /**
          * Returns the service being provided
          *
          * @return the service being provided
          */
-        public TypeElementWrapper getService(){
-            return TypeElementWrapper.wrap(ElementWrapper.<TypeElement>invokeParameterlessMethodOfElement(wrappedDirective, "getService", null));
-        }
+        TypeElementWrapper getService();
 
         /**
          * Returns the implementations of the service being provided.
          *
          * @return the implementations of the service being provided
          */
+        List<TypeElementWrapper> getImplementations();
+
+    }
+
+    static class ProvidesDirectiveImpl extends Directive implements ProvidesDirective {
+
+
+        private ProvidesDirectiveImpl(Object wrappedDirective) {
+            super(wrappedDirective);
+        }
+
+        @Override
+        public TypeElementWrapper getService() {
+            return TypeElementWrapper.wrap(ElementWrapper.<TypeElement>invokeParameterlessMethodOfElement(wrappedDirective, PROVIDES_DIRECTIVE_CLASS_NAME, "getService").get());
+        }
+
+        @Override
         public List<TypeElementWrapper> getImplementations() {
-            List<TypeElement> implementations = (ElementWrapper.<List<TypeElement>>invokeParameterlessMethodOfElement(wrappedDirective, "getTargetModules", Collections.EMPTY_LIST));
+            List<TypeElement> implementations = (ElementWrapper.<List<TypeElement>>invokeParameterlessMethodOfElement(wrappedDirective, PROVIDES_DIRECTIVE_CLASS_NAME, "getImplementations").get());
             return implementations.stream().map(TypeElementWrapper::wrap).collect(Collectors.toList());
         }
 
     }
 
-    public static class RequiresDirective extends Directive {
-
-
-        private RequiresDirective(Object wrappedDirective) {
-            super(wrappedDirective);
-        }
+    public interface RequiresDirective {
 
         /**
          * Returns the module that is required
          *
          * @return the module that is required
          */
-        public ModuleElementWrapper getDependency(){
-            return ModuleElementWrapper.wrap(ElementWrapper.<Element>invokeParameterlessMethodOfElement(wrappedDirective, "getDependency", null));
-        }
+        ModuleElementWrapper getDependency();
 
 
         /**
          * Returns whether or not this is a static dependency.
+         *
          * @return whether or not this is a static dependency.
          */
-        public boolean isStatic() {
-            return ElementWrapper.<Boolean>invokeParameterlessMethodOfElement(wrappedDirective,"isStatic",false);
-        }
+        boolean isStatic();
 
         /**
          * Returns whether or not this is a transitive dependency.
+         *
          * @return whether or not this is a transitive dependency.
          */
-        boolean isTransitive() {
-            return ElementWrapper.<Boolean>invokeParameterlessMethodOfElement(wrappedDirective,"isTransitive",false);
+        boolean isTransitive();
+
+    }
+
+    static class RequiresDirectiveImpl extends Directive implements RequiresDirective {
+
+
+        private RequiresDirectiveImpl(Object wrappedDirective) {
+            super(wrappedDirective);
+        }
+
+        @Override
+        public ModuleElementWrapper getDependency() {
+            return ModuleElementWrapper.wrap(ElementWrapper.<Element>invokeParameterlessMethodOfElement(wrappedDirective, REQUIRES_DIRECTIVE_CLASS_NAME, "getDependency").get());
+        }
+
+
+        @Override
+        public boolean isStatic() {
+            return ElementWrapper.<Boolean>invokeParameterlessMethodOfElement(wrappedDirective, REQUIRES_DIRECTIVE_CLASS_NAME, "isStatic").get();
+        }
+
+        @Override
+        public boolean isTransitive() {
+            return ElementWrapper.<Boolean>invokeParameterlessMethodOfElement(wrappedDirective, REQUIRES_DIRECTIVE_CLASS_NAME, "isTransitive").get();
         }
 
     }
 
-    public static class UsesDirective extends Directive {
-
-        private UsesDirective(Object wrappedDirective) {
-            super(wrappedDirective);
-        }
+    public interface UsesDirective {
 
         /**
          * Returns the service being used
          *
          * @return the service being used
          */
-        public TypeElementWrapper getService(){
-            return TypeElementWrapper.wrap(ElementWrapper.<TypeElement>invokeParameterlessMethodOfElement(wrappedDirective, "getService", null));
+        TypeElementWrapper getService();
+
+
+    }
+
+    public static class UsesDirectiveImpl extends Directive implements UsesDirective {
+
+        private UsesDirectiveImpl(Object wrappedDirective) {
+            super(wrappedDirective);
         }
 
+        @Override
+        public TypeElementWrapper getService() {
+            return TypeElementWrapper.wrap(ElementWrapper.<TypeElement>invokeParameterlessMethodOfElement(wrappedDirective, USES_DIRECTIVE_CLASS_NAME, "getService").get());
+        }
 
 
     }
@@ -227,21 +298,21 @@ public class ModuleElementWrapper extends ElementWrapper<Element> {
         }
 
         if (Directive.isExportDirective(instance)) {
-            return new ExportsDirective(instance);
+            return new ExportsDirectiveImpl(instance);
         } else if (Directive.isOpensDirective(instance)) {
-            return new OpensDirective(instance);
+            return new OpensDirectiveImpl(instance);
         } else if (Directive.isProvidesDirective(instance)) {
-            return new ProvidesDirective(instance);
+            return new ProvidesDirectiveImpl(instance);
         } else if (Directive.isRequiresDirective(instance)) {
-            return new RequiresDirective(instance);
+            return new RequiresDirectiveImpl(instance);
         } else if (Directive.isUsesDirective(instance)) {
-            return new UsesDirective(instance);
+            return new UsesDirectiveImpl(instance);
         }
 
         return null;
     }
 
-    private static List<Directive> createDirectives (List<?> directives) {
+    private static List<Directive> createDirectives(List<?> directives) {
 
         return directives.stream().map(e -> createDirective(e)).filter(Objects::nonNull).collect(Collectors.toList());
 
@@ -252,8 +323,8 @@ public class ModuleElementWrapper extends ElementWrapper<Element> {
     }
 
     public String getQualifiedName() {
-        // default value not needed
-        return invokeParameterlessMethodOfElement("getQualifiedName", null).toString();
+        Optional<Name> result = this.<Name>invokeParameterlessMethodOfElement(MODULE_ELEMENT_CLASS_NAME, "getQualifiedName");
+        return result.isPresent() ? result.get().toString() : "";
     }
 
     public boolean hasQualifiedName(String name) {
@@ -261,18 +332,19 @@ public class ModuleElementWrapper extends ElementWrapper<Element> {
     }
 
     public boolean isOpen() {
-        // default value not needed
-        return this.<Boolean>invokeParameterlessMethodOfElement("isOpen", false);
+        Optional<Boolean> result = this.<Boolean>invokeParameterlessMethodOfElement(MODULE_ELEMENT_CLASS_NAME, "isOpen");
+        return result.orElse(false);
     }
 
     public boolean isUnnamed() {
-        // default value not needed
-        return this.<Boolean>invokeParameterlessMethodOfElement("isUnnamed", false);
+        Optional<Boolean> result = this.<Boolean>invokeParameterlessMethodOfElement(MODULE_ELEMENT_CLASS_NAME, "isUnnamed");
+        return result.orElse(false);
     }
 
 
     public List<Directive> getDirectives() {
-        return createDirectives(this.<List<?>>invokeParameterlessMethodOfElement("getDirectives", Collections.EMPTY_LIST));
+        Optional<List<?>> result = this.<List<?>>invokeParameterlessMethodOfElement(MODULE_ELEMENT_CLASS_NAME, "getDirectives");
+        return createDirectives(result.isPresent() ? result.get() : Collections.EMPTY_LIST);
     }
 
 
@@ -302,10 +374,10 @@ public class ModuleElementWrapper extends ElementWrapper<Element> {
      * So this method will try to wrap all Elements of the passed list. It will drop those not being ModuleElements.
      *
      * @param moduleElements A List of ModuleElements.
-     * @return A list of ModuleElementWrapper of elements representing modules that could successfully wrapped, or an empty list.
+     * @return A list of ModuleElementWrapper of elements representing modules that could successfully be wrapped, or an empty list.
      */
     public static List<ModuleElementWrapper> wrapList(List<Element> moduleElements) {
-        return moduleElements.stream().map(ModuleElementWrapper::new).filter(Objects::nonNull).collect(Collectors.toList());
+        return moduleElements.stream().map(ModuleElementWrapper::wrap).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
 }

@@ -87,7 +87,7 @@
 
         <!-- project dependency versions -->
         <spiap.version>0.11.0</spiap.version>
-        <cute.version>1.5.0</cute.version>
+        <cute.version>1.7.0</cute.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.13.2</junit.version>
