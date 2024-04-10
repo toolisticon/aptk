@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
  */
 public class TypeElementWrapper extends ElementWrapper<TypeElement> {
 
+    private final static String TYPE_ELEMENT_CLASS_NAME = "javax.lang.model.element.TypeElement";
+
     /**
      * Hidden constructor.
      *
@@ -272,7 +274,7 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
         if (!isRecord()) {
             return Collections.EMPTY_LIST;
         }
-        List<? extends Element> recordComponentElements = this.invokeParameterlessMethodOfElement("getRecordComponents", Collections.EMPTY_LIST);
+        List<? extends Element> recordComponentElements = this.<List<? extends Element>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getRecordComponents").get();
 
         return recordComponentElements.stream().map(RecordComponentElementWrapper::wrap).collect(Collectors.toList());
 
@@ -283,7 +285,7 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
      * @return the permitted classes, or an empty list if there are none
      */
     public List<TypeMirrorWrapper> getPermittedSubclasses() {
-        List<TypeMirror> typeMirrors = this.<List<TypeMirror>>invokeParameterlessMethodOfElement("getPermittedSubclasses", Collections.EMPTY_LIST);
+        List<TypeMirror> typeMirrors = this.<List<TypeMirror>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses").get();
         return typeMirrors.stream().map(TypeMirrorWrapper::wrap).collect(Collectors.toList());
     }
 

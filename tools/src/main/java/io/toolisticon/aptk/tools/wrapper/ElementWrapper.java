@@ -94,6 +94,18 @@ public class ElementWrapper<E extends Element> {
         return name != null && this.getSimplePackageName().equals(name);
     }
 
+    /**
+     * Gets the module of the wrapped element
+     * @return an optional containing the wrapped module element
+     */
+    public Optional<ModuleElementWrapper> getModule() {
+        try {
+            Element element = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(this.element, ElementKind.valueOf("MODULE"));
+            return element != null ? Optional.of(ModuleElementWrapper.wrap(element)) : Optional.empty();
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
 
     /**
      * Gets the simple name of the element.
@@ -176,6 +188,7 @@ public class ElementWrapper<E extends Element> {
 
     /**
      * Gets all wrapped annotations of element.
+     *
      * @return a list containing all annotations of the element
      */
     public List<AnnotationMirrorWrapper> getAnnotations() {
@@ -348,6 +361,7 @@ public class ElementWrapper<E extends Element> {
 
     /**
      * Checks if passed annotation is present.
+     *
      * @param annotation the annotation tom check
      * @return true if passed annotation is present, otherwise false
      */
@@ -357,6 +371,7 @@ public class ElementWrapper<E extends Element> {
 
     /**
      * Checks if passed annotation is present.
+     *
      * @param annotationFqn the annotation tom check
      * @return true if passed annotation is present, otherwise false
      */
@@ -376,7 +391,7 @@ public class ElementWrapper<E extends Element> {
         return Optional.ofNullable(element.getAnnotation(annotationType));
     }
 
-    public Optional<List<AnnotationMirrorWrapper>> getRepeatableAnnotation (Class<? extends Annotation> annotationType) {
+    public Optional<List<AnnotationMirrorWrapper>> getRepeatableAnnotation(Class<? extends Annotation> annotationType) {
 
         List<AnnotationMirrorWrapper> result = new ArrayList<>();
 
@@ -551,19 +566,21 @@ public class ElementWrapper<E extends Element> {
 
     /**
      * Checks if wrapped element is a repeatable annotation.
+     *
      * @return if wrapped element represents a repeatable annotation, otherwise false
      */
-    public boolean isRepeatableAnnotation(){
+    public boolean isRepeatableAnnotation() {
         return isAnnotation() && hasAnnotation(Repeatable.class);
     }
 
     /**
      * Gets an Optional containing the wrapped repeatable TypeMirror, if the wrapped represents a repeatable annotation.
+     *
      * @return The wrapped repeatable annotation Type Mirror or an empty Optional if it doesn't exist
      */
-    public Optional<TypeMirrorWrapper> getRepeatableWrapperType(){
+    public Optional<TypeMirrorWrapper> getRepeatableWrapperType() {
 
-        if(isRepeatableAnnotation()){
+        if (isRepeatableAnnotation()) {
             return Optional.of(getAnnotationMirror(Repeatable.class).get().getAttribute().get().getClassValue());
         }
 
@@ -747,16 +764,19 @@ public class ElementWrapper<E extends Element> {
         return ExecutableElementWrapper.wrap(ElementUtils.CastElement.castToExecutableElement(wrapper.unwrap()));
     }
 
-    protected <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(String methodName, TARGET_TYPE defaultReturnValue) {
-        return ElementWrapper.<TARGET_TYPE>invokeParameterlessMethodOfElement(element, methodName, defaultReturnValue);
+    protected <TARGET_TYPE> Optional<TARGET_TYPE> invokeParameterlessMethodOfElement(String interfaceName, String methodName) {
+        return ElementWrapper.<TARGET_TYPE>invokeParameterlessMethodOfElement(element, interfaceName, methodName);
     }
 
-    protected static <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(Object instance, String methodName, TARGET_TYPE defaultReturnValue) {
+    protected static <TARGET_TYPE> Optional<TARGET_TYPE> invokeParameterlessMethodOfElement(Object instance, String interfaceName, String methodName) {
         try {
-            return (TARGET_TYPE) instance.getClass().getMethod(methodName).invoke(instance);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            return defaultReturnValue;
+            Class<?> interfaceClass = Class.forName(interfaceName);
+
+            return Optional.ofNullable((TARGET_TYPE) interfaceClass.getMethod(methodName).invoke(instance));
+        } catch (Exception e) {
+            return Optional.empty();
         }
     }
+
 
 }

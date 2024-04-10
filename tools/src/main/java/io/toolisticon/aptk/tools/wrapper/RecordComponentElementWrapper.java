@@ -8,6 +8,10 @@ import javax.lang.model.element.TypeElement;
  * Wrapper class for RecordComponentElementWrapper.
  */
 public class RecordComponentElementWrapper extends ElementWrapper<Element> {
+
+    private final static String RECORD_COMPONENT_ELEMENT_CLASS_NAME = "javax.lang.model.element.RecordComponentElement";
+
+
     private RecordComponentElementWrapper(Element recordComponentElement) {
         super(recordComponentElement);
     }
@@ -27,8 +31,7 @@ public class RecordComponentElementWrapper extends ElementWrapper<Element> {
      * @return the accessors wrapped ExecutableElement
      */
     public ExecutableElementWrapper getAccessor() {
-        // doesn't use default value
-        return ExecutableElementWrapper.wrap(this.<ExecutableElement>invokeParameterlessMethodOfElement("getAccessor", null));
+        return ExecutableElementWrapper.wrap(this.<ExecutableElement>invokeParameterlessMethodOfElement(RECORD_COMPONENT_ELEMENT_CLASS_NAME, "getAccessor").get());
     }
 
     /**
