@@ -271,10 +271,11 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
      */
     public List<RecordComponentElementWrapper> getRecordComponents() {
 
+        // This method is available from Java 16 - the introduction of records, so this check is sufficient to prevent reflective calling of method
         if (!isRecord()) {
             return Collections.EMPTY_LIST;
         }
-        List<? extends Element> recordComponentElements = this.<List<? extends Element>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getRecordComponents").get();
+        List<? extends Element> recordComponentElements = this.<List<? extends Element>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getRecordComponents");
 
         return recordComponentElements.stream().map(RecordComponentElementWrapper::wrap).collect(Collectors.toList());
 
@@ -285,7 +286,14 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
      * @return the permitted classes, or an empty list if there are none
      */
     public List<TypeMirrorWrapper> getPermittedSubclasses() {
-        List<TypeMirror> typeMirrors = this.<List<TypeMirror>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses").get();
+
+        // must make sure that method exists, otherwise return the default value
+        if (hasMethod(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses")) {
+            // TODO MUST CHECK WHAT SHOULD BE RETURNED FOR NON SEALED CLASSES!
+            return Collections.EMPTY_LIST;
+        }
+
+        List<TypeMirror> typeMirrors = this.<List<TypeMirror>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses");
         return typeMirrors.stream().map(TypeMirrorWrapper::wrap).collect(Collectors.toList());
     }
 
