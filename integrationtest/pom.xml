@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.toolisticon.aptk</groupId>
         <artifactId>aptk-parent</artifactId>
-        <version>0.25.0</version>
+        <version>0.25.1-SNAPSHOT</version>
     </parent>
 
     <name>integrationtest-parent</name>
