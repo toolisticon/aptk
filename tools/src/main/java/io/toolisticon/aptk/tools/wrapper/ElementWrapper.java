@@ -16,6 +16,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Repeatable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -93,6 +94,19 @@ public class ElementWrapper<E extends Element> {
         return name != null && this.getSimplePackageName().equals(name);
     }
 
+    /**
+     * Gets the module of the wrapped element
+     *
+     * @return an optional containing the wrapped module element
+     */
+    public Optional<ModuleElementWrapper> getModule() {
+        try {
+            Element element = ElementUtils.AccessEnclosingElements.getFirstEnclosingElementOfKind(this.element, ElementKind.valueOf("MODULE"));
+            return element != null ? Optional.of(ModuleElementWrapper.wrap(element)) : Optional.empty();
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
 
     /**
      * Gets the simple name of the element.
@@ -175,6 +189,7 @@ public class ElementWrapper<E extends Element> {
 
     /**
      * Gets all wrapped annotations of element.
+     *
      * @return a list containing all annotations of the element
      */
     public List<AnnotationMirrorWrapper> getAnnotations() {
@@ -347,6 +362,7 @@ public class ElementWrapper<E extends Element> {
 
     /**
      * Checks if passed annotation is present.
+     *
      * @param annotation the annotation tom check
      * @return true if passed annotation is present, otherwise false
      */
@@ -356,6 +372,7 @@ public class ElementWrapper<E extends Element> {
 
     /**
      * Checks if passed annotation is present.
+     *
      * @param annotationFqn the annotation tom check
      * @return true if passed annotation is present, otherwise false
      */
@@ -375,7 +392,7 @@ public class ElementWrapper<E extends Element> {
         return Optional.ofNullable(element.getAnnotation(annotationType));
     }
 
-    public Optional<List<AnnotationMirrorWrapper>> getRepeatableAnnotation (Class<? extends Annotation> annotationType) {
+    public Optional<List<AnnotationMirrorWrapper>> getRepeatableAnnotation(Class<? extends Annotation> annotationType) {
 
         List<AnnotationMirrorWrapper> result = new ArrayList<>();
 
@@ -521,6 +538,24 @@ public class ElementWrapper<E extends Element> {
     }
 
     /**
+     * Checks if wrapped element represents a record.
+     *
+     * @return true if wrapped element represents a record, otherwise false
+     */
+    public boolean isRecord() {
+        return ElementUtils.CheckKindOfElement.isRecord(this.element);
+    }
+
+    /**
+     * Checks if wrapped element represents a record.
+     *
+     * @return true if wrapped element represents a record, otherwise false
+     */
+    public boolean isRecordComponent() {
+        return ElementUtils.CheckKindOfElement.isRecordComponent(this.element);
+    }
+
+    /**
      * Checks if wrapped element represents an annotation.
      *
      * @return true if wrapped element represents an annotation, otherwise false
@@ -529,21 +564,24 @@ public class ElementWrapper<E extends Element> {
         return ElementUtils.CheckKindOfElement.isAnnotation(this.element);
     }
 
+
     /**
      * Checks if wrapped element is a repeatable annotation.
+     *
      * @return if wrapped element represents a repeatable annotation, otherwise false
      */
-    public boolean isRepeatableAnnotation(){
+    public boolean isRepeatableAnnotation() {
         return isAnnotation() && hasAnnotation(Repeatable.class);
     }
 
     /**
      * Gets an Optional containing the wrapped repeatable TypeMirror, if the wrapped represents a repeatable annotation.
+     *
      * @return The wrapped repeatable annotation Type Mirror or an empty Optional if it doesn't exist
      */
-    public Optional<TypeMirrorWrapper> getRepeatableWrapperType(){
+    public Optional<TypeMirrorWrapper> getRepeatableWrapperType() {
 
-        if(isRepeatableAnnotation()){
+        if (isRepeatableAnnotation()) {
             return Optional.of(getAnnotationMirror(Repeatable.class).get().getAttribute().get().getClassValue());
         }
 
@@ -626,6 +664,14 @@ public class ElementWrapper<E extends Element> {
         return ElementUtils.CastElement.isTypeElement(element);
     }
 
+    /**
+     * Checks if wrapped element is a RecordComponentElement.
+     *
+     * @return true if wrapped element is a RecordComponentElement, otherwise false
+     */
+    public boolean isRecordComponentElement() {
+        return ElementUtils.CastElement.isRecordComponentElement(element);
+    }
 
     /**
      * Checks if wrapped element is a ExecutableElement.
@@ -717,6 +763,35 @@ public class ElementWrapper<E extends Element> {
      */
     public static ExecutableElementWrapper toExecutableElementWrapper(ElementWrapper<? extends Element> wrapper) {
         return ExecutableElementWrapper.wrap(ElementUtils.CastElement.castToExecutableElement(wrapper.unwrap()));
+    }
+
+
+
+    protected <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(String interfaceName, String methodName) {
+        return ElementWrapper.<TARGET_TYPE>invokeParameterlessMethodOfElement(element, interfaceName, methodName);
+    }
+
+    protected static <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(Object instance, String interfaceName, String methodName) {
+        try {
+            Class<?> interfaceClass = Class.forName(interfaceName);
+            return (TARGET_TYPE) interfaceClass.getMethod(methodName).invoke(instance);
+        } catch (Exception e) {
+            // This usually shouldn't be thrown since the caller must ensure that the call is available in the used java version
+            throw new IllegalStateException("Couldn't invoke " + interfaceName + "." + methodName + "()", e);
+        }
+    }
+
+    protected boolean hasMethod(String interfaceName, String methodName) {
+        try {
+
+            Class<?> interfaceClass = Class.forName(interfaceName);
+            Method method = interfaceClass.getMethod(methodName);
+            return true;
+
+        } catch (Exception e) {
+            // This usually shouldn't be thrown since the caller must ensure that the call is available in the used java version
+            return false;
+        }
     }
 
 }

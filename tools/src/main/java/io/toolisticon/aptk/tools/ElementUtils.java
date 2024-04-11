@@ -43,6 +43,16 @@ public final class ElementUtils {
         private final static String KIND_MODULE = "MODULE";
 
         /**
+         * Needed for handling Record Type until source level is java 16.
+         */
+        private final static String KIND_RECORD = "RECORD";
+
+        /**
+         * Needed for handling Record Component Type until source level is java 16.
+         */
+        private final static String KIND_RECORD_COMPONENT = "RECORD_COMPONENT";
+
+        /**
          * Hidden constructor.
          */
         private CheckKindOfElement() {
@@ -58,6 +68,26 @@ public final class ElementUtils {
          */
         public static boolean isEnum(Element e) {
             return isOfKind(e, ElementKind.ENUM);
+        }
+
+        /**
+         * Checks if passed Element instance is of kind enum.
+         *
+         * @param e the element to check
+         * @return true if passed element is of kind enum, otherwise false
+         */
+        public static boolean isRecord(Element e) {
+            return (e != null && e.getKind().name().equals(KIND_RECORD));
+        }
+
+        /**
+         * Checks if passed Element instance is of kind enum.
+         *
+         * @param e the element to check
+         * @return true if passed element is of kind enum, otherwise false
+         */
+        public static boolean isRecordComponent(Element e) {
+            return (e != null && e.getKind().name().equals(KIND_RECORD_COMPONENT));
         }
 
         /**
@@ -204,7 +234,8 @@ public final class ElementUtils {
     public static final class CastElement {
 
         // look up tables for the different kind of types
-        private static final Set<ElementKind> TYPE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM, ElementKind.ANNOTATION_TYPE);
+        private static final Set<String> TYPE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CLASS.name(), ElementKind.INTERFACE.name(), ElementKind.ENUM.name(), ElementKind.ANNOTATION_TYPE.name(), "RECORD");
+        private static final Set<String> RECORD_COMPONENT_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet( "RECORD_COMPONENT");
         private static final Set<ElementKind> TYPE_PARAMETER_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.TYPE_PARAMETER);
         private static final Set<ElementKind> VARIABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.PARAMETER, ElementKind.FIELD);
         private static final Set<ElementKind> EXECUTABLE_ELEMENT_KIND_LUT = Utilities.convertVarargsToSet(ElementKind.CONSTRUCTOR, ElementKind.METHOD);
@@ -227,7 +258,17 @@ public final class ElementUtils {
          * @return true if passed element can be cast to TypeElement, otherwise false
          */
         public static boolean isTypeElement(Element e) {
-            return e != null && TYPE_ELEMENT_KIND_LUT.contains(e.getKind());
+            return e != null && TYPE_ELEMENT_KIND_LUT.contains(e.getKind().name());
+        }
+
+        /**
+         * Checks if passed element can be cast to RecordComponentElement.
+         *
+         * @param e the element to check
+         * @return true if passed element can be cast to RecordComponentElement, otherwise false
+         */
+        public static boolean isRecordComponentElement(Element e) {
+            return e != null && RECORD_COMPONENT_ELEMENT_KIND_LUT.contains(e.getKind().name());
         }
 
         /**

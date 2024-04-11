@@ -11,15 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v1
-
-      - name: Cache .m2
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven
+        uses: actions/checkout@v4
             
       # Get GPG private key into GPG
       - name: Import GPG Owner Trust
@@ -28,10 +20,12 @@ jobs:
         run: echo ${{ secrets.GPG_SECRET_KEYS }} | base64 --decode | gpg --import --no-tty --batch --yes
 
       # Setup JDK and Maven
-      - name: Set up JDK 9
-        uses: actions/setup-java@v1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          java-version: 9
+          distribution: 'zulu'
+          java-version: 17
+          cache: 'maven'
           server-id: sonatype-nexus-staging
           server-username: OSS_CENTRAL_USERNAME # env variable for Maven Central
           server-password: OSS_CENTRAL_PASSWORD # env variable for Maven Central

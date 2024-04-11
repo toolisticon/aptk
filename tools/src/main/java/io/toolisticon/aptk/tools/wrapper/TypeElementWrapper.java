@@ -5,6 +5,7 @@ import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -12,6 +13,7 @@ import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
  * Wraps a TypeElement to provide some convenience functionality
  */
 public class TypeElementWrapper extends ElementWrapper<TypeElement> {
+
+    private final static String TYPE_ELEMENT_CLASS_NAME = "javax.lang.model.element.TypeElement";
 
     /**
      * Hidden constructor.
@@ -260,6 +264,39 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
                         .collect(Collectors.toList())
                 : null;
     }
+
+    /**
+     * Returns the record components of this class or interface element in declaration order.
+     * @return the record components, or an empty list if there are none
+     */
+    public List<RecordComponentElementWrapper> getRecordComponents() {
+
+        // This method is available from Java 16 - the introduction of records, so this check is sufficient to prevent reflective calling of method
+        if (!isRecord()) {
+            return Collections.EMPTY_LIST;
+        }
+        List<? extends Element> recordComponentElements = this.<List<? extends Element>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getRecordComponents");
+
+        return recordComponentElements.stream().map(RecordComponentElementWrapper::wrap).collect(Collectors.toList());
+
+    }
+
+    /**
+     * Returns the permitted classes of this class or interface element in declaration order.
+     * @return the permitted classes, or an empty list if there are none
+     */
+    public List<TypeMirrorWrapper> getPermittedSubclasses() {
+
+        // must make sure that method exists, otherwise return the default value
+        if (!hasMethod(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses")) {
+            // TODO MUST CHECK WHAT SHOULD BE RETURNED FOR NON SEALED CLASSES!
+            return Collections.EMPTY_LIST;
+        }
+
+        List<TypeMirror> typeMirrors = this.<List<TypeMirror>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses");
+        return typeMirrors.stream().map(TypeMirrorWrapper::wrap).collect(Collectors.toList());
+    }
+
 
     /**
      * Wraps a TypeElement.
