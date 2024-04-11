@@ -38,6 +38,19 @@
             </modules>
 
         </profile>
+        <profile>
+            <id>java-17</id>
+            <activation>
+                <jdk>[17,)</jdk>
+            </activation>
+
+            <modules>
+                <module>java9</module>
+                <module>java16</module>
+                <module>java17</module>
+            </modules>
+
+        </profile>
     </profiles>
 
 </project>
