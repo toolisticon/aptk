@@ -288,7 +288,7 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
     public List<TypeMirrorWrapper> getPermittedSubclasses() {
 
         // must make sure that method exists, otherwise return the default value
-        if (hasMethod(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses")) {
+        if (!hasMethod(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses")) {
             // TODO MUST CHECK WHAT SHOULD BE RETURNED FOR NON SEALED CLASSES!
             return Collections.EMPTY_LIST;
         }
