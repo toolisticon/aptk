@@ -16,7 +16,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Repeatable;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -96,6 +96,7 @@ public class ElementWrapper<E extends Element> {
 
     /**
      * Gets the module of the wrapped element
+     *
      * @return an optional containing the wrapped module element
      */
     public Optional<ModuleElementWrapper> getModule() {
@@ -764,19 +765,33 @@ public class ElementWrapper<E extends Element> {
         return ExecutableElementWrapper.wrap(ElementUtils.CastElement.castToExecutableElement(wrapper.unwrap()));
     }
 
-    protected <TARGET_TYPE> Optional<TARGET_TYPE> invokeParameterlessMethodOfElement(String interfaceName, String methodName) {
+
+
+    protected <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(String interfaceName, String methodName) {
         return ElementWrapper.<TARGET_TYPE>invokeParameterlessMethodOfElement(element, interfaceName, methodName);
     }
 
-    protected static <TARGET_TYPE> Optional<TARGET_TYPE> invokeParameterlessMethodOfElement(Object instance, String interfaceName, String methodName) {
+    protected static <TARGET_TYPE> TARGET_TYPE invokeParameterlessMethodOfElement(Object instance, String interfaceName, String methodName) {
         try {
             Class<?> interfaceClass = Class.forName(interfaceName);
-
-            return Optional.ofNullable((TARGET_TYPE) interfaceClass.getMethod(methodName).invoke(instance));
+            return (TARGET_TYPE) interfaceClass.getMethod(methodName).invoke(instance);
         } catch (Exception e) {
-            return Optional.empty();
+            // This usually shouldn't be thrown since the caller must ensure that the call is available in the used java version
+            throw new IllegalStateException("Couldn't invoke " + interfaceName + "." + methodName + "()", e);
         }
     }
 
+    protected boolean hasMethod(String interfaceName, String methodName) {
+        try {
+
+            Class<?> interfaceClass = Class.forName(interfaceName);
+            Method method = interfaceClass.getMethod(methodName);
+            return true;
+
+        } catch (Exception e) {
+            // This usually shouldn't be thrown since the caller must ensure that the call is available in the used java version
+            return false;
+        }
+    }
 
 }
