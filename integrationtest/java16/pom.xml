@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>aptk-tools-java16</artifactId>
+    <artifactId>aptk-integrationtest-java16</artifactId>
     <packaging>jar</packaging>
 
     <parent>
@@ -11,7 +11,7 @@
         <version>0.25.1-SNAPSHOT</version>
     </parent>
 
-    <name>aptk-tools-java16</name>
+    <name>aptk-integrationtest-java16</name>
 
 
     <dependencies>
