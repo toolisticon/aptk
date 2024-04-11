@@ -1,4 +1,4 @@
-package io.toolisticon.aptk.wrapper;
+package io.toolisticon.aptk.integrationtest.java9;
 
 import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.aptk.tools.wrapper.ElementWrapper;

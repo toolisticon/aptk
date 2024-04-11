@@ -1,7 +1,10 @@
-package io.toolisticon.aptk.tools.wrapper;
+package io.toolisticon.aptk.integrationtest.java16;
 
 import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
+import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
+import io.toolisticon.aptk.tools.wrapper.RecordComponentElementWrapper;
+import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.cute.Cute;
 import io.toolisticon.cute.PassIn;
 import org.hamcrest.MatcherAssert;
