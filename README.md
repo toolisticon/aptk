@@ -38,6 +38,7 @@ compile time and runtime model by shading common pitfalls behind it's api.
 - provides fluent element validation and filtering api
 - provides support for template based creation of java source and resource files
 - compatible with all java versions >=8 (dropped java 7 compatibility with version 0.20.0)
+- higher Java level features like modules, records and sealed classes are accessible (internally handled via reflection)
 
 # Getting started
 
