@@ -58,7 +58,7 @@ public class CompilerMessageWrapperCustomCode {
 
     @CustomCodeMethod(DeclareCompilerMessage.class)
     public static String getCalculatedCode(DeclareCompilerMessageWrapper compilerMessageWrapper){
-        return compilerMessageWrapper.codeIsDefaultValue() ? compilerMessageWrapper.enumValueName() : compilerMessageWrapper.code();
+        return (compilerMessageWrapper.codeIsDefaultValue() || compilerMessageWrapper.code().equals("") ) ? compilerMessageWrapper.enumValueName() : compilerMessageWrapper.code();
     }
 
 }

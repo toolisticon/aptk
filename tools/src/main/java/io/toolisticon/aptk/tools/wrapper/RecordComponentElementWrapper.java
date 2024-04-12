@@ -5,6 +5,7 @@ import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import java.util.List;
 
 /**
@@ -39,6 +40,19 @@ public class RecordComponentElementWrapper extends ElementWrapper<Element> {
         ExecutableElement executableElement = this.<ExecutableElement>invokeParameterlessMethodOfElement(RECORD_COMPONENT_ELEMENT_CLASS_NAME, "getAccessor");
 
         return executableElement != null ? ExecutableElementWrapper.wrap(executableElement) : determineAccessorWorkaround();
+    }
+
+    /**
+     * Gets the related field for the record compoent.
+     * @return the wrapped of the VariableElement of the related field
+     */
+    public VariableElementWrapper getField() {
+        List<VariableElement> results = this.getEnclosingRecordTypeElement().filterEnclosedElements()
+                .applyFilter(AptkCoreMatchers.IS_FIELD)
+                .applyFilter(AptkCoreMatchers.BY_NAME).filterByOneOf(getSimpleName())
+                .getResult();
+
+        return results.isEmpty() ? null : VariableElementWrapper.wrap(results.get(0));
     }
 
     private ExecutableElementWrapper determineAccessorWorkaround(){
