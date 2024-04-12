@@ -127,12 +127,14 @@ public class CompilerMessageProcessor extends AbstractAnnotationProcessor {
                 enumValue.enumValueNameAsAttributeWrapper().compilerMessage().asError().write(CompilerMessageProcessorMessages.ERROR_CODE_ENUM_VALUE_NAME_MUST_VALID, enumValue.enumValueName());
             }
 
+
             // Check if code is unique
-            if (codeSet.contains(enumValue.code())) {
-                enumValue.codeAsAttributeWrapper().compilerMessage().asError().write(CompilerMessageProcessorMessages.ERROR_CODE_MUST_BE_UNIQUE, enumValue.code());
+            String codeToCheck = CompilerMessageWrapperCustomCode.getCalculatedCode(enumValue);
+            if (codeSet.contains(codeToCheck)) {
+                enumValue.codeAsAttributeWrapper().compilerMessage().asError().write(CompilerMessageProcessorMessages.ERROR_CODE_MUST_BE_UNIQUE, codeToCheck);
                 retValue = false;
             } else {
-                codeSet.add(enumValue.code());
+                codeSet.add(codeToCheck);
             }
 
         }

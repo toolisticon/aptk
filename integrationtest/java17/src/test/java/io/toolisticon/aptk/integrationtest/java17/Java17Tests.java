@@ -55,6 +55,7 @@ public class Java17Tests {
                 MatcherAssert.assertThat(elementWrapper.getPermittedSubclasses().stream().map(e -> e.getQualifiedName()).collect(Collectors.toSet()), Matchers.contains(AllowedClass.class.getCanonicalName()));
                 MatcherAssert.assertThat(element.getPermittedSubclasses().stream().map(e -> e.toString()).collect(Collectors.toSet()), Matchers.contains(AllowedClass.class.getCanonicalName()));
 
+
             } finally {
                 ToolingProvider.clearTooling();
             }

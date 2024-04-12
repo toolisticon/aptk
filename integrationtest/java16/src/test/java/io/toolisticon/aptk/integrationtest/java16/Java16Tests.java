@@ -122,6 +122,10 @@ public class Java16Tests {
                 MatcherAssert.assertThat(elementWrapper.getEnclosingRecordTypeElement().getQualifiedName(), Matchers.is(MyRecord.class.getCanonicalName()));
                 MatcherAssert.assertThat(TypeElementWrapper.toTypeElement(elementWrapper.getEnclosingElement().get()).getQualifiedName(), Matchers.is(MyRecord.class.getCanonicalName()));
 
+                // Additional method
+                MatcherAssert.assertThat(elementWrapper.getField(), Matchers.notNullValue());
+                MatcherAssert.assertThat(elementWrapper.getField().getSimpleName(), Matchers.is("name"));
+
 
             } finally {
                 ToolingProvider.clearTooling();
