@@ -74,6 +74,25 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
         return name != null && getQualifiedName().equals(name);
     }
 
+    /**
+     * Gets the binary name for the type element.
+     */
+    public String getBinaryName() {
+
+        // According to https://docs.oracle.com/javase/specs/jls/se8/html/jls-13.html the binary name looks like:
+        //  -- The binary name of a top level type (§7.6) is its canonical name (§6.7).
+        //  -- The binary name of a member type (§8.5, §9.5) consists of the binary name of its immediately enclosing type, followed by $, followed by the simple name of the member.
+
+        if (this.isNested()) {
+            // Safe to call since its of nested kind
+            TypeElementWrapper enclosingTypeElement = this.getOuterType().get();
+            return enclosingTypeElement.getBinaryName() + "$" + this.getSimpleName();
+        } else {
+            return this.getQualifiedName();
+        }
+
+    }
+
 
     /**
      * Gets the direct superclass
@@ -267,6 +286,7 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
 
     /**
      * Returns the record components of this class or interface element in declaration order.
+     *
      * @return the record components, or an empty list if there are none
      */
     public List<RecordComponentElementWrapper> getRecordComponents() {
@@ -283,6 +303,7 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
 
     /**
      * Returns the permitted classes of this class or interface element in declaration order.
+     *
      * @return the permitted classes, or an empty list if there are none
      */
     public List<TypeMirrorWrapper> getPermittedSubclasses() {

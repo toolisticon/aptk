@@ -627,6 +627,33 @@ public class TypeMirrorWrapper {
     }
 
     /**
+     * Gets the binary name of the wrapped TypeMirror.
+     *
+     * @return the binary name of the TypeMirror if wrapped TypeMirror is a DeclaredType or the binary name of the component type if wrapped TypeMirror is an Array or the simple name if for primitive types, otherwise null.
+     */
+    public String getBinaryName() {
+        return getBinaryName(typeMirror);
+    }
+
+    /**
+     * Gets the binary name of the passed TypeMirror.
+     *
+     * @param typeMirror the TypeMirror to check
+     * @return the binary name of the TypeMirror if wrapped TypeMirror is a DeclaredType or the binary name of the component type if wrapped TypeMirror is an Array or the simple name if for primitive types, otherwise null.
+     */
+    public static String getBinaryName(TypeMirror typeMirror) {
+        if (isDeclared(typeMirror)) {
+            return TypeElementWrapper.wrap ((TypeElement) (getDeclaredType(typeMirror).asElement())).getBinaryName();
+        } else if (isArray(typeMirror)) {
+            return getBinaryName(getArrayType(typeMirror).getComponentType());
+        } else if (isPrimitive(typeMirror)) {
+            return typeMirror.toString();
+        }
+
+        return null;
+    }
+
+    /**
      * Gets the simple name of the wrapped TypeMirror.
      *
      * @return the simple name if passed TypeMirror is a DeclaredType or Primitive, the component types simple name for arrays, otherwise null.
