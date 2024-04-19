@@ -2,14 +2,14 @@ package io.toolisticon.aptk.tools;
 
 import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.cute.CompileTestBuilder;
+import io.toolisticon.cute.Cute;
 import io.toolisticon.cute.PassIn;
 import io.toolisticon.cute.UnitTest;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
@@ -235,7 +235,7 @@ public class TypeMirrorWrapperTest {
         Map<String, String> nonIterableField;
     }
 
-    private void executeTest(Class<?> clazz, Consumer<VariableElement> test){
+    private void executeTest(Class<?> clazz, Consumer<VariableElement> test) {
         CompileTestBuilder.unitTest().<VariableElement>defineTestWithPassedInElement(clazz,
                 (processingEnvironment, element) -> {
                     ToolingProvider.setTooling(processingEnvironment);
@@ -248,39 +248,35 @@ public class TypeMirrorWrapperTest {
     }
 
     @Test
-    public void test_isIterable_Iterable()
-    {
-        executeTest(IterableCheck_Iterable.class,(element) ->
+    public void test_isIterable_Iterable() {
+        executeTest(IterableCheck_Iterable.class, (element) ->
                 assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isIterable())
-                );
+        );
     }
+
     @Test
-    public void test_isCollection_List()
-    {
+    public void test_isCollection_List() {
         executeTest(CollectionCheck_List.class, (element) ->
                 assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection())
         );
     }
 
     @Test
-    public void test_isCollection_Set()
-    {
+    public void test_isCollection_Set() {
         executeTest(CollectionCheck_Set.class, (element) ->
                 assertThat("Expected true for matching kind", TypeMirrorWrapper.wrap(element.asType()).isCollection())
         );
     }
 
     @Test
-    public void test_isCollection_noCollection()
-    {
+    public void test_isCollection_noCollection() {
         executeTest(CollectionCheck_NoCollection.class, (element) ->
                 assertThat("Expected false for no collection type", !TypeMirrorWrapper.wrap(element.asType()).isCollection())
         );
     }
 
     @Test
-    public void test_isIterable_nonIterable()
-    {
+    public void test_isIterable_nonIterable() {
         executeTest(IterableCheck_NonIterable.class, (element) ->
                 assertThat("Expected false for non iterable type", !TypeMirrorWrapper.wrap(element.asType()).isIterable())
         );
@@ -290,9 +286,9 @@ public class TypeMirrorWrapperTest {
     @Test
     public void test_getComponentType_forList() {
         executeTest(CollectionCheck_Set.class, (element) -> {
-                    TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
-                    assertThat("Should be true", typeMirrorWrapper.hasComponentType());
-                    assertThat(typeMirrorWrapper.getComponentType().toString(), is(String.class.getCanonicalName()));
+            TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
+            assertThat("Should be true", typeMirrorWrapper.hasComponentType());
+            assertThat(typeMirrorWrapper.getComponentType().toString(), is(String.class.getCanonicalName()));
         });
     }
 
@@ -306,8 +302,7 @@ public class TypeMirrorWrapperTest {
     }
 
     @Test
-    public void test_getComponentType_forListWithoutComponentType()
-    {
+    public void test_getComponentType_forListWithoutComponentType() {
         executeTest(CollectionCheck_ListWithoutComponentType.class, (element) -> {
             TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
             assertThat("Should be true", typeMirrorWrapper.hasComponentType());
@@ -317,8 +312,7 @@ public class TypeMirrorWrapperTest {
     }
 
     @Test
-    public void test_getComponentType_forIterableWithoutComponentType()
-    {
+    public void test_getComponentType_forIterableWithoutComponentType() {
         executeTest(IterableCheck_IterableWithoutComponentType.class, (element) -> {
             TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
             assertThat("Should be true", typeMirrorWrapper.hasComponentType());
@@ -328,8 +322,7 @@ public class TypeMirrorWrapperTest {
     }
 
     @Test
-    public void test_getComponentType_forSet()
-    {
+    public void test_getComponentType_forSet() {
         executeTest(CollectionCheck_Set.class, (element) -> {
             TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
             assertThat("Should be true", typeMirrorWrapper.hasComponentType());
@@ -338,8 +331,7 @@ public class TypeMirrorWrapperTest {
     }
 
     @Test
-    public void test_getComponentType_nonCollection()
-    {
+    public void test_getComponentType_nonCollection() {
         executeTest(CollectionCheck_NoCollection.class, (element) -> {
             TypeMirrorWrapper typeMirrorWrapper = TypeMirrorWrapper.wrap(element.asType());
             assertThat("Should be false", !typeMirrorWrapper.hasComponentType());
@@ -746,4 +738,72 @@ public class TypeMirrorWrapperTest {
             }
         }).executeTest();
     }
+
+
+    static class NestedKind {
+        static class NestedNestedKind {
+
+        }
+
+        @PassIn
+        NestedNestedKind nestedKind;
+    }
+
+
+
+    @Test
+    public void test_getBinaryName_ofDeclaredType() {
+        Cute.unitTest().when().passInElement().<VariableElement>fromClass(NestedKind.class)
+                .intoUnitTest((processingEnvironment, element) -> {
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getBinaryName(), Matchers.is(TypeMirrorWrapperTest.class.getCanonicalName() + "$" + NestedKind.class.getSimpleName() + "$" + NestedKind.NestedNestedKind.class.getSimpleName()));
+
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                }).executeTest();
+    }
+
+    static class BinaryNameOfPrimitive {
+        @PassIn
+        long field;
+    }
+    @Test
+    public void test_getBinaryName_ofPrimitive() {
+        Cute.unitTest().when().passInElement().<VariableElement>fromClass(BinaryNameOfPrimitive.class)
+                .intoUnitTest((processingEnvironment, element) -> {
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getBinaryName(), Matchers.is("long"));
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                }).executeTest();
+    }
+
+    static class BinaryNameOfArray {
+        @PassIn
+        NestedKind[] field;
+    }
+    @Test
+    public void test_getBinaryName_ofArray() {
+        Cute.unitTest().when().passInElement().<VariableElement>fromClass(BinaryNameOfArray.class)
+                .intoUnitTest((processingEnvironment, element) -> {
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getBinaryName(), Matchers.is(TypeMirrorWrapperTest.class.getCanonicalName() + "$" + NestedKind.class.getSimpleName()));
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                }).executeTest();
+    }
+
+
 }

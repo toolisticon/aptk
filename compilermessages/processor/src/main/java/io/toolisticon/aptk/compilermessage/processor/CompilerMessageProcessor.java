@@ -1,10 +1,14 @@
 package io.toolisticon.aptk.compilermessage.processor;
 
 import io.toolisticon.aptk.compilermessage.api.DeclareCompilerMessage;
+import io.toolisticon.aptk.compilermessage.api.DeclareCompilerMessages;
 import io.toolisticon.aptk.tools.AbstractAnnotationProcessor;
 import io.toolisticon.aptk.tools.FilerUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.generators.SimpleJavaWriter;
+import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
+import io.toolisticon.aptk.tools.wrapper.PackageElementWrapper;
 import io.toolisticon.spiap.api.SpiService;
 
 import javax.annotation.processing.Processor;
@@ -33,7 +37,9 @@ public class CompilerMessageProcessor extends AbstractAnnotationProcessor {
         return SUPPORTED_ANNOTATIONS;
     }
 
-    private Map<TargetCompilerMessageEnum, List<DeclareCompilerMessageWrapper>> compilerMessagesEnumMap = new HashMap<>();
+    private Set<String> detectedPackages = new HashSet<>();
+
+    //private Map<TargetCompilerMessageEnum, List<DeclareCompilerMessageWrapper>> compilerMessagesEnumMap = new HashMap<>();
 
 
     public static class TargetCompilerMessageEnum {
@@ -90,15 +96,33 @@ public class CompilerMessageProcessor extends AbstractAnnotationProcessor {
             // process Services annotation
             for (Element element : getAnnotatedElements(roundEnv, DeclareCompilerMessage.class)) {
 
+                // Just detect the package names - by doing this the processor will have a better compatibility with incremental compilations
+                detectedPackages.add(ElementWrapper.wrap(element).getPackageName());
 
-                List<DeclareCompilerMessageWrapper> compilerMessageWrappers = DeclareCompilerMessageWrapper.wrap(element);
-                for (DeclareCompilerMessageWrapper compilerMessageWrapper : compilerMessageWrappers) {
-                    TargetCompilerMessageEnum target = compilerMessageWrapper.getTarget();
-                    compilerMessagesEnumMap.computeIfAbsent(target, e -> new ArrayList<DeclareCompilerMessageWrapper>()).add(compilerMessageWrapper);
-                }
             }
 
         } else {
+
+
+            final Map<TargetCompilerMessageEnum, List<DeclareCompilerMessageWrapper>> compilerMessagesEnumMap = new HashMap<>();
+
+            for (String detectedPackage : detectedPackages) {
+                List<Element> detectedAnnotatedElements = PackageElementWrapper.getByFqn(detectedPackage).get()
+                        .filterFlattenedEnclosedElementTree()
+                        // handle Repeatable annotation as well
+                        .applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByOneOf(DeclareCompilerMessage.class, DeclareCompilerMessages.class)
+                        .getResult();
+
+
+                for (Element annotatedElement : detectedAnnotatedElements) {
+                    List<DeclareCompilerMessageWrapper> compilerMessageWrappers = DeclareCompilerMessageWrapper.wrap(annotatedElement);
+                    for (DeclareCompilerMessageWrapper compilerMessageWrapper : compilerMessageWrappers) {
+                        TargetCompilerMessageEnum target = compilerMessageWrapper.getTarget();
+                        compilerMessagesEnumMap.computeIfAbsent(target, e -> new ArrayList<DeclareCompilerMessageWrapper>()).add(compilerMessageWrapper);
+                    }
+                }
+            }
+
 
             // create those compiler message enums
             for (Map.Entry<TargetCompilerMessageEnum, List<DeclareCompilerMessageWrapper>> entry : compilerMessagesEnumMap.entrySet()) {
