@@ -29,14 +29,14 @@ public class BasicConstraints {
     private static BasicConstraints INSTANCE = null;
 
 
-    private final Map<String, AnnotationConstraintSpi> annotationConstraintSpiMap;
+    private final Map<String, List<AnnotationConstraintSpi>> annotationConstraintSpiMap;
     private final Map<String, AnnotationConstraints> onAnnotationConstraintsLUT = new HashMap<>();
 
-    private final Map<String, ManualConstraintSpi> manualConstraintsLUT;
+    private final Map<String, List<ManualConstraintSpi>> manualConstraintsLUT;
 
 
 
-    public BasicConstraints(Map<String, AnnotationConstraintSpi> annotationConstraintSpiMap, final Map<String, ManualConstraintSpi> manualConstraintSpiMap) {
+    public BasicConstraints(Map<String, List<AnnotationConstraintSpi>> annotationConstraintSpiMap, final Map<String, List<ManualConstraintSpi>> manualConstraintSpiMap) {
         this.annotationConstraintSpiMap = annotationConstraintSpiMap;
         this.manualConstraintsLUT = manualConstraintSpiMap;
     }
@@ -50,11 +50,12 @@ public class BasicConstraints {
             String annotationFQN = annotationMirror.asTypeMirror().getQualifiedName();
 
             // Check for manual constraints
-            ManualConstraintSpi manualConstraintSpi = manualConstraintsLUT.get(annotationFQN);
-            if (manualConstraintSpi != null) {
-                manualConstraintSpi.checkManualConstraints(elementWrapper.unwrap(),elementWrapper.getAnnotationMirror(annotationFQN).get().unwrap());
+            List<ManualConstraintSpi> manualConstraintSpis = manualConstraintsLUT.get(annotationFQN);
+            if (manualConstraintSpis != null) {
+                for (ManualConstraintSpi manualConstraintSpi : manualConstraintSpis) {
+                    manualConstraintSpi.checkManualConstraints(elementWrapper.unwrap(), elementWrapper.getAnnotationMirror(annotationFQN).get().unwrap());
+                }
             }
-
 
             AnnotationConstraints annotationConstraints = onAnnotationConstraintsLUT.get(annotationFQN);
 
@@ -70,10 +71,12 @@ public class BasicConstraints {
             // on type
             for (AnnotationMirrorWrapper constraintAnnotation : annotationConstraints.getConstraintsOnAnnotationType()) {
 
-                AnnotationConstraintSpi annotationConstraintSpi = annotationConstraintSpiMap.get(constraintAnnotation.getAnnotationType().toString());
+                List<AnnotationConstraintSpi> annotationConstraintSpis = annotationConstraintSpiMap.get(constraintAnnotation.getAnnotationType().toString());
 
-                if (annotationConstraintSpi != null) {
-                    result = result & annotationConstraintSpi.checkConstraints(elementWrapper.unwrap(), annotationMirror.unwrap(), constraintAnnotation.unwrap(), null);
+                if (annotationConstraintSpis != null) {
+                    for (AnnotationConstraintSpi annotationConstraintSpi : annotationConstraintSpis) {
+                        result = result & annotationConstraintSpi.checkConstraints(elementWrapper.unwrap(), annotationMirror.unwrap(), constraintAnnotation.unwrap(), null);
+                    }
                 } else {
                     elementWrapper.compilerMessage(annotationMirror.unwrap()).asWarning().write(BasicConstraintsCompilerMessages.BASE_WARNING_CONSTRAINT_SPI_IMPLEMENTATION_NOT_FOUND, constraintAnnotation.getAnnotationType().toString(), constraintAnnotation.asTypeMirror().getQualifiedName());
                 }
@@ -85,10 +88,12 @@ public class BasicConstraints {
                 // check all constraints on attribute
                 for (AnnotationMirrorWrapper constraintAnnotation : annotationAttributeConstraints.getConstraints()) {
 
-                    AnnotationConstraintSpi annotationConstraintSpi = annotationConstraintSpiMap.get(((TypeElement) constraintAnnotation.getAnnotationType().asElement()).getQualifiedName().toString());
+                    List<AnnotationConstraintSpi> annotationConstraintSpis = annotationConstraintSpiMap.get(((TypeElement) constraintAnnotation.getAnnotationType().asElement()).getQualifiedName().toString());
 
-                    if (annotationConstraintSpi != null) {
-                        result = result & annotationConstraintSpi.checkConstraints(elementWrapper.unwrap(), annotationMirror.unwrap(), constraintAnnotation.unwrap(), annotationAttributeConstraints.getAttributeName());
+                    if (annotationConstraintSpis != null) {
+                        for (AnnotationConstraintSpi annotationConstraintSpi : annotationConstraintSpis) {
+                            result = result & annotationConstraintSpi.checkConstraints(elementWrapper.unwrap(), annotationMirror.unwrap(), constraintAnnotation.unwrap(), annotationAttributeConstraints.getAttributeName());
+                        }
                     } else {
                         elementWrapper.compilerMessage(annotationMirror.unwrap()).asWarning().write(BasicConstraintsCompilerMessages.BASE_WARNING_CONSTRAINT_SPI_IMPLEMENTATION_NOT_FOUND, constraintAnnotation.getAnnotationType().toString(), constraintAnnotation.asTypeMirror().getQualifiedName());
                     }
@@ -164,20 +169,21 @@ public class BasicConstraints {
 
     static BasicConstraints getInstance() {
 
-        Map<String, AnnotationConstraintSpi> annotationConstraintSpiMap = new HashMap<String, AnnotationConstraintSpi>();
+        // There might be multiple implementations for one single constraint
+        // a good example for this could be JPA constraints based on database type
 
+        Map<String, List<AnnotationConstraintSpi>> annotationConstraintSpiMap = new HashMap<>();
         ServiceLoader<AnnotationConstraintSpi> services = ServiceLoader.load(AnnotationConstraintSpi.class, BasicConstraints.class.getClassLoader());
 
         for (AnnotationConstraintSpi annotationConstraintSpi : services) {
-            annotationConstraintSpiMap.put(annotationConstraintSpi.getSupportedAnnotation().getCanonicalName(), annotationConstraintSpi);
+            annotationConstraintSpiMap.computeIfAbsent(annotationConstraintSpi.getSupportedAnnotation().getCanonicalName(), e -> new ArrayList<>()).add(annotationConstraintSpi);
         }
 
-
-        Map<String, ManualConstraintSpi> manualConstraintSpiMap =  new HashMap<>();
+        Map<String, List<ManualConstraintSpi>> manualConstraintSpiMap =  new HashMap<>();
         ServiceLoader<ManualConstraintSpi> manualConstraintServices = ServiceLoader.load(ManualConstraintSpi.class, BasicConstraints.class.getClassLoader());
 
         for (ManualConstraintSpi manualConstraintSpi : manualConstraintServices) {
-            manualConstraintSpiMap.put(manualConstraintSpi.getSupportedAnnotation().getCanonicalName(), manualConstraintSpi);
+            manualConstraintSpiMap.computeIfAbsent(manualConstraintSpi.getSupportedAnnotation().getCanonicalName(), e -> new ArrayList<>()).add(manualConstraintSpi);
         }
         return new BasicConstraints(annotationConstraintSpiMap, manualConstraintSpiMap);
     }
