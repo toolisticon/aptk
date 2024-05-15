@@ -1,5 +1,6 @@
 package io.toolisticon.aptk.constraints;
 
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +11,10 @@ import java.lang.annotation.Target;
 @Constraint
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@On(On.Location.ANNOTATION_ATTRIBUTE)
-@OnAnnotationAttributeOfType({OnAnnotationAttributeOfType.AttributeType.STRING, OnAnnotationAttributeOfType.AttributeType.STRING_ARRAY})
-public @interface NonEmptyString {
+@WithTargetOfKind(WithTargetOfKind.TargetKind.ANNOTATION_ATTRIBUTE)
+@WithAnnotationAttributeTargetOfType({WithAnnotationAttributeTargetOfType.AttributeType.STRING, WithAnnotationAttributeTargetOfType.AttributeType.STRING_ARRAY})
+public @interface WithStringMatching {
+
+    String value();
+
 }

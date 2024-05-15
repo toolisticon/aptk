@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import java.io.Serializable;
 
-public class TargetMustBeAssignableToConstraintsTest implements Serializable{
+public class WithTargetElementAssignableToConstraintsTest implements Serializable{
 
     @Before
     public void init() {
@@ -20,7 +20,7 @@ public class TargetMustBeAssignableToConstraintsTest implements Serializable{
 
     @interface AnnotatedElementMustBeAssignableTo {
 
-        @TargetMustBeAssignableTo(targetElement = TargetMustBeAssignableTo.TargetElement.ANNOTATED_ELEMENT) Class<?> value();
+        @WithTargetElementAssignableTo(targetElement = TargetElement.ANNOTATED_ELEMENT) Class<?> value();
 
     }
 
@@ -76,7 +76,7 @@ public class TargetMustBeAssignableToConstraintsTest implements Serializable{
 
     @interface TopLevelTypeElementMustBeAssignableTo {
 
-        @TargetMustBeAssignableTo(targetElement = TargetMustBeAssignableTo.TargetElement.TOP_LEVEL_TYPE_ELEMENT) Class<?> value();
+        @WithTargetElementAssignableTo(targetElement = TargetElement.TOP_LEVEL_TYPE_ELEMENT) Class<?> value();
 
     }
 
@@ -125,7 +125,7 @@ public class TargetMustBeAssignableToConstraintsTest implements Serializable{
 
     @interface EnclosingTypeElementMustBeAssignableTo {
 
-        @TargetMustBeAssignableTo(targetElement = TargetMustBeAssignableTo.TargetElement.PARENT_TYPE_ELEMENT) Class<?> value();
+        @WithTargetElementAssignableTo(targetElement = TargetElement.PARENT_TYPE_ELEMENT) Class<?> value();
 
     }
 

@@ -3,12 +3,16 @@
  */
 @AnnotationWrapper(
         value = {
-                On.class,
-                OnAnnotationAttributeOfType.class,
-                StringMustMatch.class,
-                TargetMustBeAnnotatedWith.class,
-                TargetMustBeAnnotatedWiths.class,
-                TargetMustBeAssignableTo.class
+                WithTargetOfKind.class,
+                WithAnnotationAttributeTargetOfType.class,
+                WithStringMatching.class,
+                WithTargetElementAnnotatedWith.class,
+                WithTargetElementAnnotatedWithRepeatable.class,
+                WithTargetElementAssignableTo.class,
+                WithIntegerInBounds.class,
+                WithLongInBounds.class,
+                WithFloatInBounds.class,
+                WithDoubleInBounds.class
         })
 
 package io.toolisticon.aptk.constraints;

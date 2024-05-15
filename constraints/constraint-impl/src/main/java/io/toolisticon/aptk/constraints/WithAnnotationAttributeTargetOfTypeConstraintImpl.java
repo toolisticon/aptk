@@ -13,11 +13,11 @@ import java.util.Optional;
 
 @SpiService(value = AnnotationConstraintSpi.class)
 @DeclareCompilerMessage(code = "ONATTRIBUTETYPE_001", enumValueName = "ONATTRIBUTETYPE_ERROR_WRONG_USAGE", message = "'${0}' Constraint violated: Annotation ${1} must be placed on annotation attribute of kind ${2}", processorClass = BasicConstraints.class)
-public class OnAnnotationAttributeOfTypeConstraintImpl implements AnnotationConstraintSpi {
+public class WithAnnotationAttributeTargetOfTypeConstraintImpl implements AnnotationConstraintSpi {
 
     @Override
     public Class<? extends Annotation> getSupportedAnnotation() {
-        return OnAnnotationAttributeOfType.class;
+        return WithAnnotationAttributeTargetOfType.class;
     }
 
 
@@ -37,11 +37,11 @@ public class OnAnnotationAttributeOfTypeConstraintImpl implements AnnotationCons
         ExecutableElementWrapper attributeElementWrapper = ExecutableElementWrapper.wrap((ExecutableElement) annotatedElement);
 
         // Now check if annotation
-        OnAnnotationAttributeOfTypeWrapper onAnnotationOfType = OnAnnotationAttributeOfTypeWrapper.wrap(constraintAnnotationMirror);
+        WithAnnotationAttributeTargetOfTypeWrapper onAnnotationOfType = WithAnnotationAttributeTargetOfTypeWrapper.wrap(constraintAnnotationMirror);
 
         boolean foundMatchingElementType = false;
         loop:
-        for (OnAnnotationAttributeOfType.AttributeType targetAttributeType : onAnnotationOfType.value()) {
+        for (WithAnnotationAttributeTargetOfType.AttributeType targetAttributeType : onAnnotationOfType.value()) {
 
             switch (targetAttributeType) {
                 case ARRAY: {

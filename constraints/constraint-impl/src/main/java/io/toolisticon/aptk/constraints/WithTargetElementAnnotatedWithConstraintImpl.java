@@ -13,11 +13,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SpiService(value = AnnotationConstraintSpi.class)
-public class TargetMustBeAnnotatedWithConstraintImpl implements AnnotationConstraintSpi {
+public class WithTargetElementAnnotatedWithConstraintImpl implements AnnotationConstraintSpi {
 
     @Override
     public Class<? extends Annotation> getSupportedAnnotation() {
-        return TargetMustBeAnnotatedWith.class;
+        return WithTargetElementAnnotatedWith.class;
     }
 
 
@@ -28,11 +28,11 @@ public class TargetMustBeAnnotatedWithConstraintImpl implements AnnotationConstr
     public boolean checkConstraints(Element annotatedElement, AnnotationMirror annotationMirrorToCheck, AnnotationMirror constraintAnnotationMirror, String attributeNameToBeCheckedByConstraint) {
 
         ElementWrapper<Element> wrappedElement = ElementWrapper.wrap(annotatedElement);
-        TargetMustBeAnnotatedWithWrapper constraintWrapper = TargetMustBeAnnotatedWithWrapper.wrap(annotatedElement, constraintAnnotationMirror);
+        WithTargetElementAnnotatedWithWrapper constraintWrapper = WithTargetElementAnnotatedWithWrapper.wrap(annotatedElement, constraintAnnotationMirror);
 
 
         ElementWrapper elementToCheck = null;
-        switch (constraintWrapper.target()) {
+        switch (constraintWrapper.targetElement()) {
 
             case ANNOTATED_ELEMENT: {
                 elementToCheck = ElementWrapper.wrap(annotatedElement);
@@ -50,7 +50,7 @@ public class TargetMustBeAnnotatedWithConstraintImpl implements AnnotationConstr
                 if (result.size() == 1) {
                     elementToCheck = result.get(0);
                 } else {
-                    wrappedElement.compilerMessage(annotationMirrorToCheck).asError().write(BasicConstraintsCompilerMessages.TARGETMUSTBEANNOTATEDWITH_ERROR_WRONG_USAGE, UtilityFunctions.getSimpleName(constraintAnnotationMirror), constraintWrapper.target());
+                    wrappedElement.compilerMessage(annotationMirrorToCheck).asError().write(BasicConstraintsCompilerMessages.TARGETMUSTBEANNOTATEDWITH_ERROR_WRONG_USAGE, UtilityFunctions.getSimpleName(constraintAnnotationMirror), constraintWrapper.targetElement());
                 }
 
                 break;
@@ -64,7 +64,7 @@ public class TargetMustBeAnnotatedWithConstraintImpl implements AnnotationConstr
                 }
 
                 if (elementToCheck == null) {
-                    wrappedElement.compilerMessage(annotationMirrorToCheck).asError().write(BasicConstraintsCompilerMessages.TARGETMUSTBEANNOTATEDWITH_ERROR_WRONG_USAGE, UtilityFunctions.getSimpleName(constraintAnnotationMirror), constraintWrapper.target());
+                    wrappedElement.compilerMessage(annotationMirrorToCheck).asError().write(BasicConstraintsCompilerMessages.TARGETMUSTBEANNOTATEDWITH_ERROR_WRONG_USAGE, UtilityFunctions.getSimpleName(constraintAnnotationMirror), constraintWrapper.targetElement());
                 }
 
                 break;

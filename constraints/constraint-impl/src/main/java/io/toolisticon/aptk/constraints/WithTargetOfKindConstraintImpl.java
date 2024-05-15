@@ -22,11 +22,11 @@ import java.lang.annotation.Target;
 @DeclareCompilerMessage(code = "ON_002", enumValueName = "ON_ERROR_TARGET_ANNOTATION_NOT_FOUND", message = "No target annotation has been found. Please either remove On Constraint annotation or add matching Target annotation.", processorClass = BasicConstraints.class)
 @DeclareCompilerMessage(code = "ON_003", enumValueName = "ON_ERROR_WRONG_USAGE", message = "'${0}' Constraint violated: Annotation ${1} must be placed on either ${2}", processorClass = BasicConstraints.class)
 
-public class OnConstraintImpl implements AnnotationConstraintSpi, ManualConstraintSpi {
+public class WithTargetOfKindConstraintImpl implements AnnotationConstraintSpi, ManualConstraintSpi {
 
     @Override
     public Class<? extends Annotation> getSupportedAnnotation() {
-        return On.class;
+        return WithTargetOfKind.class;
     }
 
     @Override
@@ -40,17 +40,17 @@ public class OnConstraintImpl implements AnnotationConstraintSpi, ManualConstrai
 
         // Now check if annotation value matches
         Target target = annotatedElement.getAnnotation(Target.class);
-        OnWrapper onAnnotation = OnWrapper.wrap(constraintAnnotationMirror);
+        WithTargetOfKindWrapper onAnnotation = WithTargetOfKindWrapper.wrap(constraintAnnotationMirror);
 
 
         if (target != null) {
 
-            for (On.Location location : onAnnotation.value()) {
+            for (WithTargetOfKind.TargetKind targetKind : onAnnotation.value()) {
 
                 boolean foundLocation = false;
 
                 for (ElementType elementType : target.value()) {
-                    switch (location) {
+                    switch (targetKind) {
                         case CLASS:
                         case INTERFACE:
                         case ENUM: {
@@ -108,7 +108,7 @@ public class OnConstraintImpl implements AnnotationConstraintSpi, ManualConstrai
                 }
 
                 if (!foundLocation) {
-                    MessagerUtils.error(annotatedElement, constraintAnnotationMirror, BasicConstraintsCompilerMessages.ON_ERROR_MATCHING_TARGET_NOT_FOUND, location.toString());
+                    MessagerUtils.error(annotatedElement, constraintAnnotationMirror, BasicConstraintsCompilerMessages.ON_ERROR_MATCHING_TARGET_NOT_FOUND, targetKind.toString());
                 }
 
             }
@@ -127,12 +127,12 @@ public class OnConstraintImpl implements AnnotationConstraintSpi, ManualConstrai
 
         // Now check if annotation
 
-        OnWrapper onAnnotation = OnWrapper.wrap(constraintAnnotationMirror);
+        WithTargetOfKindWrapper onAnnotation = WithTargetOfKindWrapper.wrap(constraintAnnotationMirror);
 
         boolean foundMatchingElementType = false;
-        for (On.Location location : onAnnotation.value()) {
+        for (WithTargetOfKind.TargetKind targetKind : onAnnotation.value()) {
 
-            switch (location) {
+            switch (targetKind) {
                 case ANNOTATION_ATTRIBUTE: {
                     // must be placed on method of annotation type
                     if (ElementUtils.CheckKindOfElement.isMethod(annotatedElement) && ElementUtils.CheckKindOfElement.isAnnotation(annotatedElement.getEnclosingElement())) {

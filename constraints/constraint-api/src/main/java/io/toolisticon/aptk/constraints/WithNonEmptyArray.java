@@ -1,6 +1,5 @@
 package io.toolisticon.aptk.constraints;
 
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,9 +8,9 @@ import java.lang.annotation.Target;
 
 @Documented
 @Constraint
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.ANNOTATION_TYPE)
-@On(On.Location.ANNOTATION)
-public @interface TargetMustBeAnnotatedWiths {
-    TargetMustBeAnnotatedWith[] value();
+@WithTargetOfKind(WithTargetOfKind.TargetKind.ANNOTATION_ATTRIBUTE)
+@WithAnnotationAttributeTargetOfType({WithAnnotationAttributeTargetOfType.AttributeType.ARRAY})
+public @interface WithNonEmptyArray {
 }

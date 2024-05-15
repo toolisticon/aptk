@@ -10,15 +10,13 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import java.lang.annotation.Annotation;
 import java.util.Optional;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 @SpiService(value = AnnotationConstraintSpi.class)
-public class NonEmptyArrayConstraintImpl implements AnnotationConstraintSpi {
+public class WithNonEmptyArrayConstraintImpl implements AnnotationConstraintSpi {
 
     @Override
     public Class<? extends Annotation> getSupportedAnnotation() {
-        return NonEmptyArray.class;
+        return WithNonEmptyArray.class;
     }
 
 

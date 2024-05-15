@@ -12,11 +12,11 @@ import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 @SpiService(value = AnnotationConstraintSpi.class)
-public class NonEmptyStringConstraintImpl implements AnnotationConstraintSpi {
+public class WithNonEmptyStringConstraintImpl implements AnnotationConstraintSpi {
 
     @Override
     public Class<? extends Annotation> getSupportedAnnotation() {
-        return NonEmptyString.class;
+        return WithNonEmptyString.class;
     }
 
 

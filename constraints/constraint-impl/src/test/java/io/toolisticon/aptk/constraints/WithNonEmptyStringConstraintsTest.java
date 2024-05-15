@@ -8,7 +8,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class NonEmptyStringConstraintsTest {
+public class WithNonEmptyStringConstraintsTest {
 
     @Before
     public void init() {
@@ -18,7 +18,7 @@ public class NonEmptyStringConstraintsTest {
 
     @interface StringMustBeNonEmpty {
 
-        @NonEmptyString String value();
+        @WithNonEmptyString String value();
 
     }
 
@@ -66,7 +66,7 @@ public class NonEmptyStringConstraintsTest {
 
     @interface StringMustBeNonEmpty_InArray {
 
-        @NonEmptyString String[] value();
+        @WithNonEmptyString String[] value();
 
     }
 

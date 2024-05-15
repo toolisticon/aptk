@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Constraint
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OnAnnotationAttributeOfType {
+public @interface WithAnnotationAttributeTargetOfType {
 
     enum AttributeType {
         FLOAT,

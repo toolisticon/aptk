@@ -13,19 +13,12 @@ import java.lang.annotation.Target;
 @Constraint
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
-@On(On.Location.ANNOTATION)
-@Repeatable(TargetMustBeAnnotatedWiths.class)
-public @interface TargetMustBeAnnotatedWith {
-
-    enum TargetElement {
-        ANNOTATED_ELEMENT,
-        PARENT_TYPE_ELEMENT,
-        TOP_LEVEL_TYPE_ELEMENT
-    }
-
+@WithTargetOfKind(WithTargetOfKind.TargetKind.ANNOTATION)
+@Repeatable(WithTargetElementAnnotatedWithRepeatable.class)
+public @interface WithTargetElementAnnotatedWith {
 
     Class<? extends Annotation> value();
 
-    TargetMustBeAnnotatedWith.TargetElement target() default TargetMustBeAnnotatedWith.TargetElement.ANNOTATED_ELEMENT;
+   TargetElement targetElement() default TargetElement.ANNOTATED_ELEMENT;
 
 }

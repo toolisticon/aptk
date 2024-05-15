@@ -16,17 +16,18 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Constraint
-@Target(ElementType.ANNOTATION_TYPE)
+@Target({ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface On {
+public @interface WithTargetOfKind {
 
-    enum Location {
+    enum TargetKind {
         PACKAGE,
         ANNOTATION_ATTRIBUTE,
         ANNOTATION,
         CLASS,
         INTERFACE,
         ENUM,
+        RECORD,
         METHOD,
         CONSTRUCTOR,
         PARAMETER,
@@ -36,6 +37,6 @@ public @interface On {
 
     }
 
-    Location[] value();
+    TargetKind[] value();
 
 }

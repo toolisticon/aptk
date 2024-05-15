@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@On(On.Location.INTERFACE)
+@WithTargetOfKind(WithTargetOfKind.TargetKind.INTERFACE)
 public @interface JustOnInterfacesAnnotation {
 
 }

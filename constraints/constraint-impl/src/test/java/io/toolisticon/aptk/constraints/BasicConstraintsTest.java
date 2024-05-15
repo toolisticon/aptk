@@ -2,11 +2,14 @@ package io.toolisticon.aptk.constraints;
 
 import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.aptk.tools.MessagerUtils;
+import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.cute.Cute;
 import io.toolisticon.cute.PassIn;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.lang.model.element.TypeElement;
 
 public class BasicConstraintsTest {
 

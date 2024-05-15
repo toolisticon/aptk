@@ -16,11 +16,11 @@ import java.util.regex.PatternSyntaxException;
 @SpiService(value = AnnotationConstraintSpi.class)
 @DeclareCompilerMessage(code = "STRINGMUSTMATCH_001", enumValueName = "STRINGMUSTMATCH_ERROR_WRONG_USAGE", message = "'${0}' Constraint violated: Annotation ${1} attribute ${2} value(s) must match regular expression: ${3}", processorClass = BasicConstraints.class)
 @DeclareCompilerMessage(code = "STRINGMUSTMATCH_002", enumValueName = "STRINGMUSTMATCH_ERROR_INVALID_PATTERN", message = "'${0}' Invalid Pattern '${1}' can't be compiled!", processorClass = BasicConstraints.class)
-public class StringMustMatchConstraintImpl implements AnnotationConstraintSpi {
+public class WithStringMatchingConstraintImpl implements AnnotationConstraintSpi {
 
     @Override
     public Class<? extends Annotation> getSupportedAnnotation() {
-        return StringMustMatch.class;
+        return WithStringMatching.class;
     }
 
 
@@ -28,7 +28,7 @@ public class StringMustMatchConstraintImpl implements AnnotationConstraintSpi {
     public boolean checkConstraints(Element annotatedElement, AnnotationMirror annotationMirrorToCheck, AnnotationMirror constraintAnnotationMirror, String attributeNameToBeCheckedByConstraint) {
 
         ElementWrapper<Element> wrappedElement = ElementWrapper.wrap(annotatedElement);
-        StringMustMatchWrapper constraintWrapper = StringMustMatchWrapper.wrap(constraintAnnotationMirror);
+        WithStringMatchingWrapper constraintWrapper = WithStringMatchingWrapper.wrap(constraintAnnotationMirror);
         Optional<AnnotationValueWrapper> attribute = AnnotationMirrorWrapper.wrap(annotationMirrorToCheck).getAttribute(attributeNameToBeCheckedByConstraint);
 
         if (attribute.isPresent()) {

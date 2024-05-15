@@ -18,7 +18,7 @@ public class NonEmptyArrayConstraintsTest {
 
     @interface ArrayMustBeNonEmpty {
 
-        @NonEmptyArray String[] value();
+        @WithNonEmptyArray String[] value();
 
     }
 

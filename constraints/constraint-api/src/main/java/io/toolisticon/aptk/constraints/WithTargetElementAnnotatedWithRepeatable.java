@@ -9,12 +9,9 @@ import java.lang.annotation.Target;
 
 @Documented
 @Constraint
-@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@On(On.Location.ANNOTATION_ATTRIBUTE)
-@OnAnnotationAttributeOfType({OnAnnotationAttributeOfType.AttributeType.STRING, OnAnnotationAttributeOfType.AttributeType.STRING_ARRAY})
-public @interface StringMustMatch {
-
-    String value();
-
+@Target(ElementType.ANNOTATION_TYPE)
+@WithTargetOfKind(WithTargetOfKind.TargetKind.ANNOTATION)
+public @interface WithTargetElementAnnotatedWithRepeatable {
+    WithTargetElementAnnotatedWith[] value();
 }

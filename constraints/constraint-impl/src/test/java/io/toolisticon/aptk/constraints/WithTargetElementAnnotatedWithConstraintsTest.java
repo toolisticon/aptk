@@ -11,8 +11,8 @@ import org.junit.Test;
 import java.io.Serializable;
 
 
-@TargetMustBeAnnotatedWithConstraintsTest.AnotherTopLevelAccompanyingAnnotation
-public class TargetMustBeAnnotatedWithConstraintsTest implements Serializable{
+@WithTargetElementAnnotatedWithConstraintsTest.AnotherTopLevelAccompanyingAnnotation
+public class WithTargetElementAnnotatedWithConstraintsTest implements Serializable{
 
     @Before
     public void init() {
@@ -24,7 +24,7 @@ public class TargetMustBeAnnotatedWithConstraintsTest implements Serializable{
     }
 
 
-    @TargetMustBeAnnotatedWith(value = AccompanyingAnnotation.class)
+    @WithTargetElementAnnotatedWith(value = AccompanyingAnnotation.class)
     @interface AnnotatedElementMustBeAnnotatedWith {
 
     }
@@ -80,8 +80,8 @@ public class TargetMustBeAnnotatedWithConstraintsTest implements Serializable{
     }
 
 
-    @TargetMustBeAnnotatedWith(value = AccompanyingAnnotation.class)
-    @TargetMustBeAnnotatedWith(value = AnotherTopLevelAccompanyingAnnotation.class, target = TargetMustBeAnnotatedWith.TargetElement.TOP_LEVEL_TYPE_ELEMENT)
+    @WithTargetElementAnnotatedWith(value = AccompanyingAnnotation.class)
+    @WithTargetElementAnnotatedWith(value = AnotherTopLevelAccompanyingAnnotation.class, targetElement = TargetElement.TOP_LEVEL_TYPE_ELEMENT)
     @interface RepeatableMustBeAnnotatedWith {
 
     }

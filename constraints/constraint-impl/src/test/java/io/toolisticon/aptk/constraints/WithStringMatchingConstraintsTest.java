@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import java.io.Serializable;
 
-public class StringMustMatchConstraintsTest implements Serializable {
+public class WithStringMatchingConstraintsTest implements Serializable {
 
     @Before
     public void init() {
@@ -20,7 +20,7 @@ public class StringMustMatchConstraintsTest implements Serializable {
 
     @interface TestStringMustMatch {
 
-        @StringMustMatch("A.+Z") String value();
+        @WithStringMatching("A.+Z") String value();
 
     }
 

@@ -15,11 +15,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SpiService(value = AnnotationConstraintSpi.class)
-public class TargetMustBeAssignableToConstraintImpl implements AnnotationConstraintSpi {
+public class WithTargetElementAssignableToConstraintImpl implements AnnotationConstraintSpi {
 
     @Override
     public Class<? extends Annotation> getSupportedAnnotation() {
-        return TargetMustBeAssignableTo.class;
+        return WithTargetElementAssignableTo.class;
     }
 
 
@@ -30,7 +30,7 @@ public class TargetMustBeAssignableToConstraintImpl implements AnnotationConstra
     public boolean checkConstraints(Element annotatedElement, AnnotationMirror annotationMirrorToCheck, AnnotationMirror constraintAnnotationMirror, String attributeNameToBeCheckedByConstraint) {
 
         ElementWrapper<Element> wrappedElement = ElementWrapper.wrap(annotatedElement);
-        TargetMustBeAssignableToWrapper constraintWrapper = TargetMustBeAssignableToWrapper.wrap(annotatedElement, constraintAnnotationMirror);
+        WithTargetElementAssignableToWrapper constraintWrapper = WithTargetElementAssignableToWrapper.wrap(annotatedElement, constraintAnnotationMirror);
         Optional<AnnotationValueWrapper> attribute = AnnotationMirrorWrapper.wrap(annotationMirrorToCheck).getAttribute(attributeNameToBeCheckedByConstraint);
 
 
