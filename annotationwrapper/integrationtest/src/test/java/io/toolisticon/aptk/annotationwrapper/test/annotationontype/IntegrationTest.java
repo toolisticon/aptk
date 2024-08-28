@@ -8,6 +8,7 @@ import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.CompileTestBuilderApi;
 import io.toolisticon.cute.PassIn;
@@ -110,6 +111,21 @@ public class IntegrationTest {
                 EmbeddedAnnotationWrapper[] embeddedAnnotationWrappers = testAnnotationWrapper.annotationArrayAttribute();
                 MatcherAssert.assertThat(embeddedAnnotationWrappers[0].value(), Matchers.is(1L));
                 MatcherAssert.assertThat(embeddedAnnotationWrappers[1].value(), Matchers.is(2L));
+            }
+        })
+                .compilationShouldSucceed()
+                .executeTest();
+    }
+    
+    @Test
+    public void testWrappingWithElementWrapper() {
+        unitTestBuilder.defineTestWithPassedInElement(TestUsage.class, new APTKUnitTestProcessor<TypeElement>() {
+            @Override
+            public void aptkUnitTest(ProcessingEnvironment processingEnvironment, TypeElement typeElement) {
+            	TypeElementWrapper typeElementWrapper = TypeElementWrapper.wrap(typeElement);
+                ExampleTestAnnotationWrapper testAnnotationWrapper = ExampleTestAnnotationWrapper.wrap(typeElementWrapper);
+
+                MatcherAssert.assertThat(testAnnotationWrapper._annotatedElement(), Matchers.is(typeElement));
             }
         })
                 .compilationShouldSucceed()
