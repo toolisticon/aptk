@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * Simple helper class to open and read a resource file.
  */
-public class SimpleResourceReader {
+public class SimpleResourceReader implements AutoCloseable{
 
     private final FileObject fileObject;
     private final BufferedReader foReader;

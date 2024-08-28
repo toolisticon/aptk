@@ -34,6 +34,17 @@ public class TypeElementWrapperTest {
     private static class ChildTestClass extends EmbeddedTestClass implements WhatsUp {
 
     }
+    
+    private static class OuterNestedClass {
+    	 	
+    	@PassIn
+        private static class InnerNestedClass {
+        	
+        	
+        	
+        }
+    }
+    
 
     @Test
     public void test_wrapAndUnwrap() {
@@ -69,6 +80,18 @@ public class TypeElementWrapperTest {
         MatcherAssert.assertThat("Shoud not have found nesting kind", !unit.isNested());
     }
 
+    
+    @Test
+    public void test_getNestedName() {
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(OuterNestedClass.InnerNestedClass.class, PassIn.class, (processingEnvironment, element) -> {
+
+                    TypeElementWrapper unit = TypeElementWrapper.wrap(element);
+                    MatcherAssert.assertThat(unit.getNestedName(), Matchers.is(TypeElementWrapperTest.class.getSimpleName() + "." + OuterNestedClass.class.getSimpleName() + "." + OuterNestedClass.InnerNestedClass.class.getSimpleName() ));
+
+                })
+                .executeTest();
+    }
+    
     @Test
     public void test_getQualifiedName_and_hasQualifiedName() {
         CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(EmbeddedTestClass.class, PassIn.class, (processingEnvironment, element) -> {

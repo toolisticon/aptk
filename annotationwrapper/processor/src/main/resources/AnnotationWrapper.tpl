@@ -365,6 +365,15 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     ${state.visibilityModifier}static ${atw.simpleName}Wrapper wrap(Element element) {
         return isAnnotated(element) ? new ${atw.simpleName}Wrapper(element) : null;
     }
+    
+     /**
+      * Gets the AnnotationMirror from passed element for this wrappers annotation type and creates a wrapper instance.
+      * @param element The element to read the annotations from
+      * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
+      */
+    ${state.visibilityModifier}static ${atw.simpleName}Wrapper wrap(ElementWrapper element) {
+        return wrap(element.unwrap());
+    }
 
     /**
      * Wraps an AnnotationMirror.

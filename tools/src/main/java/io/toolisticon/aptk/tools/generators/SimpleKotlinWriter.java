@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * A simple writer for writing kotlin source files.
  */
-public class SimpleKotlinWriter extends SimpleWriter {
+public class SimpleKotlinWriter extends SimpleWriter implements AutoCloseable{
 
     final static String KAPT_KOTLIN_GENERATED = "kapt.kotlin.generated";
     private final static Pattern PACKAGE_PATTERN = Pattern.compile("(\\w+?(?:[.]\\w+?)*)[.]\\w*");

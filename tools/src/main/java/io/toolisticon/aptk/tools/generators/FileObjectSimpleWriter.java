@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Abstract base class for writers of java code and resources.
  */
-public class FileObjectSimpleWriter<T extends FileObject> extends SimpleWriter{
+public class FileObjectSimpleWriter<T extends FileObject> extends SimpleWriter implements AutoCloseable{
 
     private final T fileObject;
     private final Writer foWriter;

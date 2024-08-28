@@ -127,7 +127,7 @@ public class ElementWrapper<E extends Element> {
     public boolean hasSimpleName(String name) {
         return name != null && this.getSimpleName().equals(name);
     }
-
+    
     /**
      * Checks if element has all passed modifiers are present.
      *
