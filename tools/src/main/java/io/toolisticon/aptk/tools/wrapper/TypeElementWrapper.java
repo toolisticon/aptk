@@ -57,8 +57,9 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
     
     /**
      * Gets the nested name of the element.
+     * If the TypeElement isn't a nested type the simple name will be returned.
      *
-     * @return the simple name of the element
+     * @return the nested name of the element
      */
     public String getNestedName() {
     	
