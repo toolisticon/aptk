@@ -14,6 +14,7 @@ import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -201,11 +202,11 @@ public class TypeElementWrapperTest {
 
         }
 
-        private static class staticInnerClass {
+        private static class StaticInnerClass {
 
         }
 
-        private class innerClass {
+        private class InnerClass {
 
         }
 
@@ -225,6 +226,18 @@ public class TypeElementWrapperTest {
 
         private void methodWithParameters(String a, Integer b, int c, Object... d) {
 
+        }
+        
+        enum TestEnum {
+        	INSTANCE;
+        }
+        
+        interface TestInterface {
+        	
+        }
+        
+        @interface TestAnnotation {
+        	
         }
 
     }
@@ -341,9 +354,16 @@ public class TypeElementWrapperTest {
 
                         TypeElementWrapper unit = TypeElementWrapper.wrap(element);
 
-                        MatcherAssert.assertThat(unit.getInnerTypes().stream().map(ElementWrapper::getSimpleName).collect(Collectors.toList()), Matchers.containsInAnyOrder("innerClass", "staticInnerClass"));
-                        MatcherAssert.assertThat(unit.getInnerTypes(Modifier.PRIVATE).stream().map(ElementWrapper::getSimpleName).collect(Collectors.toList()), Matchers.containsInAnyOrder("innerClass", "staticInnerClass"));
-                        MatcherAssert.assertThat(unit.getInnerTypes(Modifier.PRIVATE, Modifier.STATIC).stream().map(ElementWrapper::getSimpleName).collect(Collectors.toList()), Matchers.containsInAnyOrder("staticInnerClass"));
+                        // Unfortunately we cannot test records directly ...
+                        MatcherAssert.assertThat(unit.getInnerTypes().stream().map(ElementWrapper::getSimpleName).collect(Collectors.toList()), Matchers.containsInAnyOrder( 
+                        		GetMethodTestClass.InnerClass.class.getSimpleName().toString(), 
+                        		GetMethodTestClass.StaticInnerClass.class.getSimpleName().toString(),
+                        		GetMethodTestClass.TestAnnotation.class.getSimpleName().toString(),
+                        		GetMethodTestClass.TestEnum.class.getSimpleName().toString(),
+                        		GetMethodTestClass.TestInterface.class.getSimpleName().toString()
+                        		));
+                        MatcherAssert.assertThat(unit.getInnerTypes(Modifier.PRIVATE).stream().map(ElementWrapper::getSimpleName).collect(Collectors.toList()), Matchers.containsInAnyOrder("InnerClass", "StaticInnerClass"));
+                        MatcherAssert.assertThat(unit.getInnerTypes(Modifier.PRIVATE, Modifier.STATIC).stream().map(ElementWrapper::getSimpleName).collect(Collectors.toList()), Matchers.containsInAnyOrder("StaticInnerClass"));
 
                     } finally {
                         ToolingProvider.clearTooling();
@@ -354,12 +374,22 @@ public class TypeElementWrapperTest {
 
     private static class GetOuterTypeTestClass {
 
-        class MidInnerClass {
+        interface OfTypeInterface {
 
-            @PassIn
-            private  class innerMostClass {
-
-            }
+        	@interface OfTypeAnnotation {
+        		
+        		enum OfTypeEnum {
+        			
+        			INSTANCE;
+        			
+        			@PassIn
+        			static class InnerMostClass {
+        				
+        			}
+        			
+        		}
+        		
+        	}
 
         }
 
@@ -374,7 +404,24 @@ public class TypeElementWrapperTest {
 
                         TypeElementWrapper unit = TypeElementWrapper.wrap(element);
 
-                        MatcherAssert.assertThat(unit.getOuterType().get().getQualifiedName(), Matchers.is(GetOuterTypeTestClass.MidInnerClass.class.getCanonicalName()));
+                        Optional<TypeElementWrapper> outerType = unit.getOuterType();
+                        MatcherAssert.assertThat(outerType.get().getQualifiedName(), Matchers.is(GetOuterTypeTestClass.OfTypeInterface.OfTypeAnnotation.OfTypeEnum.class.getCanonicalName()));
+                        
+                        outerType = outerType.get().getOuterType();
+                        MatcherAssert.assertThat(outerType.get().getQualifiedName(), Matchers.is(GetOuterTypeTestClass.OfTypeInterface.OfTypeAnnotation.class.getCanonicalName()));
+                        
+                        outerType = outerType.get().getOuterType();
+                        MatcherAssert.assertThat(outerType.get().getQualifiedName(), Matchers.is(GetOuterTypeTestClass.OfTypeInterface.class.getCanonicalName()));
+                        
+                        outerType = outerType.get().getOuterType();
+                        MatcherAssert.assertThat(outerType.get().getQualifiedName(), Matchers.is(GetOuterTypeTestClass.class.getCanonicalName()));
+                        
+                        outerType = outerType.get().getOuterType();
+                        MatcherAssert.assertThat(outerType.get().getQualifiedName(), Matchers.is(TypeElementWrapperTest.class.getCanonicalName()));
+                        
+                        outerType = outerType.get().getOuterType();
+                        MatcherAssert.assertThat(outerType.isPresent(), Matchers.is(false));
+                        
                         MatcherAssert.assertThat(unit.getOuterTopLevelType().get().getQualifiedName(), Matchers.is(TypeElementWrapperTest.class.getCanonicalName()));
 
                         MatcherAssert.assertThat("Should return empty Optional for Top Level Class", !unit.getOuterTopLevelType().get().getOuterType().isPresent());

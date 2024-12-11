@@ -47,6 +47,7 @@ import io.toolisticon.aptk.tools.matcher.impl.IsSetterMethodMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsTypeElementMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsTypeEqualFqnMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsTypeEqualMatcher;
+import io.toolisticon.aptk.tools.matcher.impl.IsTypeMatcher;
 import io.toolisticon.aptk.tools.matcher.impl.IsVariableElementMatcher;
 
 import javax.lang.model.element.Element;
@@ -320,6 +321,11 @@ public class AptkCoreMatchers {
      * Matcher to check if passed element represents a parameter.
      */
     public final static IsElementBasedCoreMatcher<VariableElement> IS_PARAMETER = new IsElementBasedCoreMatcher<>(new IsParameterMatcher<>(), CoreMatcherValidationMessages.IS_PARAMETER);
+    /**
+     * Matcher to check if passed element represents a type.(Is either CLASS, INTERFACE, ANNOTATION_TYPE, ENUM or RECORD)
+     * 
+     */
+    public final static IsElementBasedCoreMatcher<TypeElement> IS_TYPE = new IsElementBasedCoreMatcher<>(new IsTypeMatcher<>(), CoreMatcherValidationMessages.IS_TYPE);
 
 
 }

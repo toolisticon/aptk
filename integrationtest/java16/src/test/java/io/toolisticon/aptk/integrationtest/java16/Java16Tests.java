@@ -1,19 +1,24 @@
 package io.toolisticon.aptk.integrationtest.java16;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.lang.model.element.TypeElement;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
 import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.RecordComponentElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
+import io.toolisticon.cute.CompileTestBuilder;
 import io.toolisticon.cute.Cute;
 import io.toolisticon.cute.PassIn;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-
-import javax.lang.model.element.TypeElement;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Java16Tests {
 
@@ -145,7 +150,13 @@ public class Java16Tests {
 
                 Set<String> enclosedTypeElements = typeElement.filterFlattenedEnclosedElementTree().applyFilter(AptkCoreMatchers.IS_TYPE_ELEMENT).getResult().stream().map(e -> e.getQualifiedName().toString()).collect(Collectors.toSet());
 
-                MatcherAssert.assertThat(enclosedTypeElements, Matchers.contains(MyRecord.class.getCanonicalName()));
+                MatcherAssert.assertThat(enclosedTypeElements, Matchers.containsInAnyOrder(
+                		MyRecord.class.getCanonicalName(),GetOuterTypeTestRecord.class.getCanonicalName(), 
+                		GetOuterTypeTestRecord.InnerMostClass.class.getCanonicalName(),
+                		GetInnerTypeRecordTest.class.getCanonicalName(),
+                		GetInnerTypeRecordTest.InnerRecordType.class.getCanonicalName()
+                		
+                		));
 
             } finally {
                 ToolingProvider.clearTooling();
@@ -164,8 +175,11 @@ public class Java16Tests {
 
                 Set<String> enclosedTypeElements = typeElement.filterFlattenedEnclosedElementTree().applyFilter(AptkCoreMatchers.IS_RECORD).getResult().stream().map(e -> e.getQualifiedName().toString()).collect(Collectors.toSet());
 
-                MatcherAssert.assertThat(enclosedTypeElements, Matchers.hasSize(1));
-                MatcherAssert.assertThat(enclosedTypeElements, Matchers.contains(MyRecord.class.getCanonicalName()));
+                MatcherAssert.assertThat(enclosedTypeElements, Matchers.hasSize(3));
+                MatcherAssert.assertThat(enclosedTypeElements, Matchers.containsInAnyOrder(
+                		MyRecord.class.getCanonicalName(),
+                		GetOuterTypeTestRecord.class.getCanonicalName(), 
+                		GetInnerTypeRecordTest.InnerRecordType.class.getCanonicalName()));
 
             } finally {
                 ToolingProvider.clearTooling();
@@ -174,5 +188,76 @@ public class Java16Tests {
         }).thenExpectThat().compilationSucceeds().executeTest();
 
     }
+    
+    
+    
+    record GetOuterTypeTestRecord() {
+
+        
+        			
+			@PassIn
+			static class InnerMostClass {
+				
+			}
+        			
+     
+    }
+
+    @Test
+    public void test_TypeElementWrapper_getOuterType() {
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(GetOuterTypeTestRecord.class, PassIn.class, (processingEnvironment, element) -> {
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        TypeElementWrapper unit = TypeElementWrapper.wrap(element);
+
+                        Optional<TypeElementWrapper> outerType = unit.getOuterType();
+                        MatcherAssert.assertThat(outerType.get().getQualifiedName(), Matchers.is(GetOuterTypeTestRecord.class.getCanonicalName()));
+                        
+     
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                })
+                .executeTest();
+    }
+    
+    
+    @PassIn
+    static class GetInnerTypeRecordTest {
+
+        
+        			
+			
+			record InnerRecordType() {
+				
+			}
+        			
+     
+    }
+    
+    
+    @Test
+    public void test_TypeElementWrapper_getInnerType() {
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(GetInnerTypeRecordTest.class, PassIn.class, (processingEnvironment, element) -> {
+
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        TypeElementWrapper unit = TypeElementWrapper.wrap(element);
+
+                        List<TypeElementWrapper> innerTypes = unit.getInnerTypes();
+                        MatcherAssert.assertThat(innerTypes.stream().map(TypeElementWrapper::getQualifiedName).collect(Collectors.toList()), Matchers.contains(GetInnerTypeRecordTest.InnerRecordType.class.getCanonicalName()));
+                        
+     
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                })
+                .executeTest();
+    }
+    
+    
 
 }
