@@ -38,6 +38,7 @@ public enum CoreMatcherValidationMessages implements ValidationMessage {
     IS_PACKAGE_ELEMENT("CM_IS_PACKAGE_ELEMENT", "Element must ${0} be a PackageElement"),
 
     IS_CLASS("CM_IS_CLASS", "Element must ${0} represent a Class"),
+    IS_TYPE("CM_IS_TYPE", "Element must ${0} represent either a class, an interface, an enum, an annotation type or a record"),
     IS_ENUM("CM_IS_ENUM", "Element must ${0} represent an enum"),
 
     IS_RECORD("CM_IS_ENUM", "Element must ${0} represent a record"),

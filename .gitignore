@@ -6,3 +6,5 @@ target
 *.iml
 .idea
 atlassian-ide-plugin.xml
+**/dependency-reduced-pom.xml
+**/.factorypath

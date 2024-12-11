@@ -13,6 +13,8 @@ import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +28,24 @@ import java.util.stream.Collectors;
 public class TypeElementWrapper extends ElementWrapper<TypeElement> {
 
     private final static String TYPE_ELEMENT_CLASS_NAME = "javax.lang.model.element.TypeElement";
-
+    
+    private static ElementKind[] TYPE_ELEMENT_KINDS;
+    
+    static {
+    	
+    	// need to handle record kind via reflection as long as java versions smaller as 16 are supported.
+    	try {
+    		ElementKind[] typeKinds = {ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM, ElementKind.ANNOTATION_TYPE, ElementKind.valueOf("RECORD")};
+    		TYPE_ELEMENT_KINDS = typeKinds;
+    	} catch (IllegalArgumentException e) {
+    		ElementKind[] typeKinds = {ElementKind.CLASS, ElementKind.INTERFACE, ElementKind.ENUM, ElementKind.ANNOTATION_TYPE};
+    		TYPE_ELEMENT_KINDS = typeKinds;
+    	}
+    	
+    	
+    }
+    
+    
     /**
      * Hidden constructor.
      *
@@ -253,30 +272,30 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
      */
     public List<TypeElementWrapper> getInnerTypes(Modifier... modifier) {
         return FluentElementFilter.createFluentElementFilter(
-                        this.element.getEnclosedElements()).applyFilter(AptkCoreMatchers.IS_CLASS)
+                        this.element.getEnclosedElements()).applyFilter(AptkCoreMatchers.IS_TYPE)
                 .applyFilter(AptkCoreMatchers.BY_MODIFIER).filterByAllOf(modifier)
                 .getResult()
                 .stream().map(TypeElementWrapper::wrap).collect(Collectors.toList());
     }
 
     /**
-     * Returns the direct outer type for nested classes.
-     * Returned type may not be a top level type, since java allows nested classes in nested classes.
+     * Returns an Optional containing the direct outer type element for nested types.
+     * Returned type may not be a top level type, since java allows nested types in nested types.
      *
-     * @return an Optional containing the outer type of nested classes, if present.
+     * @return an Optional containing the outer type of nested types, if present.
      */
     public Optional<TypeElementWrapper> getOuterType() {
         if (this.element.getNestingKind() != NestingKind.MEMBER) {
             return Optional.empty();
         }
-
-        return Optional.of(TypeElementWrapper.wrap(ElementUtils.AccessEnclosingElements.<TypeElement>getFirstEnclosingElementOfKind(this.element, ElementKind.CLASS)));
+        
+        return Optional.of(TypeElementWrapper.wrap(ElementUtils.AccessEnclosingElements.<TypeElement>getFirstEnclosingElementOfKind(this.element, TYPE_ELEMENT_KINDS)));
     }
 
     /**
-     * Returns the direct outer type for nested classes.
+     * Returns the direct outer type element for nested types.
      *
-     * @return an Optional containing the outer type of nested classes, if present.
+     * @return an Optional containing the outer type of nested types, if present.
      */
     public Optional<TypeElementWrapper> getOuterTopLevelType() {
         if (this.element.getNestingKind() != NestingKind.MEMBER) {
@@ -384,4 +403,6 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
     public static Optional<TypeElementWrapper> getByTypeMirror(TypeMirrorWrapper typeMirror) {
         return typeMirror.getTypeElement();
     }
-}
+    
+    
+ }

@@ -750,7 +750,6 @@ public class TypeMirrorWrapperTest {
     }
 
 
-
     @Test
     public void test_getBinaryName_ofDeclaredType() {
         Cute.unitTest().when().passInElement().<VariableElement>fromClass(NestedKind.class)
@@ -804,6 +803,37 @@ public class TypeMirrorWrapperTest {
                     }
                 }).executeTest();
     }
+    
+    static class BinaryNameOfMixedCaseClass {
+    	
+    	interface BinaryNameOfMixedCaseInterface {
+    	
+    		@interface BinaryNameOfMixedCaseAnnotation {
+    			
+    			@PassIn
+    			enum BinaryNameOfMixedCaseEnum {
+    				
+    			}
+    			
+    		}
+    		
+    	}
+    	
+    }
 
+    @Test
+    public void test_getBinaryName_of_mixed_case_multi_level_nested_types() {
+        Cute.unitTest().when().passInElement().<TypeElement>fromClass(BinaryNameOfMixedCaseClass.BinaryNameOfMixedCaseInterface.BinaryNameOfMixedCaseAnnotation.BinaryNameOfMixedCaseEnum.class)
+                .intoUnitTest((processingEnvironment, element) -> {
+                    try {
+                        ToolingProvider.setTooling(processingEnvironment);
+
+                        MatcherAssert.assertThat(TypeMirrorWrapper.wrap(element.asType()).getBinaryName(), Matchers.is(TypeMirrorWrapperTest.class.getCanonicalName() + "$" + BinaryNameOfMixedCaseClass.class.getSimpleName() + "$" + BinaryNameOfMixedCaseClass.BinaryNameOfMixedCaseInterface.class.getSimpleName() + "$" + BinaryNameOfMixedCaseClass.BinaryNameOfMixedCaseInterface.BinaryNameOfMixedCaseAnnotation.class.getSimpleName() + "$" + BinaryNameOfMixedCaseClass.BinaryNameOfMixedCaseInterface.BinaryNameOfMixedCaseAnnotation.BinaryNameOfMixedCaseEnum.class.getSimpleName()));
+
+                    } finally {
+                        ToolingProvider.clearTooling();
+                    }
+                }).executeTest();
+    }
 
 }

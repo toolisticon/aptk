@@ -4,6 +4,7 @@ import io.toolisticon.aptk.cute.APTKUnitTestProcessor;
 import io.toolisticon.aptk.tools.ElementUtils;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
+import io.toolisticon.aptk.tools.corematcher.IsCoreMatcher;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.cute.CompileTestBuilder;
@@ -279,7 +280,7 @@ public class FluentElementValidatorTest {
 
 
                                 // Test
-                                MatcherAssert.assertThat("Should be successfully validated", FluentElementValidator.createFluentElementValidator(elements.get(0)).is(AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).validateAndIssueMessages())
+                                MatcherAssert.assertThat("Should be successfully validated", FluentElementValidator.createFluentElementValidator(elements.get(0)).is( AptkCoreMatchers.IS_EXECUTABLE_ELEMENT).validateAndIssueMessages())
                                 ;
 
                             }
