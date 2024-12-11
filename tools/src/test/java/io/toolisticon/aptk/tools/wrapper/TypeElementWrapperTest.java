@@ -420,7 +420,7 @@ public class TypeElementWrapperTest {
                         MatcherAssert.assertThat(outerType.get().getQualifiedName(), Matchers.is(TypeElementWrapperTest.class.getCanonicalName()));
                         
                         outerType = outerType.get().getOuterType();
-                        MatcherAssert.assertThat(outerType.isEmpty(), Matchers.is(true));
+                        MatcherAssert.assertThat(outerType.isPresent(), Matchers.is(false));
                         
                         MatcherAssert.assertThat(unit.getOuterTopLevelType().get().getQualifiedName(), Matchers.is(TypeElementWrapperTest.class.getCanonicalName()));
 
