@@ -14,6 +14,7 @@
     <modules>
 
         <!-- modules -->
+        <module>aptk-api</module>
         <module>common</module>
         <module>tools</module>
         <module>example</module>
@@ -29,6 +30,7 @@
         <!-- support for toolisticon cute -->
         <module>cute</module>
 
+        
     </modules>
 
 
@@ -812,6 +814,12 @@
         <dependencies>
 
             <!-- internal -->
+            <dependency>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            
             <dependency>
                 <groupId>io.toolisticon.aptk</groupId>
                 <artifactId>aptk-tools</artifactId>

@@ -18,6 +18,11 @@
 
         <dependency>
             <groupId>io.toolisticon.aptk</groupId>
+            <artifactId>aptk-api</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.toolisticon.aptk</groupId>
             <artifactId>aptk-common</artifactId>
         </dependency>
 
@@ -57,6 +62,10 @@
                     <source>${java.compile.source.version}</source>
                     <target>${java.compile.target.version}</target>
                     <proc>none</proc>
+                    
+                     <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
