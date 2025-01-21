@@ -3,7 +3,7 @@
   <parent>
     <groupId>io.toolisticon.aptk</groupId>
     <artifactId>aptk-parent</artifactId>
-    <version>0.29.1-SNAPSHOT</version>
+    <version>0.30.0</version>
   </parent>
   <artifactId>aptk-api</artifactId>
   <name>aptk-api</name>
