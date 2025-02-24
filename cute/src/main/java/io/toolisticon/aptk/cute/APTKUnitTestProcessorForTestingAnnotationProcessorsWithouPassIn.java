@@ -1,11 +1,10 @@
 package io.toolisticon.aptk.cute;
 
-import io.toolisticon.aptk.common.ToolingProvider;
-import io.toolisticon.cute.UnitTestForTestingAnnotationProcessorsWithoutPassIn;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
-import javax.lang.model.element.Element;
+
+import io.toolisticon.aptk.common.ToolingProvider;
+import io.toolisticon.cute.UnitTestForTestingAnnotationProcessorsWithoutPassIn;
 
 /**
  * Convenient unit test processor for testing annotation processors build with the APTK with toolisticon's cute framework.

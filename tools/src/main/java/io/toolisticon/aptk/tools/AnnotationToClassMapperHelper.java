@@ -231,30 +231,34 @@ public class AnnotationToClassMapperHelper {
 
         }
 
-        stringBuilder.append("new ").append(getValidatorAnnotation().mappedClass().getQualifiedName()).append(genericTypeString).append("(");
-
-        boolean isFirst = true;
-        for (String attributeName : getValidatorAnnotation().mappedAttributeNames()) {
-
-            // add separator
-            if (!isFirst) {
-                stringBuilder.append(", ");
-            } else {
-                isFirst = false;
-            }
-
-            if (attributeName.isEmpty()) {
-            	stringBuilder.append(this.elementWrapper.getSimpleName());
-            } else if (isLocaleVariableName(attributeName)) {
-            	stringBuilder.append(getLocalVariableName(attributeName));
-        	} else {
-            	stringBuilder.append(getValidatorExpressionAttributeValueStringRepresentation(annotation.getAttributeWithDefault(attributeName), annotation.getAttributeTypeMirror(attributeName).get()));
-            }
-            
-        }
-
-        stringBuilder.append(")");
+        stringBuilder
+        	.append("new ").append(getValidatorAnnotation().mappedClass().getQualifiedName()).append(genericTypeString)
+        	.append("(").append(getMappedAttributeValues()).append(")");
+        
         return stringBuilder.toString();
+    }
+    
+    /**
+     * In some situations it'S necessary to get just the mapped attribute values as a colon separated string.
+     * This is the case if there are additional constructor parameters not originated from annotated elements or annotation attributes.
+     * @return a colon separated String of annotation attribute values than can be used for constructor calls
+     */
+    public String getMappedAttributeValues() {
+    	  	
+    	return Arrays.stream(getValidatorAnnotation().mappedAttributeNames())
+			.<String>map( e -> {
+
+	            if (e.isEmpty()) {
+	            	return this.elementWrapper.getSimpleName();
+	            } else if (isLocaleVariableName(e)) {
+	            	return getLocalVariableName(e);
+	        	} else {
+	            	return getValidatorExpressionAttributeValueStringRepresentation(annotation.getAttributeWithDefault(e), annotation.getAttributeTypeMirror(e).get());
+	            }
+	    	})
+    	.collect(Collectors.joining(", "));
+    	
+
     }
 
 

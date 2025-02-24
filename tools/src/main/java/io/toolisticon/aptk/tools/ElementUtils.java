@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 /**
  * Utility class which helps to handle different {@link Element} related tasks.
  */
+@SuppressWarnings("unchecked")
 public final class ElementUtils {
 
     /**
@@ -506,7 +507,8 @@ public final class ElementUtils {
          * @param <T>         the return type
          * @return a new list containing all elements of passed elementList
          */
-        public static <T extends Element> List<T> castElementList(List<? extends Element> elementList) {
+        
+		public static <T extends Element> List<T> castElementList(List<? extends Element> elementList) {
             List<T> result = new ArrayList<>(elementList.size());
             for (Element enclosedElement : elementList) {
                 result.add((T) enclosedElement);

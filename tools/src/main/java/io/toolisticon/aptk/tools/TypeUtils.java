@@ -689,7 +689,8 @@ public final class TypeUtils {
          * @param <T>            the generic type parameter
          * @return the GenericType instance
          */
-        public static <T extends GenericTypeParameter> GenericType createGenericType(TypeMirror rawType, T... typeParameters) {
+        @SafeVarargs
+		public static <T extends GenericTypeParameter> GenericType createGenericType(TypeMirror rawType, T... typeParameters) {
             return new GenericType(rawType, typeParameters);
         }
 
@@ -701,7 +702,8 @@ public final class TypeUtils {
          * @param <T>            the generic type parameter
          * @return the GenericType instance
          */
-        public static <T extends GenericTypeParameter> GenericType createGenericType(Class<?> rawType, T... typeParameters) {
+        @SafeVarargs
+		public static <T extends GenericTypeParameter> GenericType createGenericType(Class<?> rawType, T... typeParameters) {
             return createGenericType(TypeRetrieval.getTypeMirror(rawType), typeParameters);
         }
 
@@ -713,6 +715,7 @@ public final class TypeUtils {
          * @param <T>            the generic type parameter
          * @return the GenericType instance
          */
+        @SafeVarargs
         public static <T extends GenericTypeParameter> GenericType createGenericType(String rawType, T... typeParameters) {
             return createGenericType(TypeRetrieval.getTypeMirror(rawType), typeParameters);
         }

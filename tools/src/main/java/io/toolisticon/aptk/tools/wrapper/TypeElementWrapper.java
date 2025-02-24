@@ -1,9 +1,11 @@
 package io.toolisticon.aptk.tools.wrapper;
 
-import io.toolisticon.aptk.tools.ElementUtils;
-import io.toolisticon.aptk.tools.TypeMirrorWrapper;
-import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
-import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -14,13 +16,10 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import io.toolisticon.aptk.tools.ElementUtils;
+import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
+import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 
 /**
  * Wraps a TypeElement to provide some convenience functionality
@@ -334,7 +333,7 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
 
         // This method is available from Java 16 - the introduction of records, so this check is sufficient to prevent reflective calling of method
         if (!isRecord()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         List<? extends Element> recordComponentElements = this.<List<? extends Element>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getRecordComponents");
 
@@ -352,7 +351,7 @@ public class TypeElementWrapper extends ElementWrapper<TypeElement> {
         // must make sure that method exists, otherwise return the default value
         if (!hasMethod(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses")) {
             // TODO MUST CHECK WHAT SHOULD BE RETURNED FOR NON SEALED CLASSES!
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         List<TypeMirror> typeMirrors = this.<List<TypeMirror>>invokeParameterlessMethodOfElement(TYPE_ELEMENT_CLASS_NAME, "getPermittedSubclasses");

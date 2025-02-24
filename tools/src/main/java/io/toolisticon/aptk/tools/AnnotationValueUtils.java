@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Utility class which helps to handle different {@link AnnotationValue} related tasks.
  */
-@SuppressWarnings("unchekced")
+@SuppressWarnings("unchecked")
 public class AnnotationValueUtils {
     /**
      * Hidden constructor.
