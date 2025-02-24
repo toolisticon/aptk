@@ -1,11 +1,9 @@
 package io.toolisticon.aptk.tools.generators;
 
-import io.toolisticon.aptk.templating.TemplateProcessor;
-
-import javax.tools.FileObject;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Map;
+
+import javax.tools.FileObject;
 
 /**
  * Abstract base class for writers of java code and resources.

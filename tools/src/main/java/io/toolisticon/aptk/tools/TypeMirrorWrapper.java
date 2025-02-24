@@ -770,7 +770,7 @@ public class TypeMirrorWrapper {
 
         // null value
         if (typeMirror == null) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
 
         // array : must check component type
@@ -780,7 +780,7 @@ public class TypeMirrorWrapper {
 
         // primitive : no need for imports
         if (isPrimitive(typeMirror)) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
 
         // wildcard type argument#
@@ -814,7 +814,7 @@ public class TypeMirrorWrapper {
             return result;
         }
 
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     /**

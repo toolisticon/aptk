@@ -401,7 +401,8 @@ public final class AnnotationUtils {
      * @param annotation the annotation to get the repeatable annotation wrapper type for
      * @return an optional containing the repeatable wrapper type or an empty optional if passed annotation is null or annotation is no repeatable.
      */
-    public static Optional<Class<? extends Annotation>> getRepeatableAnnotationWrapperClass(Class<? extends Annotation> annotation) {
+    @SuppressWarnings("unchecked")
+	public static Optional<Class<? extends Annotation>> getRepeatableAnnotationWrapperClass(Class<? extends Annotation> annotation) {
         if (isRepeatableAnnotation(annotation)) {
 
             TypeElement annotationTypeElement = TypeUtils.TypeRetrieval.getTypeElement(annotation);
