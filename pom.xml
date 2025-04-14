@@ -122,7 +122,7 @@
         <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
         <maven-versions-plugin.version>2.5</maven-versions-plugin.version>
 
-        <gitflow-maven-plugin.version>1.19.0</gitflow-maven-plugin.version>
+        <gitflow-maven-plugin.version>1.21.0</gitflow-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 
 
