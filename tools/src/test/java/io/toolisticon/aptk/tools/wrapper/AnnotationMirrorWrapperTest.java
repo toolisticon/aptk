@@ -355,5 +355,126 @@ public class AnnotationMirrorWrapperTest {
         }).executeTest();
 
     }
+    
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface MarkerAnnotation {
+    	
+    }
+    
+    
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    @interface AnnotationAttributeByMarkerAnnotation {
+    	
+    	String id() default "";
+    	
+    	@MarkerAnnotation
+    	String name() default "GOT DEFAULT";
+    	
+    	long count() default 0L;
+    	
+    }
+    
+    @PassIn
+    @AnnotationAttributeByMarkerAnnotation()
+    static class TestGettingAttributeByMarkerAnnotationWithDefault{
+    	
+    }
+    
+    @PassIn
+    @AnnotationAttributeByMarkerAnnotation(name="GOT IT!")
+    static class TestGettingAttributeByMarkerAnnotation{
+    	
+    }
+    
+    @Test
+    public void test_getAttributeByAnnotation() {
 
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestGettingAttributeByMarkerAnnotation.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                // By class
+                Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, AnnotationAttributeByMarkerAnnotation.class);
+                
+                
+                MatcherAssert.assertThat(result.get().getAttributeByAnnotation(MarkerAnnotation.class).get().getStringValue(), Matchers.is("GOT IT!"));
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
+    
+    @Test
+    public void test_getAttributeByAnnotation_withDefault() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestGettingAttributeByMarkerAnnotationWithDefault.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                // By class
+                Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, AnnotationAttributeByMarkerAnnotation.class);
+                
+                
+                MatcherAssert.assertThat("Must be empty", !result.get().getAttributeByAnnotation(MarkerAnnotation.class).isPresent());
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
+    
+    
+    @Test
+    public void test_getAttributeWithDefaultByAnnotation() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestGettingAttributeByMarkerAnnotation.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                // By class
+                Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, AnnotationAttributeByMarkerAnnotation.class);
+                
+                
+                MatcherAssert.assertThat(result.get().getAttributeWithDefaultByAnnotation(MarkerAnnotation.class).getStringValue(), Matchers.is("GOT IT!"));
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
+    
+    @Test
+    public void test_getAttributeWithDefaultByAnnotation_withDefault() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(TestGettingAttributeByMarkerAnnotationWithDefault.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                // By class
+                Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, AnnotationAttributeByMarkerAnnotation.class);
+                
+                
+                MatcherAssert.assertThat(result.get().getAttributeWithDefaultByAnnotation(MarkerAnnotation.class).getStringValue(), Matchers.is("GOT DEFAULT"));
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
+    
 }

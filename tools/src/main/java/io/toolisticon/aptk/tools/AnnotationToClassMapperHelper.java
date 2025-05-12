@@ -89,7 +89,7 @@ public class AnnotationToClassMapperHelper {
 
     enum InternalValidationMessages implements ValidationMessage {
     	
-    	ERROR_BROKEN_VALIDATOR_ATTRIBUTE_NAME_MISMATCH ("INVALID_ATTRIBUTE_NAME", "Passed attribute names for annotation '{}' aren't valid: {}"),
+    	ERROR_BROKEN_VALIDATOR_ATTRIBUTE_NAME_MISMATCH ("INVALID_ATTRIBUTE_NAME", "Passed attribute names '{}' for annotation '{}' aren't valid: {}"),
     	ERROR_BROKEN_VALIDATOR_CONSTRUCTOR_PARAMETER_MAPPING ("NO_MATCHING_CONSTRUCTOR", "No matching constructor could be found for class : {}"),
     	ERROR_BROKEN_VALIDATOR_MISSING_NOARG_CONSTRUCTOR("MISSING_NOARG_CONSTRUCTOR", "Haven't found a noarg constructor for class: {}"),
     	ERROR_BROKEN_VALIDATOR_INCORRECT_METHOD_PARAMETER_MAPPING("INCORRECT_METHOD_PARAMETER_MAPPING", "Empty attributeNames can only be used if annotated element represents a method parameter"),
