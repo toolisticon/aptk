@@ -127,7 +127,7 @@ public class AnnotationMirrorWrapper {
     /**
      * Returns the annotations attribute marked with the passed annotation.
      *
-     * @param name the name of the attribute
+     * @param annotationType the annotation type to search the attribute for
      * @return an Optional of AnnotationValueWrapper
      * @throws IllegalArgumentException if no attribute annotated with the passed annotation type can be found in the annotation type.
      */
@@ -189,8 +189,8 @@ public class AnnotationMirrorWrapper {
     /**
      * Returns the annotations attribute annotated with the passed annotation with its default value if not set explicitly.
      *
-     * @param name the name of the attribute
-     * @return an Optional of AnnotationValueWrapper
+     * @param annotationType the annotation type to search the attribute for
+     * @return an AnnotationValueWrapper instance
      * @throws IllegalArgumentException if no attribute annotated with the passed annotation type can be found in the annotation type.
      */
     public AnnotationValueWrapper getAttributeWithDefaultByAnnotation(Class<? extends Annotation> annotationType) {
