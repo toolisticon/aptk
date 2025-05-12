@@ -2,11 +2,13 @@ package io.toolisticon.aptk.tools.wrapper;
 
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.corematcher.AptkCoreMatchers;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.DeclaredType;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
@@ -111,11 +113,41 @@ public class AnnotationMirrorWrapper {
         if (name == null) {
             throw new IllegalArgumentException("passed attribute name must not be null");
         }
-
+        
+        
         // throw exception if attribute name is not existent
         if (!hasAttribute(name)) {
             throw new IllegalArgumentException("Passed attribute name is not valid. Annotation " + this.annotationMirror.getAnnotationType().asElement().getSimpleName() + " has the following attributes : " + getAttributeNames());
         }
+
+        AnnotationValue annotationValue = AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, name);
+        return annotationValue != null ? Optional.of(AnnotationValueWrapper.wrap(annotationValue)) : Optional.empty();
+    }
+    
+    /**
+     * Returns the annotations attribute marked with the passed annotation.
+     *
+     * @param name the name of the attribute
+     * @return an Optional of AnnotationValueWrapper
+     * @throws IllegalArgumentException if no attribute annotated with the passed annotation type can be found in the annotation type.
+     */
+    public Optional<AnnotationValueWrapper> getAttributeByAnnotation(Class<? extends Annotation> annotationType) {
+
+        // throw exception if name is null
+        if (annotationType == null) {
+            throw new IllegalArgumentException("passed annotation type must not be null");
+        }
+        
+        List<ExecutableElement> result = getAnnotationTypeAsWrappedTypeElement().filterEnclosedElements()
+        	.applyFilter(AptkCoreMatchers.IS_METHOD)
+        	.applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(annotationType)
+        	.getResult();
+
+        if (result.size() != 1) {
+        	throw new IllegalArgumentException("There must be exactly one attribute annotated with the '" + annotationType.getCanonicalName() + "' annotation.");
+        }
+
+        String name = result.get(0).getSimpleName().toString();
 
         AnnotationValue annotationValue = AnnotationUtils.getAnnotationValueOfAttribute(annotationMirror, name);
         return annotationValue != null ? Optional.of(AnnotationValueWrapper.wrap(annotationValue)) : Optional.empty();
@@ -153,6 +185,39 @@ public class AnnotationMirrorWrapper {
         AnnotationValue annotationValue = AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, name);
         return AnnotationValueWrapper.wrap(annotationValue);
     }
+    
+    /**
+     * Returns the annotations attribute annotated with the passed annotation with its default value if not set explicitly.
+     *
+     * @param name the name of the attribute
+     * @return an Optional of AnnotationValueWrapper
+     * @throws IllegalArgumentException if no attribute annotated with the passed annotation type can be found in the annotation type.
+     */
+    public AnnotationValueWrapper getAttributeWithDefaultByAnnotation(Class<? extends Annotation> annotationType) {
+
+        // throw exception if name is null
+        if (annotationType == null) {
+            throw new IllegalArgumentException("passed annotation type must not be null");
+        }
+
+        
+        List<ExecutableElement> result = getAnnotationTypeAsWrappedTypeElement().filterEnclosedElements()
+            	.applyFilter(AptkCoreMatchers.IS_METHOD)
+            	.applyFilter(AptkCoreMatchers.BY_ANNOTATION).filterByAllOf(annotationType)
+            	.getResult();
+
+        if (result.size() != 1) {
+        	throw new IllegalArgumentException("There must be exactly one attribute annotated with the '" + annotationType.getCanonicalName() + "' annotation.");
+        }
+
+        String name = result.get(0).getSimpleName().toString();
+
+
+
+        AnnotationValue annotationValue = AnnotationUtils.getAnnotationValueOfAttributeWithDefaults(annotationMirror, name);
+        return AnnotationValueWrapper.wrap(annotationValue);
+    }
+    
 
     /**
      * Tries to get annotation from element by using the annotation Class.
