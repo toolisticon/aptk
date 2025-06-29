@@ -566,7 +566,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>animal-sniffer-maven-plugin</artifactId>
-                        <version>1.18</version>
+                        <version>1.24</version>
 
 
                         <executions>
@@ -634,7 +634,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>animal-sniffer-maven-plugin</artifactId>
-                        <version>1.18</version>
+                        <version>1.24</version>
 
                         <configuration>
 
@@ -711,7 +711,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>animal-sniffer-maven-plugin</artifactId>
-                        <version>1.18</version>
+                        <version>1.24</version>
 
                         <configuration>
                             <ignores>
