@@ -41,9 +41,9 @@
     <developers>
         <developer>
             <name>Tobias Stamann</name>
-            <email>tobias.stamann@holisticon.de</email>
-            <organization>Holisticon AG</organization>
-            <organizationUrl>http://holisticon.de/</organizationUrl>
+            <email>tobias@stamann.dev</email>
+            <organization>Tobias Stamann - IT Beratung</organization>
+            <organizationUrl>https://stamann.dev/</organizationUrl>
         </developer>
     </developers>
 
@@ -84,7 +84,7 @@
 
         <!-- project dependency versions -->
         <spiap.version>0.11.0</spiap.version>
-        <cute.version>1.7.0</cute.version>
+        <cute.version>1.8.2</cute.version>
 
         <!-- versions of test dependencies -->
         <junit.version>4.13.2</junit.version>
@@ -123,7 +123,7 @@
         <maven-versions-plugin.version>2.5</maven-versions-plugin.version>
 
         <gitflow-maven-plugin.version>1.19.0</gitflow-maven-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+        <sonatype-centralPublishingPlugin.version>0.8.0</sonatype-centralPublishingPlugin.version>
 
 
     </properties>
@@ -247,25 +247,17 @@
                     </executions>
                 </plugin>
 
-                <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>${nexus-staging-maven-plugin.version}</version>
-                    <configuration>
-                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        <serverId>sonatype-nexus-staging</serverId>
-                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>default-deploy</id>
-                            <phase>deploy</phase>
-                            <goals>
-                                <goal>deploy</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+                <!-- [RELEASE] NEXUS (version, configuration) -->
+				<plugin>
+					<groupId>org.sonatype.central</groupId>
+					<artifactId>central-publishing-maven-plugin</artifactId>
+					<version>${sonatype-centralPublishingPlugin.version}</version>
+					<extensions>true</extensions>
+					<configuration>
+				  		<publishingServerId>central</publishingServerId>
+				  		<autoPublish>true</autoPublish>
+					</configuration>
+				</plugin>
 
                 <!-- assembly plugin -->
                 <plugin>
@@ -450,9 +442,9 @@
                         <artifactId>maven-gpg-plugin</artifactId>
                     </plugin>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                    </plugin>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+		          	</plugin>
                 </plugins>
             </build>
         </profile>
@@ -760,19 +752,6 @@
 
 
     </profiles>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>${sonatype-oss-dist-mgmt-snapshots-url}</url>
-        </snapshotRepository>
-        <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 
     <dependencies>
 

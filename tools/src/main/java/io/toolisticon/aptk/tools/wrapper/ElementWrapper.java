@@ -2,7 +2,9 @@ package io.toolisticon.aptk.tools.wrapper;
 
 import io.toolisticon.aptk.tools.AnnotationUtils;
 import io.toolisticon.aptk.tools.ElementUtils;
+import io.toolisticon.aptk.tools.ElementUtils.AccessEnclosingElements;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.TypeUtils;
 import io.toolisticon.aptk.tools.fluentfilter.FluentElementFilter;
 import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 
@@ -48,12 +50,12 @@ public class ElementWrapper<E extends Element> {
 
 
     /**
-     * Gets the PackageElement of the enclosing package.
+     * Gets the wrapped PackageElement of the enclosing package or the Package itself if the ElementWrapper wraps a PackageElement.
      *
      * @return the PackageElement of the enclosing Package
      */
     public PackageElementWrapper getPackage() {
-        return PackageElementWrapper.wrap(ElementUtils.AccessEnclosingElements.<PackageElement>getFirstEnclosingElementOfKind(element, ElementKind.PACKAGE));
+        return this.isPackage() ? toPackageElement(this) : PackageElementWrapper.wrap(AccessEnclosingElements.<PackageElement>getFirstEnclosingElementOfKind(element, ElementKind.PACKAGE));
     }
 
     /**
@@ -373,13 +375,31 @@ public class ElementWrapper<E extends Element> {
     /**
      * Checks if passed annotation is present.
      *
-     * @param annotationFqn the annotation tom check
+     * @param annotationFqn the annotation to check
      * @return true if passed annotation is present, otherwise false
      */
     public boolean hasAnnotation(String annotationFqn) {
         return getAnnotationMirror(annotationFqn).isPresent();
     }
 
+    /**
+     * Checks if wrapped element has passed meta annotation.
+     * @param annotation the annotation to check for
+     * @return true, if the meta annotation can be found, otherwise false
+     */
+    public boolean hasMetaAnnotation(Class<? extends Annotation> annotation) {
+    	return hasAnnotation(annotation) || this.getAnnotationMirrors().stream().anyMatch(it -> it.hasMetaAnnotation(annotation));
+    }
+    
+    /**
+     * Checks if wrapped element has passed meta annotations fqn.
+     * @param fqn the fully qualified name of the annotation to check for
+     * @return true, if the meta annotation can be found, otherwise false
+     */
+    public boolean hasMetaAnnotation(String fqn) {
+    	return hasAnnotation(fqn) || this.getAnnotationMirrors().stream().anyMatch(it -> it.hasMetaAnnotation(fqn));
+    }
+    
     /**
      * Returns an annotation of a specific type.
      * This should only be used if annotation doesn't have Class based attributes, since Classes might not be compiled already.

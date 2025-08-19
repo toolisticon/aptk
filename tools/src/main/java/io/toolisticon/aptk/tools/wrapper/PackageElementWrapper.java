@@ -3,7 +3,10 @@ package io.toolisticon.aptk.tools.wrapper;
 import io.toolisticon.aptk.common.ToolingProvider;
 
 import javax.lang.model.element.PackageElement;
+
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Wrapper for PackageElement.
@@ -36,6 +39,31 @@ public class PackageElementWrapper extends ElementWrapper<PackageElement> {
     public boolean isUnnamed() {
         return this.element.isUnnamed();
     }
+    
+    /**
+     * WARN - This method is in incubation stage and might be removed in the near future.
+     * Returns the parent package of the wrapped package.
+     * The annotation processor api handles all packages as unrelated, nevertheless it's a common case that packages are handled as they are related.
+     * Think of configuration annotations that should be applied to all sub-packages as well.
+     * WARN : The behavior of this method depends on the JDK since it uses  javax.lang.model.util.Elements.getPackageElement() . Some JDKs handle "uniquely determined" differently. So using this method might lead to inconsistent behavior.
+     * @return The wrapped PackageElement, or an empty optional if it doesn't exist or if the parent package cannot be uniquely determined (i.e. parent package is used in dependency and in code under compilation).
+     */
+
+    public Optional<PackageElementWrapper> getParentPackage() {
+    	
+    	String qualifiedPackageName = this.getQualifiedName();
+    	String [] packageToken = qualifiedPackageName.split("[.]");
+    	
+    	if (packageToken.length == 1) {
+    		return Optional.empty();
+    	} else {
+    		String parentPackageName = Arrays.stream(packageToken, 0, packageToken.length-1).collect(Collectors.joining("."));
+    		return PackageElementWrapper.getByFqn(parentPackageName);
+    	}
+    	
+    }
+    
+    
 
     /**
      * Wraps a PackageElement instance.
