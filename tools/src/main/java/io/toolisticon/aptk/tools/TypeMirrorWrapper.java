@@ -826,6 +826,15 @@ public class TypeMirrorWrapper {
         return getTypeElement(typeMirror);
     }
 
+    /**
+     * Checks if wrapped TypeMirror is assignable to class with passed fqn.
+     *
+     * @param fqn the fqn of the class to check against
+     * @return true if wrapped TypeMirror is assignable to passed class, otherwise false
+     */
+    public boolean isAssignableTo(String fqn) {
+        return isAssignableTo(TypeMirrorWrapper.wrap(fqn));
+    }
 
     /**
      * Checks if wrapped TypeMirror is assignable to passed class.
@@ -867,6 +876,17 @@ public class TypeMirrorWrapper {
         return isAssignableTo(typeElementWrapper.asType());
     }
 
+    
+    /**
+     * Checks if wrapped TypeMirror is assignable from class with passed fqn.
+     *
+     * @param fqn the fqn of the class to check against
+     * @return true if wrapped TypeMirror is assignable to passed class, otherwise false
+     */
+    public boolean isAssignableFrom(String fqn) {
+        return isAssignableFrom(TypeMirrorWrapper.wrap(fqn));
+    }
+    
     /**
      * Checks if wrapped TypeMirror is assignable from passed class.
      *
@@ -888,20 +908,20 @@ public class TypeMirrorWrapper {
     }
 
     /**
-     * Checks if wrapped TypeMirror is assignable to passed TypeMirrorWrapper.
+     * Checks if wrapped TypeMirror is assignable from passed TypeMirrorWrapper.
      *
      * @param otherTypeMirrorWrapper the TypeMirrorWrapper to check against
-     * @return true if wrapped TypeMirror is assignable to passed class, otherwise false
+     * @return true if wrapped TypeMirror is assignable from passed class, otherwise false
      */
     public boolean isAssignableFrom(TypeMirrorWrapper otherTypeMirrorWrapper) {
         return TypeUtils.TypeComparison.isAssignableTo(otherTypeMirrorWrapper.unwrap(), this.typeMirror);
     }
 
     /**
-     * Checks if wrapped TypeMirror is assignable to passed TypeMirrorWrapper.
+     * Checks if wrapped TypeMirror is assignable from passed TypeMirrorWrapper.
      *
      * @param typeElementWrapper the TypeMirrorWrapper to check against
-     * @return true if wrapped TypeMirror is assignable to passed class, otherwise false
+     * @return true if wrapped TypeMirror is assignable from passed class, otherwise false
      */
     public boolean isAssignableFrom(TypeElementWrapper typeElementWrapper) {
         return isAssignableFrom(typeElementWrapper.asType());

@@ -8,6 +8,8 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+
 import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -86,6 +88,36 @@ public class PackageElementWrapperTest {
         PackageElement packageElement = Mockito.mock(PackageElement.class);
         MatcherAssert.assertThat(PackageElementWrapper.wrap(packageElement).unwrap(), Matchers.is(packageElement));
 
+    }
+    
+    
+    @Test 
+    public void test_getParentPackage() {
+    	
+    	CompileTestBuilder.unitTest().<Element>defineTest((processingEnvironment, element) -> {
+
+            try {
+
+                ToolingProvider.setTooling(processingEnvironment);
+
+                Optional<PackageElementWrapper> unit = PackageElementWrapper.getByFqn("io.toolisticon.aptk.tools.wrapper");
+                
+                MatcherAssert.assertThat("Should be existent", unit.isPresent());
+                
+                unit = unit.get().getParentPackage();
+                MatcherAssert.assertThat("Should be existent and name match", unit.isPresent() && unit.get().getQualifiedName().equals("io.toolisticon.aptk.tools"));
+                
+                // TODO : THIS shows distinct behavior based on jdk provider - so we will ignore this for a moment
+                // unit = unit.get().getParentPackage();
+                // MatcherAssert.assertThat("Should return  empty optional if package isn't uniquely determinable", !unit.isPresent());
+                
+             
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+    	
     }
 
 }

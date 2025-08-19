@@ -291,5 +291,7 @@ public class AnnotationToClassMapperHelper {
     public String getStringRepresentationOfAnnotation() {
         return annotation.getStringRepresentation();
     }
+    
+    
 
 }

@@ -12,6 +12,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.DeclaredType;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -280,6 +281,43 @@ public class AnnotationMirrorWrapper {
     public boolean hasAttribute(String name) {
         return getAttributeNames().contains(name);
     }
+    
+    /**
+     * Checks if AnnotationMirrors TypeElement has a certain meta annotation.
+     * @param metaAnnotationType The meta annotation to scan for
+     * @return true, if the annotation has passed meta annotation(itself, or recursively via annotations on annotation type)
+     */
+    public boolean hasMetaAnnotation(Class<? extends Annotation> metaAnnotationType) {
+    	return metaAnnotationType != null && hasMetaAnnotation(metaAnnotationType.getCanonicalName());
+    }
+    
+    
+    private boolean hasMetaAnnotation(String fullyQualifiedMetaAnnotationName, Set<String> state) {
+    	
+    	if (state.contains(this.asElement().getQualifiedName())) {
+    		// catch cyclic annotation relations like with Documented annotation(which has a self reference)
+    		return false;
+    	}
+    	
+    	// for preventing
+    	state.add(this.asElement().getQualifiedName());
+    	
+    	return fullyQualifiedMetaAnnotationName != null && (
+    			this.asElement().hasAnnotation(fullyQualifiedMetaAnnotationName) 
+    			|| this.asElement().getAnnotationMirrors().stream()
+    				.anyMatch(annotationMirror -> annotationMirror.hasMetaAnnotation(fullyQualifiedMetaAnnotationName, state))
+    		);
+    	
+    }
+    
+    /**
+     * Checks if AnnotationMirrors TypeElement has a certain meta annotation.
+     * @param fullyQualifiedMetaAnnotationName The meta annotation to scan for
+     * @return true, if the annotation has passed meta annotation(itself, or recursively via annotations on annotation type)
+     */
+    public boolean hasMetaAnnotation(String fullyQualifiedMetaAnnotationName) {
+    	return hasMetaAnnotation(fullyQualifiedMetaAnnotationName, new HashSet<>());
+    }
 
 
     /**
@@ -316,7 +354,7 @@ public class AnnotationMirrorWrapper {
                         .filter(Objects::nonNull)
                         .collect(Collectors.joining(", ", "(", ")"));
 
-        return stringBuilder.replaceAll("\"", "\\\\\"");
+        return stringBuilder;
     }
 
     /**
@@ -331,7 +369,7 @@ public class AnnotationMirrorWrapper {
                         .map(e -> e + " = " + getAnnotationAttributeValueStringRepresentation(getAttributeWithDefault(e)))
                         .collect(Collectors.joining(", ", "(", ")"));
 
-        return stringBuilder.replaceAll("\"", "\\\\\"");
+        return  stringBuilder;
     }
 
     String getAnnotationAttributeValueStringRepresentation(AnnotationValueWrapper annotationValueWrapper) {

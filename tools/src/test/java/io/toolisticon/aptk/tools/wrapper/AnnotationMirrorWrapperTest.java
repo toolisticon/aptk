@@ -209,6 +209,96 @@ public class AnnotationMirrorWrapperTest {
         }).executeTest();
 
     }
+    
+    @Target(ElementType.ANNOTATION_TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface TestMetaAnnotation{
+    	
+    }
+    
+    @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @TestMetaAnnotation
+    @interface HasMetaAnnotationAnnotation {
+    	
+    }
+    
+    
+    @HasMetaAnnotationAnnotation
+    @PassIn
+    static class HasMetaAnnotationTestClass {
+    	
+    }
+    
+    @Test
+    public void test_hasMetaAnnotation_direct() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(HasMetaAnnotationTestClass.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(HasMetaAnnotationAnnotation.class).get();
+                MatcherAssert.assertThat("Should find meta annotation", unit.hasMetaAnnotation(TestMetaAnnotation.class));
+                MatcherAssert.assertThat("Should find meta annotation", unit.hasMetaAnnotation(TestMetaAnnotation.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should not find meta annotation", !unit.hasMetaAnnotation(MyTestAnnotation.class));
+                MatcherAssert.assertThat("Should not find meta annotation", !unit.hasMetaAnnotation(MyTestAnnotation.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should not find meta annotation for null value", !unit.hasMetaAnnotation((Class<? extends Annotation>)null));
+                MatcherAssert.assertThat("Should not find meta annotation for null value", !unit.hasMetaAnnotation((String)null));
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
+    
+    
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @HasMetaAnnotationAnnotation
+    @interface HasMetaAnnotationAnnotationInterim {
+    	
+    }
+    
+    @HasMetaAnnotationAnnotationInterim
+    @PassIn
+    static class HasMetaAnnotationTestClassRecursively {
+    	
+    }
+    
+    
+    @Target(ElementType.ANNOTATION_TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface NonExistingMetaAnnotation {
+    	
+    }
+    
+    
+    @Test
+    public void test_hasMetaAnnotation_recursively() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(HasMetaAnnotationTestClassRecursively.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                AnnotationMirrorWrapper unit = ElementWrapper.wrap(element).getAnnotationMirror(HasMetaAnnotationAnnotationInterim.class).get();
+                MatcherAssert.assertThat("Should find meta annotation", unit.hasMetaAnnotation(TestMetaAnnotation.class));
+                MatcherAssert.assertThat("Should find meta annotation", unit.hasMetaAnnotation(TestMetaAnnotation.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should not find meta annotation", !unit.hasMetaAnnotation(MyTestAnnotation.class));
+                MatcherAssert.assertThat("Should not find meta annotation", !unit.hasMetaAnnotation(MyTestAnnotation.class.getCanonicalName()));
+                MatcherAssert.assertThat("Should not find meta annotation for null value", !unit.hasMetaAnnotation((Class<? extends Annotation>)null));
+                MatcherAssert.assertThat("Should not find meta annotation for null value", !unit.hasMetaAnnotation((String)null));
+                MatcherAssert.assertThat("Should not find meta annotation for unused meta annotation", !unit.hasMetaAnnotation(NonExistingMetaAnnotation.class));
+                MatcherAssert.assertThat("Should not find meta annotation for unused meta annotation", !unit.hasMetaAnnotation(NonExistingMetaAnnotation.class.getCanonicalName()));
+                
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
+    
 
 
     @Test
@@ -252,7 +342,6 @@ public class AnnotationMirrorWrapperTest {
                 // By class
                 Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, MyTestAnnotation.class);
                 MatcherAssert.assertThat(result.get().asElement().getQualifiedName(), Matchers.is(MyTestAnnotation.class.getCanonicalName()));
-
 
             } finally {
                 ToolingProvider.clearTooling();
@@ -324,7 +413,7 @@ public class AnnotationMirrorWrapperTest {
 
                 // By class
                 Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, StringRepresentationTestAnnotation.class);
-                MatcherAssert.assertThat(result.get().getStringRepresentation(), Matchers.is("@StringRepresentationTestAnnotation(arrayValue = {\\\"4\\\"}, stringValue = \\\"XXX\\\", longValue = 1L, intValue = 2, floatValue = 3.0f, doubleValue = 4.0, booleanValue = true, enumValue = StringRepresentationTestEnum.ENUM_VALUE, classValue = String.class)"));
+                MatcherAssert.assertThat(result.get().getStringRepresentation(), Matchers.is("@StringRepresentationTestAnnotation(arrayValue = {\"4\"}, stringValue = \"XXX\", longValue = 1L, intValue = 2, floatValue = 3.0f, doubleValue = 4.0, booleanValue = true, enumValue = StringRepresentationTestEnum.ENUM_VALUE, classValue = String.class)"));
 
 
             } finally {
@@ -345,7 +434,7 @@ public class AnnotationMirrorWrapperTest {
 
                 // By class
                 Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, StringRepresentationTestAnnotation.class);
-                MatcherAssert.assertThat(result.get().getStringRepresentationWithDefaults(), Matchers.is("@StringRepresentationTestAnnotation(arrayValue = {\\\"1\\\", \\\"2\\\"}, stringValue = \\\"YYY\\\", longValue = 10L, intValue = 11, floatValue = 12.0f, doubleValue = 13.0, booleanValue = false, enumValue = StringRepresentationTestEnum.DEFAULT_ENUM_VALUE, classValue = Long.class)"));
+                MatcherAssert.assertThat(result.get().getStringRepresentationWithDefaults(), Matchers.is("@StringRepresentationTestAnnotation(arrayValue = {\"1\", \"2\"}, stringValue = \"YYY\", longValue = 10L, intValue = 11, floatValue = 12.0f, doubleValue = 13.0, booleanValue = false, enumValue = StringRepresentationTestEnum.DEFAULT_ENUM_VALUE, classValue = Long.class)"));
 
 
             } finally {

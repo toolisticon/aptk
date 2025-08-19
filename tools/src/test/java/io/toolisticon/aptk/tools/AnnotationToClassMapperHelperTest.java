@@ -255,4 +255,29 @@ public class AnnotationToClassMapperHelperTest {
     	.executeTest();
     	
     }
+    
+    
+    @Test
+    public void test_getStringRepresentationOfAnnotation (){
+    	unitTestBuilder.<VariableElement>defineTestWithPassedInElement(TestClassWithCorrectMapping.class, (processingEnvironment, element) -> {
+    		
+    		try {
+    			ToolingProvider.setTooling(processingEnvironment);
+    		
+	    		VariableElementWrapper parameterElement = VariableElementWrapper.wrap(element);
+	    		AnnotationMirrorWrapper mappingAnnotation = parameterElement.getAnnotationMirror(CorrectMappingWithParameters.class).get();
+	    		AnnotationToClassMapperHelper helper = AnnotationToClassMapperHelper.getInstance(parameterElement,mappingAnnotation);
+	    		
+	    		System.out.println(helper.getStringRepresentationOfAnnotation());
+	    		MatcherAssert.assertThat(helper.getStringRepresentationOfAnnotation(), Matchers.is("@CorrectMappingWithParameters(aString = \"YES\", aLong = 4L, aClass = String.class, anArray = {2.0, 3.0, 4.0})"));
+	    		
+    		} finally {
+    			ToolingProvider.clearTooling();
+    		}
+    		
+    		
+    	})
+    	.compilationShouldSucceed()
+    	.executeTest();
+    }
 }

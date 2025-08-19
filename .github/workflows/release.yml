@@ -26,7 +26,7 @@ jobs:
           distribution: 'zulu'
           java-version: 17
           cache: 'maven'
-          server-id: sonatype-nexus-staging
+          server-id: central
           server-username: OSS_CENTRAL_USERNAME # env variable for Maven Central
           server-password: OSS_CENTRAL_PASSWORD # env variable for Maven Central
 

@@ -476,6 +476,7 @@ public class FluentElementFilter<ELEMENT extends Element> {
         return elements;
 
     }
+    
 
     /**
      * Checks if filter result is empty.
