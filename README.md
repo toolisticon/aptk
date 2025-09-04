@@ -1,6 +1,7 @@
 # APTK - The Annotation Processor Toolkit
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.aptk/aptk-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.aptk/aptk-parent)
+[![Maven Central](https://maven-badges.sml.io/sonatype-central/io.toolisticon.aptk/aptk-parent/badge.svg)](https://maven-badges.sml.io/sonatype-central/io.toolisticon.aptk/aptk-parent)
 ![Build Status](https://github.com/toolisticon/aptk/workflows/default/badge.svg)
 [![codecov](https://codecov.io/gh/toolisticon/aptk/branch/master/graph/badge.svg)](https://codecov.io/gh/toolisticon/aptk)
 
