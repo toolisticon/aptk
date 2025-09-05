@@ -210,6 +210,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
     * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
     * @return the attribute value
     */
+    @SuppressWarnings("unchecked")
     ${state.visibilityModifier}${attribute.wrappedTypeMirror.getTypeDeclaration} ${attribute.name}() {
 
        List<AnnotationValue> values = (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue();
@@ -227,6 +228,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
       * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
       * @return the attribute value
       */
+     @SuppressWarnings("unchecked")
      ${state.visibilityModifier}String[] ${attribute.name}() {
 
          List<String> result = new ArrayList<>();
@@ -241,6 +243,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
+    @SuppressWarnings("unchecked")
     ${state.visibilityModifier}${attribute.wrappedTypeMirror.getTypeDeclaration} ${attribute.name}() {
 
         List<${attribute.getComponentAttributeType}> result = new ArrayList<>();
@@ -256,6 +259,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
      */
+    @SuppressWarnings("unchecked")
     ${state.visibilityModifier}TypeMirror[] ${attribute.name}AsTypeMirror() {
 
         List<TypeMirror> result = new ArrayList<>();
@@ -270,6 +274,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a TypeMirror
      */
+    @SuppressWarnings("unchecked")
     ${state.visibilityModifier}TypeMirrorWrapper[] ${attribute.name}AsTypeMirrorWrapper() {
 
         List<TypeMirrorWrapper> result = new ArrayList<>();
@@ -284,6 +289,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value as a fqn
      */
+    @SuppressWarnings("unchecked")
     ${state.visibilityModifier}String[] ${attribute.name}AsFqn() {
 
         List<String> result = new ArrayList<>();
@@ -298,6 +304,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
+    @SuppressWarnings("unchecked")
     ${state.visibilityModifier}AnnotationMirror[] ${attribute.name}AsAnnotationMirrorArray() {
         List<AnnotationMirror> result = new ArrayList<>();
         for(AnnotationValue value : (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue() ) {
@@ -312,6 +319,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
      * Gets the ${atw.simpleName}.${attribute.name} from wrapped annotation.
      * @return the attribute value
      */
+    @SuppressWarnings("unchecked")
     ${state.visibilityModifier}${attribute.targetWrapperAnnotationName}[] ${attribute.name}() {
         List<${attribute.targetWrapperAnnotationName}> result = new ArrayList<>();
         for(AnnotationValue value : (List<AnnotationValue>)${attribute.name}AsAnnotationValue().getValue() ) {
@@ -371,7 +379,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
       * @param element The element to read the annotations from
       * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
       */
-    ${state.visibilityModifier}static ${atw.simpleName}Wrapper wrap(ElementWrapper element) {
+    ${state.visibilityModifier}static ${atw.simpleName}Wrapper wrap(ElementWrapper<?> element) {
         return wrap(element.unwrap());
     }
 
@@ -400,7 +408,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
       * @param annotatedElement The element to read the annotations from
       * @return The wrapped AnnotationMirror if Element is annotated with this wrappers annotation type, otherwise null.
       */
-    ${state.visibilityModifier}static List<${atw.simpleName}Wrapper> wrap(ElementWrapper annotatedElement) {
+    ${state.visibilityModifier}static List<${atw.simpleName}Wrapper> wrap(ElementWrapper<?> annotatedElement) {
         return ${atw.simpleName}Wrapper.wrap(annotatedElement.unwrap());
     }
 !{/if}
