@@ -356,6 +356,17 @@ public class AnnotationMirrorWrapper {
 
         return stringBuilder;
     }
+    
+    /**
+     * Gets a string representation of the annotation.
+     * This method escapes the quotes. By doing that its possible to use the String representation inside a String in code, for example in an exception or log message.
+     *
+     * @return the annotations string representation
+     */
+    public String getStringRepresentationWithEscapedQuotes() {
+
+        return getStringRepresentation().replaceAll("\"", "\\\\\"");
+    }
 
     /**
      * Gets a string representation of the annotation.

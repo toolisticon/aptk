@@ -423,6 +423,26 @@ public class AnnotationMirrorWrapperTest {
         }).executeTest();
 
     }
+    
+    @Test
+    public void test_stringRepresentationWithEscapedQuotes() {
+
+        CompileTestBuilder.unitTest().<TypeElement>defineTestWithPassedInElement(StringRepresentationTest.class, (processingEnvironment, element) -> {
+            try {
+                ToolingProvider.setTooling(processingEnvironment);
+
+                // By class
+                Optional<AnnotationMirrorWrapper> result = AnnotationMirrorWrapper.get(element, StringRepresentationTestAnnotation.class);
+                MatcherAssert.assertThat(result.get().getStringRepresentationWithEscapedQuotes(), Matchers.is("@StringRepresentationTestAnnotation(arrayValue = {\\\"4\\\"}, stringValue = \\\"XXX\\\", longValue = 1L, intValue = 2, floatValue = 3.0f, doubleValue = 4.0, booleanValue = true, enumValue = StringRepresentationTestEnum.ENUM_VALUE, classValue = String.class)"));
+
+
+            } finally {
+                ToolingProvider.clearTooling();
+            }
+
+        }).executeTest();
+
+    }
 
 
     @Test
