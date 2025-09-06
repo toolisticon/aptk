@@ -400,7 +400,7 @@ ${state.visibilityModifier}class ${atw.simpleName}Wrapper !{if atw.customInterfa
       */
     ${state.visibilityModifier}static List<${atw.simpleName}Wrapper> wrap(Element annotatedElement) {
         Optional<List<AnnotationMirror>> repeatableAnnotations = AnnotationUtils.getRepeatableAnnotation(annotatedElement, ${atw.simpleName}.class);
-        return repeatableAnnotations.isPresent() ? repeatableAnnotations.get().stream().map(e -> wrap(annotatedElement, e)).collect(Collectors.toList()) : Collections.EMPTY_LIST;
+        return repeatableAnnotations.isPresent() ? repeatableAnnotations.get().stream().map(e -> wrap(annotatedElement, e)).collect(Collectors.toList()) : Collections.emptyList();
     }
 
     /**
