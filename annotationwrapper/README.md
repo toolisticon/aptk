@@ -56,7 +56,7 @@ import AnnotationWrapper;
 - Generated wrapper classes will have package private visibility by default - this can be changed to public by using the *AnnotationWrapper.usePublicVisibility* attribute.
 - By default wrapper classes of all referenced annotation types will be created automatically - this can be deactivated by using the *AnnotationWrapper.automaticallyWrapEmbeddedAnnotations* attribute.
 
-Please check the (Integrationtest)[integrationtest] submodule as an example how to use the processor correctly.
+Please check the [Integrationtest](integrationtest) submodule as an example how to use the processor correctly.
 
 ## Extending Wrapper Api
 It's possible to extend the wrapper api by custom methods.
