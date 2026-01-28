@@ -17,8 +17,8 @@ First please add the processor to your processors compiler configuration:
         <target>${java.compile.target.version}</target>
         <annotationProcessorPaths>
             <path>
-                <groupId>io.toolisticon.aptkio.toolisticon.aptk</groupId>
-                <artifactId>annotationwrapper-processor</artifactId>
+                <groupId>io.toolisticon.aptk</groupId>
+                <artifactId>aptk-annotationwrapper-processor</artifactId>
                 <version>${aptk.version}</version>
             </path>
         </annotationProcessorPaths>
@@ -26,15 +26,24 @@ First please add the processor to your processors compiler configuration:
 </plugin>
 ```
 
-It's also required to bind the APTK as dependency:
+It's also required to bind the processors api and aptk tools as dependencies:
 ```xml
 <!-- Maven example -->    
 
+<!-- the processors api -->
 <dependency>
-    <groupId>io.toolisticon.aptkio.toolisticon.aptk</groupId>
-    <artifactId>annotationprocessor</artifactId>
+    <groupId>io.toolisticon.aptk</groupId>
+    <artifactId>aptk-annotationwrapper-api</artifactId>
     <version>${aptk.version}</version>
-</dependency>   
+</dependency>
+
+<!-- aptk tools -->
+<dependency>
+    <groupId>io.toolisticon.aptk</groupId>
+    <artifactId>aptk-annotationwrapper-tools</artifactId>
+    <version>${aptk.version}</version>
+</dependency>
+    
 ```
 
 Then you need to add the *AnnotationWrapper* configuration to your processor package *package-info.java* file:
