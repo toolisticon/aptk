@@ -40,7 +40,7 @@ It's also required to bind the processors api and aptk tools as dependencies:
 <!-- aptk tools -->
 <dependency>
     <groupId>io.toolisticon.aptk</groupId>
-    <artifactId>aptk-annotationwrapper-tools</artifactId>
+    <artifactId>aptk-tools</artifactId>
     <version>${aptk.version}</version>
 </dependency>
     
