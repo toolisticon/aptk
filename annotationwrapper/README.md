@@ -45,6 +45,7 @@ It's also required to bind the processors api and aptk tools as dependencies:
 </dependency>
     
 ```
+Please make sure that the *ToolingProvider* is initialized in your Processor (see main README.md about how to do that)
 
 Then you need to add the *AnnotationWrapper* configuration to your processor package *package-info.java* file:
 ```java
